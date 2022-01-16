@@ -1,0 +1,37 @@
+name: Build Website
+
+on:
+  push:
+    branches: source
+  pull_request:
+    branches: source
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt
+    - name: Build the website
+      run: |
+        make html
+    - name: Deploy the website
+      if: ${{ github.event_name == 'push' }}
+      run: |
+        git config --global user.name "Github Actions"
+        git config --global user.email moorepants@users.noreply.github.com
+        git remote add deploy "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/moorepants/learn-multibody-dynamics.git"
+        ghp-import -r deploy -b gh-pages -m "Updated via Github Actions [skip ci]" -p _build/html

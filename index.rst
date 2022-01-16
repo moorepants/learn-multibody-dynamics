@@ -11,6 +11,8 @@ Welcome to Computationally Thinking Multibody Dynamics's documentation!
    :caption: Contents:
 
    introduction
+   jupyter-python
+   sympy
 
 
 

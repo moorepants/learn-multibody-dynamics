@@ -1,0 +1,6 @@
+ghp-import
+jupyter-sphinx
+numpy
+scipy
+sphinx
+sympy

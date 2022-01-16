@@ -28,8 +28,8 @@ author = 'Jason K. Moore'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.mathjax',
     'jupyter_sphinx',
+    'sphinx.ext.mathjax',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -52,3 +52,15 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# Options for jupyter-sphinx
+
+jupyter_execute_data_priority =[
+    'application/vnd.jupyter.widget-view+json',
+    'text/html',
+    'text/latex',
+    'image/svg+xml',
+    'image/png',
+    'image/jpeg',
+    'text/plain',
+]
