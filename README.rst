@@ -26,6 +26,11 @@ Heading order::
    H3
    ^^
 
+jupyer-sphinx
+=============
+
+https://jupyter-sphinx.readthedocs.io
+
 tmux
 ====
 
@@ -40,6 +45,8 @@ https://medium.com/hackernoon/a-gentle-introduction-to-tmux-8d784c404340
 vim-slime
 =========
 
+https://github.com/jpalardy/vim-slime
+
 create a vim slime config file for rst
 
 ::
@@ -48,6 +55,8 @@ create a vim slime config file for rst
 
 sphinx-autobuild
 ================
+
+https://github.com/executablebooks/sphinx-autobuild
 
 ::
 
