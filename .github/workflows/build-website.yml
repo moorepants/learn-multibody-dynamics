@@ -2,9 +2,9 @@ name: Build Website
 
 on:
   push:
-    branches: source
+    branches: master
   pull_request:
-    branches: source
+    branches: master
 
 jobs:
   build:
