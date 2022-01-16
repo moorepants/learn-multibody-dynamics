@@ -17,8 +17,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Computationally Thinking Multibody Dynamics'
-copyright = '2021, Jason K. Moore'
+project = 'Learn Multibody Dynamics'
+copyright = '2022, Jason K. Moore'
 author = 'Jason K. Moore'
 
 
@@ -55,10 +55,10 @@ html_static_path = ['_static']
 
 # Options for jupyter-sphinx
 
-jupyter_execute_data_priority =[
+jupyter_execute_data_priority = [
     'application/vnd.jupyter.widget-view+json',
     'text/html',
-    'text/latex',
+    'text/latex',  # put latex before png so sympy displays mathjax
     'image/svg+xml',
     'image/png',
     'image/jpeg',
