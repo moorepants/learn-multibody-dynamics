@@ -1,26 +1,26 @@
-Introduction
-============
+==================
+Python and Jupyter
+==================
 
-The following is a brief introduction to Python and the IPython
-Notebook. There is much more to learn than what is covered here. This is
-just enough to get you started with the tutorial.
+The following is a brief introduction to Python and how to use Python from a
+Jupyter Notebook. There is much more to learn than what is covered here. This
+is just enough to get you started with the tutorial.
 
-The IPython Notebook
+The Jupyter Notebook
 ====================
 
-IPython consists of two processes: a kernel and a frontend. The kernel
-executes code while the frontend provides an interface for the user
-enter their code. The IPython notebook is a frontend for Python which
-provides an interactive web-environment for executing code and
-displaying rich media.
+Jupyter consists of two processes: a kernel and a frontend. The kernel executes
+code while the frontend provides an interface for the user enter their code.
+The Jupyter notebook is a frontend for Python which provides an interactive
+web-based environment for executing code and displaying rich media.
 
 Using the Notebook
 ~~~~~~~~~~~~~~~~~~
 
-To start an IPython notebook session open a command prompt, navigate to
-a desired working directory then issue the following command:
+To start an Jupyter notebook session open a command prompt, navigate to a
+desired working directory then issue the following command:
 
-``ipython notebook``
+``jupyter notebook``
 
 A new window will open in your web browser where you can open an
 existing notebook or start a new one. Notebooks are organized with
@@ -49,27 +49,30 @@ solve each of these problems you can click on the menu:
 Magic Commands
 ~~~~~~~~~~~~~~
 
-These are commands to control IPython itself.
+These are special commands that only work in a Juypter notebook or an IPython
+session. Magic commands are preceeded by a ``%`` or ``%%``. You can list
+available magic commands but using the magic comman ``lsmagic``.
 
 .. jupyter-execute::
 
-    # list available magic commands
     %lsmagic
 
 Need Help?
 ~~~~~~~~~~
 
-In case you’re lost help isn’t far. The following commands should
-provide assistance.
+In case you're lost help isn’t far. The following commands should provide
+assistance.
+
+Displays an overview of IPython's features
 
 .. jupyter-execute::
 
-    # Displays an overview of IPython's features
     ?
 
+Quick Reference for IPython
+
 .. jupyter-execute::
 
-    # A Quick Reference for IPython
     %quickref
 
 .. jupyter-execute::
@@ -92,7 +95,7 @@ Python
 ======
 
 Basic Data Types
-~~~~~~~~~~~~~~~~
+----------------
 
 .. jupyter-execute::
 
@@ -101,11 +104,11 @@ Basic Data Types
     c = float(5)
     d = 'dee'
     e = 'e'
-    
+
     type(a), type(b), type(c), type(d), type(e)
 
 Data Structures
-~~~~~~~~~~~~~~~
+---------------
 
 Python offers several builtin data structures for arranging data in
 memory. We will be making use of lists, dictionaries, tuples during this
@@ -121,20 +124,20 @@ heterogenous data types.
 .. jupyter-execute::
 
     empty_list = []
-    
+
     string_list = ['lions', 'tigers', 'bears', 'sharks', 'hamsters']
-    
+
     int_list = [0, 1, 2, 3, 4]
     int_list2 = range(5,10)
-    
+
     list_from_variables = [a,b,c,d,e]
-    
+
     list_of_lists = [empty_list,
                      string_list,
                      list_from_variables,
                      int_list,
                      int_list2]
-    
+
     print(list_of_lists)
 
 Elements of a list are accessible by their index.
@@ -152,13 +155,13 @@ remove elements.
 .. jupyter-execute::
 
     int_list[2] = 222
-    
+
     int_list.append(5)
-    
+
     string_list.remove('lions')
-    
+
     list_from_variables.extend(int_list)
-    
+
     print(int_list)
     print(string_list)
     print(list_from_variables)
@@ -173,7 +176,7 @@ with parenthesis, ``()``, rather than brackets.
 .. jupyter-execute::
 
     joe_blow = (32, 'tall', 'likes hats')
-    
+
     print(joe_blow[1])
 
 Unlike lists, tuples are immutable. They cannot be changed once defined.
@@ -182,7 +185,7 @@ Unlike lists, tuples are immutable. They cannot be changed once defined.
 
     # this won't work
     #joe_blow.append('married')
-    
+
     # neither will this
     #joe_blow[2] = 'not really a fan of hats'
 
@@ -193,7 +196,7 @@ separate variables.
 .. jupyter-execute::
 
     pets = ('elephant', 'cow', 'rock')
-    
+
     pet1, pet2, pet3 = pets
 
 A peculiar thing about tuples in python is defining a single element
@@ -216,9 +219,9 @@ in a python dictionary you look up a *key* and get its *value*.
     # numbers or strings may be used as keys
     dictionary0 = {'key1':'value1', 'key2':'value2', 'key3':'value3'}
     dictionary1 = {1:'value1', 2:'value2', 3:'value3'}
-    
+
     cylinder = {'mass':50, 'base':10, 'height':100}
-    
+
     print(dictionary0)
     print(dictionary1.keys())
     print(cylinder['mass'])
@@ -232,11 +235,11 @@ dictionary.
 
     keys = ['mass01', 'inertia01', 'mass02', 'inertia02']
     values = [10, 1, 50, 5]
-    
+
     dict(zip(keys, values))
 
 Functions
-~~~~~~~~~
+---------
 
 Python does not use braces, ``{}``, or ``end`` statements to seperate
 blocks of code. Rather, code blocks are initialized with colon, ``:``,
@@ -247,9 +250,9 @@ for each level of indentation.
 
     def abs_value(A):
         if A < 0:
-            A = -A 
+            A = -A
         return A
-    
+
     abs_value(-100)
 
 .. jupyter-execute::
@@ -258,14 +261,14 @@ for each level of indentation.
         quotient = dividend // divisor # // : floor division
         remainder = dividend % divisor # % : modulo
         return quotient, remainder
-    
-    
+
+
     a = 430
     b = 25
-    
+
     # an example of tuple unpacking
     quo, rem = long_div(a, b)
-    
+
     print('%d divided %d is %d remainder %d' % (a, b, quo, rem))
 
 Modules
@@ -279,7 +282,7 @@ an entire module or import specific functions from a module.
 
     # import object from sympy into the current namespace
     from numpy import array
-    
+
     # import multiple objects from sympy
     from sympy.physics.mechanics import dynamicsymbols, ReferenceFrame, Point
 
@@ -289,7 +292,7 @@ Objects from these modules are now available in your namespace.
 
     # from numpy
     arr = array([1,2,3,4,5])
-    
+
     # from sympy.physics.mechanics
     inertial_frame = ReferenceFrame('I')
 
@@ -324,16 +327,16 @@ Creating Arrays
 
     # An array from a list
     print(array([5, 12, -2, 9.3, 7]))
-    
+
     # random values
     print(random.random((5)))
-    
+
     # linearly spaced values
     # 5 values between 0 and 10 inclusive
     print(linspace(0,10,5))
-    
+
     # range of values with a defined stepsize
-    # start at 0 and increase by 3 
+    # start at 0 and increase by 3
     print(arange(0,14,3))
 
 Accessing Array Elements
@@ -342,16 +345,16 @@ Accessing Array Elements
 .. jupyter-execute::
 
     P = random.random((3,5))
-    
+
     # individual element
     print(P[0,3])
-    
+
     # entire row
     print(P[2])
-    
+
     # entire column
     print(P[:,4])
-    
+
     # every third element
     print(P[::3])
 
@@ -362,9 +365,9 @@ Operations on Arrays
 
     # mathematical operations are always elementwise
     x = arange(5)
-    
+
     print(x)
-    
+
     # the double asterisk represents exponentiation
     print(x + x**2)
 
@@ -394,7 +397,7 @@ Examples
     x = arange(-pi,pi,0.1)
     y1 = 2*sin(x)
     y2 = x + cos(4*x)
-    
+
     plot(x, y1, 'r', x, y2, '--b')
     plot(x[::5], y1[::5], 'og') # plot every 5th point
     xlabel('x axis')
@@ -404,11 +407,11 @@ Examples
 .. jupyter-execute::
 
     x = linspace(-100,100)
-    
+
     for i in range(1,5):
         subplot(2,2,i)
         plot(x, x**i)
-        
+
     tight_layout() # this prevents the axis labels from overlapping
 
 Exercise
@@ -427,7 +430,7 @@ frequencies. Plot the 3 functions with labeled axis.
         y1 = sin(A*t)
         y2 = sin(B*t)
         y3 = sin(C*t)
-        
+
         return y1, y2, y3
 
 .. jupyter-execute::
@@ -455,12 +458,12 @@ Examples
 
     def dy(y,x):
         return x
-    
+
     y0 = 0.0
     x = linspace(-5.0, 5.0, 1000)
-    
+
     y = odeint(dy,y0,x)
-    
+
     plot(x,y)
 
 .. jupyter-execute::
@@ -471,70 +474,17 @@ Examples
         C = coeff['C']
         D = coeff['D']
         return A*t**3 + B*t**2 + C*t + D
-    
+
     y0 = 2.0
     t = linspace(-5.0, 3.0, 1000)
     sys = {'A' : 0.25,
            'B' : 0.75,
            'C' : -1.5,
            'D' : -2.0}
-    
+
     y = odeint(dy, y0, t, args=(sys,))
-    
+
     plot(t,y)
-
-SymPy
------
-
-Setup
-~~~~~
-
-.. jupyter-execute::
-
-    from sympy import *
-    
-    # This is for prettier printing of equations
-    interactive.printing.init_printing()
-
-Creating Symbolic Variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. jupyter-execute::
-
-    a = symbols('a')
-    b = symbols('b')
-    gravity, mass, spring_const, time = symbols('g, m, k, t')
-
-Expressions Using Symbolic Variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. jupyter-execute::
-
-    a**2 + b/pi
-
-.. jupyter-execute::
-
-    simplify(4*(a*a*a)*(b+b+b))
-
-.. jupyter-execute::
-
-    diff(-gravity*time**2/2, time)
-
-.. jupyter-execute::
-
-    # indefinte integral
-    
-    integrate(-gravity,time)
-
-.. jupyter-execute::
-
-    # definite integral
-    
-    v0 = 5
-    t1 = 0
-    t2 = .35
-    position = integrate(-gravity*time + v0,(time,t1,t2))
-    position.subs(gravity, 9.81)
 
 Additional Resources
 ====================
