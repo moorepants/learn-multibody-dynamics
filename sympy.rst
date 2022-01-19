@@ -315,17 +315,58 @@ Lastly, a typical type of derivative you may encounter:
 Evaluating symbolic expressions
 ===============================
 
-.. jupyter-execute::
-
-   expr3.xreplace({omega: sm.pi/4, a: 2, f(t): -12, b: 25})
-
-.. jupyter-execute::
-
-   expr3.evalf(n=31, subs={omega: sm.pi/4, a: 2, f(t): -12, b: 25})
+SymPy expressions can be evaluated numerically in several ways. The
+``.xreplace()`` method allows substituion of exact symbols or sub-expressions.
+First create a dictionary that maps symbols, functions or sub-expressions to
+the replacements:
 
 .. jupyter-execute::
 
-   type(expr3.evalf(n=31, subs={omega: sm.pi/4, a: 2, f(t): -12, b: 25}))
+   repl = {omega: sm.pi/4, a: 2, f(t): -12, b: 25}
+
+This dictionary can then be passed to ``.xreplace()``:
+
+.. jupyter-execute::
+
+   expr3.xreplace(repl)
+
+Notice how the square root and fraction do not automatically reduce to their
+decimal equivalents. To do so, you must use the ``.evalf()`` method. This
+method will evaluate an expression to an arbitrary number of decimal points.
+You provide the number of decimal places and the substitution dictionary to
+evaluate:
+
+.. jupyter-execute::
+
+   expr3.evalf(n=31, subs=repl)
+
+.. jupyter-execute::
+
+   type(expr3.evalf(n=31, subs=repl))
+
+Note that this is a SymPy ``Float`` object, which is a special object that can
+have an arbitrary number of decimal places, for example:
+
+.. jupyter-execute::
+
+   expr3.evalf(n=300, subs=repl)
+
+To convert this to Python floating point number, use ``float()``:
+
+.. jupyter-execute::
+
+   float(expr3.evalf(n=300, subs=repl))
+
+.. jupyter-execute::
+
+   type(float(expr3.evalf(n=300, subs=repl)))
+
+This value is a machine precision floating point value and can be used with
+standard Python functions that operating on floating point numbers.
+
+To obtain machine precisions floating poitn numbers directly, it is better to
+use the ``lambdify()`` function to convert the expression into a Python
+function:
 
 .. jupyter-execute::
 
@@ -335,6 +376,8 @@ Evaluating symbolic expressions
 
    help(eval_expr3)
 
+Now you have a function that operates on and returns floating point values:
+
 .. jupyter-execute::
 
    eval_expr3(3.14/4, 2, -12, 25)
@@ -343,8 +386,19 @@ Evaluating symbolic expressions
 
    type(eval_expr3(3.14/4, 2, -12, 25))
 
+This distinction between SymPy ``Float`` objects and regular Python and NumPy
+``float`` objects is important. The later will compute much faster because
+arbitrary precision is not required. In this class, you will almost always want
+to convert SymPy expressions into machine precision floating point numbers, so
+use ``lambdify()`` almost exclusively.
+
 Matrices
 ========
+
+SymPy supports matrices of expressions and linear algebra. Many of the
+operations needed in multibody dynamics are more succinctly formulated with
+matrices and linear algebra. Matrices can be created by passing nesting lists
+to the ``Matrix()`` object. For example:
 
 .. jupyter-execute::
 
@@ -356,21 +410,53 @@ Matrices
    mat2 = sm.Matrix([[1, 2], [3, 4]])
    mat2
 
+All matrices are two dimensional and the number of rows and columns, in that
+order, are stored in the ``.shape`` attribute.
+
 .. jupyter-execute::
 
    mat1.shape
+
+Individual elements of the matrix can be extracted with the bracket notation
+taking the row and column indices (remember Python indexes from 0):
 
 .. jupyter-execute::
 
    mat1[0, 1]
 
+The slice notation can extract rows or columns:
+
+.. jupyter-execute::
+
+   mat1[0:1, 1]
+
+.. jupyter-execute::
+
+   mat1[0, 0:1]
+
+Matrix algebra can be performed. Matrices can be added:
+
 .. jupyter-execute::
 
    mat1 + mat2
 
+Both the ``*`` and the ``@`` operator perform matrix multiplication:
+
 .. jupyter-execute::
 
    mat1*mat2
+
+.. jupyter-execute::
+
+   mat1@mat2
+
+Element-by-element multiplication requires the ``hadamard_product()`` function:
+
+.. jupyter-execute::
+
+   sm.hadamard_product(mat1, mat2)
+
+Differentiation operates on each element of the matrix:
 
 .. jupyter-execute::
 
@@ -379,11 +465,15 @@ Matrices
 
 .. jupyter-execute::
 
-   mat1.diff(a)
+   mat3.diff(a)
 
 .. jupyter-execute::
 
    mat3.diff(t)
+
+The Jacobian_ matrix of vector (column matrix) can be formed with the
+``.jacobian()`` method. This calculates the partial derivatives of each element
+in the vector with respect to a vector (or sequence) of variables.
 
 .. jupyter-execute::
 
@@ -394,8 +484,62 @@ Matrices
 
    mat3.jacobian(mat4)
 
+.. _Jacobian: https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant
+
 Solving Linear Systems
 ======================
+
+You'll need to solve linear systems of equations often in this course. SymPy
+offers a number of ways to do this, but the best way to do so if you know a set
+of equations are linear in specific variables is the method described below.
+First, you should know you have equations of this form:
+
+.. math::
+
+   a_1 x_1 + a_2 x_2 + \ldots + a_n x_n + a = 0 \\
+   b_1 x_1 + b_2 x_2 + \ldots + b_n x_n + b = 0 \\
+   \ldots
+
+These equations can be put into matrix form:
+
+.. math::
+
+   \mathbf{A}\bar{x} = \bar{b}
+
+where:
+
+.. math::
+
+   \mathbf{A} =
+   \begin{bmatrix}
+     a_1 & a_2 & \ldots & a_n \\
+     b_1 & b_2 & \ldots & b_n \\
+     \ldots
+   \end{bmatrix}
+
+   \bar{x} =
+   \begin{bmatrix}
+     x_1 \\
+     x_2 \\
+     \ldots \\
+     x_n
+   \end{bmatrix}
+
+   \bar{b} =
+   \begin{bmatrix}
+     -a \\
+     -b \\
+     \ldots \\
+   \end{bmatrix}
+
+Finally, :math:`\bar{x}` is found with matrix inversion (if the matrix is
+invertible):
+
+.. math::
+
+   \bar{x} = \mathbf{A}^{-1}\bar{b}
+
+To solve with SymPy, start with a column matrix of linear expressions:
 
 .. jupyter-execute::
 
@@ -405,15 +549,26 @@ Solving Linear Systems
    ])
    exprs
 
+Since, we know these two expressions are linear in :math:`a` and :math:`b`, the
+partial derivatives with respect to those two variables will return the linear
+coefficients. The :math:`\mathbf{A}` matrix can be formed in one step with the
+``.jacobian()`` method:
+
 .. jupyter-execute::
 
    A = exprs.jacobian([a, b])
    A
 
+The :math:`\bar{b}` vector can be formed by setting :math:`a=b=0`, leaving the
+terms that are not linear in :math:`a` and :math:`b`.
+
 .. jupyter-execute::
 
    b = -exprs.xreplace({a: 0, b:0})
    b
+
+Lastly, the ``LUsolve()`` method performs Gaussian-Elimination to solve the
+system:
 
 .. jupyter-execute::
 
