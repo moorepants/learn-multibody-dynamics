@@ -12,6 +12,7 @@ Table of Contents
    introduction
    jupyter-python
    sympy
+   glossary
 
 Indices and tables
 ==================
