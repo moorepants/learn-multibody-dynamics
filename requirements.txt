@@ -2,6 +2,7 @@ ghp-import
 jupyter-sphinx
 matplotlib
 numpy
+pydata-sphinx-theme
 scipy
 sphinx
 sympy
