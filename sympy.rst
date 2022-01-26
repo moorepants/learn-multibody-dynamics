@@ -227,7 +227,7 @@ backslashes represent the escape character in Python strings.
 
 .. warning::
 
-   When you are workign with long ezpressions, which will be the case in this
+   When you are working with long ezpressions, which will be the case in this
    course, there is no need to print them to the screen. In fact, printing them
    to the screen make take a long time and fill your entire notebook with an
    unreadable mess.
@@ -275,8 +275,10 @@ variables, as in the following:
 
    expr3.diff(b, t)
 
-Note that the answer includes real and imaginary components and the signum
-function.
+Note that the answer includes real and imaginary components and the `signum
+function`_.
+
+.. _signum function: https://en.wikipedia.org/wiki/Sign_function
 
 .. warning::
 
@@ -316,7 +318,7 @@ Evaluating symbolic expressions
 ===============================
 
 SymPy expressions can be evaluated numerically in several ways. The
-``.xreplace()`` method allows substituion of exact symbols or sub-expressions.
+``.xreplace()`` method allows substitution of exact symbols or sub-expressions.
 First create a dictionary that maps symbols, functions or sub-expressions to
 the replacements:
 
@@ -364,7 +366,7 @@ To convert this to Python floating point number, use ``float()``:
 This value is a machine precision floating point value and can be used with
 standard Python functions that operating on floating point numbers.
 
-To obtain machine precisions floating poitn numbers directly, it is better to
+To obtain machine precisions floating point numbers directly, it is better to
 use the ``lambdify()`` function to convert the expression into a Python
 function:
 
@@ -608,6 +610,15 @@ when using SymPy. The tutorial is part of the SymPy documentation
 https://docs.sympy.org, where you will find general information on SymPy.
 
 .. _SymPy Tutorial: https://docs.sympy.org/latest/tutorial/index.html
+
+The tutorial is also available on video:
+
+.. raw:: html
+
+   <iframe width="560" height="315"
+   src="https://www.youtube.com/embed/AqnpuGbM6-Q" title="YouTube video player"
+   frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+   encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 If you want to ask a question about using SymPy (or search to see if someone
 else has asked your question), you can do so at the following places:
