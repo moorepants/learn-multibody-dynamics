@@ -40,6 +40,11 @@ vectors :math:`\hat{a}_x, \hat{a}_y, \hat{a}_z` then we can establish the
 relative orietnation of these two reference frames, which may be arbitrarly
 oriented with respect to each other.
 
+Take this simple rotation about the parallel :math:`z` unit vectors of
+:math:`N` and :math:`A`:
+
+.. todo:: Add a figure
+
 If :math:`A` is rotated with respect to :math:`N` by a simple rotation about
 the :math:`\hat{a}_x` through angle :math:`\theta` then these relationships
 hold true:
@@ -50,7 +55,7 @@ hold true:
    \hat{a}_y & = -\sin{\theta} \hat{n}_x + \cos{\theta} \hat{n}_y + 0 \hat{n}_z \\
    \hat{a}_z & = 0 \hat{n}_x + 0 \hat{n}_y + 1 \hat{n}_z
 
-These equatiosn can be written in matrix form:
+These equations can be written in matrix form:
 
 .. math::
 
@@ -328,3 +333,10 @@ The unit vectors associate with a reference frame are accessed like so:
 .. jupyter-execute::
 
    sm.trigsimp(B.dcm(N))
+
+.. jupyter-execute::
+
+   sm.trigsimp(me.dot(B.x, N.x))
+
+Euler Angles
+============

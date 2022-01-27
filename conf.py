@@ -30,6 +30,7 @@ author = 'Jason K. Moore'
 extensions = [
     'jupyter_sphinx',
     'sphinx.ext.mathjax',
+    'sphinx.ext.todo',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -40,6 +41,7 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+todo_include_todos = True
 
 # -- Options for HTML output -------------------------------------------------
 
