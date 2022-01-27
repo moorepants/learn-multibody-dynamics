@@ -63,6 +63,7 @@ angles among the two frames' unit vectors.
 .. note::
 
    .. _orientation-vector-position:
+
    .. figure:: orientation-vector-position.svg
 
       The image on the left and right represent the same set of mutually
@@ -80,6 +81,7 @@ about the common parallel :math:`z` unit vectors of the two frames. We say
 about the shared :math:`z` unit vectors through an angle :math:`\theta`.
 
 .. _orientation-simple:
+
 .. figure:: orientation-simple.svg
 
    View of the parallel :math:`xy` planes of the simply rotated reference
@@ -195,7 +197,10 @@ For example the figure below shows the three angles
 :math:`N` unit vector.
 
 .. _orientation-three-angles:
+
 .. figure:: orientation-three-angles.svg
+
+   Three angles relating :math:`\hat{a}_x` to the :math:`N` unit vectors.
 
 Similarly to the simple example above, we can write these equations:
 
@@ -264,6 +269,8 @@ the same way that :math:`A` is from :math:`N`.
 .. _orientation-simple-successive:
 
 .. figure:: orientation-simple-successive.svg
+
+   Two successive simple rotations.
 
 We know that we can define these two relationships:
 
