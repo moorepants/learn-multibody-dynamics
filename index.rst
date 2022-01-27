@@ -18,6 +18,7 @@ Table of Contents
    introduction
    jupyter-python
    sympy
+   orientation
    glossary
 
 Indices and tables
