@@ -120,3 +120,211 @@ The transpose equals the inverse:
 If now :math:`A` is oriented relative to :math:`N` and the three angles
 :math:`\alpha_1,\alpha_2,\alpha_3` between :math:`\hat{a}_x` and
 :math:`\hat{n}_x,\hat{n}_y,\hat{n}_z`, respectively
+
+.. figure:: fig.svg
+
+Three angles can be found for each unit vector in :math:`A` and then we can
+write:
+
+.. math::
+
+  \hat{a}_x & = \cos\alpha_{xx} \hat{n}_x +\cos\alpha_{xy} \hat{n}_y + \cos\alpha_{xz} \hat{n}_z \\
+  \hat{a}_y & = \cos\alpha_{yx} \hat{n}_x +\cos\alpha_{yy} \hat{n}_y + \cos\alpha_{yz} \hat{n}_z \\
+  \hat{a}_z & = \cos\alpha_{yx} \hat{n}_x +\cos\alpha_{yy} \hat{n}_y + \cos\alpha_{yz} \hat{n}_z
+
+Since we are workign with unit vectors the cosine of the angles between the two
+vectors are also equivalent to the dot product between the two vectors.
+
+.. math::
+
+  \hat{a}_x = (\hat{a}_x \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_x \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_x \cdot \hat{n}_z) \hat{n}_z \\
+  \hat{a}_y = (\hat{a}_y \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_y \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_y \cdot \hat{n}_z) \hat{n}_z \\
+  \hat{a}_x = (\hat{a}_z \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_z \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_z \cdot \hat{n}_z) \hat{n}_z \\
+
+Similar to the simple rotation example above, these can be written in matrix
+form:
+
+.. math::
+
+   \begin{bmatrix}
+     \hat{a}_x \\
+     \hat{a}_y \\
+     \hat{a}_z
+   \end{bmatrix}
+   =
+   \begin{bmatrix}
+     \hat{a}_x \cdot \hat{n}_x &\hat{a}_x \cdot \hat{n}_y & \hat{a}_x \cdot \hat{n}_z \\
+     \hat{a}_y \cdot \hat{n}_x &\hat{a}_y \cdot \hat{n}_y & \hat{a}_y \cdot \hat{n}_z \\
+     \hat{a}_z \cdot \hat{n}_x &\hat{a}_z \cdot \hat{n}_y & \hat{a}_z \cdot \hat{n}_z
+   \end{bmatrix}
+   \begin{bmatrix}
+     \hat{n}_x \\
+     \hat{n}_y \\
+     \hat{n}_z
+   \end{bmatrix}
+
+where the general direction cosine matrix is then:
+
+.. math::
+
+   {}^A\mathbf{C}^N
+   =
+   \begin{bmatrix}
+     \hat{a}_x \cdot \hat{n}_x &\hat{a}_x \cdot \hat{n}_y & \hat{a}_x \cdot \hat{n}_z \\
+     \hat{a}_y \cdot \hat{n}_x &\hat{a}_y \cdot \hat{n}_y & \hat{a}_y \cdot \hat{n}_z \\
+     \hat{a}_z \cdot \hat{n}_x &\hat{a}_z \cdot \hat{n}_y & \hat{a}_z \cdot \hat{n}_z
+   \end{bmatrix}
+
+This matrix uniquely defines the relative orientation between reference frames
+:math:`N` and :math:`A`.
+
+Successive orientations of a series of reference frames provides a convenient
+way to manage orientation among more than a pair.
+
+
+.. math::
+
+   \begin{bmatrix}
+     \hat{a}_x \\
+     \hat{a}_y \\
+     \hat{a}_z
+   \end{bmatrix}
+   =
+   {}^A\mathbf{C}^N
+   \begin{bmatrix}
+     \hat{n}_x \\
+     \hat{n}_y \\
+     \hat{n}_z
+   \end{bmatrix}
+
+.. math::
+
+   \begin{bmatrix}
+     \hat{b}_x \\
+     \hat{b}_y \\
+     \hat{b}_z
+   \end{bmatrix}
+   =
+   {}^B\mathbf{C}^A
+   \begin{bmatrix}
+     \hat{a}_x \\
+     \hat{a}_y \\
+     \hat{a}_z
+   \end{bmatrix}
+
+then
+
+
+.. math::
+
+   {}^A\mathbf{C}^B
+   \begin{bmatrix}
+     \hat{b}_x \\
+     \hat{b}_y \\
+     \hat{b}_z
+   \end{bmatrix}
+   =
+   {}^A\mathbf{C}^N
+   \begin{bmatrix}
+     \hat{n}_x \\
+     \hat{n}_y \\
+     \hat{n}_z
+   \end{bmatrix}
+
+
+.. math::
+
+   \begin{bmatrix}
+     \hat{b}_x \\
+     \hat{b}_y \\
+     \hat{b}_z
+   \end{bmatrix}
+   =
+   {}^B\mathbf{C}^A
+   {}^A\mathbf{C}^N
+   \begin{bmatrix}
+     \hat{n}_x \\
+     \hat{n}_y \\
+     \hat{n}_z
+   \end{bmatrix}
+
+that is
+
+.. math::
+
+   {}^B\mathbf{C}^N
+   =
+   {}^B\mathbf{C}^A
+   {}^A\mathbf{C}^N
+
+Take for example two simple rotatiosn about the colinear :math:`z` unit
+vectors.
+
+.. jupyter-execute::
+
+   A_C_N
+
+.. jupyter-execute::
+
+   alpha = sm.symbols('alpha')
+
+   B_C_A = sm.Matrix([[sm.cos(alpha), sm.sin(alpha), 0],
+                      [-sm.sin(alpha), sm.cos(alpha), 0],
+                      [0, 0, 1]])
+
+   B_C_A
+
+.. jupyter-execute::
+
+   B_C_N = B_C_A*A_C_N
+   B_C_N
+
+.. jupyter-execute::
+
+   sm.trigsimp(B_C_N)
+
+
+.. jupyter-execute::
+
+   import sympy.physics.mechanics as me
+
+.. jupyter-execute::
+
+   N = me.ReferenceFrame('N')
+
+The unit vectors associate with a reference frame are accessed like so:
+
+.. jupyter-execute::
+
+   N.x, N.y, N.z
+
+.. jupyter-execute::
+
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+
+   N, A, B
+
+.. jupyter-execute::
+
+   A_C_N
+
+.. jupyter-execute::
+
+   A.orient_explicit(N, A_C_N.T)
+
+   A.dcm(N)
+
+.. jupyter-execute::
+
+   B.orient_axis(A, alpha, A.z)
+
+   B.dcm(A)
+
+.. jupyter-execute::
+
+   sm.trigsimp(B.dcm(A)*A.dcm(N))
+
+.. jupyter-execute::
+
+   sm.trigsimp(B.dcm(N))
