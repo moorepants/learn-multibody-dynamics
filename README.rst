@@ -61,3 +61,9 @@ https://github.com/executablebooks/sphinx-autobuild
 ::
 
    sphinx-autobuild -b html . _build/html/
+
+Reize xournal++ svg exports to just the extents
+
+seems to require gui to open (--without-gui doesn't work with verbs)
+
+inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit orientation-camera-gimbal.svg

@@ -509,3 +509,126 @@ expected direction cosine matrix entry:
 .. jupyter-execute::
 
    sm.trigsimp(me.dot(B.x, N.x))
+
+Gimbal and Euler Angles
+=======================
+
+.. figure:: https://objects-us-east-1.dream.io/mechmotum/orientation-camera-gimbal.png
+
+   Turnigy Pro Camera Gimbal
+
+This camera stabilization gimbal has three revolute joints that orient the
+camera :math:`D` relative to the handgrip frame :math:`A`. If we introduce two
+additional auxliary reference frames: :math:`B` and :math:`C` we can use three
+successive simple rotations to go from :math:`A` to :math:`D`. Using the same
+technique for the sucessive simple rotations above, but now managing the three
+dimensional rotations with can formulate the direction cosine matrices for the
+reference frames.
+
+What this video to get a sense of the rotation axes for each intermediate
+auxliarly reference frame:
+
+.. raw:: html
+
+   <iframe width="560" height="315"
+   src="https://www.youtube.com/embed/xQMBIXqWcjI?start=177" title="YouTube
+   video player" frameborder="0" allow="accelerometer; autoplay;
+   clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+   allowfullscreen></iframe>
+
+Starting with :math:`A` we first rotate :math:`B` about the shared :math:`z`
+unit vector through the angle :math:`\psi`.
+
+.. jupyter-execute::
+
+   psi, theta, phi = sm.symbols('psi, theta, phi')
+
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+
+.. figure:: orientation-gimbal-psi.svg
+
+   First rotation
+
+.. jupyter-execute::
+
+   B.orient_axis(A, psi, A.z)
+
+   B.dcm(A)
+
+Now rotate :math:`C` with respect to :math:`B` about their shared :math:`x`
+unit vector through angle :math:`\theta`.
+
+.. jupyter-execute::
+
+   C = me.ReferenceFrame('C')
+
+   C.orient_axis(B, theta, B.x)
+
+   C.dcm(B)
+
+Finally rotate the camera :math:`D` with respect to :math:`C` about their
+shared :math:`y` unit vector through the angle :math:`\phi`.
+
+.. jupyter-execute::
+
+   D = me.ReferenceFrame('D')
+
+   D.orient_axis(C, phi, C.y)
+
+   D.dcm(C)
+
+With all of the intermediate rotations defined, when can now ask for the
+relationsihp of the camera relative to the handgrip frame:
+
+.. jupyter-execute::
+
+   D.dcm(A)
+
+With these three rotations the camera can be oriented in any direction relative
+to the handgrip frame. This successive :math:`z\textrm{-}x\textrm{-}y`
+rotations are a standard way of describing the orientaiton of two reference
+frames and referred to as `Euler Angles`_ [*]_.
+
+.. _orientation-euler-animation:
+
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif
+
+   :math:`z\textrm{-}x\textrm{-}z` Euler angle visualization from Wikipedia.
+
+.. _Euler Angles: https://en.wikipedia.org/wiki/Euler_angles
+
+There are 12 valid sets of successive rotations. We will also refer to these 12
+possible rotations as body fixed rotations. As we will soon see, a rigid body
+and a reference frame are synonomous from an orientation perspective and each
+successive rotation rotates about a shared unit vector fixed in both of the
+reference frames.
+
+.. jupyter-execute::
+
+   A = me.ReferenceFrame('A')
+   D = me.ReferenceFrame('D')
+
+   D.orient_body_fixed(A, (psi, theta, phi), 'zxy')
+
+   D.dcm(A)
+
+The :math:`z\textrm{-}x\textrm{-}z` Euler angles shown in
+:numref:`orientation-euler-animation` are created like so:
+
+.. jupyter-execute::
+
+   A = me.ReferenceFrame('A')
+   D = me.ReferenceFrame('D')
+
+   D.orient_body_fixed(A, (psi, theta, phi), 'zxz')
+
+   D.dcm(A)
+
+.. rubric:: Footnotes
+
+.. [*] Technically, this set of angles for the gimbal are one of the 6 Tait-Bryan angles,
+   but "Euler Angles" is used colloquially to describe both Tait-Bryan angles
+   and "proper Euler angles". The description of all 12 angle sets is
+   attributed to `Davenport
+   <https://en.wikipedia.org/wiki/Davenport_chained_rotations>`_.
