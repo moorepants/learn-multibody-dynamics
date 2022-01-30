@@ -18,3 +18,9 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+resizesvg:
+	inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit *.svg
+
+autobuild:
+	sphinx-autobuild -b html . _build/html/
