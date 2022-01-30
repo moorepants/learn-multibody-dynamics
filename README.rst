@@ -6,10 +6,18 @@ The source for the website "Learning Multibody Dynamics". Viewable at:
 
 https://moorepants.github.io/learn-multibody-dynamics/
 
-restructuredtext
-================
+License
+=======
 
-The text is written in reStructuredText.
+The contents of this repository are licensed under the CC-BY 4.0 license.
+
+Editing Guide
+=============
+
+restructuredtext
+----------------
+
+The text is written in reStructuredText and procesed with Sphinx.
 
 Heading order::
 
@@ -27,12 +35,15 @@ Heading order::
    ^^
 
 jupyer-sphinx
-=============
+-------------
+
+Any page that includes ``.. jupyter-execute::`` directives will be processed
+with Jupyter Sphinx.
 
 https://jupyter-sphinx.readthedocs.io
 
 tmux
-====
+----
 
 https://medium.com/hackernoon/a-gentle-introduction-to-tmux-8d784c404340
 
@@ -43,7 +54,7 @@ https://medium.com/hackernoon/a-gentle-introduction-to-tmux-8d784c404340
    <Ctrl>+<arrow key>  # jump between panes
 
 vim-slime
-=========
+---------
 
 https://github.com/jpalardy/vim-slime
 
@@ -54,13 +65,16 @@ create a vim slime config file for rst
    <Ctrl>+cc  # execute line(s) in ipython pane
 
 sphinx-autobuild
-================
+----------------
 
 https://github.com/executablebooks/sphinx-autobuild
 
 ::
 
    sphinx-autobuild -b html . _build/html/
+
+Xournal++
+---------
 
 Reize xournal++ svg exports to just the extents
 
