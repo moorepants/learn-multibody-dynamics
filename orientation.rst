@@ -530,27 +530,39 @@ auxliarly reference frame:
 
 .. raw:: html
 
-   <iframe width="560" height="315"
-   src="https://www.youtube.com/embed/xQMBIXqWcjI?start=177" title="YouTube
-   video player" frameborder="0" allow="accelerometer; autoplay;
-   clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-   allowfullscreen></iframe>
+   <center>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/xQMBIXqWcjI?start=177"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+   </center>
 
-Starting with :math:`A` we first rotate :math:`B` about the shared :math:`z`
-unit vector through the angle :math:`\psi`.
+Starting with :math:`A` we first rotate :math:`B` with respect to :math:`A`
+about the shared :math:`z` unit vector through the angle :math:`\psi`, as shown
+below:
+
+.. _orientation-gimbal-psi:
+
+.. figure:: orientation-gimbal-psi.svg
+   :width: 200px
+
+   View of the :math:`A` and :math:`B` :math:`x\textrm{-}y` plane showing the
+   rotation of :math:`B` relative to :math:`A` about :math:`z` through angle
+   :math:`\psi`.
+
+and then using ``ReferenceFrame`` objects:
 
 .. jupyter-execute::
 
-   psi, theta, phi = sm.symbols('psi, theta, phi')
+   psi = sm.symbols('psi')
 
    A = me.ReferenceFrame('A')
    B = me.ReferenceFrame('B')
-
-.. figure:: orientation-gimbal-psi.svg
-
-   First rotation
-
-.. jupyter-execute::
 
    B.orient_axis(A, psi, A.z)
 
@@ -559,7 +571,18 @@ unit vector through the angle :math:`\psi`.
 Now rotate :math:`C` with respect to :math:`B` about their shared :math:`x`
 unit vector through angle :math:`\theta`.
 
+.. _orientation-gimbal-theta:
+
+.. figure:: orientation-gimbal-theta.svg
+   :width: 200px
+
+   View of the :math:`B` and :math:`C` :math:`y\textrm{-}z` plane showing the
+   rotation of :math:`C` relative to :math:`B` about :math:`x` through angle
+   :math:`\theta`.
+
 .. jupyter-execute::
+
+   theta = sm.symbols('theta')
 
    C = me.ReferenceFrame('C')
 
@@ -570,7 +593,16 @@ unit vector through angle :math:`\theta`.
 Finally rotate the camera :math:`D` with respect to :math:`C` about their
 shared :math:`y` unit vector through the angle :math:`\phi`.
 
+.. figure:: orientation-gimbal-phi.svg
+   :width: 200px
+
+   View of the :math:`C` and :math:`D` :math:`x\textrm{-}z` plane showing the
+   rotation of :math:`D` relative to :math:`C` about :math:`y` through angle
+   :math:`\varphi`.
+
 .. jupyter-execute::
+
+   phi = sm.symbols('varphi')
 
    D = me.ReferenceFrame('D')
 
@@ -579,7 +611,8 @@ shared :math:`y` unit vector through the angle :math:`\phi`.
    D.dcm(C)
 
 With all of the intermediate rotations defined, when can now ask for the
-relationsihp of the camera relative to the handgrip frame:
+relationsihp :math:`{}^D\mathbf{C}^A` of the camera :math:`D` relative to the
+handgrip frame :math:`A`:
 
 .. jupyter-execute::
 
@@ -589,12 +622,6 @@ With these three rotations the camera can be oriented in any direction relative
 to the handgrip frame. This successive :math:`z\textrm{-}x\textrm{-}y`
 rotations are a standard way of describing the orientaiton of two reference
 frames and referred to as `Euler Angles`_ [*]_.
-
-.. _orientation-euler-animation:
-
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif
-
-   :math:`z\textrm{-}x\textrm{-}z` Euler angle visualization from Wikipedia.
 
 .. _Euler Angles: https://en.wikipedia.org/wiki/Euler_angles
 
@@ -613,8 +640,15 @@ reference frames.
 
    D.dcm(A)
 
-The :math:`z\textrm{-}x\textrm{-}z` Euler angles shown in
+As another example, the :math:`z\textrm{-}x\textrm{-}z` Euler angles shown in
 :numref:`orientation-euler-animation` are created like so:
+
+.. _orientation-euler-animation:
+
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif
+
+   :math:`z\textrm{-}x\textrm{-}z` Euler angle visualization from Wikipedia.
+
 
 .. jupyter-execute::
 
