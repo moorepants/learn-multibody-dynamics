@@ -19,6 +19,7 @@ Table of Contents
    jupyter-python
    sympy
    orientation
+   notation
    glossary
 
 Indices and tables
