@@ -70,13 +70,14 @@ available magic commands but using the magic command ``lsmagic``.
 
    %lsmagic
 
-For example ``%paste`` will paste code you've copied to your computer's
-clipboard and try to format it nicely for execution when pasted into a code
-cell.
+For example ``%whos`` will show the variables available in your
+:term:`namespace`:
 
 .. jupyter-execute::
 
-   %paste
+   a = 5
+
+   %whos
 
 Need Help?
 ----------
@@ -105,14 +106,6 @@ function can be found like so:
 .. jupyter-execute::
 
    round?
-
-To see the variables available in your namespace use ``%whos``:
-
-.. jupyter-execute::
-
-   a = 5
-
-   %whos
 
 Python
 ======
