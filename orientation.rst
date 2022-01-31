@@ -5,7 +5,7 @@ Orientation of Reference Frames
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`orientation` or Jupyter notebook:
+   :jupyter-download:script:`orientation` or Jupyter Notebook:
    :jupyter-download:notebook:`orientation`.
 
 .. jupyter-execute::
@@ -16,31 +16,32 @@ Orientation of Reference Frames
 Reference Frames
 ================
 
-In the study of mutlibody dynamics, we are interested in observing motion of
-objects in three dimensinal space. This nescitates the concept of a frame of
-reference, or :term:`reference frame`, which is an abstraction that defines the
-set of all points in `Euclidean space`_ that is carried by the observer of any
-given state of motion. Practically, it is useful to image your eye as an
-observer of motion. Your eye can orient itself in 3D space to view from motion
-of objects from any direction and the motion of objects will appear differently
-in the set of points associated with the reference frame depending on its
+In the study of multibody dynamics, we are interested in observing motion of
+connected and interacting objects in three dimensional space. This observation
+necessitates the concept of a frame of reference, or :term:`reference frame`,
+which is an abstraction defined by the set of all points in `Euclidean space`_
+that is carried by the observer of any given state of motion. Practically
+speaking, it is useful to image your eye as an observer of motion. Your eye can
+orient itself in 3D space to view the motion of objects from any direction and
+the motion of objects will appear differently in the set of points associated
+with the reference frame attached to your eye depending on your eye's
 orientation.
 
 .. _Euclidean space: https://en.wikipedia.org/wiki/Euclidean_space
 
 It is important to note that a reference frame is not equivalent to a
-coordinate system. Any number of coordinates systems can be affixed to a
-reference frame. We will characterize a reference frame by a dextral set of
-orthonormal vectors that relate to each other by the right hand rule.
+coordinate system. Any number of coordinate systems can be attached to a
+reference frame. We will characterize a reference frame by a right-handed set
+of mutually perpendicular unit vectors.
 
 Unit Vectors
 ============
 
 Vectors have a magnitude, direction, and sense (:math:`\pm`). Unit vectors have
-a magnitude of unity. Unit vectors can be fixed, orientation-wise, to a
-reference frame. For a reference frame named :math:`N` we will define the three
-mutually perpendicular dextral unit vectors as :math:`\hat{n}_x, \hat{n}_y,
-\hat{n}_z` where these `cross products`_ hold:
+a magnitude of 1. Unit vectors can be fixed, orientation-wise, to a reference
+frame. For a reference frame named :math:`N` we will define the three mutually
+perpendicular unit vectors as :math:`\hat{n}_x, \hat{n}_y, \hat{n}_z` where
+these right-handed `cross products`_ hold:
 
 .. _cross products: https://en.wikipedia.org/wiki/Cross_product
 
@@ -52,33 +53,32 @@ mutually perpendicular dextral unit vectors as :math:`\hat{n}_x, \hat{n}_y,
 
 .. note::
 
-   Unit vectors will be designate using the "hat", e.g. :math:`\hat{v}`.
+   Unit vectors will be designated using the "hat", e.g. :math:`\hat{v}`.
 
 These unit vectors are fixed in the reference frame :math:`N`. If a second
-reference frame :math:`A` is defined, also with its set of dextral mutually
-perpendicular unit vectors :math:`\hat{a}_x, \hat{a}_y, \hat{a}_z` then we can
-establish the relative orietnation of these two reference frames based on the
-angles among the two frames' unit vectors.
+reference frame :math:`A` is defined, also with its set of right-handed
+mutually perpendicular unit vectors :math:`\hat{a}_x, \hat{a}_y, \hat{a}_z`
+then we can establish the relative orientation of these two reference frames
+based on the angles among the two frames' unit vectors.
 
-.. note::
+.. _orientation-vector-position:
 
-   .. _orientation-vector-position:
+.. figure:: orientation-vector-position.svg
 
-   .. figure:: orientation-vector-position.svg
-
-      The image on the left and right represent the same set of mutually
-      perpendicular dextral unit vectors. Vectors, in general, do not have a
-      position and can be drawn anywhere in the reference frame. Drawing them
-      with their tails coincident is simply for convenient representation.
+   The image on the left and right represent the same set of right-handed
+   mutually perpendicular unit vectors. Vectors, in general, do not have a
+   position and can be drawn anywhere in the reference frame. Drawing them with
+   their tails coincident is simply done for convenience.
 
 Simple Rotations
 ================
 
 Starting with two reference frames :math:`N` and :math:`A` in which their sets
-of unit vectors are aligned, the :math:`A` frame can then be simply rotated
-about the common parallel :math:`z` unit vectors of the two frames. We say
-"reference frame :math:`A` is rotated with respect to reference frame :math:`N`
-about the shared :math:`z` unit vectors through an angle :math:`\theta`.
+of unit vectors are initially aligned, the :math:`A` frame can then be simply
+rotated about the common parallel :math:`z` unit vectors of the two frames. We
+then say "reference frame :math:`A` is rotated with respect to reference frame
+:math:`N` about the shared :math:`z` unit vectors through an angle
+:math:`\theta`. A visual representation of this rotation is:
 
 .. _orientation-simple:
 
@@ -87,8 +87,8 @@ about the shared :math:`z` unit vectors through an angle :math:`\theta`.
    View of the parallel :math:`xy` planes of the simply rotated reference
    frames.
 
-From the above figure these relationships between the :math:`a` and :math:`n`
-unit vectors can be deduced:
+From the above figure these relationships between the :math:`\hat{a}` and
+:math:`\hat{n}` unit vectors can be deduced:
 
 .. math::
 
@@ -147,8 +147,8 @@ Start by creating the matrix:
                       [0, 0, 1]])
    A_C_N
 
-If we'd like the inverse relationship between the two sets of unit vectors,
-then:
+If we'd like the inverse relationship between the two sets of unit vectors and
+:math:`{}^A\mathbf{C}^N` is invertible, then:
 
 .. math::
 
@@ -177,10 +177,9 @@ SymPy can also find the transpose of this matrix;
 
    A_C_N.transpose()
 
-Interestingly, the inverse and the transpose are the same here. It turns out
-that this will be generally true for these matrices that describe the
-orientation between reference frames. Following the notation convention, this
-holds:
+Notably, the inverse and the transpose are the same here. It turns out that
+this will be generally true for these matrices that describe the orientation
+between reference frames. Following the notation convention, this holds:
 
 .. math::
 
@@ -190,17 +189,17 @@ Direction Cosine Matrix
 =======================
 
 If now :math:`A` is oriented relative to :math:`N` and the pairwise angles
-between each :math:`A` and :math:`N` mutually perpendicular unit vectors are
-measured, an orientation matrix for an arbitrary orientation can be defined.
-For example the figure below shows the three angles
+between each :math:`\hat{a}` and :math:`\hat{n}` mutually perpendicular unit
+vectors are measured, an orientation matrix for an arbitrary orientation can be
+defined.  For example, the figure below shows the three angles
 :math:`\alpha_{xx},\alpha_{xy},\alpha_{xz}` relating :math:`\hat{a}_x` to each
-:math:`N` unit vector.
+:math:`\hat{n}` unit vector.
 
 .. _orientation-three-angles:
 
 .. figure:: orientation-three-angles.svg
 
-   Three angles relating :math:`\hat{a}_x` to the :math:`N` unit vectors.
+   Three angles relating :math:`\hat{a}_x` to the unit vectors of :math:`N`.
 
 Similarly to the simple example above, we can write these equations:
 
@@ -208,7 +207,7 @@ Similarly to the simple example above, we can write these equations:
 
   \hat{a}_x & = \cos\alpha_{xx} \hat{n}_x +\cos\alpha_{xy} \hat{n}_y + \cos\alpha_{xz} \hat{n}_z \\
   \hat{a}_y & = \cos\alpha_{yx} \hat{n}_x +\cos\alpha_{yy} \hat{n}_y + \cos\alpha_{yz} \hat{n}_z \\
-  \hat{a}_z & = \cos\alpha_{yx} \hat{n}_x +\cos\alpha_{yy} \hat{n}_y + \cos\alpha_{yz} \hat{n}_z
+  \hat{a}_z & = \cos\alpha_{zx} \hat{n}_x +\cos\alpha_{zy} \hat{n}_y + \cos\alpha_{zz} \hat{n}_z
 
 Since we are working with mutually perpendicular unit vectors the cosine of the
 angle between each pair of unit vectors is equivalent to the dot product
@@ -255,24 +254,27 @@ where the general direction cosine matrix is then:
    \end{bmatrix}
 
 This matrix uniquely defines the relative orientation between reference frames
-:math:`N` and :math:`A` and inverse is equal to the transpose, as shown above
-in the simple example.
+:math:`N` and :math:`A`, it is invertible, and its inverse is equal to the
+transpose, as shown above in the simple example. The direction cosine matrix is
+also referred to as a rotation matrix in some texts.
 
 Successive orientations
 =======================
 
 Successive orientations of a series of reference frames provides a convenient
-way to manage orientation among more than a pair. Below an additional reference
-frame :math:`B` is shown that is simply rotated with respect to :math:`A` in
-the same way that :math:`A` is from :math:`N`.
+way to manage orientation among more than a single pair. Below, an additional
+reference frame :math:`B` is shown that is simply rotated with respect to
+:math:`A` in the same way that :math:`A` is from :math:`N` above.
 
 .. _orientation-simple-successive:
 
 .. figure:: orientation-simple-successive.svg
 
-   Two successive simple rotations.
+   Two successive simple rotations through angles :math:`\theta` and then
+   :math:`\alpha`.
 
-We know that we can define these two relationships:
+We know that we can define these two relationships between each pair of
+reference frames:
 
 .. math::
 
@@ -305,7 +307,7 @@ We know that we can define these two relationships:
    \end{bmatrix}
 
 Now if you'd like to know the relationship between :math:`B` and :math:`N`, the
-above two equatiosn can be manipulated to form:
+above two equations can be manipulated to form:
 
 .. math::
 
@@ -323,7 +325,7 @@ above two equatiosn can be manipulated to form:
      \hat{n}_z
    \end{bmatrix}
 
-Finally we can write:
+Now we can write:
 
 .. math::
 
@@ -351,7 +353,7 @@ results from matrix multiplying the intermediate direction cosine matrices.
    {}^B\mathbf{C}^A
    {}^A\mathbf{C}^N
 
-This holds for any series of successive rotations.
+This holds for any series of successive rotations:
 
 .. math::
 
@@ -363,8 +365,8 @@ This holds for any series of successive rotations.
    {}^C\mathbf{C}^B
    {}^B\mathbf{C}^A
 
-Using :numref:`orientation-simple-successive` as an explicit example of this property, we start with
-the already defined :math:`{}^A\mathbf{C}^N`:
+Using :numref:`orientation-simple-successive` as an explicit example of this
+property, we start with the already defined :math:`{}^A\mathbf{C}^N`:
 
 .. jupyter-execute::
 
@@ -389,7 +391,7 @@ Finally, :math:`{}^B\mathbf{C}^N` can be found by matrix multiplication:
    B_C_N = B_C_A*A_C_N
    B_C_N
 
-Simplifying these trigonometric expressions shows the likely expected result:
+Simplifying these trigonometric expressions shows the expected result:
 
 .. jupyter-execute::
 
@@ -400,9 +402,9 @@ SymPy Mechanics
 
 As shown above, SymPy nicely handles the formulation of direction cosine
 matrices, but SymPy offers a more useful abstraction for these things. The
-``sympy.physics.mechanics`` modules includes numerous objects and functions
-that ease the bookeeping and mental models needed to manage various aspects of
-multibody dynamics. We will import the module consistently as:
+:external:py:mod:`sympy.physics.mechanics` module includes numerous objects and
+functions that ease the bookkeeping and mental models needed to manage various
+aspects of multibody dynamics. We will import the module consistently as:
 
 .. jupyter-execute::
 
@@ -416,15 +418,15 @@ reference frame, use :external:py:class:`ReferenceFrame()
 
    N = me.ReferenceFrame('N')
 
-The dextral mutually perpendicular unit vectors associate with a reference
-frame are accessed with ``.x``, ``.y``, and ``.z``, like so:
+The right-handed mutually perpendicular unit vectors associated with a
+reference frame are accessed with ``.x``, ``.y``, and ``.z``, like so:
 
 .. jupyter-execute::
 
    N.x, N.y, N.z
 
 Using :numref:`orientation-simple-successive` again as an example, we can
-define the three reference frames:
+define all three reference frames:
 
 .. jupyter-execute::
 
@@ -441,14 +443,17 @@ rotations. For example:
    A_C_N
 
 relates :math:`A` and :math:`N`. ``ReferenceFrame`` objects can be oriented wrt
-respect to one another. The ``.orient_explicit()`` method
+respect to one another. The :external:py:meth:`orient_explicit()
+<sympy.physics.vector.frame.ReferenceFrame.orient_explicit>` method allows you
+to set the direction cosine matrix explicitly:
 
 .. jupyter-execute::
 
    N.orient_explicit(A, A_C_N)
 
 Now you can ask for the direction cosine matrix of :math:`A` with respect to
-:math:`N`, i.e. :math:`{}^A\mathbf{C}^N`, using the ``.dcm()`` method:
+:math:`N`, i.e. :math:`{}^A\mathbf{C}^N`, using the :external:py:meth:`dcm()
+<sympy.physics.vector.frame.ReferenceFrame.orient_explicit>` method:
 
 .. jupyter-execute::
 
@@ -459,11 +464,12 @@ Now you can ask for the direction cosine matrix of :math:`A` with respect to
    Note very carefully what version of the direction cosine matrix you pass to
    ``.orient_explicit()``. Check its docstring with ``N.orient_explicit?``.
 
-But even better is the ``.orient_axis()`` method. This method allows you do
-define simple rotations between reference frames more naturally. You provide
-the frame to rotate from, the angle to rotate, and the vector to rotate about.
-For example, rotate :math:`B` with respect to :math:`A` through :math:`\alpha`
-about :math:`\hat{a}_z` by:
+But even better for this case is the :external:py:meth:`orient_axis()
+<sympy.physics.vector.frame.ReferenceFrame.orient_axis>` method. This method
+allows you to define simple rotations between reference frames more naturally.
+You provide the frame to rotate from, the angle to rotate, and the vector to
+rotate about.  For example, rotate :math:`B` with respect to :math:`A` through
+:math:`\alpha` about :math:`\hat{a}_z` by:
 
 .. jupyter-execute::
 
@@ -483,7 +489,7 @@ The inverse is also defined on ``A``:
    A.dcm(B)
 
 So each pair of reference frames are aware of its orientation partner (or
-partners). Now that we've established orientaitons between :math:`N` and
+partners). Now that we've established orientations between :math:`N` and
 :math:`A` and :math:`A` and :math:`B`, we might want to know the relationships
 between :math:`B` and :math:`N`. Remember that matrix multiplication of the two
 successive direction cosine matrices provides the answer:
@@ -493,7 +499,7 @@ successive direction cosine matrices provides the answer:
    sm.trigsimp(B.dcm(A)*A.dcm(N))
 
 But, the answer can also be found by calling ``.dcm()`` with the two reference
-frames in question. As long as there is a succussive path between the two
+frames in question. As long as there is a successive path between the two
 reference frames, this is sufficient for obtaining the desired direction cosine
 matrix:
 
@@ -503,8 +509,9 @@ matrix:
 
 Lastly, recall the general definition of the direction cosine matrix. We showed
 that the dot product of pairs of unit vectors give the entries to the direction
-cosine matrix. ``mechanics`` has a ``dot()`` function that can calcualte dot
-products of two vectors. Using it one two of the unit vector pairs returns the
+cosine matrix. ``mechanics`` has a :external:py:func:`dot()
+<sympy.physics.vector.functions.dot>` function that can calculate the dot
+product of two vectors. Using it on two of the unit vector pairs returns the
 expected direction cosine matrix entry:
 
 .. jupyter-execute::
@@ -514,20 +521,25 @@ expected direction cosine matrix entry:
 Gimbal and Euler Angles
 =======================
 
+This camera stabilization gimbal_ has three `revolute joints`_ that orient the
+camera :math:`D` relative to the handgrip frame :math:`A`.
+
 .. figure:: https://objects-us-east-1.dream.io/mechmotum/orientation-camera-gimbal.png
 
-   Turnigy Pro Camera Gimbal
+   Four reference frames labeled on the Turnigy Pro Steady Hand Camera Gimbal.
+   *Image copyright HobbyKing, used under fair use for educational purposes.*
 
-This camera stabilization gimbal has three revolute joints that orient the
-camera :math:`D` relative to the handgrip frame :math:`A`. If we introduce two
-additional auxliary reference frames: :math:`B` and :math:`C` we can use three
-successive simple rotations to go from :math:`A` to :math:`D`. Using the same
-technique for the sucessive simple rotations above, but now managing the three
-dimensional rotations with can formulate the direction cosine matrices for the
-reference frames.
+If we introduce two additional auxiliary reference frames: :math:`B` and
+:math:`C`, we can use three successive simple rotations to go from :math:`A` to
+:math:`D`. Using the same technique for the successive simple rotations above,
+but now managing the three dimensional rotations, we can formulate the
+direction cosine matrices for the reference frames.
 
-What this video to get a sense of the rotation axes for each intermediate
-auxliarly reference frame:
+.. _gimbal: https://en.wikipedia.org/wiki/Gimbal
+.. _revolute joints: https://en.wikipedia.org/wiki/Revolute_joint
+
+Watch this video to get a sense of the rotation axes for each intermediate
+auxiliary reference frame:
 
 .. raw:: html
 
@@ -543,9 +555,8 @@ auxliarly reference frame:
       </iframe>
    </center>
 
-Starting with :math:`A` we first rotate :math:`B` with respect to :math:`A`
-about the shared :math:`z` unit vector through the angle :math:`\psi`, as shown
-below:
+We first rotate :math:`B` with respect to :math:`A` about the shared :math:`z`
+unit vector through the angle :math:`\psi`, as shown below:
 
 .. _orientation-gimbal-psi:
 
@@ -591,7 +602,7 @@ unit vector through angle :math:`\theta`.
 
    C.dcm(B)
 
-Finally rotate the camera :math:`D` with respect to :math:`C` about their
+Finally, rotate the camera :math:`D` with respect to :math:`C` about their
 shared :math:`y` unit vector through the angle :math:`\phi`.
 
 .. figure:: orientation-gimbal-phi.svg
@@ -612,25 +623,29 @@ shared :math:`y` unit vector through the angle :math:`\phi`.
    D.dcm(C)
 
 With all of the intermediate rotations defined, when can now ask for the
-relationsihp :math:`{}^D\mathbf{C}^A` of the camera :math:`D` relative to the
+relationship :math:`{}^D\mathbf{C}^A` of the camera :math:`D` relative to the
 handgrip frame :math:`A`:
 
 .. jupyter-execute::
 
    D.dcm(A)
 
-With these three rotations the camera can be oriented in any direction relative
-to the handgrip frame. This successive :math:`z\textrm{-}x\textrm{-}y`
-rotations are a standard way of describing the orientaiton of two reference
-frames and referred to as `Euler Angles`_ [*]_.
+With these three rotations the camera can be oriented arbitrarily relative to
+the handgrip frame. These successive :math:`z\textrm{-}x\textrm{-}y` rotations
+are a standard way of describing the orientation of two reference frames and
+are often referred to as `Euler Angles`_ [*]_.
 
 .. _Euler Angles: https://en.wikipedia.org/wiki/Euler_angles
 
 There are 12 valid sets of successive rotations. We will also refer to these 12
-possible rotations as body fixed rotations. As we will soon see, a rigid body
-and a reference frame are synonomous from an orientation perspective and each
-successive rotation rotates about a shared unit vector fixed in both of the
-reference frames.
+possible rotation sets as body fixed rotations. As we will soon see, a rigid
+body and a reference frame are synonymous from an orientation perspective and
+each successive rotation rotates about a shared unit vector fixed in both of
+the reference frames (or bodies), thus "body fixed rotations". The method
+:external:py:meth:`orient_body_fixed()
+<sympy.physics.vector.frame.ReferenceFrame.orient_body_fixed>` can be used to
+establish the relationship between :math:`A` and :math:`D` without the need to
+create auxiliary reference frames :math:`B` and :math:`C`:
 
 .. jupyter-execute::
 
@@ -641,15 +656,23 @@ reference frames.
 
    D.dcm(A)
 
-As another example, the :math:`z\textrm{-}x\textrm{-}z` Euler angles shown in
-:numref:`orientation-euler-animation` are created like so:
+Euler_ technically only discovered 6 of the 12 rotation sets. One of these sets
+is shown in this figure:
 
 .. _orientation-euler-animation:
 
 .. figure:: https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif
 
-   :math:`z\textrm{-}x\textrm{-}z` Euler angle visualization from Wikipedia.
+   :math:`z\textrm{-}x\textrm{-}z` Euler angle visualization.
 
+   `Euler2.gif: Juansemperederivative work: Xavax
+   <https://commons.wikimedia.org/wiki/File:Euler2a.gif>`_, CC BY-SA 3.0, via
+   Wikimedia Commons
+
+.. _Euler: https://en.wikipedia.org/wiki/Leonhard_Euler
+
+The :math:`z\textrm{-}x\textrm{-}z` Euler angles shown in
+:numref:`orientation-euler-animation` are then created like so:
 
 .. jupyter-execute::
 
@@ -663,7 +686,5 @@ As another example, the :math:`z\textrm{-}x\textrm{-}z` Euler angles shown in
 .. rubric:: Footnotes
 
 .. [*] Technically, this set of angles for the gimbal are one of the 6 Tait-Bryan angles,
-   but "Euler Angles" is used colloquially to describe both Tait-Bryan angles
-   and "proper Euler angles". The description of all 12 angle sets is
-   attributed to `Davenport
-   <https://en.wikipedia.org/wiki/Davenport_chained_rotations>`_.
+   but "Euler Angles" is used as a general term to describe both Tait-Bryan angles
+   and "proper Euler angles".
