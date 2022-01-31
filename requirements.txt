@@ -1,4 +1,5 @@
 ghp-import
+graphviz
 jupyter-sphinx
 matplotlib
 numpy
