@@ -29,6 +29,8 @@ author = 'Jason K. Moore'
 # ones.
 extensions = [
     'jupyter_sphinx',
+    'sphinx.ext.graphviz',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.todo',
 ]
@@ -43,6 +45,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 todo_include_todos = True
 numfig = True
+
+intersphinx_mapping = {
+    'sympy': ('https://docs.sympy.org/latest/', None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 

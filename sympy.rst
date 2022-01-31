@@ -144,6 +144,43 @@ internal representation by using the ``srepr()`` function:
 
    sm.srepr(expr1)
 
+This is a visual representation of the tree:
+
+.. Use ``print(sm.dotprint(expr1))`` to get the following code.
+
+.. graphviz::
+   :align: center
+
+   digraph{
+
+   # Graph style
+   "ordering"="out"
+   "rankdir"="TD"
+
+   #########
+   # Nodes #
+   #########
+
+   "Add(Symbol('a'), Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2))))_()" ["color"="black", "label"="Add", "shape"="ellipse"];
+   "Symbol('a')_(0,)" ["color"="black", "label"="a", "shape"="ellipse"];
+   "Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)" ["color"="black", "label"="Mul", "shape"="ellipse"];
+   "Symbol('b')_(1, 0)" ["color"="black", "label"="b", "shape"="ellipse"];
+   "Pow(Symbol('omega'), Integer(-2))_(1, 1)" ["color"="black", "label"="Pow", "shape"="ellipse"];
+   "Symbol('omega')_(1, 1, 0)" ["color"="black", "label"="omega", "shape"="ellipse"];
+   "Integer(-2)_(1, 1, 1)" ["color"="black", "label"="-2", "shape"="ellipse"];
+
+   #########
+   # Edges #
+   #########
+
+   "Add(Symbol('a'), Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2))))_()" -> "Symbol('a')_(0,)";
+   "Add(Symbol('a'), Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2))))_()" -> "Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)";
+   "Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)" -> "Symbol('b')_(1, 0)";
+   "Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)" -> "Pow(Symbol('omega'), Integer(-2))_(1, 1)";
+   "Pow(Symbol('omega'), Integer(-2))_(1, 1)" -> "Symbol('omega')_(1, 1, 0)";
+   "Pow(Symbol('omega'), Integer(-2))_(1, 1)" -> "Integer(-2)_(1, 1, 1)";
+   }
+
 This representation is SymPy's "true" representation of the symbolic
 expression. SymPy can display this expression in many other representations,
 for example the typeset mathematical expression you have already seen is one of
