@@ -697,17 +697,24 @@ a new intermediate variable and the sub-expression it is equal to.
 
    substitutions[0]
 
-.. jupyter-execute::
-
-   substitutions[1]
-
-.. jupyter-execute::
-
-   substitutions[2]
+The :external:py:class:`Eq() <sympy.core.relational.Equality>` class with tuple
+unpacking (``*``) can be used to display these tuples as equations:
 
 .. jupyter-execute::
 
-   substitutions[4]
+   sm.Eq(*substitutions[0])
+
+.. jupyter-execute::
+
+   sm.Eq(*substitutions[1])
+
+.. jupyter-execute::
+
+   sm.Eq(*substitutions[2])
+
+.. jupyter-execute::
+
+   sm.Eq(*substitutions[4])
 
 The ``simplified`` variable contains the simplified expression, made up of the
 intermediate variables.
