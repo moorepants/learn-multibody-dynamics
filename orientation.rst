@@ -306,26 +306,7 @@ reference frames:
      \hat{a}_z
    \end{bmatrix}
 
-Now if you'd like to know the relationship between :math:`B` and :math:`N`, the
-above two equations can be manipulated to form:
-
-.. math::
-
-   {}^A\mathbf{C}^B
-   \begin{bmatrix}
-     \hat{b}_x \\
-     \hat{b}_y \\
-     \hat{b}_z
-   \end{bmatrix}
-   =
-   {}^A\mathbf{C}^N
-   \begin{bmatrix}
-     \hat{n}_x \\
-     \hat{n}_y \\
-     \hat{n}_z
-   \end{bmatrix}
-
-Now we can write:
+Now, substitute the first equation into the second to get:
 
 .. math::
 
