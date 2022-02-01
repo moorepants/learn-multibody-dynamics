@@ -31,9 +31,10 @@ We will consistently import SymPy as follows:
 
 Since SymPy lets you work with mathematical symbols it's nice to view SymPy
 objects in a format that is similar to the math in a textbook. Executing
-``init_printing()`` at the beginning of your Jupyter Notebook will ensure that
-SymPy objects render as typeset mathematics. I use the ``use_latex='mathjax'``
-argument here to disable math image generation.
+:external:py:func:`~sympy.interactive.printing.init_printing` at the beginning
+of your Jupyter Notebook will ensure that SymPy objects render as typeset
+mathematics. I use the ``use_latex='mathjax'`` argument here to disable math
+image generation.
 
 .. jupyter-execute::
 
@@ -42,15 +43,15 @@ argument here to disable math image generation.
 Symbols
 =======
 
-Symbols are created with the ``symbols()`` function. A symbol :math:`a` is
-created like so:
+Symbols are created with the :external:py:func:`~sympy.core.symbol.symbols`
+function. A symbol :math:`a` is created like so:
 
 .. jupyter-execute::
 
    a = sm.symbols('a')
    a
 
-This symbol object is of the ``Symbol`` type:
+This symbol object is of the :external:py:class:`~sympy.core.symbol.Symbol` type:
 
 .. jupyter-execute::
 
@@ -89,7 +90,7 @@ create arbitrary functions of variables. In this case, we make a function of
    f = sm.Function('f')
    f
 
-This is of a type ``UndefinedFunction``.
+This is of a type :external:py:class:`~sympy.core.function.UndefinedFunction`.
 
 .. jupyter-execute::
 
@@ -136,7 +137,8 @@ An expression will have the type ``Add, Mul, or Pow``:
    type(expr1)
 
 This is because SymPy stores expressions as a tree_. You can inspect this
-internal representation by using the ``srepr()`` function:
+internal representation by using the
+:external:py:func:`~sympy.printing.repr.srepr` function:
 
 .. _tree: https://en.wikipedia.org/wiki/Tree_(graph_theory)
 
@@ -200,7 +202,10 @@ Undefined functions can also be used in expressions:
 
 SymPy has a large number of elementary and special functions. See the SymPy
 `documentation on functions`_ for more information. For example, here is an
-expression that uses ``sin()``, ``Abs()``, and ``sqrt()``:
+expression that uses
+:external:py:func:`~sympy.functions.elementary.trigonometric.sin`,
+:external:py:class:`~sympy.functions.elementary.complexes.Abs`, and
+:external:py:func:`~sympy.functions.elementary.miscellaneous.sqrt`:
 
 .. _documentation on functions: https://docs.sympy.org/latest/modules/functions/index.html
 
@@ -265,8 +270,9 @@ returns a string. ``print()`` will display that string:
 
    print(expr3)
 
-SymPy also has a "pretty printer" that makes use of unicode symbols to provide
-a form that more closely resembles typeset math:
+SymPy also has a "pretty printer"
+(:external:py:func:`~sympy.printing.pretty.pretty.pprint`) that makes use of
+unicode symbols to provide a form that more closely resembles typeset math:
 
 .. jupyter-execute::
 
@@ -296,9 +302,9 @@ Differentiating
 
 One of the most tedious tasks in formulating equations of motion is the
 differentiation of complex trigonometric expressions. SymPy can calculate
-derivatives effortlessly. The ``diff()`` SymPy function takes an undefined
-function or an expression and differentiates it with respect to the symbol
-provided as the second argument:
+derivatives effortlessly. The :external:py:func:`~sympy.core.function.diff`
+SymPy function takes an undefined function or an expression and differentiates
+it with respect to the symbol provided as the second argument:
 
 .. jupyter-execute::
 
@@ -377,9 +383,9 @@ Evaluating symbolic expressions
 ===============================
 
 SymPy expressions can be evaluated numerically in several ways. The
-``.xreplace()`` method allows substitution of exact symbols or sub-expressions.
-First create a dictionary that maps symbols, functions or sub-expressions to
-the replacements:
+:external:py:meth:`~sympy.core.basic.Basic.xreplace` method allows substitution
+of exact symbols or sub-expressions. First create a dictionary that maps
+symbols, functions or sub-expressions to the replacements:
 
 .. jupyter-execute::
 
@@ -392,10 +398,10 @@ This dictionary can then be passed to ``.xreplace()``:
    expr3.xreplace(repl)
 
 Notice how the square root and fraction do not automatically reduce to their
-decimal equivalents. To do so, you must use the ``.evalf()`` method. This
-method will evaluate an expression to an arbitrary number of decimal points.
-You provide the number of decimal places and the substitution dictionary to
-evaluate:
+decimal equivalents. To do so, you must use the
+:external:py:func:`~sympy.core.evalf.evalf` method. This method will
+evaluate an expression to an arbitrary number of decimal points.  You provide
+the number of decimal places and the substitution dictionary to evaluate:
 
 .. jupyter-execute::
 
@@ -405,7 +411,7 @@ evaluate:
 
    type(expr3.evalf(n=31, subs=repl))
 
-Note that this is a SymPy ``Float`` object, which is a special object that can
+Note that this is a SymPy :external:py:class:`~sympy.core.numbers.Float` object, which is a special object that can
 have an arbitrary number of decimal places, for example here is the expression
 evaluated to 300 decimal places:
 
@@ -427,7 +433,7 @@ This value is a machine precision floating point value and can be used with
 standard Python functions that operating on floating point numbers.
 
 To obtain machine precisions floating point numbers directly, it is better to
-use the ``lambdify()`` function to convert the expression into a Python
+use the :external:py:func:`~sympy.utilities.lambdify.lambdify` function to convert the expression into a Python
 function:
 
 .. jupyter-execute::
@@ -465,7 +471,7 @@ Matrices
 SymPy supports matrices of expressions and linear algebra. Many of the
 operations needed in multibody dynamics are more succinctly formulated with
 matrices and linear algebra. Matrices can be created by passing nested lists to
-the ``Matrix()`` object. For example:
+the :external:py:class:`~sympy.matrices.dense.Matrix` object. For example:
 
 .. jupyter-execute::
 
@@ -517,7 +523,9 @@ Both the ``*`` and the ``@`` operator perform matrix multiplication:
 
    mat1@mat2
 
-Element-by-element multiplication requires the ``hadamard_product()`` function:
+Element-by-element multiplication requires the
+:external:py:func:`~sympy.matrices.expressions.hadamard.hadamard_product`
+function:
 
 .. jupyter-execute::
 
