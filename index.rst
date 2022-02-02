@@ -16,6 +16,7 @@ Table of Contents
    :caption: Contents:
 
    introduction
+   install
    jupyter-python
    sympy
    orientation
