@@ -456,6 +456,11 @@ rotate about.  For example, rotate :math:`B` with respect to :math:`A` through
 
    B.orient_axis(A, alpha, A.z)
 
+.. warning::
+
+   For older SymPy versions you'll need to use the more verbose ``B.orient(A,
+   'Axis', (alpha, A.z))``.
+
 Now the direction cosine matrix is automatically calculated and is returned
 with the ``.dcm()`` method:
 
@@ -636,6 +641,11 @@ create auxiliary reference frames :math:`B` and :math:`C`:
    D.orient_body_fixed(A, (psi, theta, phi), 'zxy')
 
    D.dcm(A)
+
+.. warning::
+
+   For older SymPy versions you'll need to use the more verbose ``B.orient(A,
+   'Body', (psi, theta, phi), rot_order='zxy')``.
 
 Euler_ technically only discovered 6 of the 12 rotation sets. One of these sets
 is shown in this figure:
