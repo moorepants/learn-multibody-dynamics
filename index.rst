@@ -19,6 +19,7 @@ Table of Contents
    jupyter-python
    sympy
    orientation
+   vectors
    notation
    glossary
 
