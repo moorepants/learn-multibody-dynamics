@@ -24,13 +24,12 @@ Vectors have three characteristics:
 3. sense
 
 The direction the vector points is derived from both the orientation and the
-sense.
+sense. Vectors are equal when all three characteristics are the same.
 
 .. note::
 
    In this text we will distinguish scalar variables, e.g. :math:`v`, from
    vectors by including a bar over the top of the symbol, e.g. :math:`\bar{v}`.
-   Vectors are equal when all three characteristics are the same.
 
 Vectors have these mathematical properites:
 
@@ -52,8 +51,8 @@ has an assocated unit vector with the same orientation and sense, found by:
 
    \hat{u} = \frac{\bar{u}}{||\bar{u}||}
 
-where :math:`||\bar{u}||` is the `Euclidean norm`_ (2-norm) of the vector
-:math:`\bar{u}`.
+where :math:`||\bar{u}||` is the `Euclidean norm`_ (2-norm), or magnitude, of
+the vector :math:`\bar{u}`.
 
 .. _Euclidean norm: https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm
 
@@ -187,8 +186,7 @@ reverses its sense (rotates it by :math:`\pi` radians).
    z = -w
    z
 
-.. note:: Exercise
-   :class: dropdown
+.. admonition:: Exercise
 
    Create three vectors that lie in the :math:`xy` plane of reference frame
    :math:`N` where each vector is:
@@ -202,10 +200,37 @@ reverses its sense (rotates it by :math:`\pi` radians).
    Finally, add vectors from 1 and 2 and substract :math:`5` times the third
    vector.
 
-   *Hint: SymPy has variables and trigonometic functions, for example
-   ``from sympy import tan, pi``.*
+   Hint: SymPy has fundamental constants and trigonometic functions, for
+   example ``sm.tan, sm.pi``.
 
-Dot product
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      N = me.ReferenceFrame('N')
+      l, theta = sm.symbols('l, theta')
+
+   .. jupyter-execute::
+
+      v1 = l*sm.cos(sm.pi/4)*N.x + l*sm.sin(sm.pi/4)*N.y
+      v1
+
+   .. jupyter-execute::
+
+      v2 = -10*N.y
+      v2
+
+   .. jupyter-execute::
+
+      v3 = -l*sm.sin(theta)*N.x + l*sm.cos(theta)*N.y
+      v3
+
+   .. jupyter-execute::
+
+      v1 + v2 - 5*v3
+
+Dot Product
 -----------
 
 The dot product, which yields a scalar quantity, is defined as:
@@ -245,7 +270,6 @@ The dot product is often used to determine:
 Also, dot products are used to convert a vector equation into a scalar equation
 by "dotting" an entire equation with a vector.
 
-
 .. jupyter-execute::
 
     N = me.ReferenceFrame('N')
@@ -261,31 +285,42 @@ calculates the dot product:
 
 The :external:py:meth:`~sympy.physics.vector.vector.Vector.normalize`
 
+You can compute a unit vector in the same direction as :math:`\bar{w}` like so:
+
 .. jupyter-execute::
 
    w.normalize()
 
-.. note:: Solution
+.. admonition:: Exercise
+
+   Write your own function that normalizes an arbitrary vector and show that it
+   gives the same result as ``w.normalize()``.
+
+.. admonition:: Solution
    :class: dropdown
 
-   You can compute a unit vector in the same direction as :math:`\bar{w}` like so:
+   The do
 
    .. jupyter-execute::
 
-      w/sm.sqrt(me.dot(w, w))
+      def normalize(vector):
+          return vector/sm.sqrt(me.dot(vector, vector))
 
-   The :external:py:meth:`~sympy.physics.vector.vector.Vector.magnitude`
+      normalize(w)
 
-   .. jupyter-execute::
+SymPy Mechanics vectors also have a method
+:external:py:meth:`~sympy.physics.vector.vector.Vector.magnitude` which is
+helpful:
 
-      w.magnitude()
+.. jupyter-execute::
 
-   .. jupyter-execute::
+   w.magnitude()
 
-      w/w.magnitude()
+.. jupyter-execute::
 
+   w/w.magnitude()
 
-.. note:: Exercise
+.. admonition:: Exercise
 
    Given the vectors
    :math:`\bar{v}_1 = a \hat{\mathbf{n}}_x + b\hat{\mathbf{n}}_y + a \hat{\mathbf{n}}_z`
@@ -293,18 +328,44 @@ The :external:py:meth:`~sympy.physics.vector.vector.Vector.normalize`
    :math:`\bar{v}_2=b \hat{\mathbf{n}}_x + a\hat{\mathbf{n}}_y + b \hat{\mathbf{n}}_z`
    find the angle between the two vectors using the dot product.
 
+.. admonition:: Solution
+   :class: dropdown
 
-Cross product (vector product)
-------------------------------
+   .. jupyter-execute::
 
-The cross product, which yields a vector quantity, is defined as:
+      N = me.ReferenceFrame('N')
+      v1 = a * N.x + b * N.y + a * N.z
+      v2 = b * N.x + a * N.y + b * N.z
 
-.. math::  \bar{a} \cdot \bar{b} = |\bar{a}||\bar{b}| \sin\theta \hat{u}
+   .. jupyter-execute::
 
-where :math:`\theta` is the angle between the two vectors, and
-:math:`\hat{u}` is the unit vector perpendicular to both :math:`\bar{a}` and
-:math:`\bar{b}` whose sense is given by the right-hand rule. It is used
-to:
+      sm.acos(v1.dot(v2) / (v1.magnitude()*v2.magnitude()))
+
+
+Cross Product
+-------------
+
+The `cross product`_, which yields a vector quantity, is defined as:
+
+.. math::  \bar{v} \times \bar{w} = |\bar{v}||\bar{w}| \sin\theta \hat{u}
+
+where :math:`\theta` is the angle between the two vectors, and :math:`\hat{u}`
+is the unit vector perpendicular to both :math:`\bar{v}` and :math:`\bar{w}`
+whose sense is given by the right-hand rule. For aribtrary measure numbers this
+results in the following:
+
+.. math::
+
+   \bar{v} = & v_x \hat{n}_x + v_y \hat{n}_y + v_z \hat{n}_z \\
+   \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
+   \bar{v} \times \bar{w} = &
+   v_y w_z - v_z w_y  \hat{n}_x +
+   v_z w_x - v_x w_z \hat{n}_y +
+   v_x w_y - v_y w_x \hat{n}_z
+
+.. _cross product: https://en.wikipedia.org/wiki/Cross_product
+
+The cross product is used to:
 
 -  obtain a vector/direction perpendicular to two other vectors
 -  determine if two vectors are parallel:
