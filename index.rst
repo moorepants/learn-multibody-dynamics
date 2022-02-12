@@ -22,6 +22,7 @@ Table of Contents
    vectors
    notation
    glossary
+   license
 
 Indices and tables
 ==================
