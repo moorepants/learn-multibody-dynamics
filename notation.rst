@@ -8,11 +8,11 @@ Notation
    Vectors are indicated with a bar.
 :math:`\hat{u}`
    Unit vectors are indicated with a "hat".
-:math:`{}^B\mathbf{C}^A`
+:math:`{}^A\mathbf{C}^B`
    Direction cosine matrix relating reference frames (or rigid bodies)
-   :math:`B` and :math:`A` where this relation between the right handed mutually
-   perpendicular unit vectors fixed in the two reference frames that follw this
-   relationship:
+   :math:`B` and :math:`A` where this relation between the right handed
+   mutually perpendicular unit vectors fixed in the two reference frames that
+   follw this relationship:
 
    .. math::
 
