@@ -12,7 +12,7 @@ Vectors
 
    import sympy as sm
    import sympy.physics.mechanics as me
-   sm.init_printing(use_latex='mathjax')
+   sm.init_printing(use_latex='mathjax', latex_printer=sm.multiline_latex)
 
 What is a vector?
 =================
@@ -31,21 +31,21 @@ sense. Vectors are equal when all three characteristics are the same.
    In this text we will distinguish scalar variables, e.g. :math:`v`, from
    vectors by including a bar over the top of the symbol, e.g. :math:`\bar{v}`.
 
-Vectors have these mathematical properites:
+Vectors have these mathematical properties:
 
-- scalar mutiplicative: :math:`\lambda\bar{u}` where :math:`\lambda` can only
+- scalar multiplicative: :math:`\lambda\bar{u}` where :math:`\lambda` can only
   change the magnitude and the sense of the vector
 - commutative: :math:`\bar{u} + \bar{v} = \bar{v} + \bar{u}`
 - distributive: :math:`\lambda(\bar{u} + \bar{v}) = \lambda\bar{u} +
   \lambda\bar{v}`
-- assocative: :math:`(\bar{u} + \bar{v}) + \bar{w} = \bar{u} + (\bar{v} +
+- associative: :math:`(\bar{u} + \bar{v}) + \bar{w} = \bar{u} + (\bar{v} +
   \bar{w})`
 - common orientation: :math:`\bar{v} = k\bar{u}` where :math:`\bar{v}` and
   :math:`\bar{u}` have the same orientation
 
 Unit vectors are vectors with a magnitude of :math:`1`. If the magnitude of
 :math:`\bar{v}` is 1, then we indicate this with :math:`\hat{v}`. Any vector
-has an assocated unit vector with the same orientation and sense, found by:
+has an associated unit vector with the same orientation and sense, found by:
 
 .. math::
 
@@ -55,6 +55,8 @@ where :math:`|\bar{u}|` is the `Euclidean norm`_ (2-norm), or magnitude, of
 the vector :math:`\bar{u}`.
 
 .. _Euclidean norm: https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm
+
+.. _vector-functions:
 
 Vector Functions
 ================
@@ -102,14 +104,14 @@ a vector that starts at the tail of :math:`\bar{a}` and ends at the tip of
       Vector addition
 
 Vectors in SymPy Mechanics are created by first introducing a reference frame
-and using its associated unit vectors to construct vectors of arbritrary
+and using its associated unit vectors to construct vectors of arbitrary
 magnitude and direction.
 
 .. jupyter-execute::
 
    N = me.ReferenceFrame('N')
 
-Now introdcue some scalar variables:
+Now introduce some scalar variables:
 
 .. jupyter-execute::
 
@@ -129,7 +131,7 @@ A, possible more familiar, column matrix form of a vector is accessed with the
 
    v.to_matrix(N)
 
-Fully 3D and arbitray vectors can be created by providing a measure number for
+Fully 3D and arbitrary vectors can be created by providing a measure number for
 each unit vector of :math:`N`:
 
 .. jupyter-execute::
@@ -238,7 +240,7 @@ The dot product, which yields a scalar quantity, is defined as:
 
    \bar{v} \cdot \bar{w} = |\bar{v}| |\bar{w}| \cos{\theta}
 
-where :math:`\theta` is the angle between the two vectors. For aribtrary
+where :math:`\theta` is the angle between the two vectors. For arbitrary
 measure numbers this results in the following:
 
 .. math::
@@ -356,7 +358,7 @@ The `cross product`_, which yields a vector quantity, is defined as:
 
 where :math:`\theta` is the angle between the two vectors, and :math:`\hat{u}`
 is the unit vector perpendicular to both :math:`\bar{v}` and :math:`\bar{w}`
-whose sense is given by the right-hand rule. For aribtrary measure numbers this
+whose sense is given by the right-hand rule. For arbitrary measure numbers this
 results in the following:
 
 .. math::
@@ -447,3 +449,146 @@ The method form is equivalent:
       p3 = N.x + 14*N.z
 
       me.cross(p2 - p1, p3 - p1).magnitude() / 2
+
+Vectors Expressed in Multiple Reference Frames
+==============================================
+
+This presentation of vectors becomes quite useful when you need to describe
+vectors with components in multiple reference frames. Utilizing unit vectors
+fixed in various frames is rather natural, with no need to think about
+direction cosine matrices.
+
+.. jupyter-execute::
+
+   N = me.ReferenceFrame('N')
+   A = me.ReferenceFrame('A')
+   a, b, theta = sm.symbols('a, b, theta')
+
+   v = a*A.x + b*N.y
+   v
+
+All of the previously described operations work as expected:
+
+.. jupyter-execute::
+
+   v + v
+
+But if an orientation is established between the two reference frames, the
+direction cosine transformations are handled for you and can be used to
+naturally express the vector in either reference frame using the
+:external:py:meth:`~sympy.physics.vector.vector.Vector.express`.
+
+.. jupyter-execute::
+
+   A.orient_axis(N, theta, N.z)
+
+   v.express(N)
+
+Relative Position Among Points
+==============================
+
+Take for example this articulated desk lamp. The base :math:`N` is fixed to the
+desk. The first linkage :math:`A` is oriented with respect to :math:`N` by a
+z-x body fixed rotation through angles :math:`q_1` and :math:`q_2`. Point
+:math:`O` is fixed in :math:`N` and is located at the center of the base.
+Linkage :math:`A` is defined by points O and P_1 which are separated by length
+:math:`l_1` along the :math:`\hat{a}_z` direction. Linkage :math:`B` rotates
+simply with respect to :math:`A` about :math:`\hat{a}_x` through angle
+:math:`q_3` and point P_2 is l_2 from P_1. Lastly, the lamp head :math:`C`
+rotates simply relative to :math:`B` about :math:`\hat{b}_y`. The center line
+of the light is at an angle of :math:`\alpha` from :math:`\hat{c}_z` and point
+P_3 is l_3 from P_2 along C_z and P_4 is l_4 from P_3.
+
+We will use the following notation for vectors that indicate the relative
+position between two points:
+
+.. math::
+
+   \bar{r}^{P_1/O}
+
+which reads as the "position vector from :math:`O` to :math:`P_1`". The tail of
+the vector is at :math:`O` and the tip is at :math:`P_1`.
+
+.. todo:: Add figure!
+
+.. admonition:: Exercise
+
+   Reread the :ref:`vector-function` section and answer the following
+   questions:
+
+   1. Is :math:`\bar{r}^{P_1/O}` vector function of :math:`q_1` and :math:`q_2` in N?
+   2. Is :math:`\bar{r}^{P_1/O}` vector function of :math:`q_1` and :math:`q_1` in A?
+   3. Is :math:`\bar{r}^{P_1/O}` vector function of :math:`q_3` and :math:`q_4` in N?
+   4. Is :math:`\bar{r}^{P_3/{P_2}` vector function of :math:`q_1` and :math:`q_2` in N?
+
+.. jupyter-execute::
+
+   q1, q2, q3, q4 = sm.symbols('q1, q2, q3, q4')
+   l1, l2, l3, l4 = sm.symbols('l1, l2, l3, l4')
+   theta = sm.symbols('theta')
+
+   N = me.ReferenceFrame('N')
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+   C = me.ReferenceFrame('C')
+
+.. jupyter-execute::
+
+   A.orient_body_fixed(N, (q1, q2, 0), 'ZXZ')
+
+.. jupyter-execute::
+
+   B.orient_axis(A, q3, A.x)
+
+.. jupyter-execute::
+
+   C.orient_body_fixed(B, (theta, q4, 0), 'XYZ')
+
+.. jupyter-execute::
+
+   R_O_P1 = l1*A.z
+   R_P1_P2 = l2*B.z
+   R_P2_P3 = l3*B.x
+   R_P3_P4 = l4*C.z
+
+.. jupyter-execute::
+
+   R_O_P4 = R_O_P1 + R_P1_P2 + R_P2_P3 + R_P3_P4
+   R_O_P4
+
+To convince you of the utility of the vector notation, have a look at what
+:math:`\bar{r}^{P4/O}` looks like if expressed completely in the :math:`N`
+frame:
+
+.. jupyter-execute::
+
+   R_O_P4.express(N)
+
+If you have the orientations properly defined the function
+
+.. jupyter-execute::
+
+   R_O_P1.express(N)
+
+.. jupyter-execute::
+
+   R_O_P1.free_symbols(N)
+
+.. warning::
+
+   ``free_symbols()`` shows all SymPy ``Symbol`` objects, but will not show
+   ``Function()`` objects. In the next chapter we will introduce a way to do
+   the same thing when functions of time are present in your vector
+   expressions.
+
+.. jupyter-execute::
+
+   R_O_P1.express(A)
+
+.. jupyter-execute::
+
+   R_O_P1.free_symbols(A)
+
+.. jupyter-execute::
+
+   R_O_P4.free_symbols(N)
