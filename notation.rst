@@ -14,6 +14,10 @@ Notation
    Dot product of two vectors.
 :math:`\bar{u} \times \bar{v}`
    Cross product of two vectors.
+:math:`\bar{u} \otimes \bar{v}`
+   Outer product of two vectors.
+:math:`\mathbf{R}`
+   Matrices are capitalized letters in bold font.
 :math:`{}^A\mathbf{C}^B`
    Direction cosine matrix relating reference frames (or rigid bodies)
    :math:`B` and :math:`A` where this relation between the right handed
