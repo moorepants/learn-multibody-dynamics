@@ -45,6 +45,8 @@ https://jupyter-sphinx.readthedocs.io
 tmux
 ----
 
+https://tmuxcheatsheet.com/
+
 https://medium.com/hackernoon/a-gentle-introduction-to-tmux-8d784c404340
 
 ::

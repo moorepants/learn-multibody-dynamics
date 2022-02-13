@@ -5,4 +5,5 @@ numpy
 pydata-sphinx-theme
 scipy
 sphinx
+sphinx-togglebutton
 sympy
