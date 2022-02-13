@@ -33,15 +33,15 @@ sense. Vectors are equal when all three characteristics are the same.
 
 Vectors have these mathematical properites:
 
-- scalar mutiplicative: :math:`\lambda\bar{a}` where :math:`\lambda` can only
+- scalar mutiplicative: :math:`\lambda\bar{u}` where :math:`\lambda` can only
   change the magnitude and the sense of the vector
-- commutative: :math:`\bar{a} + \bar{b} = \bar{b} + \bar{a}`
-- distributive: :math:`\lambda(\bar{a} + \bar{b}) = \lambda\bar{a} +
-  \lambda\bar{b}`
-- assocative: :math:`(\bar{a} + \bar{b}) + \bar{c} = \bar{a} + (\bar{b} +
-  \bar{c})`
-- common orientation: :math:`\bar{b} = k\bar{a}` where :math:`\bar{b}` and
-  :math:`\bar{b}` have the same orientation
+- commutative: :math:`\bar{u} + \bar{v} = \bar{v} + \bar{u}`
+- distributive: :math:`\lambda(\bar{u} + \bar{v}) = \lambda\bar{u} +
+  \lambda\bar{v}`
+- assocative: :math:`(\bar{u} + \bar{v}) + \bar{w} = \bar{u} + (\bar{v} +
+  \bar{w})`
+- common orientation: :math:`\bar{v} = k\bar{u}` where :math:`\bar{v}` and
+  :math:`\bar{u}` have the same orientation
 
 Unit vectors are vectors with a magnitude of :math:`1`. If the magnitude of
 :math:`\bar{v}` is 1, then we indicate this with :math:`\hat{v}`. Any vector
@@ -49,9 +49,9 @@ has an assocated unit vector with the same orientation and sense, found by:
 
 .. math::
 
-   \hat{u} = \frac{\bar{u}}{||\bar{u}||}
+   \hat{u} = \frac{\bar{u}}{|\bar{u}|}
 
-where :math:`||\bar{u}||` is the `Euclidean norm`_ (2-norm), or magnitude, of
+where :math:`|\bar{u}|` is the `Euclidean norm`_ (2-norm), or magnitude, of
 the vector :math:`\bar{u}`.
 
 .. _Euclidean norm: https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm
@@ -87,21 +87,19 @@ found from the dot product of :math:`\bar{v}` and the respective unit vector:
              (\bar{v} \cdot \hat{a}_y) \hat{a}_y +
              (\bar{v} \cdot \hat{a}_z) \hat{a}_z
 
-Vector with SymPy Mechanics
-===========================
-
 Addition
---------
+========
 
 When we add vector :math:`\bar{b}` to vector :math:`\bar{a}`, the result is
 a vector that starts at the tail of :math:`\bar{a}` and ends at the tip of
 :math:`\bar{b}`:
 
-.. figure:: vector_addition.svg
-   :alt: Vector addition
-   :align: center
+..
+   .. figure:: vector_addition.svg
+      :alt: Vector addition
+      :align: center
 
-   Vector addition
+      Vector addition
 
 Vectors in SymPy Mechanics are created by first introducing a reference frame
 and using its associated unit vectors to construct vectors of arbritrary
@@ -165,16 +163,17 @@ SymPy Mechanics vectors work as expected:
    w + x
 
 Scaling
--------
+=======
 
 Multiplying a vector by a scalar changes its magnitude, but not its
 orientation. Scaling by a negative number changes a vector's magnitude and
 reverses its sense (rotates it by :math:`\pi` radians).
 
-.. figure:: vector_scaling.svg
-   :alt: Vector scaling
+..
+   .. figure:: vector_scaling.svg
+      :alt: Vector scaling
 
-   Vector scaling
+      Vector scaling
 
 .. jupyter-execute::
 
@@ -231,9 +230,16 @@ reverses its sense (rotates it by :math:`\pi` radians).
       v1 + v2 - 5*v3
 
 Dot Product
------------
+===========
 
 The dot product, which yields a scalar quantity, is defined as:
+
+.. math::
+
+   \bar{v} \cdot \bar{w} = |\bar{v}| |\bar{w}| \cos{\theta}
+
+where :math:`\theta` is the angle between the two vectors. For aribtrary
+measure numbers this results in the following:
 
 .. math::
 
@@ -241,31 +247,28 @@ The dot product, which yields a scalar quantity, is defined as:
    \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
    \bar{v} \cdot \bar{w} = & v_x w_x + v_v w_y + v_z w_z
 
-and is also equivlant to:
+..
+   .. figure:: vector_dot.svg
+      :alt: Vector dot product
 
-.. math::
+      Vector dot product
 
-   \bar{v} \cdot \bar{w} = ||\bar{v}|| ||\bar{w}|| \cos{\theta}
+The dot product has these properties:
 
-where :math:`\theta` is the angle between the two vectors.
-
-.. figure:: vector_dot.svg
-   :alt: Vector dot product
-
-   Vector dot product
+- You can pull out scalars: :math:`c \bar{u} \cdot d \bar{v} = cd (\bar{u} \cdot \bar{v})`
+- Order does not matter (commutative multiplication): :math:`\bar{u} \cdot \bar{v} = \bar{v} \cdot \bar{u}`
+- You can distribute: :math:`\bar{u} \cdot (\bar{v} + \bar{w}) = \bar{u} \cdot \bar{v} + \bar{u} \cdot \bar{w}`
 
 The dot product is often used to determine:
 
--  the angle between two vectors:
-   :math:`\theta = \arccos\frac{\bar{a} \cdot \bar{b}}{|\bar{a}||\bar{b}|}`
-
--  a vector’s magnitude: :math:`||\bar{v}|| = \sqrt{\bar{v} \cdot \bar{v}}`
-
--  the length of a vector along a direction of another vector :math:`\hat{u}`
-   (called the projection):
-   :math:`\mbox{proj}_\hat{u} \bar{v} = \bar{v} \cdot \hat{u}`
-
--  if two vectors are perpendicular: :math:`\bar{v} \cdot \bar{w} = 0 \mbox{ if }\bar{v} \perp \bar{w}`
+- the angle between two vectors:
+  :math:`\theta = \arccos\frac{\bar{a} \cdot \bar{b}}{|\bar{a}|\bar{b}|}`
+- a vector’s magnitude: :math:`|\bar{v}| = \sqrt{\bar{v} \cdot \bar{v}}`
+- the length of a vector along a direction of another vector :math:`\hat{u}`
+  (called the projection):
+  :math:`\mbox{proj}_\hat{u} \bar{v} = \bar{v} \cdot \hat{u}`
+- if two vectors are perpendicular: :math:`\bar{v} \cdot \bar{w} = 0 \mbox{ if }\bar{v} \perp \bar{w}`
+- Compute power: :math:`P = \bar{F} \cdot \bar{v}`
 
 Also, dot products are used to convert a vector equation into a scalar equation
 by "dotting" an entire equation with a vector.
@@ -283,9 +286,14 @@ calculates the dot product:
 
     me.dot(w, x)
 
-The :external:py:meth:`~sympy.physics.vector.vector.Vector.normalize`
+The method form is equivalent:
 
-You can compute a unit vector in the same direction as :math:`\bar{w}` like so:
+.. jupyter-execute::
+
+    w.dot(x)
+
+You can compute a unit vector in the same direction as :math:`\bar{w}` with the
+:external:py:meth:`~sympy.physics.vector.vector.Vector.normalize` method:
 
 .. jupyter-execute::
 
@@ -298,8 +306,6 @@ You can compute a unit vector in the same direction as :math:`\bar{w}` like so:
 
 .. admonition:: Solution
    :class: dropdown
-
-   The do
 
    .. jupyter-execute::
 
@@ -334,20 +340,19 @@ helpful:
    .. jupyter-execute::
 
       N = me.ReferenceFrame('N')
-      v1 = a * N.x + b * N.y + a * N.z
-      v2 = b * N.x + a * N.y + b * N.z
+      v1 = a*N.x + b*N.y + a*N.z
+      v2 = b*N.x + a*N.y + b*N.z
 
    .. jupyter-execute::
 
       sm.acos(v1.dot(v2) / (v1.magnitude()*v2.magnitude()))
 
-
 Cross Product
--------------
+=============
 
 The `cross product`_, which yields a vector quantity, is defined as:
 
-.. math::  \bar{v} \times \bar{w} = |\bar{v}||\bar{w}| \sin\theta \hat{u}
+.. math::  \bar{v} \times \bar{w} = |\bar{v}|\bar{w}| \sin\theta \hat{u}
 
 where :math:`\theta` is the angle between the two vectors, and :math:`\hat{u}`
 is the unit vector perpendicular to both :math:`\bar{v}` and :math:`\bar{w}`
@@ -365,30 +370,56 @@ results in the following:
 
 .. _cross product: https://en.wikipedia.org/wiki/Cross_product
 
+Some properties of cross products are:
+
+-  Crossing a vector with itself "cancels" it: :math:`\bar{a} \times \bar{b} = \bar{0}`
+-  You can pull out scalars: :math:`c \bar{a} \times d \bar{b} = cd (\bar{a} \times \bar{b})`
+-  Order **DOES** matter (because of the right-hand rule):
+   :math:`\bar{a} \times \bar{b} = -\bar{b} \times \bar{a}`
+-  You can distribute:
+   :math:`\bar{a} \times (\bar{b} + \bar{c}) = \bar{a} \times \bar{b} + \bar{a} \times \bar{c}`
+-  They are **NOT** associative:
+   :math:`\bar{a} \times (\bar{b} \times \bar{c}) \neq (\bar{a} \times \bar{b}) \times \bar{c}`
+
 The cross product is used to:
 
 -  obtain a vector/direction perpendicular to two other vectors
 -  determine if two vectors are parallel:
-   :math:`\bar{a} \times \bar{b} = \bar{0} \mbox{ if } \bar{a} \parallel \bar{b}`
+   :math:`\bar{v} \times \bar{w} = \bar{0} \mbox{ if } \bar{v} \parallel \bar{w}`
 -  compute moments: :math:`\bar{r} \times \bar{F}`
 -  compute the area of a triangle
 
-.. figure:: vector_cross.svg
-   :alt: Vector cross product
+..
+   .. figure:: vector_cross.svg
+      :alt: Vector cross product
 
-   Vector cross product
+      Vector cross product
+
+SymPy Mechanics can calculate cross products with the
+:external:py:func:`~sympy.physics.vector.functions.cross`. function:
 
 .. jupyter-execute::
 
     N = me.ReferenceFrame('N')
     w = a*N.x + b*N.y + c*N.z
+    w
+
+.. jupyter-execute::
+
     x = d*N.x + e*N.y + f*N.z
+    x
 
 .. jupyter-execute::
 
     me.cross(w, x)
 
-.. note:: Exercise
+The method form is equivalent:
+
+.. jupyter-execute::
+
+    w.cross(x)
+
+.. admonition:: Exercise
 
    Given three points located in reference frame :math:`N` by:
 
@@ -398,41 +429,21 @@ The cross product is used to:
       \bar{p}_2 = 16 \hat{n}_x + 2 \hat{n}_y - 4 \hat{n}_z \\
       \bar{p}_3 = \hat{n}_x + 14 \hat{n}_z
 
-Find the area of the triangle bounded by these three points using the
-cross product.
-
-.. note::
+   Find the area of the triangle bounded by these three points using the cross
+   product.
 
    Hint: Search online for the relationship of the cross product to triangle
    area.
 
-Some vector properties
-----------------------
+.. admonition:: Solution
+   :class: dropdown
 
-- The order in which you add them does not matter:
-  :math:`\bar{a} + \bar{b} = \bar{b} + \bar{a}`
-- You can distrubute a scalar among vectors:
-  :math:`s (\bar{a} + \bar{b}) = s\bar{a} + s\bar{b}`
+   .. jupyter-execute::
 
-**Dot product**
+      N = me.ReferenceFrame('N')
 
--  You can pull out scalars: $ c :math:`\bar{a}` :math:`\times `d
-   :math:`\bar{b}` = cd (:math:`\bar{a}`
-   :math:`\times `:math:`\bar{b}`)$
--  Order does not matter: :math:`\bar{a} \cdot \bar{b} = \bar{b} \cdot \bar{a}`
--  You can distribute:
-   :math:`\bar{a} \cdot (\bar{b} + \bar{c}) = \bar{a} \cdot \bar{b} + \bar{a} \cdot \bar{c}`
+      p1 = 23*N.x - 12* N.y
+      p2 = 16*N.x + 2*N.y - 4*N.z
+      p3 = N.x + 14*N.z
 
-**Cross product**
-
--  Crossing a vector with itself “cancels” it:
-   :math:`\bar{a} \times \bar{b} = \vec{0}`
--  You can pull out scalars: $ c :math:`\bar{a}`
-   :math:`\times `d :math:`\bar{b}` = cd (:math:`\bar{a}`
-   :math:`\times `:math:`\bar{b}`)$
--  Order DOES matter (because of the right-hand rule):
-   :math:`\bar{a} \times \bar{b} = -\bar{b} \times \bar{a}`
--  You can distribute:
-   :math:`\bar{a} \times (\bar{b} + \bar{c}) = \bar{a} \times \bar{b} + \bar{a} \times \bar{c}`
--  They are NOT associative:
-   :math:`\bar{a} \times ({\bar{b} \times \bar{c}) \neq {(\bar{a} \times \bar{b}) \times \bar{c}`
+      me.cross(p2 - p1, p3 - p1).magnitude() / 2
