@@ -2,6 +2,11 @@
 Vectors
 =======
 
+.. warning::
+
+   This page is a draft until February 19, 2022. Report issues at:
+   https://github.com/moorepants/learn-multibody-dynamics/issues
+
 .. note::
 
    You can download this example as a Python script:
@@ -12,7 +17,7 @@ Vectors
 
    import sympy as sm
    import sympy.physics.mechanics as me
-   sm.init_printing(use_latex='mathjax', latex_printer=sm.multiline_latex)
+   sm.init_printing(use_latex='mathjax')
 
 What is a vector?
 =================
@@ -26,10 +31,19 @@ Vectors have three characteristics:
 The direction the vector points is derived from both the orientation and the
 sense. Vectors are equal when all three characteristics are the same.
 
+.. figure:: vectors-characteristics.svg
+
+   Three characteristics of vectors: magnitude, orientation, and sense.
+
 .. note::
 
    In this text we will distinguish scalar variables, e.g. :math:`v`, from
    vectors by including a bar over the top of the symbol, e.g. :math:`\bar{v}`.
+   Vectors will be drawn as follows:
+
+   .. figure:: vectors-figure-notation.svg
+
+      Various ways vectors will be drawn in figures.
 
 Vectors have these mathematical properties:
 
@@ -96,12 +110,11 @@ When we add vector :math:`\bar{b}` to vector :math:`\bar{a}`, the result is
 a vector that starts at the tail of :math:`\bar{a}` and ends at the tip of
 :math:`\bar{b}`:
 
-..
-   .. figure:: vector_addition.svg
-      :alt: Vector addition
-      :align: center
+.. figure:: vectors-addition.svg
+   :alt: Vector addition
+   :align: center
 
-      Vector addition
+   Graphical vector addition
 
 Vectors in SymPy Mechanics are created by first introducing a reference frame
 and using its associated unit vectors to construct vectors of arbitrary
@@ -171,11 +184,10 @@ Multiplying a vector by a scalar changes its magnitude, but not its
 orientation. Scaling by a negative number changes a vector's magnitude and
 reverses its sense (rotates it by :math:`\pi` radians).
 
-..
-   .. figure:: vector_scaling.svg
-      :alt: Vector scaling
+.. figure:: vectors-scaling.svg
+   :alt: Vector scaling
 
-      Vector scaling
+   Vector scaling
 
 .. jupyter-execute::
 
@@ -249,11 +261,10 @@ measure numbers this results in the following:
    \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
    \bar{v} \cdot \bar{w} = & v_x w_x + v_v w_y + v_z w_z
 
-..
-   .. figure:: vector_dot.svg
-      :alt: Vector dot product
+.. figure:: vectors-dot-product.svg
+   :alt: Vector dot product
 
-      Vector dot product
+   Vector dot product
 
 The dot product has these properties:
 
@@ -372,6 +383,11 @@ results in the following:
 
 .. _cross product: https://en.wikipedia.org/wiki/Cross_product
 
+.. figure:: vectors-cross-product.svg
+   :alt: Vector cross product
+
+   Vector cross product
+
 Some properties of cross products are:
 
 -  Crossing a vector with itself "cancels" it: :math:`\bar{a} \times \bar{b} = \bar{0}`
@@ -391,11 +407,6 @@ The cross product is used to:
 -  compute moments: :math:`\bar{r} \times \bar{F}`
 -  compute the area of a triangle
 
-..
-   .. figure:: vector_cross.svg
-      :alt: Vector cross product
-
-      Vector cross product
 
 SymPy Mechanics can calculate cross products with the
 :external:py:func:`~sympy.physics.vector.functions.cross`. function:
@@ -484,95 +495,149 @@ naturally express the vector in either reference frame using the
 
    v.express(N)
 
+.. jupyter-execute::
+
+   v.express(A)
+
 Relative Position Among Points
 ==============================
 
-Take for example this articulated desk lamp. The base :math:`N` is fixed to the
-desk. The first linkage :math:`A` is oriented with respect to :math:`N` by a
-z-x body fixed rotation through angles :math:`q_1` and :math:`q_2`. Point
-:math:`O` is fixed in :math:`N` and is located at the center of the base.
-Linkage :math:`A` is defined by points O and P_1 which are separated by length
-:math:`l_1` along the :math:`\hat{a}_z` direction. Linkage :math:`B` rotates
-simply with respect to :math:`A` about :math:`\hat{a}_x` through angle
-:math:`q_3` and point P_2 is l_2 from P_1. Lastly, the lamp head :math:`C`
-rotates simply relative to :math:`B` about :math:`\hat{b}_y`. The center line
-of the light is at an angle of :math:`\alpha` from :math:`\hat{c}_z` and point
-P_3 is l_3 from P_2 along C_z and P_4 is l_4 from P_3.
+Take for example the `balanced-arm lamp`_, which has multiple articulated
+joints configured in a way to balance the weight of the lamp in any
+configuration. Here are two examples:
+
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Anglepoise_1227.jpg/353px-Anglepoise_1227.jpg
+
+   Balanced-arm desk lamp.
+
+   Flickr user "renaissance chambara", cropped by uploader, CC BY 2.0
+   https://creativecommons.org/licenses/by/2.0, via Wikimedia Commons
+
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/GraphyArchy_-_Wikipedia_00323.jpg/320px-GraphyArchy_-_Wikipedia_00323.jpg
+
+   Example of a huge balance-arm lamp in Rotterdam at the Schouwburgplein.
+
+   GraphyArchy, CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0,
+   via Wikimedia Commons
+
+.. _balanced-arm lamp: https://en.wikipedia.org/wiki/Balanced-arm_lamp
+
+With those in mind, :numref:`vectors-desk-lamp` shows a possible diagram of a
+desk lamp with all necessary configuration information present. The base
+:math:`N` is fixed to the desk. The first linkage :math:`A` is oriented with
+respect to :math:`N` by a :math:`z\textrm{-}x` body fixed rotation through
+angles :math:`q_1` and :math:`q_2`. Point :math:`P_1` is fixed in :math:`N` and
+is located at the center of the base. Linkage :math:`A` is defined by points
+:math:`P_1` and :math:`P_2` which are separated by length :math:`l_1` along the
+:math:`\hat{a}_z` direction. Linkage :math:`B` rotates simply with respect to
+:math:`A` about :math:`\hat{a}_x=\hat{b}_x` through angle :math:`q_3` and point
+:math:`P_3` is :math:`l_2` from :math:`P_2` along :math:`\hat{b}_z`. Lastly,
+the lamp head :math:`C` rotates relative to :math:`B` by a :math:`x\textrm{-}z`
+body fixed rotation through angles :math:`q_4` and :math:`q_5`. The center of
+the light bulb :math:`P_4` is located relative to :math:`P_3` by the distances
+:math:`l_3` along :math:`\hat{c}_z` and :math:`l_4` along :math:`-\hat{c}_y`.
+
+.. _vectors-desk-lamp:
+.. figure:: vectors-desk-lamp.svg
+   :align: center
+
+   Configuration diagram of a balanced-arm desk lamp.
 
 We will use the following notation for vectors that indicate the relative
 position between two points:
 
 .. math::
 
-   \bar{r}^{P_1/O}
+   \bar{r}^{P_2/P_1}
 
-which reads as the "position vector from :math:`O` to :math:`P_1`". The tail of
-the vector is at :math:`O` and the tip is at :math:`P_1`.
-
-.. todo:: Add figure!
+which reads as the "position vector from :math:`P_1` to :math:`P_2`". The tail
+of the vector is at :math:`P_1` and the tip is at :math:`P_2`.
 
 .. admonition:: Exercise
 
    Reread the :ref:`vector-function` section and answer the following
    questions:
 
-   1. Is :math:`\bar{r}^{P_1/O}` vector function of :math:`q_1` and :math:`q_2` in N?
-   2. Is :math:`\bar{r}^{P_1/O}` vector function of :math:`q_1` and :math:`q_1` in A?
-   3. Is :math:`\bar{r}^{P_1/O}` vector function of :math:`q_3` and :math:`q_4` in N?
-   4. Is :math:`\bar{r}^{P_3/{P_2}` vector function of :math:`q_1` and :math:`q_2` in N?
+   1. Is :math:`\bar{r}^{P_2/P_1}` vector function of :math:`q_1` and :math:`q_2` in N?
+   2. Is :math:`\bar{r}^{P_2/P_1}` vector function of :math:`q_1` and :math:`q_1` in A?
+   3. Is :math:`\bar{r}^{P_2/P_1}` vector function of :math:`q_3` and :math:`q_4` in N?
+   4. Is :math:`\bar{r}^{P_3/P_2}` vector function of :math:`q_1` and :math:`q_2` in N?
+
+We can now write position vectors relating pairs of points as we move from the
+base of the lamp to the light bulb. We'll do so with SymPy Mechanics. First
+create the necessary symbols and reference frames.
 
 .. jupyter-execute::
 
    q1, q2, q3, q4 = sm.symbols('q1, q2, q3, q4')
    l1, l2, l3, l4 = sm.symbols('l1, l2, l3, l4')
-   theta = sm.symbols('theta')
-
    N = me.ReferenceFrame('N')
    A = me.ReferenceFrame('A')
    B = me.ReferenceFrame('B')
    C = me.ReferenceFrame('C')
 
+Now establish the orientations, starting with :math:`A`'s rotation relative to
+:math:`N`.
+
 .. jupyter-execute::
 
    A.orient_body_fixed(N, (q1, q2, 0), 'ZXZ')
+
+Notice that the unneeded third simple rotation angle was set to zero. Set a
+simple rotation for :math:`B` relative to :math:`A`.
 
 .. jupyter-execute::
 
    B.orient_axis(A, q3, A.x)
 
-.. jupyter-execute::
-
-   C.orient_body_fixed(B, (theta, q4, 0), 'XYZ')
+And finally :math:`C` relative to :math:`B`.
 
 .. jupyter-execute::
 
-   R_O_P1 = l1*A.z
-   R_P1_P2 = l2*B.z
-   R_P2_P3 = l3*B.x
-   R_P3_P4 = l4*C.z
+   C.orient_body_fixed(B, (q3, q4, 0), 'XZX')
+
+We can now create position vectors between pairs of points in the most
+convenient frame to do so, i.e. the reference frame in which both points are
+fixed.
 
 .. jupyter-execute::
 
-   R_O_P4 = R_O_P1 + R_P1_P2 + R_P2_P3 + R_P3_P4
-   R_O_P4
+   R_P1_P2 = l1*A.z
+   R_P2_P3 = l2*B.z
+   R_P3_P4 = l3*C.z - l4*C.y
 
-To convince you of the utility of the vector notation, have a look at what
-:math:`\bar{r}^{P4/O}` looks like if expressed completely in the :math:`N`
-frame:
-
-.. jupyter-execute::
-
-   R_O_P4.express(N)
-
-If you have the orientations properly defined the function
+The position vector from :math:`P_1` to :math:`P_4` is then found by vector
+addition:
 
 .. jupyter-execute::
 
-   R_O_P1.express(N)
+   R_P1_P4 = R_P1_P2 + R_P2_P3 + R_P3_P4
+   R_P1_P4
+
+To convince you of the utility of our vector notation, have a look at what
+:math:`\bar{r}^{P_4/P_1}` looks like if expressed completely in the :math:`N`
+frame (shown as a column matrix for improved clarity):
 
 .. jupyter-execute::
 
-   R_O_P1.free_symbols(N)
+   R_P1_P4.to_matrix(N)
+
+If you have properly established your orientations and position vectors, SymPy
+Mechanics can help you determine the answers to the previous exercise.
+Expressing :math:`\bar{r}^{P2/P1}` in :math:`N` can show us which scalar
+variables that vector function depends on in :math:`N`.
+
+.. jupyter-execute::
+
+   R_P1_P2.express(N)
+
+By inspection we see :math:`l_1,q_1,q_2`. The
+:external:py:meth:`~sympy.physics.vector.vector.Vector.free_symbols` function
+can extract these scalars directly:
+
+.. jupyter-execute::
+
+   R_P1_P2.free_symbols(N)
 
 .. warning::
 
@@ -581,14 +646,12 @@ If you have the orientations properly defined the function
    the same thing when functions of time are present in your vector
    expressions.
 
-.. jupyter-execute::
-
-   R_O_P1.express(A)
+Similarly, other vector functions can be inspected:
 
 .. jupyter-execute::
 
-   R_O_P1.free_symbols(A)
+   R_P1_P2.free_symbols(A)
 
 .. jupyter-execute::
 
-   R_O_P4.free_symbols(N)
+   R_P1_P4.free_symbols(N)
