@@ -103,6 +103,8 @@ found from the dot product of :math:`\bar{v}` and the respective unit vector:
              (\bar{v} \cdot \hat{a}_y) \hat{a}_y +
              (\bar{v} \cdot \hat{a}_z) \hat{a}_z
 
+See sections 1.1-1.3 in [Kane1985]_ for a more general explanation.
+
 Addition
 ========
 
@@ -655,3 +657,9 @@ Similarly, other vector functions can be inspected:
 .. jupyter-execute::
 
    R_P1_P4.free_symbols(N)
+
+References
+==========
+
+.. [Kane1985] Thomas R. Kane, and David A. Levinson. Dynamics, Theory and
+   Application.  McGraw Hill, 1985. http://hdl.handle.net/1813/638.
