@@ -38,3 +38,7 @@ Notation
         \hat{b}_y \\
         \hat{b}_z
       \end{bmatrix}
+
+:math:`\frac{{}^A\partial \bar{v}}{\partial q}`
+   Partial derivative of :math:`\bar{v}` with respect to :math:`q` when
+   observed from :math:`A`.
