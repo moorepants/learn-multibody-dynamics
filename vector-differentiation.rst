@@ -10,8 +10,8 @@ Vector Differentiation
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`vectors` or Jupyter Notebook:
-   :jupyter-download:notebook:`vectors`.
+   :jupyter-download:script:`differentiation` or Jupyter Notebook:
+   :jupyter-download:notebook:`differentation`.
 
 .. jupyter-execute::
 
@@ -118,31 +118,134 @@ So :math:`\frac{{}^A\partial \bar{v}}{\partial \alpha}` is:
 Product Rule
 ============
 
+If you consider taking the derivative of the vector :math:`\bar{v}` in a
+reference frame that it is not expressed in you must use the product rule. For
+example, for vector :math:`\bar{v}` expressed in :math:`A` taking the
+derivative in :math:`N` gives:
+
 .. math::
 
    \frac{{}^N\partial \bar{v}}{\partial q_r} =
    \frac{{}^N\partial v_x}{\partial q_r}\hat{a}_x + v_x \frac{{}^N\partial \hat{a}_x}{\partial q_r} +
    \frac{{}^N\partial v_y}{\partial q_r}\hat{a}_y + v_y \frac{{}^N\partial \hat{a}_y}{\partial q_r} +
-   \frac{{}^N\partial v_z}{\partial q_r}\hat{a}_z + v_z \frac{{}^N\partial \hat{a}_z}{\partial q_r} +
+   \frac{{}^N\partial v_z}{\partial q_r}\hat{a}_z + v_z \frac{{}^N\partial \hat{a}_z}{\partial q_r}
 
-Standard differentiation rules apply. For example the product rule must be
-applied to dot and cross products:
+The three similar terms with scalar derivatives have the same interpretation of
+the ones in the prior section.
 
 .. math::
 
-   \frac{\partial}{\partial q_r}(\bar{v} \cdot \bar{w}) =
+   \frac{{}^N\partial v_x}{\partial q_r}\hat{a}_x +
+   \frac{{}^N\partial v_y}{\partial q_r}\hat{a}_y +
+   \frac{{}^N\partial v_z}{\partial q_r}\hat{a}_z
+
+This part is more interesting. The partial derivative of a unit vector depends
+on how it changes. But unit vectors don't change in length, only in
+orientation.
+
+.. math::
+
+   v_x \frac{{}^N\partial \hat{a}_x}{\partial q_r} +
+   v_y \frac{{}^N\partial \hat{a}_y}{\partial q_r} +
+   v_z \frac{{}^N\partial \hat{a}_z}{\partial q_r}
+
+We will see in the next chapter how to interpret and use these terms to
+simplify the calculations of common derivatives.
+
+The product rule also applies to the dot and cross products:
+
+.. math::
+
+   \frac{\partial}{\partial q_r}(\bar{v} \cdot \bar{w}) = &
    \frac{\partial \bar{v}}{\partial q_r} \cdot \bar{w} +
    \bar{v} \cdot \frac{\partial \bar{w}}{\partial q_r}
 
-.. math::
-
-   \frac{\partial}{\partial q_r}(\bar{v} \times \bar{w}) =
+   \frac{\partial}{\partial q_r}(\bar{v} \times \bar{w}) = &
    \frac{\partial \bar{v}}{\partial q_r} \times \bar{w} +
    \bar{v} \times \frac{\partial \bar{w}}{\partial q_r}
 
-.. todo:: Maybe add a general rule for a series of products.
+This generalizes to any series of products. Let
+:math:`P=F_1\cdot\ldots\cdot F_n` be a series of products. Then
 
-Second and higher derivatives
-=============================
+.. math::
 
+   \frac{\partial P}{\partial q_r} =
+   \frac{\partial F_1}{\partial q_r}\cdot F_2 \cdot\ldots\cdot F_n +
+   F_1 \cdot\frac{\partial F_2}{\partial q_r}\cdot F_3 \cdot\ldots\cdot F_n +
+   \ldots +
+   F_1 \cdot \ldots \cdot F_{n-1}\cdot  \frac{\partial F_n}{\partial q_r}
 
+Second Derivatives
+==================
+
+If :math:`\frac{\partial \bar{v}}{\partial q_r}` is a vector function both in A
+and any other reference frame it can change and be differentiated with respect
+to any variable :math:`q_i` in any reference frame. We then arrive at the
+second parital derivative
+
+.. math::
+
+   \frac{{}^B\partial}{\partial q_s} \left(\frac{{}^A\partial\bar{v}}{\partial
+   q_r}\right)
+
+Second partials in different reference frames do not commute:
+
+.. math::
+
+   \frac{{}^B\partial}{\partial q_s} \left(\frac{{}^A\partial\bar{v}}{\partial
+   q_r}\right)
+   \neq
+   \frac{{}^A\partial}{\partial q_r} \left(\frac{{}^B\partial\bar{v}}{\partial
+   q_s}\right)
+
+If the reference frames of each diervative is the same, then mixed partials do
+commute.
+
+Vector Functions of Time
+========================
+
+In multibody dynamics we are primarily concern with how motion changes with
+respect to time :math:`t` and our vectors and measure numbers will be implicit
+functions of time, i.e. :math:`q_r(t)`. When that is the case the chain rule
+can be used to take total derivatives.
+
+.. math::
+
+   \frac{{}^A d\bar{v}}{dt} = \sum_{i=1}^n \frac{{}^A\partial \bar{v}}{\partial
+   q_r} \frac{d q_r}{dt} + \frac{{}^A \partial \bar{v}}{\partial t}
+
+.. note::
+
+   We will typically write :math:`\frac{dq}{dt}` as :math:`\dot{q}` and
+   :math:`\frac{d^2q}{dt^2}` as :math:`\ddot{q}` and so on.
+
+In SymPy Mechanics, scalar functions of time can be created like so:
+
+.. jupyter-execute::
+
+   t = sm.symbols('t')
+   q_of = sm.Function('q')
+   q = q_of(t)
+   q
+
+.. jupyter-execute::
+
+   q.diff(t)
+
+:external:py:func:`~sympy.physics.vector.dynamicsymbols`
+
+.. jupyter-execute::
+
+   q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
+   q1, q2, q3
+
+.. jupyter-execute::
+
+   t = me.dynamicsymbols._t
+
+:external:py:func:`~sympy.physics.vector.printing.init_vprinting`
+
+.. jupyter-execute::
+
+   me.init_vprinting(use_latex='mathjax')
+   q1.diff(t), q2.diff(t), q3.diff(t)
