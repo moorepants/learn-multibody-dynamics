@@ -21,7 +21,7 @@ Table of Contents
    sympy
    orientation
    vectors
-   vector-differentiation
+   differentiation
    notation
    glossary
    license
