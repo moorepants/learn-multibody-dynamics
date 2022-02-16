@@ -24,7 +24,7 @@ Partial Derivatives
 
 If a vector :math:`\bar{v}` is a function of :math:`n` scalar variables
 :math:`q_1,q_2,\ldots,q_n` in reference frame :math:`A` then the first partial
-derivative of :math:`\bar{v}` in :math:`A` with respect to :math:`q_r` where
+derivatives of :math:`\bar{v}` in :math:`A` with respect to :math:`q_r` where
 :math:`r=1\ldots n` can be formed with the following definition:
 
 .. math::
@@ -35,7 +35,8 @@ derivative of :math:`\bar{v}` in :math:`A` with respect to :math:`q_r` where
 where :math:`v_i` are the measure numbers of :math:`\bar{v}` expressed in
 :math:`A` with mutually perpendicular unit vectors
 :math:`\hat{a}_1,\hat{a}_2,\hat{a}_3`. This definition relies on the fact that
-the unit vectors are fixed in and do not change when observed from :math:`A`.
+the unit vectors are fixed in :math:`A` and thus do not change when observed
+from :math:`A`.
 
 Given :math:`\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z` the above
 definition expands to:
@@ -64,13 +65,13 @@ partial derivative reduces to a single variate derivative:
 
 The above definition implies that a vector must be expressed in the reference
 frame one is observing the change from before calculating the partial
-derivatives of the scalar measure numbers. For example here is a vector that is
-expressed in three different reference frames:
+derivatives of the scalar measure numbers. For example, here is a vector that
+is expressed with unit vectors from three different reference frames:
 
 .. jupyter-execute::
 
-   a, b, c, d, e, f = sm.symbols('a, b, c, d, e, f')
    alpha, beta = sm.symbols('alpha, beta')
+   a, b, c, d, e, f = sm.symbols('a, b, c, d, e, f')
 
    A = me.ReferenceFrame('A')
    B = me.ReferenceFrame('B')
@@ -82,15 +83,11 @@ expressed in three different reference frames:
    v = a*A.x + b*A.y + c*B.x + d*B.y + e*C.x + f*C.y
    v
 
-To calculate
-
-.. math::
-
-   \frac{{}^A\partial\bar{v}}{\partial \alpha}
-
-we first need to project the vector onto the unit vectors of :math:`A` and take
-the partial derivative of those measure numbers with respect to :math:`\alpha`.
-
+To calculate :math:`\frac{{}^A\partial\bar{v}}{\partial \alpha}` we first need
+to project the vector :math:`\bar{v}` onto the unit vectors of :math:`A` and
+take the partial derivative of those measure numbers with respect to
+:math:`\alpha`. The dot product provides the projection and the resulting
+scalar is differentiated:
 
 .. jupyter-execute::
 
@@ -108,32 +105,30 @@ the partial derivative of those measure numbers with respect to :math:`\alpha`.
    dvdaz
 
 We can then construct the vector :math:`\frac{{}^A\partial \bar{v}}{\partial
-\alpha}` from the new measure numbers:
+\alpha}` from the new measure numbers know that the :math:`A` unit vectors are
+fixed:
 
 .. jupyter-execute::
 
    dvda = dvdax*A.x + dvday*A.y + dvdaz*A.z
    dvda
 
-..
-   .. todo:: Open an issue on SymPy about Vector.diff() producing unecessarily
-      complex results (seemingly). Here if v.diff() is called it is a mess. If
-      v.diff(alpha, A).express(A) it's even more of a mess.
-
 SymPy Mechanics vectors have a special
 :external:py:meth:`~sympy.physics.vector.vector.Vector.diff` method that
 manages taking partial derivatives from different reference frames. For the
-vector ``.diff()`` you provide first the variable :math:`\alpha` followed by
-the reference frame:
+vector ``.diff()`` method you provide first the variable :math:`\alpha`
+followed by the reference frame you are observing from:
 
 .. jupyter-execute::
 
    dvdalpha = v.diff(alpha, A)
    dvdalpha
 
-The result is not so simplified so you can use the vector
+The result is not so simplified because SymPy attempts to express the
+derivative in the same components as the vector was, so you can use the vector
 :external:py:meth:`~sympy.physics.vector.vector.Vector.simplify` method, which
-applies ``trigsimp()`` to each measure number:
+applies :external:py:func:`~sympy.simplify.trigsimp.trigsimp` to each measure
+number:
 
 .. jupyter-execute::
 
@@ -150,9 +145,14 @@ Product Rule
 ============
 
 Consider again vector :math:`\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z`.
-If reference frames :math:`N` and :math:`A` are oriented relative to each other
-and the orientation is also a function of :math:`q_r` then we must use the
-product rule when taking the partial derivative. For example:
+Previously, only the measure numbers of this vector were scalar functions of
+:math:`q_r`. Now consider a reference frame :math:`N` that is oriented relative
+to :math:`A` such that the relative orientation also depends on :math:`q_r`.
+This means, that when observed from :math:`N`, the unit vectors
+:math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` may be a function of :math:`q_r`. With
+both the measure numbers and unit vectors dependent on :math:`q_r` the
+derivative of :math:`\bar{v}` in :math:`N` requires the use of the product rule
+when taking the partial derivative. For example:
 
 .. math::
 
@@ -181,7 +181,8 @@ change in length, only in orientation.
    v_z \frac{{}^N\partial \hat{a}_z}{\partial q_r}
 
 You will learn in the next chapter how to interpret and use these terms to
-simplify the calculations of common derivatives.
+simplify the calculations of common derivatives. But for now, just be aware of
+the nature of this partial derivative in :math:`N`.
 
 The product rule also applies to the dot and cross products:
 
@@ -195,24 +196,27 @@ The product rule also applies to the dot and cross products:
    \frac{\partial \bar{v}}{\partial q_r} \times \bar{w} +
    \bar{v} \times \frac{\partial \bar{w}}{\partial q_r}
 
-This generalizes to any series of products. Let :math:`G=f_1\cdot\ldots\cdot
-f_n` be a series of products. Then:
+and generalizes to any series of products. Let :math:`G=f_1 \cdots f_n` be a
+series of products, then:
 
 .. math::
 
    \frac{\partial G}{\partial q_r} =
-   \frac{\partial f_1}{\partial q_r}\cdot f_2 \cdot\ldots\cdot f_n +
-   f_1 \cdot\frac{\partial f_2}{\partial q_r}\cdot f_3 \cdot\ldots\cdot f_n +
-   \ldots +
-   f_1 \cdot \ldots \cdot f_{n-1}\cdot  \frac{\partial f_n}{\partial q_r}
+   \frac{\partial f_1}{\partial q_r}\cdot f_2 \cdots f_n +
+   f_1 \cdot\frac{\partial f_2}{\partial q_r}\cdot f_3 \cdots f_n +
+   \dots +
+   f_1 \cdots f_{n-1} \cdot \frac{\partial f_n}{\partial q_r}
 
 Second Derivatives
 ==================
 
-If :math:`\frac{{}^A\partial \bar{v}}{\partial q_r}` is a vector function both
-in :math:`A` and also any other reference frame it can then change and thus be
-differentiated with respect to any variable :math:`q_r` in any reference frame,
-e.g. :math:`B`. We then arrive at the second partial derivative:
+:math:`\frac{{}^A\partial \bar{v}}{\partial q_r}` is also a vector and, just
+like :math:`\bar{v}`, may be a vector function. We can thus calculate the
+second partial derivative with respect to :math:`q_s` where :math:`s=1\ldots
+n`. This second partial derivative need not be taken with respect to the same
+reference frame as the first partial derivative. If we first differentiate with
+respect to :math:`A` and then with respect to :math:`B`, the second partial
+derivative is:
 
 .. math::
 
@@ -229,7 +233,7 @@ Second partials in different reference frames do not necessarily commute:
    \frac{{}^A\partial}{\partial q_r} \left(\frac{{}^B\partial\bar{v}}{\partial
    q_s}\right)
 
-If the reference frames of each partial derivative is the same, then mixed
+If the reference frames of each partial derivative are the same, then mixed
 partials do commute.
 
 Vector Functions of Time
@@ -242,8 +246,10 @@ chain rule can be used to take total derivatives:
 
 .. math::
 
-   \frac{{}^A d\bar{v}}{dt} = \sum_{i=1}^n \frac{{}^A\partial v_i}{\partial
-   q_r(t)} \frac{d q_r(t)}{dt} + \frac{{}^A \partial \bar{v}}{\partial t}
+   \frac{{}^A d\bar{v}}{dt} =
+   \sum_{i=1}^n \frac{{}^A\partial \bar{v}}{\partial q_r(t)} \frac{d q_r(t)}{dt} +
+   \frac{{}^A \partial \bar{v}}{\partial t}
+   \textrm{ where } r=1,\ldots,n
 
 .. note::
 
