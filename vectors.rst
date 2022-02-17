@@ -2,11 +2,6 @@
 Vectors
 =======
 
-.. warning::
-
-   This page is a draft until February 19, 2022. Report issues at:
-   https://github.com/moorepants/learn-multibody-dynamics/issues
-
 .. note::
 
    You can download this example as a Python script:
