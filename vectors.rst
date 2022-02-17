@@ -626,11 +626,11 @@ addition:
 
 To convince you of the utility of our vector notation, have a look at what
 :math:`\bar{r}^{P_4/P_1}` looks like if expressed completely in the :math:`N`
-frame (shown as a column matrix for improved clarity):
+frame:
 
 .. jupyter-execute::
 
-   R_P1_P4.to_matrix(N)
+   R_P1_P4.express(N)
 
 If you have properly established your orientations and position vectors, SymPy
 Mechanics can help you determine the answers to the previous exercise.
