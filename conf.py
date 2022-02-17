@@ -1,3 +1,5 @@
+import os
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -44,8 +46,9 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-# Display TODO notes.
-todo_include_todos = True
+if "ONGITHUB" not in os.environ:
+    # Display TODO notes.
+    todo_include_todos = True
 
 # This configures sphinx to number figures and allow referencing them, if
 # labeled, using :numref:`my_figure`.
