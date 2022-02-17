@@ -47,15 +47,14 @@ sense. Vectors are equal when all three characteristics are the same.
 
 Vectors have these mathematical properties:
 
-- scalar multiplicative: :math:`\lambda\bar{u}` where :math:`\lambda` can only
-  change the magnitude and the sense of the vector
+- scalar multiplicative: :math:`\bar{v} = \lambda\bar{u}` where :math:`\lambda`
+  can only change the magnitude and the sense of the vector, i.e.
+  :math:`\bar{v}` and :math:`\bar{u}` have the same orientation
 - commutative: :math:`\bar{u} + \bar{v} = \bar{v} + \bar{u}`
 - distributive: :math:`\lambda(\bar{u} + \bar{v}) = \lambda\bar{u} +
   \lambda\bar{v}`
 - associative: :math:`(\bar{u} + \bar{v}) + \bar{w} = \bar{u} + (\bar{v} +
   \bar{w})`
-- common orientation: :math:`\bar{v} = k\bar{u}` where :math:`\bar{v}` and
-  :math:`\bar{u}` have the same orientation
 
 Unit vectors are vectors with a magnitude of :math:`1`. If the magnitude of
 :math:`\bar{v}` is 1, then we indicate this with :math:`\hat{v}`. Any vector
@@ -75,18 +74,19 @@ the vector :math:`\bar{u}`.
 Vector Functions
 ================
 
-Vectors can be functions of scalar variables. :math:`\bar{v}` is a vector
-function of scalar variable :math:`q` in reference frame :math:`A` if
-:math:`\bar{v}` changes when viewed in :math:`A` when :math:`q` changes. Note
-that this implies that :math:`\bar{v}` may not be a function of scalar variable
-:math:`q` in a different reference frame.
+Vectors can be functions of scalar variables. If a change in scalar variable
+:math:`q` changes the magnitude and/or direction of :math:`\bar{v}` when
+observed from :math:`A`, :math:`\bar{v}` is a vector function of :math:`q` in
+:math:`A`. Note that this implies that :math:`\bar{v}` may not be a vector
+function of scalar variable :math:`q` when observed from another reference
+frame.
 
-Staring with reference frame :math:`A` and vector :math:`\bar{v}` which is a
-function of :math:`n` scalars :math:`q_1,q_2,\ldots,q_n` in :math:`A`, let
-:math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` be a set of mutually perpendicular unit
-vectors fixed in :math:`A`, i.e. :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` are
-constant when observed from :math:`A`. Then there are three unique scalar
-functions :math:`v_x,v_y,v_z` of :math:`q_1,q_2,\ldots,q_n` such that:
+Let vector :math:`\bar{v}` be a function of :math:`n` scalars
+:math:`q_1,q_2,\ldots,q_n` in :math:`A`. If we introduce
+:math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` as a set of mutually perpendicular unit
+vectors fixed in :math:`A`, then these unit vectors are constant when observed
+from :math:`A`. There are then three unique scalar functions
+:math:`v_x,v_y,v_z` of :math:`q_1,q_2,\ldots,q_n` such that:
 
 .. math::
 
@@ -103,7 +103,9 @@ found from the dot product of :math:`\bar{v}` and the respective unit vector:
              (\bar{v} \cdot \hat{a}_y) \hat{a}_y +
              (\bar{v} \cdot \hat{a}_z) \hat{a}_z
 
-See sections 1.1-1.3 in [Kane1985]_ for a more general explanation.
+which is the projection of :math:`\bar{v}` onto each unit vector. When written
+this way we can say that :math:`\bar{v}` is expressed in :math:`A`. See
+sections 1.1-1.3 in [Kane1985]_ for a more general explanation.
 
 Addition
 ========
@@ -307,7 +309,8 @@ The method form is equivalent:
 
     w.dot(x)
 
-You can compute a unit vector in the same direction as :math:`\bar{w}` with the
+You can compute a unit vector :math:`\hat{w}` in the same direction as
+:math:`\bar{w}` with the
 :external:py:meth:`~sympy.physics.vector.vector.Vector.normalize` method:
 
 .. jupyter-execute::
@@ -379,9 +382,9 @@ results in the following:
    \bar{v} = & v_x \hat{n}_x + v_y \hat{n}_y + v_z \hat{n}_z \\
    \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
    \bar{v} \times \bar{w} = &
-   v_y w_z - v_z w_y  \hat{n}_x +
-   v_z w_x - v_x w_z \hat{n}_y +
-   v_x w_y - v_y w_x \hat{n}_z
+   (v_y w_z - v_z w_y) \hat{n}_x +
+   (v_z w_x - v_x w_z) \hat{n}_y +
+   (v_x w_y - v_y w_x) \hat{n}_z
 
 .. _cross product: https://en.wikipedia.org/wiki/Cross_product
 
@@ -392,14 +395,14 @@ results in the following:
 
 Some properties of cross products are:
 
--  Crossing a vector with itself "cancels" it: :math:`\bar{a} \times \bar{b} = \bar{0}`
--  You can pull out scalars: :math:`c \bar{a} \times d \bar{b} = cd (\bar{a} \times \bar{b})`
--  Order **DOES** matter (because of the right-hand rule):
-   :math:`\bar{a} \times \bar{b} = -\bar{b} \times \bar{a}`
--  You can distribute:
-   :math:`\bar{a} \times (\bar{b} + \bar{c}) = \bar{a} \times \bar{b} + \bar{a} \times \bar{c}`
--  They are **NOT** associative:
-   :math:`\bar{a} \times (\bar{b} \times \bar{c}) \neq (\bar{a} \times \bar{b}) \times \bar{c}`
+- Crossing a vector with itself "cancels" it: :math:`\bar{a} \times \bar{a} = \bar{0}`
+- You can pull out scalars: :math:`c \bar{a} \times d \bar{b} = cd (\bar{a} \times \bar{b})`
+- Order **DOES** matter (because of the right-hand rule): :math:`\bar{a} \times
+  \bar{b} = -\bar{b} \times \bar{a}`
+- You can distribute:
+  :math:`\bar{a} \times (\bar{b} + \bar{c}) = \bar{a} \times \bar{b} + \bar{a} \times \bar{c}`
+- They are **NOT** associative:
+  :math:`\bar{a} \times (\bar{b} \times \bar{c}) \neq (\bar{a} \times \bar{b}) \times \bar{c}`
 
 The cross product is used to:
 
@@ -486,7 +489,7 @@ All of the previously described operations work as expected:
 
    v + v
 
-But if an orientation is established between the two reference frames, the
+If an orientation is established between the two reference frames, the
 direction cosine transformations are handled for you and can be used to
 naturally express the vector in either reference frame using the
 :external:py:meth:`~sympy.physics.vector.vector.Vector.express`.
@@ -565,7 +568,9 @@ of the vector is at :math:`P_1` and the tip is at :math:`P_2`.
    3. Is :math:`\bar{r}^{P_2/P_1}` vector function of :math:`q_3` and :math:`q_4` in N?
    4. Is :math:`\bar{r}^{P_3/P_2}` vector function of :math:`q_1` and :math:`q_2` in N?
 
-We can now write position vectors relating pairs of points as we move from the
+.. todo:: Add a solution to this, but I sort of do below.
+
+We can now write position vectors between pairs of points as we move from the
 base of the lamp to the light bulb. We'll do so with SymPy Mechanics. First
 create the necessary symbols and reference frames.
 
