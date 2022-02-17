@@ -63,7 +63,7 @@ based on the angles among the two frames' unit vectors.
 
 .. _orientation-vector-position:
 
-.. figure:: orientation-vector-position.svg
+.. figure:: figures/orientation-vector-position.svg
 
    The image on the left and right represent the same set of right-handed
    mutually perpendicular unit vectors. Vectors, in general, do not have a
@@ -82,7 +82,7 @@ then say "reference frame :math:`A` is rotated with respect to reference frame
 
 .. _orientation-simple:
 
-.. figure:: orientation-simple.svg
+.. figure:: figures/orientation-simple.svg
 
    View of the parallel :math:`xy` planes of the simply rotated reference
    frames.
@@ -198,7 +198,7 @@ defined.  For example, the figure below shows the three angles
 
 .. _orientation-three-angles:
 
-.. figure:: orientation-three-angles.svg
+.. figure:: figures/orientation-three-angles.svg
 
    Three angles relating :math:`\hat{a}_x` to the unit vectors of :math:`N`.
 
@@ -271,7 +271,7 @@ reference frame :math:`B` is shown that is simply rotated with respect to
 
 .. _orientation-simple-successive:
 
-.. figure:: orientation-simple-successive.svg
+.. figure:: figures/orientation-simple-successive.svg
 
    Two successive simple rotations through angles :math:`\theta` and then
    :math:`\alpha`.
@@ -544,7 +544,7 @@ unit vector through the angle :math:`\psi`, as shown below:
 
 .. _orientation-gimbal-psi:
 
-.. figure:: orientation-gimbal-psi.svg
+.. figure:: figures/orientation-gimbal-psi.svg
    :width: 200px
 
    View of the :math:`A` and :math:`B` :math:`x\textrm{-}y` plane showing the
@@ -569,7 +569,7 @@ unit vector through angle :math:`\theta`.
 
 .. _orientation-gimbal-theta:
 
-.. figure:: orientation-gimbal-theta.svg
+.. figure:: figures/orientation-gimbal-theta.svg
    :width: 200px
 
    View of the :math:`B` and :math:`C` :math:`y\textrm{-}z` plane showing the
@@ -589,7 +589,7 @@ unit vector through angle :math:`\theta`.
 Finally, rotate the camera :math:`D` with respect to :math:`C` about their
 shared :math:`y` unit vector through the angle :math:`\phi`.
 
-.. figure:: orientation-gimbal-phi.svg
+.. figure:: figures/orientation-gimbal-phi.svg
    :width: 200px
 
    View of the :math:`C` and :math:`D` :math:`x\textrm{-}z` plane showing the

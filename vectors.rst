@@ -31,7 +31,7 @@ Vectors have three characteristics:
 The direction the vector points is derived from both the orientation and the
 sense. Vectors are equal when all three characteristics are the same.
 
-.. figure:: vectors-characteristics.svg
+.. figure:: figures/vectors-characteristics.svg
 
    Three characteristics of vectors: magnitude, orientation, and sense.
 
@@ -41,7 +41,7 @@ sense. Vectors are equal when all three characteristics are the same.
    vectors by including a bar over the top of the symbol, e.g. :math:`\bar{v}`.
    Vectors will be drawn as follows:
 
-   .. figure:: vectors-figure-notation.svg
+   .. figure:: figures/vectors-figure-notation.svg
 
       Various ways vectors will be drawn in figures.
 
@@ -114,7 +114,7 @@ When we add vector :math:`\bar{b}` to vector :math:`\bar{a}`, the result is
 a vector that starts at the tail of :math:`\bar{a}` and ends at the tip of
 :math:`\bar{b}`:
 
-.. figure:: vectors-addition.svg
+.. figure:: figures/vectors-addition.svg
    :alt: Vector addition
    :align: center
 
@@ -188,7 +188,7 @@ Multiplying a vector by a scalar changes its magnitude, but not its
 orientation. Scaling by a negative number changes a vector's magnitude and
 reverses its sense (rotates it by :math:`\pi` radians).
 
-.. figure:: vectors-scaling.svg
+.. figure:: figures/vectors-scaling.svg
    :alt: Vector scaling
 
    Vector scaling
@@ -265,7 +265,7 @@ measure numbers this results in the following:
    \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
    \bar{v} \cdot \bar{w} = & v_x w_x + v_v w_y + v_z w_z
 
-.. figure:: vectors-dot-product.svg
+.. figure:: figures/vectors-dot-product.svg
    :alt: Vector dot product
 
    Vector dot product
@@ -388,7 +388,7 @@ results in the following:
 
 .. _cross product: https://en.wikipedia.org/wiki/Cross_product
 
-.. figure:: vectors-cross-product.svg
+.. figure:: figures/vectors-cross-product.svg
    :alt: Vector cross product
 
    Vector cross product
@@ -543,7 +543,7 @@ the light bulb :math:`P_4` is located relative to :math:`P_3` by the distances
 :math:`l_3` along :math:`\hat{c}_z` and :math:`l_4` along :math:`-\hat{c}_y`.
 
 .. _vectors-desk-lamp:
-.. figure:: vectors-desk-lamp.svg
+.. figure:: figures/vectors-desk-lamp.svg
    :align: center
 
    Configuration diagram of a balanced-arm desk lamp.
