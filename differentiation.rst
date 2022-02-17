@@ -236,6 +236,8 @@ Second partials in different reference frames do not necessarily commute:
 If the reference frames of each partial derivative are the same, then mixed
 partials do commute.
 
+.. todo:: Make an example of second derivatives not commuting.
+
 Vector Functions of Time
 ========================
 
