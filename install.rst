@@ -18,7 +18,7 @@ Download miniconda for your operating system:
 
 https://docs.conda.io/en/latest/miniconda.html
 
-Install as a user not an administrator when asked. This will install the
+Install as a user, not an administrator, when asked. This will install the
 package manager conda and configure your computer to use the Python installed
 with Miniconda when you open a terminal or command prompt.
 
@@ -67,7 +67,7 @@ this command:
 
 .. code-block:: bash
 
-   conda install ipympl ipython ipywidgets jupyter matplotlib notebook numpy pythreejs scipy sympy
+   conda install ipympl ipython ipywidgets jupyter matplotlib notebook numpy pythreejs scipy "sympy>=1.9"
 
 4) Open Jupyter Notebook
 ========================
