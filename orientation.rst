@@ -135,8 +135,9 @@ and so we can give it its own variable:
      \hat{n}_z
    \end{bmatrix}
 
-This matrix has an important property, which we will demonstrate with SymPy.
-Start by creating the matrix:
+This matrix :math:`{}^A\mathbf{C}^N` maps vectors expressed in the :math:`N`
+frame to vectors expressed in the :math:`A` frame. This matrix has an important
+property, which we will demonstrate with SymPy.  Start by creating the matrix:
 
 .. jupyter-execute::
 
@@ -255,8 +256,10 @@ where the general direction cosine matrix is then:
 
 This matrix uniquely defines the relative orientation between reference frames
 :math:`N` and :math:`A`, it is invertible, and its inverse is equal to the
-transpose, as shown above in the simple example. The direction cosine matrix is
-also referred to as a rotation matrix in some texts.
+transpose, as shown above in the simple example. The direction cosine matrix
+found in the prior section for a simple rotation is a specific case of this
+more general definition. The direction cosine matrix is also referred to as a
+rotation matrix in some texts.
 
 Successive orientations
 =======================
@@ -456,11 +459,6 @@ rotate about.  For example, rotate :math:`B` with respect to :math:`A` through
 
    B.orient_axis(A, alpha, A.z)
 
-.. warning::
-
-   For older SymPy versions you'll need to use the more verbose ``B.orient(A,
-   'Axis', (alpha, A.z))``.
-
 Now the direction cosine matrix is automatically calculated and is returned
 with the ``.dcm()`` method:
 
@@ -641,11 +639,6 @@ create auxiliary reference frames :math:`B` and :math:`C`:
    D.orient_body_fixed(A, (psi, theta, phi), 'zxy')
 
    D.dcm(A)
-
-.. warning::
-
-   For older SymPy versions you'll need to use the more verbose ``B.orient(A,
-   'Body', (psi, theta, phi), rot_order='zxy')``.
 
 Euler_ technically only discovered 6 of the 12 rotation sets. One of these sets
 is shown in this figure:
