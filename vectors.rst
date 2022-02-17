@@ -568,7 +568,10 @@ of the vector is at :math:`P_1` and the tip is at :math:`P_2`.
    3. Is :math:`\bar{r}^{P_2/P_1}` vector function of :math:`q_3` and :math:`q_4` in N?
    4. Is :math:`\bar{r}^{P_3/P_2}` vector function of :math:`q_1` and :math:`q_2` in N?
 
-.. todo:: Add a solution to this, but I sort of do below.
+.. admonition:: Solution
+   :class: dropdown
+
+   See below how to use ``.free_symbols()`` to find the answers.
 
 We can now write position vectors between pairs of points as we move from the
 base of the lamp to the light bulb. We'll do so with SymPy Mechanics. First
