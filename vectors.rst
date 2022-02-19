@@ -660,9 +660,3 @@ Similarly, other vector functions can be inspected:
 .. jupyter-execute::
 
    R_P1_P4.free_symbols(N)
-
-References
-==========
-
-.. [Kane1985] Thomas R. Kane, and David A. Levinson. Dynamics, Theory and
-   Application.  McGraw Hill, 1985. http://hdl.handle.net/1813/638.

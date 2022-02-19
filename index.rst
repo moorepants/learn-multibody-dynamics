@@ -22,8 +22,10 @@ Table of Contents
    orientation
    vectors
    differentiation
+   angular
    notation
    glossary
+   references
    license
 
 Indices and tables
