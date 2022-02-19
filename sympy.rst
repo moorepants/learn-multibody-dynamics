@@ -547,8 +547,9 @@ Differentiation operates on each element of the matrix:
    mat3.diff(t)
 
 The Jacobian_ matrix of vector (column matrix) can be formed with the
-``.jacobian()`` method. This calculates the partial derivatives of each element
-in the vector with respect to a vector (or sequence) of variables.
+:external:py:meth:`~sympy.matrices.matrices.Matrix.jacobian` method. This
+calculates the partial derivatives of each element in the vector with respect
+to a vector (or sequence) of variables.
 
 .. jupyter-execute::
 
@@ -662,17 +663,21 @@ system:
 Simplification
 ==============
 
-The above result from ``LUsolve()`` is a bit complicated. SymPy has some
-functionality for automatically simplifying symbolic expressions. The function
-``simplify()`` will attempt to find a simpler version:
+The above result from
+:external:py:meth:`~sympy.matrices.matrices.Matrix.LUsolve` is a bit
+complicated. SymPy has some functionality for automatically simplifying
+symbolic expressions. The function
+:external:py:func:`~sympy.simplify.simplify.simplify` will attempt to find a
+simpler version:
 
 .. jupyter-execute::
 
    sm.simplify(A.LUsolve(b))
 
 But you'll have the best luck at simplifying if you use specific functions that
-target what type of expression you may have. The ``trigsimp()`` function only
-attempts trigonometric simplifications, for example:
+target what type of expression you may have. The
+:external:py:func:`~sympy.simplify.trigsimp.trigsimp` function only attempts
+trigonometric simplifications, for example:
 
 .. jupyter-execute::
 
@@ -688,7 +693,8 @@ As mentioned earlier, SymPy represents expressions as graphs (trees). Symbolic
 expressions can also be represented as `directed acyclic graphs`_ that contain
 only one node for each unique expression (unlike SymPy's trees which may have
 repeated expressions in nodes). These unique expressions, or "common
-sub-expressions", can be found with the ``cse()`` function. This function will
+sub-expressions", can be found with the
+:external:py:func:`~sympy.simplify.cse_main.cse` function. This function will
 provide a simpler form of the equations that minimizes the number of operations
 to compute the answer.
 
