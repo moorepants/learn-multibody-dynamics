@@ -261,6 +261,8 @@ found in the prior section for a simple rotation is a specific case of this
 more general definition. The direction cosine matrix is also referred to as a
 rotation matrix in some texts.
 
+.. _successive-orientations:
+
 Successive orientations
 =======================
 
