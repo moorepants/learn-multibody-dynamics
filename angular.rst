@@ -2,6 +2,11 @@
 Angular Kinematics
 ==================
 
+.. warning::
+
+   This page is a draft until February 25, 2022. Report issues at:
+   https://github.com/moorepants/learn-multibody-dynamics/issues
+
 Angular Velocity
 ================
 
@@ -200,6 +205,9 @@ The angular speed is then:
 
    B.ang_vel_in(A).magnitude()
 
+.. note:: :math:`\sqrt{x^2}=x` is only true if :math:`x` is real and
+   :math:`x>0`.
+
 .. todo:: Why doesn't this simplify to theta dot? I tried ``real=True`` on
    theta.
 
@@ -343,6 +351,8 @@ simplifying:
 
    u.express(A).dt(A).express(B).simplify()
 
+.. _addition-of-angular-velocity:
+
 Addition of Angular Velocity
 ============================
 
@@ -421,3 +431,137 @@ If we express our prior result in :math:`D` we see the results are the same:
 
 Angular Acceleration
 ====================
+
+The angular acceleration of :math:`B` when observed from :math:`A` is defined
+as:
+
+.. math::
+   :label: angular-acceleration
+
+   {}^A\bar{\alpha}^B := \frac{{}^Ad}{dt} {}^A\bar{\omega}^B
+
+:math:`{}^A\bar{\omega}^B` is simply a vector so we can time differentiate it
+with respect to frame :math:`A`. Using Eq. :math:numref:`deriv-arb-vector` we
+can write:
+
+.. math::
+
+   \frac{{}^Ad}{dt} {}^A\bar{\omega}^B & =
+   \frac{{}^Bd}{dt} {}^A\bar{\omega}^B + {}^A\bar{\omega}^B \times {}^A\bar{\omega}^B \\
+
+and since :math:`{}^A\bar{\omega}^B \times {}^A\bar{\omega}^B=0`:
+
+.. math::
+   :label: ang-acc-frame
+
+   \frac{{}^Ad}{dt} {}^A\bar{\omega}^B = \frac{{}^Bd}{dt} {}^A\bar{\omega}^B
+
+which is rather convenient.
+
+With SymPy Mechanics :math:`{}^A\bar{\alpha}^B` is found automatically with
+:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_acc_in` if
+the orientations are established. For a simple orientation:
+
+.. jupyter-execute::
+
+   theta = me.dynamicsymbols('theta')
+
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+   B.orient_axis(A, theta, A.z)
+   B.ang_acc_in(A)
+
+Similarly we can calcualte the derivative manually:
+
+.. jupyter-execute::
+
+   B.ang_vel_in(A).dt(A)
+
+and see that that Eq. :math:numref:`ang-acc-frame` holds:
+
+.. jupyter-execute::
+
+   B.ang_vel_in(A).dt(B)
+
+For a body fixed orientation we get:
+
+.. jupyter-execute::
+
+   psi, theta, phi = me.dynamicsymbols('psi, theta, varphi')
+
+   A = me.ReferenceFrame('A')
+   D = me.ReferenceFrame('D')
+   D.orient_body_fixed(A, (psi, theta, phi), 'YXY')
+
+   D.ang_acc_in(A).simplify()
+
+and with manual derivatives:
+
+.. jupyter-execute::
+
+   D.ang_vel_in(A).dt(A).simplify()
+
+.. jupyter-execute::
+
+   D.ang_vel_in(A).dt(D).simplify()
+
+Addition of Angular Velocity
+============================
+
+The calculation of angular acceleration is relatively simple, but the addition
+of angular velocities explained in Sec. :ref:`addition-of-angular-velocity`
+does not extend to angular accelerations.
+
+.. math::
+   :label: addition-angular-acceleration
+
+   {}^A\bar{\alpha}^Z \neq
+   {}^A\bar{\alpha}^B +
+   {}^B\bar{\alpha}^C +
+   \ldots +
+   {}^Y\bar{\alpha}^Z
+
+Coming back to the successive rotations that form a
+:math:`y\textrm{-}x\textrm{-}y` Euler rotation, we can see that the result is
+not the same as above:
+
+.. jupyter-execute::
+
+   psi, theta, phi = me.dynamicsymbols('psi, theta, varphi')
+
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+   C = me.ReferenceFrame('C')
+   D = me.ReferenceFrame('D')
+
+   B.orient_axis(A, psi, A.y)
+   C.orient_axis(B, theta, B.x)
+   D.orient_axis(C, phi, C.y)
+
+The simple angular acceleration of each successive rotation is shown:
+
+.. jupyter-execute::
+
+   A_alp_B = B.ang_acc_in(A)
+   A_alp_B
+
+.. jupyter-execute::
+
+   B_alp_C = C.ang_acc_in(B)
+   B_alp_C
+
+.. jupyter-execute::
+
+   C_alp_D = D.ang_acc_in(C)
+   C_alp_D
+
+Summing the successive angular accelerations gives this result:
+
+.. jupyter-execute::
+
+   A_alp_D = A_alp_B + B_alp_C + C_alp_D
+   A_alp_D.express(D).simplify()
+
+which is not equal to the correct, more complex, result above!
+
+.. warning:: Do not sum successive angular accelerations!
