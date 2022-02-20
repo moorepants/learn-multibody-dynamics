@@ -505,8 +505,8 @@ and with manual derivatives:
 
    D.ang_vel_in(A).dt(D).simplify()
 
-Addition of Angular Velocity
-============================
+Addition of Angular Acceleration
+================================
 
 The calculation of angular acceleration is relatively simple, but the addition
 of angular velocities explained in Sec. :ref:`addition-of-angular-velocity`
