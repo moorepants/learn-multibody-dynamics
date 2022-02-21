@@ -9,7 +9,7 @@ https://moorepants.github.io/learn-multibody-dynamics/
 Building the Website
 ====================
 
-Clone the repository:
+Clone the repository::
 
    git clone https://github.com/moorepants/learn-multibody-dynamics.git
    cd learn-multibody-dynamics
@@ -81,7 +81,9 @@ restructuredtext
 
 The text is written in reStructuredText and procesed with Sphinx.
 
-Heading order::
+Heading order:
+
+.. code:: rst
 
    =====
    Title
