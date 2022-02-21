@@ -39,6 +39,34 @@ You can also run sphinx-autobuild (updates while while you edit) with::
 
    make autobuild
 
+If you want to build one of the branches (for example a pull request), you'll
+need to fetch and checkout the branch. First fetch down all the branches::
+
+   git fetch origin
+
+Then checkout the branch (this command is only need the first time you check it
+out)::
+
+   git checkout -b branch-name origin/branch-name
+
+The branch name is listed on the pull request just under the title "...wants to
+merge X commits into master from branch-name." Or you can find all branches
+here: https://github.com/moorepants/learn-multibody-dynamics/branches
+
+Now run::
+
+   make clean
+   make html
+
+The ``make clean`` makes sure you don't keep any remnants from prior builds
+around before building the new branch.
+
+After you have a new branch setup you can switch between the master branch and
+any branch name with just::
+
+   git checkout master
+   git checkout branch-name
+
 License
 =======
 
