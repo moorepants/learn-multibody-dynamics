@@ -129,9 +129,9 @@ Resize Xournal++ svg exports to just the extents
 
 seems to require gui to open (`--without-gui` doesn't work with verbs)
 
-```bash
-inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit orientation-camera-gimbal.svg
-```
+.. code:: bash
+
+   inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit orientation-camera-gimbal.svg
 
 Live rebuilding with sphinx-autobuild
 -------------------------------------
