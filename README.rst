@@ -6,6 +6,12 @@ The source for the website "Learning Multibody Dynamics". Viewable at:
 
 https://moorepants.github.io/learn-multibody-dynamics/
 
+License
+=======
+
+The contents of this repository are licensed under the CC-BY 4.0 license. See
+``license.rst``.
+
 Building the Website
 ====================
 
@@ -16,7 +22,7 @@ Clone the repository::
 
 Install miniconda_ or Anaconda_.
 
-.. _minconda: https://docs.conda.io/en/latest/miniconda.html
+.. _miniconda: https://docs.conda.io/en/latest/miniconda.html
 .. _Anaconda: https://www.anaconda.com/products/individual
 
 Create a conda environment for the book::
@@ -73,21 +79,20 @@ pull down the latest changes with::
    git checkout branch-name
    git pull origin branch-name
 
-License
-=======
-
-The contents of this repository are licensed under the CC-BY 4.0 license. See
-``license.rst``.
-
 Editing Guide
 =============
 
 restructuredtext
 ----------------
 
-The text is written in reStructuredText and procesed with Sphinx.
+The text is written in reStructuredText and processed with Sphinx. The Sphinx
+reStructuredText documentation page is a good starting point to learn the
+syntax:
 
-Heading order:
+https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
+
+reStructuredText doesn't enforce a specific heading order, but this should be
+followed for this text:
 
 .. code:: rst
 
@@ -107,21 +112,26 @@ Heading order:
 jupyer-sphinx
 -------------
 
-Any page that includes ``.. jupyter-execute::`` directives will be processed
-with Jupyter Sphinx.
+We use jupyter-sphinx to transform each page with code cells into a Jupyter
+Notebook and Python script. Any page that includes ``.. jupyter-execute::``
+directives will be processed in this way. The documentation for jupyter-sphinx
+is here:
 
 https://jupyter-sphinx.readthedocs.io
 
 Xournal++
 ---------
 
-I draw the figures, one per page, in Xournal++.
+I draw the figures, one per page, in Xournal++. The I export as -> svg ->
+choose None for background and "current page" to get a single exported svg.
 
-Reize xournal++ svg exports to just the extents
+Resize Xournal++ svg exports to just the extents
 
-seems to require gui to open (--without-gui doesn't work with verbs)
+seems to require gui to open (`--without-gui` doesn't work with verbs)
 
+```bash
 inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit orientation-camera-gimbal.svg
+```
 
 Live rebuilding with sphinx-autobuild
 -------------------------------------
