@@ -81,7 +81,9 @@ restructuredtext
 
 The text is written in reStructuredText and procesed with Sphinx.
 
-Heading order::
+Heading order:
+
+.. code:: rst
 
    =====
    Title
