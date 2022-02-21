@@ -67,6 +67,12 @@ any branch name with just::
    git checkout master
    git checkout branch-name
 
+If the master branch or any other branch has been updated on github you can
+pull down the latest changes with::
+
+   git checkout branch-name
+   git pull origin branch-name
+
 License
 =======
 
