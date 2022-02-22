@@ -45,3 +45,14 @@ Notation
 :math:`{}^A\bar{\omega}^B`
    Angular velocity vector of reference frame or rigid body :math:`B` when
    observed from reference frame or rigid body :math:`A`.
+:math:`{}^A\bar{\alpha}^B`
+   Angular acceleration vector of reference frame or rigid body :math:`B` when
+   observed from reference frame or rigid body :math:`A`.
+:math:`\bar{r}^{P/O}`
+   Vector from point :math:`O` to point :math:`P`.
+:math:`{}^A\bar{v}^P`
+   Translational velocity of point :math:`P` when observed from reference frame
+   or rigid body :math:`A`.
+:math:`{}^A\bar{a}^P`
+   Translational accelertion of point :math:`P` when observed from reference
+   frame or rigid body :math:`A`.
