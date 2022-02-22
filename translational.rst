@@ -229,9 +229,11 @@ And with the :external:py:meth:`~sympy.physics.vector.point.Point.v2pt_theory`:
 Velocity One Point Thereom
 ==========================
 
-If you are interested in the velocity of a point :math:`R` that is moving in a reference
-frame :math:`B` and you know the velocity of a point in that reference frame
-then
+If you are interested in the velocity of a point :math:`R` that is moving in a
+reference frame :math:`B` and you know the velocity of a point :math:`S` in
+that reference frame then the velocity of :math:`R` is the sum of it's velocity
+when observed from :math:`B` and the velocity of a point fixed in :math:`B` at
+:math:`R`.
 
 .. math::
 
@@ -243,7 +245,7 @@ Combined with the the two point theorem for :math:`T` you get:
 
 .. math::
 
-   {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{T/S}
+   {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{R/S}
 
 If the pigeon :math:`R` is walking at a constant rate :math:`s` in the
 :math:`\hat{b}_x` direction, then we can calculate the velocity of the pigeon
@@ -291,6 +293,7 @@ The acceleration of point :math:`P` in reference frame :math:`A` is defined as
 
    {}^A\bar{a}^P := \frac{{}^A d {}^A\bar{v}^P}{dt}
 
+The acceleration of a point in a reference frame can be calculuated with
 :external:py:meth:`~sympy.physics.vector.point.Point.acc`:
 
 .. jupyter-execute::
@@ -300,14 +303,20 @@ The acceleration of point :math:`P` in reference frame :math:`A` is defined as
 Acceleration Two Point Thereom
 ==============================
 
+The two point thereom above has a corrollary in acceleration. Starting with the
+velocity theorem:
+
 .. math::
 
    {}^N\bar{v}^S = {}^A\bar{v}^P + {}^N\bar{\omega}^A \times \bar{r}^{S/P}
 
+the acceleration can be found by applying the definition of acceleration:
+
 .. math::
 
    {}^N\bar{a}^S
-   & = \frac{{}^N d\left({}^A\bar{v}^P\right)}{dt} +\frac{{}^N d \left( {}^N\bar{\omega}^A \times \bar{r}^{S/P}\right)}{dt} \\
+   & = \frac{{}^N d\left({}^A\bar{v}^P\right)}{dt} +
+       \frac{{}^N d \left( {}^N\bar{\omega}^A \times \bar{r}^{S/P}\right)}{dt} \\
    & = {}^N\bar{a}^P +
    \frac{{}^N d \left( {}^N\bar{\omega}^A \right)}{dt} \times \bar{r}^{S/P} +
    {}^N\bar{\omega}^A \times \frac{{}^N d  \left(\bar{r}^{S/P}\right)}{dt} \\
@@ -316,29 +325,43 @@ Acceleration Two Point Thereom
    {}^N\bar{\alpha}^A \times\bar{r}^{S/P}
    {}^N\bar{\omega}^A\times\left({}^N\bar{\omega}^A \times\bar{r}^{S/P}\right)
 
-Here we see clear the tangential component of acceleration:
+This presentation of the acceleration shows the tangential component of
+acceleration:
 
 .. math::
 
    {}^N\bar{\alpha}^A \times\bar{r}^{S/P}
 
+:math:`{}^N\bar{\alpha}^A` can be calculated
+with:external:py:meth:`~sympy.physics.vector.point.Point.ang_acc_in` and used
+to find this component:
+
 .. jupyter-execute::
 
    me.cross(A.ang_acc_in(N), S.pos_from(P))
 
-And the radial component:
+This presentation also shows the radial component of acceleration:
 
 .. math::
 
    {}^N\bar{\omega}^A\times\left({}^N\bar{\omega}^A \times\bar{r}^{S/P}\right)
 
+which can also be calculated using the methods of
+with:external:py:class:`~sympy.physics.vector.point.Point`:
+
 .. jupyter-execute::
 
    me.cross(A.ang_vel_in(N), me.cross(A.ang_vel_in(N), S.pos_from(P)))
 
+Lastly, :external:py:meth:`~sympy.physics.vector.point.Point.a2pt_theory`
+calculates the acceleration using this thereom with:
+
 .. jupyter-execute::
 
    S.a2pt_theory(P, N, A)
+
+where :math:`S` and :math:`P` are fixed in :math:`A` and the velocity is
+desired in :math:`N`.
 
 Acceleration One Point Thereom
 ==============================
@@ -347,7 +370,7 @@ Starting with the expanded one point theorem for velocity:
 
 .. math::
 
-   {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{T/S}
+   {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{R/S}
 
 and taking the time derivative in the frame :math:`N` the corollary formula for
 acceleration can be derived:
@@ -358,27 +381,27 @@ acceleration can be derived:
    & =
    \frac{{}^Nd {}^B\bar{v}^R}{dt} +
    \frac{{}^Nd {}^N\bar{v}^S}{dt} +
-   \frac{{}^Nd {}^N\bar{\omega}^B \times \bar{r}^{T/S}}{dt} \\
+   \frac{{}^Nd {}^N\bar{\omega}^B \times \bar{r}^{R/S}}{dt} \\
    & =
    \frac{{}^Nd {}^N\bar{v}^R }{dt} +
    {}^N\bar{\omega}^B \times {}^N\bar{v}^R +
    {}^N\bar{a}^S +
-   \frac{{}^Nd {}^N\bar{\omega}^B}{dt} \times \bar{r}^{T/S} +
-   {}^N\bar{\omega}^B \times \frac{{}^Nd \bar{r}^{T/S}}{dt} \\
+   \frac{{}^Nd {}^N\bar{\omega}^B}{dt} \times \bar{r}^{R/S} +
+   {}^N\bar{\omega}^B \times \frac{{}^Nd \bar{r}^{R/S}}{dt} \\
    & =
    {}^B\bar{a}^R +
    {}^N\bar{\omega}^B \times {}^B\bar{v}^R +
    {}^N\bar{a}^S +
-   {}^N\bar{\alpha}^B \times \bar{r}^{T/S} +
+   {}^N\bar{\alpha}^B \times \bar{r}^{R/S} +
    {}^N\bar{\omega}^B \times \left( {}^B\bar{v}^T +
-   {}^N\bar{\omega}^B \times \bar{r}^{T/S} \right) \\
+   {}^N\bar{\omega}^B \times \bar{r}^{R/S} \right) \\
    & =
    {}^B\bar{a}^R +
    2{}^N\bar{\omega}^B \times {}^B\bar{v}^R +
    {}^N\bar{a}^S +
-   {}^N\bar{\alpha}^B \times \bar{r}^{T/S} +
+   {}^N\bar{\alpha}^B \times \bar{r}^{R/S} +
    {}^N\bar{\omega}^B \times \left(
-   {}^N\bar{\omega}^B \times \bar{r}^{T/S} \right)
+   {}^N\bar{\omega}^B \times \bar{r}^{R/S} \right)
 
 This is equivalent to
 
@@ -400,8 +423,8 @@ that arises from :math:`R` moving in the rotating frame :math:`B`.
 
 .. jupyter-execute::
 
-   N_a_T = R.a2pt_theory(S, N, B)
-   N_a_T
+   N_a_R = R.a2pt_theory(S, N, B)
+   N_a_R
 
 .. jupyter-execute::
 
