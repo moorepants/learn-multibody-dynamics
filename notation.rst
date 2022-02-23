@@ -13,7 +13,7 @@ an example of a variable name that we use in the code.
    Vectors are indicated with a bar.
 :math:`\hat{u}`, ``uhat``
    Unit vectors are indicated with a hat.
-:math:`|\bar{v}|`
+:math:`|\bar{v}|`, ``v.magnitude()``
    Magnitude of a vector; Euclidean norm (2-norm).
 :math:`\bar{u} \cdot \bar{v}`, ``u.dot(v)``
    Dot product of two vectors.
@@ -44,20 +44,20 @@ an example of a variable name that we use in the code.
         \hat{b}_z
       \end{bmatrix}
 
-:math:`\frac{{}^A\partial \bar{v}}{\partial q}`
+:math:`\frac{{}^A\partial \bar{v}}{\partial q}`, ``v.diff(q, A)``
    Partial derivative of :math:`\bar{v}` with respect to :math:`q` when
    observed from :math:`A`.
-:math:`{}^A\bar{\omega}^B`
+:math:`{}^A\bar{\omega}^B`, ``A_w_B``
    Angular velocity vector of reference frame or rigid body :math:`B` when
    observed from reference frame or rigid body :math:`A`.
-:math:`{}^A\bar{\alpha}^B`
+:math:`{}^A\bar{\alpha}^B`, ``A_alp_B``
    Angular acceleration vector of reference frame or rigid body :math:`B` when
    observed from reference frame or rigid body :math:`A`.
-:math:`\bar{r}^{P/O}`
+:math:`\bar{r}^{P/O}`, ``r_O_P``
    Vector from point :math:`O` to point :math:`P`.
-:math:`{}^A\bar{v}^P`
+:math:`{}^A\bar{v}^P`, ``A_v_P``
    Translational velocity of point :math:`P` when observed from reference frame
    or rigid body :math:`A`.
-:math:`{}^A\bar{a}^P`
+:math:`{}^A\bar{a}^P`, ``A_a_P``
    Translational accelertion of point :math:`P` when observed from reference
    frame or rigid body :math:`A`.
