@@ -2,23 +2,28 @@
 Notation
 ========
 
-:math:`x`
+This explains the notation in the book. The mathmatic symbol is shown and then
+an example of a variable name that we use in the code.
+
+.. todo:: Add the notation that is in the hand drawn figures.
+
+:math:`x`, ``x``
    Scalars are normal font.
-:math:`\bar{v}`
+:math:`\bar{v}`, ``v``
    Vectors are indicated with a bar.
-:math:`\hat{u}`
+:math:`\hat{u}`, ``uhat``
    Unit vectors are indicated with a hat.
 :math:`|\bar{v}|`
    Magnitude of a vector; Euclidean norm (2-norm).
-:math:`\bar{u} \cdot \bar{v}`
+:math:`\bar{u} \cdot \bar{v}`, ``u.dot(v)``
    Dot product of two vectors.
-:math:`\bar{u} \times \bar{v}`
+:math:`\bar{u} \times \bar{v}`, ``u.cross(v)``
    Cross product of two vectors.
-:math:`\bar{u} \otimes \bar{v}`
+:math:`\bar{u} \otimes \bar{v}`, ``u.outer(v)``
    Outer product of two vectors.
-:math:`\mathbf{R}`
+:math:`\mathbf{R}`, ``R``
    Matrices are capitalized letters in bold font.
-:math:`{}^A\mathbf{C}^B`
+:math:`{}^A\mathbf{C}^B`, ``A_C_B``
    Direction cosine matrix relating reference frames (or rigid bodies)
    :math:`B` and :math:`A` where this relation between the right handed
    mutually perpendicular unit vectors fixed in the two reference frames that
