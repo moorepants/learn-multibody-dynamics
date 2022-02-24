@@ -7,6 +7,12 @@ Translational Kinematics
    This page is a draft until February 25, 2022. Report issues at:
    https://github.com/moorepants/learn-multibody-dynamics/issues
 
+.. note::
+
+   You can download this example as a Python script:
+   :jupyter-download:script:`translation` or Jupyter Notebook:
+   :jupyter-download:notebook:`translation`.
+
 In multibody dynamics, we are going to need to calculate the translation
 velocities and accelerations of points. We will learn that the acceleration of
 the mass centers of the bodies in a multibody system will be a primary
@@ -22,6 +28,7 @@ in reference frame :math:`A` the translational velocity vector of point
 :math:`P` is defined as:
 
 .. math::
+   :label: translational-velocity-definition
 
    {}^A\bar{v}^P := \frac{{}^Ad\bar{r}^{P/O}}{dt}
 
@@ -79,10 +86,10 @@ configuration diagram:
    frames :math:`N`, :math:`A`, and :math:`B` are shown. Also note the pigeon
    trying to walk across one edge of the plate at point :math:`R`.
 
-   Pigeon SVG from https://freesvg.org/vector-clip-art-of-homing-pigeon Public DOmain
+   Pigeon SVG from https://freesvg.org/vector-clip-art-of-homing-pigeon Public Domain
 
-Now let's use SymPy Mechanics to calculate
-:math:numref:`point-velocity-two-frames`.
+Now let's use SymPy Mechanics to calculate Eq.
+:math:numref:`point-velocity-two-frames` for this example.
 
 .. jupyter-execute::
 
@@ -118,6 +125,7 @@ Write out the position vectors to :math:`P`, :math:`S`, and :math:`Q`:
 Now calculate:
 
 .. math::
+   :label: trans-vel-with-cross
 
    {}^N\bar{v}^S = {}^A\bar{v}^S + {}^N\bar{\omega}^A\times\bar{r}^{S/O}
 
@@ -127,7 +135,7 @@ Now calculate:
 
    (r_O_P + r_P_S).dt(A)
 
-The second term does have a value and can be found with:
+The second term does have a value and can be found with these two components:
 
 .. jupyter-execute::
 
@@ -136,6 +144,8 @@ The second term does have a value and can be found with:
 .. jupyter-execute::
 
    me.cross(A.ang_vel_in(N), r_O_P + r_P_S)
+
+giving :math:`{}^N\bar{v}^S`:
 
 .. jupyter-execute::
 
@@ -201,8 +211,10 @@ statements can be found with the
 
    Q.vel(N)
 
-:external:py:meth:`~sympy.physics.vector.point.Point.vel` method will calculate
-velocities naively, i.e. not necessarily give the simplest form.
+.. warning::
+
+   :external:py:meth:`~sympy.physics.vector.point.Point.vel` method will
+   calculate velocities naively, i.e. not necessarily give the simplest form.
 
 Velocity Two Point Theorem
 ==========================
@@ -260,10 +272,11 @@ the velocity of point :math:`S` to this version of the velocity vector:
    S.vel(N)
 
 Both points :math:`S` and :math:`Q` are fixed in reference frame :math:`B` and
-we just caclulated :math:`{}^N\bar{v}^S`, so we can use the two point theorem
+we just calculated :math:`{}^N\bar{v}^S`, so we can use the two point theorem
 to find the velocity of :math:`Q` in a similar fashion by applying:
 
 .. math::
+   :label: trans-vel-cross-for-Q
 
    {}^N\bar{v}^Q = {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{Q/S}
 
@@ -305,14 +318,16 @@ observed from :math:`B` and the velocity of a point fixed in :math:`B` at
 :math:`R` at that instant of time. Put into mathematical terms we get:
 
 .. math::
+   :label: velocity-one-point
 
    {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^T
 
-where point :math:`T` is a point that conicides with :math:`R` at that instant.
+where point :math:`T` is a point that coincides with :math:`R` at that instant.
 
 Combined with the two point theorem for :math:`T`, you can write:
 
 .. math::
+   :label: velocity-one-point-expanded
 
    {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{R/S}
 
@@ -358,7 +373,7 @@ And finally the velocity of the pigeon when observed from :math:`N`:
 There is a method
 :external:py:meth:`~sympy.physics.vector.point.Point.v1pt_theory` that does
 this calculation. It does require that the point :math:`S`'s, in our case,
-velocity is fixed in :math:`B`, before making the computation:
+velocity is fixed in :math:`B` before making the computation:
 
 .. jupyter-execute::
 
@@ -374,6 +389,7 @@ Translational Acceleration
 The acceleration of point :math:`P` in reference frame :math:`A` is defined as
 
 .. math::
+   :label: translational-acceleration-definition
 
    {}^A\bar{a}^P := \frac{{}^A d {}^A\bar{v}^P}{dt}
 
@@ -391,12 +407,14 @@ The two point theorem above has a corollary for acceleration. Starting with the
 velocity theorem:
 
 .. math::
+   :label: velocity-two-point-repeat
 
    {}^N\bar{v}^S = {}^N\bar{v}^P + {}^N\bar{\omega}^A \times \bar{r}^{S/P}
 
 the acceleration can be found by applying the definition of acceleration:
 
 .. math::
+   :label: acceleration-two-point
 
    {}^N\bar{a}^S
    & = \frac{{}^N d\left({}^N\bar{v}^P\right)}{dt} +
@@ -413,11 +431,12 @@ This presentation of the acceleration shows the tangential component of
 acceleration:
 
 .. math::
+   :label: tangential
 
    {}^N\bar{\alpha}^A \times\bar{r}^{S/P}
 
 :math:`{}^N\bar{\alpha}^A` can be calculated with
-:external:py:meth:`~sympy.physics.vector.point.Point.ang_acc_in`:
+:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_acc_in`:
 
 .. jupyter-execute::
 
@@ -426,11 +445,13 @@ acceleration:
 And this presentation also shows the radial component of acceleration:
 
 .. math::
+   :label: radial
 
    {}^N\bar{\omega}^A\times\left({}^N\bar{\omega}^A \times\bar{r}^{S/P}\right)
 
 which can also be calculated using the methods of with
-:external:py:class:`~sympy.physics.vector.point.Point`:
+:external:py:class:`~sympy.physics.vector.point.Point` and
+:external:py:class:`~sympy.physics.vector.frame.ReferenceFrame`:
 
 .. jupyter-execute::
 
@@ -464,6 +485,7 @@ The velocity one point theorem also can be time differentiated to see its
 acceleration form. Starting with the expanded one point theorem for velocity:
 
 .. math::
+   :label: vel-one-point-repeat
 
    {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{R/S}
 
@@ -471,6 +493,7 @@ and taking the time derivative in the frame :math:`N` the corollary formula for
 acceleration can be derived:
 
 .. math::
+   :label: acceleration-one-point
 
    {}^N\bar{a}^R
    & =

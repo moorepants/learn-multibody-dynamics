@@ -2,8 +2,8 @@
 Notation
 ========
 
-This explains the notation in the book. The mathmatic symbol is shown and then
-an example of a variable name that we use in the code.
+This explains the notation in the book. The mathematical symbol is shown and
+then an example of a variable name that we use in the code.
 
 .. todo:: Add the notation that is in the hand drawn figures.
 
@@ -13,6 +13,11 @@ an example of a variable name that we use in the code.
    Vectors are indicated with a bar.
 :math:`\hat{u}`, ``uhat``
    Unit vectors are indicated with a hat.
+:math:`A`, ``A``
+   Reference frame :math:`A`.
+:math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`, ``A.x``, ``A.y``, ``A.z``
+   Right handed mutually perpendicular unit vectors fixed in reference frame
+   :math:`A`.
 :math:`|\bar{v}|`, ``v.magnitude()``
    Magnitude of a vector; Euclidean norm (2-norm).
 :math:`\bar{u} \cdot \bar{v}`, ``u.dot(v)``
@@ -47,6 +52,8 @@ an example of a variable name that we use in the code.
 :math:`\frac{{}^A\partial \bar{v}}{\partial q}`, ``v.diff(q, A)``
    Partial derivative of :math:`\bar{v}` with respect to :math:`q` when
    observed from :math:`A`.
+:math:`\frac{{}^A d \bar{v}}{dt}`, ``v.dt(A)``
+   Time derivative of :math:`\bar{v}` when observed from :math:`A`.
 :math:`{}^A\bar{\omega}^B`, ``A_w_B``
    Angular velocity vector of reference frame or rigid body :math:`B` when
    observed from reference frame or rigid body :math:`A`.
@@ -59,5 +66,5 @@ an example of a variable name that we use in the code.
    Translational velocity of point :math:`P` when observed from reference frame
    or rigid body :math:`A`.
 :math:`{}^A\bar{a}^P`, ``A_a_P``
-   Translational accelertion of point :math:`P` when observed from reference
+   Translational acceleration of point :math:`P` when observed from reference
    frame or rigid body :math:`A`.

@@ -7,6 +7,12 @@ Angular Kinematics
    This page is a draft until February 25, 2022. Report issues at:
    https://github.com/moorepants/learn-multibody-dynamics/issues
 
+.. note::
+
+   You can download this example as a Python script:
+   :jupyter-download:script:`angular` or Jupyter Notebook:
+   :jupyter-download:notebook:`angular`.
+
 Angular Velocity
 ================
 
