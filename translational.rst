@@ -10,8 +10,8 @@ Translational Kinematics
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`translation` or Jupyter Notebook:
-   :jupyter-download:notebook:`translation`.
+   :jupyter-download:script:`translational` or Jupyter Notebook:
+   :jupyter-download:notebook:`translational`.
 
 In multibody dynamics, we are going to need to calculate the translation
 velocities and accelerations of points. We will learn that the acceleration of
