@@ -316,7 +316,7 @@ Combined with the two point theorem for :math:`T`, you can write:
 
    {}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{R/S}
 
-In our kinetic sculpture example, ff the pigeon :math:`R` is walking at a
+In our kinetic sculpture example, if the pigeon :math:`R` is walking at a
 distance :math:`s` in the :math:`\hat{b}_x` direction from the upper right
 corner, then we can calculate the velocity of the pigeon when observed from the
 :math:`N` reference frame. First establish the position of :math:`R`:
