@@ -42,3 +42,9 @@ Notation
 :math:`\frac{{}^A\partial \bar{v}}{\partial q}`
    Partial derivative of :math:`\bar{v}` with respect to :math:`q` when
    observed from :math:`A`.
+:math:`{}^A\bar{\omega}^B`
+   Angular velocity vector of reference frame or rigid body :math:`B` when
+   observed from reference frame or rigid body :math:`A`.
+:math:`{}^A\bar{\alpha}^B`
+   Angular acceleration vector of reference frame or rigid body :math:`B` when
+   observed from reference frame or rigid body :math:`A`.

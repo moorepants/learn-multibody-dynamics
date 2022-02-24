@@ -136,6 +136,8 @@ above by expressing it fully in :math:`A` and simplifying:
 
    v.diff(alpha, A).express(A).simplify()
 
+.. _product-rule:
+
 Product Rule
 ============
 
