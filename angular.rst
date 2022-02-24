@@ -19,6 +19,7 @@ perpendicular unit vectors fixed in :math:`B` then the angular velocity of
 :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
 
 .. math::
+   :label: angular-velocity-definition
 
    {}^A\bar{\omega}^B :=
    \left(\frac{{}^A d\hat{b}_y}{dt} \cdot \hat{b}_z\right) \hat{b}_x +
@@ -31,6 +32,7 @@ there are these general relationships among the unit vectors of each frame (see
 :ref:`direction-cosine-matrix`):
 
 .. math::
+   :label: unit-vector-general-relation
 
   \hat{b}_x & = c_{xx} \hat{a}_x + c_{xy} \hat{a}_y + c_{xz} \hat{a}_z \\
   \hat{b}_y & = c_{yx} \hat{a}_x + c_{yy} \hat{a}_y + c_{yz} \hat{a}_z \\
@@ -239,6 +241,9 @@ vector is:
 
    ``simplify()`` shouldn't be needed here: https://github.com/sympy/sympy/issues/23130
 
+:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_vel_in` gives
+the same result:
+
 .. jupyter-execute::
 
    B.ang_vel_in(A).simplify()
@@ -251,20 +256,24 @@ that the time derivative of a unit vector **fixed in** :math:`B` is related to
 :math:`B`'s angular velocity as so:
 
 .. math::
+   :label: time-derivative-fixed-unit-vector
 
    \frac{{}^Ad\hat{b}_x}{dt} = {}^A\bar{\omega}^B \times \hat{b}_x
 
-This shows that the derivative is always normal to the rotating unit vector
-(the magnitude of the unit vector is constant) and scales with the magnitude of
-the angular velocity:
+This shows that the derivative is always normal to the rotating unit vector,
+because the magnitude of the unit vector is constant, and the derivative scales
+with the magnitude of the angular velocity:
 
 .. math::
+   :label: time-derivative-unit-vector-scalar-mag
 
-   \frac{{}^Ad\hat{b}_x}{dt} = |{}^A\bar{\omega}^B|\left( {}^A\hat{\omega}^B \times \hat{b}_x \right)
+   \frac{{}^Ad\hat{b}_x}{dt} = \left| {}^A\bar{\omega}^B \right| \left( {}^A\hat{\omega}^B \times \hat{b}_x \right)
 
-Now if vector :math:`\bar{v} = v\hat{b}_x` then:
+Now if vector :math:`\bar{v} = v\hat{b}_x` and :math:`v` is constant with
+respect to time then:
 
 .. math::
+   :label: time-derivative-fixed-vector
 
    \frac{{}^A d\bar{v}}{dt} =
    v({}^A\bar{\omega}^B \times \hat{b}_x) =
@@ -275,11 +284,12 @@ This extends to any vector **fixed in** :math:`B` and observed from :math:`A`,
 making the time derivative equal to the cross product of the angular velocity
 of :math:`B` in :math:`A` with the vector.
 
-Now, if :math:`\bar{w}` is a vector that is **not fixed in** :math:`B` we
+Now, if :math:`\bar{u}` is a vector that is **not fixed in** :math:`B` we
 return to the product rule in Section :ref:`product-rule`. First expressed
-:math:`\bar{w}` in :math:`B`:
+:math:`\bar{u}` in :math:`B`:
 
 .. math::
+   :label: time-varying-vector
 
    \bar{u} = u_1\hat{b}_x + u_2\hat{b}_y + u_3\hat{b}_z
 
@@ -340,7 +350,7 @@ and then :math:`{}^A\bar{\omega}^B\times\bar{u}`:
    A_w_B = B.ang_vel_in(A)
    A_w_B
 
-:math:`\frac{{}^Ad\bar{u}}{dt}`: is then:
+:math:`\frac{{}^Ad\bar{u}}{dt}` is then:
 
 .. jupyter-execute::
 
@@ -439,7 +449,7 @@ The angular acceleration of :math:`B` when observed from :math:`A` is defined
 as:
 
 .. math::
-   :label: angular-acceleration
+   :label: angular-acceleration-definition
 
    {}^A\bar{\alpha}^B := \frac{{}^Ad}{dt} {}^A\bar{\omega}^B
 
@@ -448,6 +458,7 @@ with respect to frame :math:`A`. Using Eq. :math:numref:`deriv-arb-vector` we
 can write:
 
 .. math::
+   :lable: angular-acceleration-cross
 
    \frac{{}^Ad}{dt} {}^A\bar{\omega}^B & =
    \frac{{}^Bd}{dt} {}^A\bar{\omega}^B + {}^A\bar{\omega}^B \times {}^A\bar{\omega}^B \\
