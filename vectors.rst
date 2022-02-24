@@ -56,6 +56,7 @@ Unit vectors are vectors with a magnitude of :math:`1`. If the magnitude of
 has an associated unit vector with the same orientation and sense, found by:
 
 .. math::
+   :label: unit-vector-def
 
    \hat{u} = \frac{\bar{u}}{|\bar{u}|}
 
@@ -84,6 +85,7 @@ from :math:`A`. There are then three unique scalar functions
 :math:`v_x,v_y,v_z` of :math:`q_1,q_2,\ldots,q_n` such that:
 
 .. math::
+   :label: vector-with-meas-nums
 
    \bar{v} = v_x \hat{a}_x + v_y \hat{a}_y + v_y \hat{a}_y
 
@@ -93,6 +95,7 @@ Since the components are mutually perpendicular the measure number can also be
 found from the dot product of :math:`\bar{v}` and the respective unit vector:
 
 .. math::
+   :label: meas-num-dots
 
    \bar{v} = (\bar{v} \cdot \hat{a}_x) \hat{a}_x +
              (\bar{v} \cdot \hat{a}_y) \hat{a}_y +
@@ -160,6 +163,7 @@ And the associated column matrix form:
 Vector addition works by adding the measure numbers of each common component:
 
 .. math::
+   :label: vector-add
 
    \bar{w} = & a \hat{n}_x + b \hat{n}_y + c \hat{n}_z \\
    \bar{x} = & d \hat{n}_x + e \hat{n}_y + f \hat{n}_z \\
@@ -248,6 +252,7 @@ Dot Product
 The dot product, which yields a scalar quantity, is defined as:
 
 .. math::
+   :label: vector-dot
 
    \bar{v} \cdot \bar{w} = |\bar{v}| |\bar{w}| \cos{\theta}
 
@@ -255,6 +260,7 @@ where :math:`\theta` is the angle between the two vectors. For arbitrary
 measure numbers this results in the following:
 
 .. math::
+   :vector: dot-rules
 
    \bar{v} = & v_x \hat{n}_x + v_y \hat{n}_y + v_z \hat{n}_z \\
    \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
@@ -365,7 +371,10 @@ Cross Product
 
 The `cross product`_, which yields a vector quantity, is defined as:
 
-.. math::  \bar{v} \times \bar{w} = |\bar{v}|\bar{w}| \sin\theta \hat{u}
+.. math::
+   :label: vector-cross
+
+   \bar{v} \times \bar{w} = |\bar{v}|\bar{w}| \sin\theta \hat{u}
 
 where :math:`\theta` is the angle between the two vectors, and :math:`\hat{u}`
 is the unit vector perpendicular to both :math:`\bar{v}` and :math:`\bar{w}`
@@ -373,6 +382,7 @@ whose sense is given by the right-hand rule. For arbitrary measure numbers this
 results in the following:
 
 .. math::
+   :label: vector-cross-rules
 
    \bar{v} = & v_x \hat{n}_x + v_y \hat{n}_y + v_z \hat{n}_z \\
    \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
@@ -437,6 +447,7 @@ The method form is equivalent:
    Given three points located in reference frame :math:`N` by:
 
    .. math::
+      :label: triangle
 
       \bar{p}_1 = 23 \hat{n}_x - 12 \hat{n}_y \\
       \bar{p}_2 = 16 \hat{n}_x + 2 \hat{n}_y - 4 \hat{n}_z \\
@@ -525,15 +536,15 @@ configuration. Here are two examples:
 With those in mind, :numref:`vectors-desk-lamp` shows a possible diagram of a
 desk lamp with all necessary configuration information present. The base
 :math:`N` is fixed to the desk. The first linkage :math:`A` is oriented with
-respect to :math:`N` by a :math:`z\textrm{-}x` body fixed rotation through
+respect to :math:`N` by a :math:`z\textrm{-}x` body fixed orientation through
 angles :math:`q_1` and :math:`q_2`. Point :math:`P_1` is fixed in :math:`N` and
 is located at the center of the base. Linkage :math:`A` is defined by points
 :math:`P_1` and :math:`P_2` which are separated by length :math:`l_1` along the
-:math:`\hat{a}_z` direction. Linkage :math:`B` rotates simply with respect to
+:math:`\hat{a}_z` direction. Linkage :math:`B` orients simply with respect to
 :math:`A` about :math:`\hat{a}_x=\hat{b}_x` through angle :math:`q_3` and point
 :math:`P_3` is :math:`l_2` from :math:`P_2` along :math:`\hat{b}_z`. Lastly,
-the lamp head :math:`C` rotates relative to :math:`B` by a :math:`x\textrm{-}z`
-body fixed rotation through angles :math:`q_4` and :math:`q_5`. The center of
+the lamp head :math:`C` orients relative to :math:`B` by a :math:`x\textrm{-}z`
+body fixed orientation through angles :math:`q_4` and :math:`q_5`. The center of
 the light bulb :math:`P_4` is located relative to :math:`P_3` by the distances
 :math:`l_3` along :math:`\hat{c}_z` and :math:`l_4` along :math:`-\hat{c}_y`.
 
@@ -547,6 +558,7 @@ We will use the following notation for vectors that indicate the relative
 position between two points:
 
 .. math::
+   :label: position-vect-p2p1
 
    \bar{r}^{P_2/P_1}
 
@@ -581,15 +593,15 @@ create the necessary symbols and reference frames.
    B = me.ReferenceFrame('B')
    C = me.ReferenceFrame('C')
 
-Now establish the orientations, starting with :math:`A`'s rotation relative to
+Now establish the orientations, starting with :math:`A`'s orientation relative to
 :math:`N`.
 
 .. jupyter-execute::
 
    A.orient_body_fixed(N, (q1, q2, 0), 'ZXZ')
 
-Notice that the unneeded third simple rotation angle was set to zero. Set a
-simple rotation for :math:`B` relative to :math:`A`.
+Notice that the unneeded third simple orientation angle was set to zero. Set a
+simple orientation for :math:`B` relative to :math:`A`.
 
 .. jupyter-execute::
 

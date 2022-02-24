@@ -23,6 +23,7 @@ derivatives of :math:`\bar{v}` in :math:`A` with respect to :math:`q_r` where
 :math:`r=1\ldots n` can be formed with the following definition:
 
 .. math::
+   :label: partial-deriv-def
 
    \frac{{}^A\partial \bar{v}}{\partial q_r} :=
    \sum_{i=1}^3 \frac{\partial v_i}{\partial q_r} \hat{a}_i
@@ -37,6 +38,7 @@ Given :math:`\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z` the above
 definition expands to:
 
 .. math::
+   :label: partial-measure
 
    \frac{{}^A\partial \bar{v}}{\partial q_r} =
    \frac{\partial v_x}{\partial q_r} \hat{a}_x +
@@ -48,6 +50,7 @@ of a single variable, most often time :math:`t`. If that is the case, the
 partial derivative reduces to a single variate derivative:
 
 .. math::
+   :label: single-var-deriv-def
 
    \frac{{}^A d \bar{v}}{dt} := \sum_{i=1}^3 \frac{d v_i}{dt} \hat{a}_i
 
@@ -152,6 +155,7 @@ derivative of :math:`\bar{v}` in :math:`N` requires the use of the product rule
 when taking the partial derivative. For example:
 
 .. math::
+   :label: product-rule-big
 
    \frac{{}^N\partial \bar{v}}{\partial q_r} =
    \frac{{}^N\partial v_x}{\partial q_r}\hat{a}_x + v_x \frac{{}^N\partial \hat{a}_x}{\partial q_r} +
@@ -162,6 +166,7 @@ The three similar terms with scalar derivatives have the same interpretation of
 the ones in the prior section.
 
 .. math::
+   :label: product-rule-part-01
 
    \frac{{}^N\partial v_x}{\partial q_r}\hat{a}_x,
    \frac{{}^N\partial v_y}{\partial q_r}\hat{a}_y,
@@ -172,6 +177,7 @@ derivative of a unit vector depends on how it changes. But unit vectors do not
 change in length, only in orientation.
 
 .. math::
+   :label: product-rule-part-02
 
    v_x \frac{{}^N\partial \hat{a}_x}{\partial q_r},
    v_y \frac{{}^N\partial \hat{a}_y}{\partial q_r},
@@ -184,6 +190,7 @@ the nature of this partial derivative in :math:`N`.
 The product rule also applies to the dot and cross products:
 
 .. math::
+   :label: product-dot-cross
 
    \frac{\partial}{\partial q_r}(\bar{v} \cdot \bar{w}) = &
    \frac{\partial \bar{v}}{\partial q_r} \cdot \bar{w} +
@@ -197,6 +204,7 @@ and generalizes to any series of products. Let :math:`G=f_1 \cdots f_n` be a
 series of products, then:
 
 .. math::
+   :label: product-rule-gen
 
    \frac{\partial G}{\partial q_r} =
    \frac{\partial f_1}{\partial q_r}\cdot f_2 \cdots f_n +
@@ -216,6 +224,7 @@ respect to :math:`A` and then with respect to :math:`B`, the second partial
 derivative is:
 
 .. math::
+   :label: second-derivative
 
    \frac{{}^B\partial}{\partial q_s} \left(\frac{{}^A\partial\bar{v}}{\partial
    q_r}\right)
@@ -223,6 +232,7 @@ derivative is:
 Second partials in different reference frames do not necessarily commute:
 
 .. math::
+   :label: no-commute-second-deriv
 
    \frac{{}^B\partial}{\partial q_s} \left(\frac{{}^A\partial\bar{v}}{\partial
    q_r}\right)
@@ -244,6 +254,7 @@ implicit functions of time, i.e. :math:`q_r(t)`. When that is the case the
 chain rule can be used to take total derivatives:
 
 .. math::
+   :label: time-deriv
 
    \frac{{}^A d\bar{v}}{dt} =
    \sum_{i=1}^n \frac{{}^A\partial \bar{v}}{\partial q_r(t)} \frac{d q_r(t)}{dt} +
