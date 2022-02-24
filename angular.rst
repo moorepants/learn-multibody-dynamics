@@ -10,12 +10,13 @@ Angular Kinematics
 Angular Velocity
 ================
 
-If the relative orientation of two reference frames change with respect to
-time, then we can calculate the angular velocity :math:`{}^A\bar{\omega}^B` of
-reference frame :math:`B` in reference frame :math:`A`. If
-:math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are right handed mutually perpendicular
-unit vectors fixed in :math:`B` then the angular velocity of :math:`B` in
-:math:`A` is defined as ([Kane1985]_, pg. 16):
+In Ch. :ref:`orientation` we learned that reference frames can be oriented
+relative to each other. If the relative orientation of two reference frames
+change with respect to time, then we can calculate the angular velocity
+:math:`{}^A\bar{\omega}^B` of reference frame :math:`B` in reference frame
+:math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are right handed mutually
+perpendicular unit vectors fixed in :math:`B` then the angular velocity of
+:math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
 
 .. math::
 
@@ -26,7 +27,8 @@ unit vectors fixed in :math:`B` then the angular velocity of :math:`B` in
 
 If :math:`B` is oriented with respect to :math:`A` and mutually perpendicular
 unit vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` are fixed in :math:`A` then
-there are these general relationships among the unit vectors of each frame:
+there are these general relationships among the unit vectors of each frame (see
+:ref:`direction-cosine-matrix`):
 
 .. math::
 
@@ -117,8 +119,8 @@ The angular velocity vector is then:
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
    A_w_B
 
-Simple Rotations
-================
+Simple Orientations
+===================
 
 For a simple orientation about the :math:`z` axis through :math:`\theta` the
 direction cosine matrix is:
@@ -135,15 +137,6 @@ direction cosine matrix is:
 Following the same pattern as before the angular velocity of :math:`B` in
 :math:`A` can be formed:
 
-.. note::
-
-   Don't confuse the left and right superscripts on direction cosine matrices
-   and angular velocities. :math:`{}^B\mathbf{C}^A` describes the orientation
-   of :math:`B` rotated with respect to :math:`A` and the mapping of vectors in
-   :math:`A` to vectors expressed in :math:`B`. Whereas
-   :math:`{}^A\bar{\omega}^B` describes the angular velocity of :math:`B` when
-   observed from :math:`A`.
-
 .. jupyter-execute::
 
    A = me.ReferenceFrame('A')
@@ -157,8 +150,17 @@ Following the same pattern as before the angular velocity of :math:`B` in
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
    A_w_B.simplify()
 
-The angular velocity of a simple rotation is simply the time rate of change of
-:math:`\theta` about :math:`\hat{b}_z`, the axis of the simple rotation. SymPy
+.. note::
+
+   Don't confuse the left and right superscripts on direction cosine matrices
+   and angular velocities. :math:`{}^B\mathbf{C}^A` describes the orientation
+   of :math:`B` rotated with respect to :math:`A` and the mapping of vectors in
+   :math:`A` to vectors expressed in :math:`B`. Whereas
+   :math:`{}^A\bar{\omega}^B` describes the angular velocity of :math:`B` when
+   observed from :math:`A`.
+
+The angular velocity of a simple orientation is simply the time rate of change of
+:math:`\theta` about :math:`\hat{b}_z`, the axis of the simple orientation. SymPy
 Mechanics offers the
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_vel_in`
 method for automatically calculating the angular velocity if a direction cosine
@@ -174,21 +176,21 @@ matrix exists between the two reference frames:
 .. todo:: Should this return the angular velocity expressed in the body fixed
    frame?
 
-A simple rotation and associated simple angular velocity can be formulated for
-any arbitrary rotation axis vector, not just one of the three mutually
+A simple orientation and associated simple angular velocity can be formulated for
+any arbitrary orientation axis vector, not just one of the three mutually
 perpendicular unit vectors as shown above. There is a simple angular velocity
 between two reference frames :math:`A` and :math:`B` if there exists a single
 unit vector :math:`\hat{k}` which is fixed in both :math:`A` and :math:`B` for
 some finite time. If this is the case, then :math:`{}^A\bar{\omega}^B = \omega
 \hat{k}` where :math:`\omega` is the time rate of change of the angle
 :math:`\theta` between a line fixed in :math:`A` and another line fixed in
-:math:`B` both of which are perpendicular to the rotation axis :math:`\hat{k}`.
+:math:`B` both of which are perpendicular to the orientation axis :math:`\hat{k}`.
 We call :math:`\omega=\dot{\theta}` the angular speed of :math:`B` in
 :math:`A`.
 
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_axis` can
 take any arbitrary vector fixed in :math:`A` and :math:`B` to establish the
-rotation:
+orientation:
 
 .. jupyter-execute::
 
@@ -211,11 +213,11 @@ The angular speed is then:
 .. todo:: Why doesn't this simplify to theta dot? I tried ``real=True`` on
    theta.
 
-Body Fixed Rotations
-====================
+Body Fixed Orientations
+=======================
 
-Similarly, if you establish a Euler :math:`z\textrm{-}x\textrm{-}z` orientation
-with angles :math:`\psi,\theta,\varphi` respectively, then the angular velocity
+If you establish a Euler :math:`z\textrm{-}x\textrm{-}z` orientation with
+angles :math:`\psi,\theta,\varphi` respectively, then the angular velocity
 vector is:
 
 .. jupyter-execute::
@@ -297,7 +299,7 @@ The derivative in another reference frame :math:`A` is then:
    {}^A\bar{\omega}^B\times\bar{u}
 
 We can show that Eq. :math:numref:`deriv-arb-vector` holds with an example.
-Take a :math:`z\textrm{-}x` rotation and an arbitrary vector that is not fixed
+Take a :math:`z\textrm{-}x` orientation and an arbitrary vector that is not fixed
 in :math:`B`:
 
 .. jupyter-execute::
@@ -344,7 +346,7 @@ and then :math:`{}^A\bar{\omega}^B\times\bar{u}`:
 
    u.dt(B) + me.cross(A_w_B, u)
 
-We can show that first results is equivalent by expressing in :math:`B` and
+We can show that the first result is equivalent by expressing in :math:`B` and
 simplifying:
 
 .. jupyter-execute::
@@ -359,7 +361,8 @@ Addition of Angular Velocity
 Similar to the relationship in direction cosine matrices of successive
 orientations (Sec. :ref:`successive-orientations`), there is a relationship
 among the angular velocities of successively oriented reference frames
-([Kane1985]_, pg. 24).
+([Kane1985]_, pg. 24) but it is tied to the addition of vectors instead of
+multiplication of matrices.
 
 .. math::
    :label: addition-angular-velocity
@@ -386,7 +389,7 @@ We can demonstrate this by creating three simple orientations for a Euler
    C.orient_axis(B, theta, B.x)
    D.orient_axis(C, phi, C.y)
 
-The simple angular velocity of each successive rotation is shown:
+The simple angular velocity of each successive orientation is shown:
 
 .. jupyter-execute::
 
@@ -521,7 +524,7 @@ does not extend to angular accelerations.
    \ldots +
    {}^Y\bar{\alpha}^Z
 
-Coming back to the successive rotations that form a
+Coming back to the successive orientations that form a
 :math:`y\textrm{-}x\textrm{-}y` Euler rotation, we can see that the result is
 not the same as above:
 
@@ -538,7 +541,7 @@ not the same as above:
    C.orient_axis(B, theta, B.x)
    D.orient_axis(C, phi, C.y)
 
-The simple angular acceleration of each successive rotation is shown:
+The simple angular acceleration of each successive orientations is shown:
 
 .. jupyter-execute::
 
@@ -562,6 +565,10 @@ Summing the successive angular accelerations gives this result:
    A_alp_D = A_alp_B + B_alp_C + C_alp_D
    A_alp_D.express(D).simplify()
 
-which is not equal to the correct, more complex, result above!
+which is not equal to the correct, more complex, result:
+
+.. jupyter-execute::
+
+   D.ang_acc_in(A).express(D).simplify()
 
 .. warning:: Do not sum successive angular accelerations!

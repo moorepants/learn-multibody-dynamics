@@ -1,3 +1,5 @@
+.. _orientation:
+
 ===============================
 Orientation of Reference Frames
 ===============================
@@ -185,6 +187,8 @@ between reference frames. Following the notation convention, this holds:
 .. math::
 
    {}^N\mathbf{C}^A = \left({}^A\mathbf{C}^N\right)^{-1} = \left({}^A\mathbf{C}^N\right)^T
+
+.. _direction-cosine-matrix:
 
 Direction Cosine Matrix
 =======================
