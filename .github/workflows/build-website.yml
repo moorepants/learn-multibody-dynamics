@@ -50,10 +50,10 @@ jobs:
       run: |
         echo ${{ steps.fc.outputs.comment-id }}
         echo ${{ steps.fc.outputs.comment-author }}
-        echo ${{ steps.fc.outputs.comment-id }} == ''
+        echo ${{ steps.fc.outputs.comment-id == ''}}
 
     - name: Create comment
-      if: (steps.fc.outputs.comment-id == '') && ${{ github.event_name == 'pull_request' }}
+      if: ${{ steps.fc.outputs.comment-id == '' }} && ${{ github.event_name == 'pull_request' }}
       id: crea
       uses: peter-evans/create-or-update-comment@v1
       with:
