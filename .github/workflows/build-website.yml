@@ -45,6 +45,19 @@ jobs:
         comment-author: 'github-actions[bot]'
         body-includes: htmlpreview
 
+   - name: Find Comment
+      uses: peter-evans/find-comment@v1
+      id: fc-2
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: htmlpreview
+      run: |
+        echo ${{ steps.fc.outputs.comment-id }}
+        echo ${{ steps.fc.outputs.comment-body }}
+        echo ${{ steps.fc.outputs.comment-author }}
+        echo ${{ steps.fc.outputs.comment-id }} == ''
+
     - name: Create comment
       if: (steps.fc.outputs.comment-id == '') && ${{ github.event_name == 'pull_request' }}
       id: crea
@@ -55,9 +68,6 @@ jobs:
           Preview this pull request here:
 
           https://moorepants.github.io/htmlpreview/?https://github.com/moorepants/learn-multibody-dynamics/blob/preview-pr-${{ github.event.pull_request.number }}/index.html
-      run: |
-        echo ${{ steps.fc.outputs.comment-id }}
-        echo ${{ steps.fc.outputs.comment-id }} == ''
 
     - name: Deploy the website
       if: ${{ github.event_name == 'push' }}
