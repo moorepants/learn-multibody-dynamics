@@ -37,12 +37,13 @@ jobs:
         make html
 
     - name: Find Comment
+      if: ${{ github.event_name == 'pull_request' }}
       uses: peter-evans/find-comment@v1
       id: fc
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: "Preview this pull request here:"
+        body-includes: htmlpreview
 
     - name: Create comment
       if: ${{ github.event_name == 'pull_request' }} && steps.fc.outputs.comment-id == ''
