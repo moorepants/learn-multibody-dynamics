@@ -20,18 +20,47 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         sudo apt install graphviz
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
+
     - name: Build the website
       run: |
         make html
+
+    - name: Find Comment
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: peter-evans/find-comment@v1
+      id: fc
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: htmlpreview
+
+    - name: Print Comment
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        echo ${{ steps.fc.outputs.comment-id }}
+        echo ${{ steps.fc.outputs.comment-author }}
+        echo ${{ steps.fc.outputs.comment-id == ''}}
+
+    - name: Create comment
+      if: ${{ steps.fc.outputs.comment-id == '' && github.event_name == 'pull_request' }}
+      id: crea
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          Preview this pull request here https://moorepants.github.io/htmlpreview/?https://github.com/moorepants/learn-multibody-dynamics/blob/preview-pr-${{ github.event.pull_request.number }}/index.html
+
     - name: Deploy the website
       if: ${{ github.event_name == 'push' }}
       run: |
@@ -39,3 +68,11 @@ jobs:
         git config --global user.email moorepants@users.noreply.github.com
         git remote add deploy "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/moorepants/learn-multibody-dynamics.git"
         ghp-import -o -r deploy -b gh-pages -m "Updated via Github Actions [skip ci]" -p _build/html --no-jekyll
+
+    - name: Deploy the PR
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        git config --global user.name "Github Actions"
+        git config --global user.email moorepants@users.noreply.github.com
+        git remote add deploy "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/moorepants/learn-multibody-dynamics.git"
+        ghp-import -o -r deploy -b preview-pr-${{ github.event.pull_request.number }} -m "Updated via Github Actions [skip ci]" -p _build/html --no-jekyll

@@ -16,15 +16,18 @@ Table of Contents
    :caption: Contents:
 
    introduction
+   license
    install
    jupyter-python
    sympy
    orientation
    vectors
    differentiation
+   angular
+   translational
    notation
    glossary
-   license
+   references
 
 Indices and tables
 ==================
