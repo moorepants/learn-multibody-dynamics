@@ -47,6 +47,7 @@ jobs:
 
     - name: Create comment
       if: ${{ github.event_name == 'pull_request' }} && (steps.fc.outputs.comment-id == '')
+      id: crea
       uses: peter-evans/create-or-update-comment@v1
       with:
         issue-number: ${{ github.event.pull_request.number }}
