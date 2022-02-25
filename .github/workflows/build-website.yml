@@ -45,14 +45,13 @@ jobs:
         comment-author: 'github-actions[bot]'
         body-includes: htmlpreview
 
-   - name: Find Comment
-     uses: peter-evans/find-comment@v1
-     id: fc-2
-     run: |
-       echo ${{ steps.fc.outputs.comment-id }}
-       echo ${{ steps.fc.outputs.comment-body }}
-       echo ${{ steps.fc.outputs.comment-author }}
-       echo ${{ steps.fc.outputs.comment-id }} == ''
+    - name: Print Comment
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        echo ${{ steps.fc.outputs.comment-id }}
+        echo ${{ steps.fc.outputs.comment-body }}
+        echo ${{ steps.fc.outputs.comment-author }}
+        echo ${{ steps.fc.outputs.comment-id }} == ''
 
     - name: Create comment
       if: (steps.fc.outputs.comment-id == '') && ${{ github.event_name == 'pull_request' }}
