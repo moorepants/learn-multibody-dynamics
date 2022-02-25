@@ -40,9 +40,9 @@ there are these general relationships among the unit vectors of each frame (see
 .. math::
    :label: unit-vector-general-relation
 
-  \hat{b}_x & = c_{xx} \hat{a}_x + c_{xy} \hat{a}_y + c_{xz} \hat{a}_z \\
-  \hat{b}_y & = c_{yx} \hat{a}_x + c_{yy} \hat{a}_y + c_{yz} \hat{a}_z \\
-  \hat{b}_z & = c_{zx} \hat{a}_x + c_{zy} \hat{a}_y + c_{zz} \hat{a}_z
+   \hat{b}_x & = c_{xx} \hat{a}_x + c_{xy} \hat{a}_y + c_{xz} \hat{a}_z \\
+   \hat{b}_y & = c_{yx} \hat{a}_x + c_{yy} \hat{a}_y + c_{yz} \hat{a}_z \\
+   \hat{b}_z & = c_{zx} \hat{a}_x + c_{zy} \hat{a}_y + c_{zz} \hat{a}_z
 
 We can create these equations in SymPy to demonstrate how to work with the
 definition of angular velocity.
