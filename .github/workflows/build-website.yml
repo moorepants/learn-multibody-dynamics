@@ -46,7 +46,7 @@ jobs:
         body-includes: htmlpreview
 
     - name: Create comment
-      if: ${{ github.event_name == 'pull_request' }} && (steps.fc.outputs.comment-id == '')
+      if: (steps.fc.outputs.comment-id == '') && ${{ github.event_name == 'pull_request' }}
       id: crea
       uses: peter-evans/create-or-update-comment@v1
       with:
@@ -55,6 +55,9 @@ jobs:
           Preview this pull request here:
 
           https://moorepants.github.io/htmlpreview/?https://github.com/moorepants/learn-multibody-dynamics/blob/preview-pr-${{ github.event.pull_request.number }}/index.html
+      run: |
+        echo ${{ steps.fc.outputs.comment-id }}
+        echo ${{ steps.fc.outputs.comment-id }} == ''
 
     - name: Deploy the website
       if: ${{ github.event_name == 'push' }}
