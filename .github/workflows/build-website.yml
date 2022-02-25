@@ -49,7 +49,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
       run: |
         echo ${{ steps.fc.outputs.comment-id }}
-        echo ${{ steps.fc.outputs.comment-body }}
+        #echo ${{ steps.fc.outputs.comment-body }}
         echo ${{ steps.fc.outputs.comment-author }}
         echo ${{ steps.fc.outputs.comment-id }} == ''
 
@@ -59,8 +59,7 @@ jobs:
       uses: peter-evans/create-or-update-comment@v1
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          "Preview this pull request here: https://moorepants.github.io/htmlpreview/?https://github.com/moorepants/learn-multibody-dynamics/blob/preview-pr-${{ github.event.pull_request.number }}/index.html"
+        body: "Preview this pull request here: https://moorepants.github.io/htmlpreview/?https://github.com/moorepants/learn-multibody-dynamics/blob/preview-pr-${{ github.event.pull_request.number }}/index.html"
 
     - name: Deploy the website
       if: ${{ github.event_name == 'push' }}
