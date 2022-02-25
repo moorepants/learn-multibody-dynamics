@@ -46,7 +46,7 @@ jobs:
         body-includes: htmlpreview
 
     - name: Create comment
-      if: ${{ github.event_name == 'pull_request' }} && steps.fc.outputs.comment-id == ''
+      if: ${{ github.event_name == 'pull_request' }} && (steps.fc.outputs.comment-id == '')
       uses: peter-evans/create-or-update-comment@v1
       with:
         issue-number: ${{ github.event.pull_request.number }}
