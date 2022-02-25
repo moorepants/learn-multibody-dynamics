@@ -260,7 +260,7 @@ where :math:`\theta` is the angle between the two vectors. For arbitrary
 measure numbers this results in the following:
 
 .. math::
-   :vector: dot-rules
+   :label: dot-rules
 
    \bar{v} = & v_x \hat{n}_x + v_y \hat{n}_y + v_z \hat{n}_z \\
    \bar{w} = & w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\

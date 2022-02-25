@@ -464,7 +464,7 @@ with respect to frame :math:`A`. Using Eq. :math:numref:`deriv-arb-vector` we
 can write:
 
 .. math::
-   :lable: angular-acceleration-cross
+   :label: angular-acceleration-cross
 
    \frac{{}^Ad}{dt} {}^A\bar{\omega}^B & =
    \frac{{}^Bd}{dt} {}^A\bar{\omega}^B + {}^A\bar{\omega}^B \times {}^A\bar{\omega}^B \\
