@@ -203,7 +203,7 @@ Undefined functions can also be used in expressions:
 SymPy has a large number of elementary and special functions. See the SymPy
 `documentation on functions`_ for more information. For example, here is an
 expression that uses
-:external:py:func:`~sympy.functions.elementary.trigonometric.sin`,
+:external:py:class:`~sympy.functions.elementary.trigonometric.sin`,
 :external:py:class:`~sympy.functions.elementary.complexes.Abs`, and
 :external:py:func:`~sympy.functions.elementary.miscellaneous.sqrt`:
 
@@ -270,9 +270,9 @@ returns a string. ``print()`` will display that string:
 
    print(expr3)
 
-SymPy also has a "pretty printer"
-(:external:py:func:`~sympy.printing.pretty.pretty.pprint`) that makes use of
-unicode symbols to provide a form that more closely resembles typeset math:
+SymPy also has a "pretty printer" (:external:py:func:`pprint()
+<sympy.printing.pretty.pretty.pretty_print>`) that makes use of unicode symbols
+to provide a form that more closely resembles typeset math:
 
 .. jupyter-execute::
 
@@ -399,7 +399,7 @@ This dictionary can then be passed to ``.xreplace()``:
 
 Notice how the square root and fraction do not automatically reduce to their
 decimal equivalents. To do so, you must use the
-:external:py:func:`~sympy.core.evalf.evalf` method. This method will
+:external:py:meth:`~sympy.core.evalf.EvalfMixin.evalf` method. This method will
 evaluate an expression to an arbitrary number of decimal points.  You provide
 the number of decimal places and the substitution dictionary to evaluate:
 
@@ -471,7 +471,7 @@ Matrices
 SymPy supports matrices of expressions and linear algebra. Many of the
 operations needed in multibody dynamics are more succinctly formulated with
 matrices and linear algebra. Matrices can be created by passing nested lists to
-the :external:py:class:`~sympy.matrices.dense.Matrix` object. For example:
+the :external:py:class:`Matrix() <sympy.matrices.dense.MutableDenseMatrix>` object. For example:
 
 .. jupyter-execute::
 
@@ -547,7 +547,7 @@ Differentiation operates on each element of the matrix:
    mat3.diff(t)
 
 The Jacobian_ matrix of vector (column matrix) can be formed with the
-:external:py:meth:`~sympy.matrices.matrices.Matrix.jacobian` method. This
+:external:py:meth:`~sympy.matrices.matrices.DenseMatrix.jacobian` method. This
 calculates the partial derivatives of each element in the vector with respect
 to a vector (or sequence) of variables.
 
@@ -664,7 +664,7 @@ Simplification
 ==============
 
 The above result from
-:external:py:meth:`~sympy.matrices.matrices.Matrix.LUsolve` is a bit
+:external:py:meth:`~sympy.matrices.matrices.MutableDenseMatrix.LUsolve` is a bit
 complicated. SymPy has some functionality for automatically simplifying
 symbolic expressions. The function
 :external:py:func:`~sympy.simplify.simplify.simplify` will attempt to find a
