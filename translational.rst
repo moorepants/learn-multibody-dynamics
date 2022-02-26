@@ -76,6 +76,7 @@ acceleration of various points on this sculpture. First, we sketch a
 configuration diagram:
 
 .. figure:: figures/translational-kinetic-sculpture.svg
+   :align: center
 
    Sketch of one of the two plates mounted on the rotating T-support. Reference
    frames :math:`N`, :math:`A`, and :math:`B` are shown. Also note the pigeon

@@ -5,10 +5,10 @@ dependencies:
   - jupyter-sphinx
   - matplotlib
   - numpy
-  - pydata-sphinx-theme
   - scipy
   - sphinx
   - sphinx-autobuild
+  - sphinx-material
   - sphinx-togglebutton
   - sphinx_rtd_theme
   - sympy >=1.9

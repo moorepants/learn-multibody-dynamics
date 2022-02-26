@@ -20,6 +20,7 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = 'Learn Multibody Dynamics'
+html_title = project
 copyright = '2022, Jason K. Moore'
 author = 'Jason K. Moore'
 
@@ -30,12 +31,12 @@ author = 'Jason K. Moore'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx_togglebutton',  # this has to be first so that the material css doesn't clobber its css
     'jupyter_sphinx',
     'sphinx.ext.graphviz',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.todo',
-    'sphinx_togglebutton',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -74,7 +75,26 @@ intersphinx_mapping = {
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'pydata_sphinx_theme'
+html_theme = 'sphinx_material'
+html_sidebars = {
+    "**": ["logo-text.html", "globaltoc.html", "localtoc.html",
+           "searchbox.html"]
+
+}
+html_theme_options = {
+    'base_url': 'https://moorepants.github.io/learn-multibody-dynamics/',
+    'color_primary': 'teal',
+    'color_accent': 'deep-orange',  # hover color of hyperlinks
+    # could do this if it is a GH pages build, takes too long for autobuild
+    #'css_minify': True,
+    #'html_minify': True,
+    'repo_name': 'Learn Multibody Dynamics',
+    'repo_url': 'https://github.com/moorepants/learn-multibody-dynamics/',
+    "logo_icon": "&#xe52f",
+    'master_doc': False,  # Doesn't show duplicate title
+    'nav_links': [{"href": "index", "internal": True, "title": "Home"}],
+}
+html_css_files = ['css/custom.css']  # seems to load after the material css
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
