@@ -2,8 +2,8 @@ ghp-import
 jupyter-sphinx
 matplotlib
 numpy
-pydata-sphinx-theme
 scipy
 sphinx
+sphinx-material
 sphinx-togglebutton
 sympy
