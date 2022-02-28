@@ -54,13 +54,18 @@ Consider the linkage shown below
    fy = sm.trigsimp(loop.dot(N.y))
    fy
 
-These two equations are called configuration constraints. Configuration
-constraints take the form:
+These are two nonlinear equations. For example, :math:`q_2` and :math:`q_3` can
+be solved for in terms of :math:`q_1`. We would then say that :math:`q_2` and
+:math:`q_3` depend on :math:`q_1`. These two equations are called holonomic
+constraints, or configuration constraints. Holonomic constraints take the form:
 
 .. math::
    :label: configuration-constraint
 
-   \bar{f}(q_1, \ldots, q_n) = 0 \textrm{where} \bar{f} \in \mathbb{R}^N
+   \bar{f}(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f} \in \mathbb{R}^N
+
+These constraints are functions of configuration variables (lengths and
+angles).
 
 In general, points are located in Euclidean space by three scalars, one scalar
 for each Cartesian coordinate.
