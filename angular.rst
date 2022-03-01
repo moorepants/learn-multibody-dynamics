@@ -14,10 +14,10 @@ Angular Velocity
 In Ch. :ref:`orientation` we learned that reference frames can be oriented
 relative to each other. If the relative orientation of two reference frames
 change with respect to time, then we can calculate the angular velocity
-:math:`{}^A\bar{\omega}^B` of reference frame :math:`B` in reference frame
-:math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are right handed mutually
-perpendicular unit vectors fixed in :math:`B` then the angular velocity of
-:math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
+:math:`{}^A\bar{\omega}^B` of reference frame :math:`B` when observed from
+reference frame :math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are right
+handed mutually perpendicular unit vectors fixed in :math:`B` then the angular
+velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
 
 .. math::
    :label: angular-velocity-definition
@@ -98,7 +98,7 @@ unit vector in :math:`A` with a unit vector in :math:`B`. :math:`\frac{{}^A
 
    B.y.express(A).dt(A)
 
-Each of the measure numbers of :math:`{}^B\bar{\omega}^A` are then:
+Each of the measure numbers of :math:`{}^A\bar{\omega}^B` are then:
 
 .. jupyter-execute::
 
@@ -210,8 +210,8 @@ The angular speed is then:
 
    B.ang_vel_in(A).magnitude()
 
-.. note:: :math:`\sqrt{x^2}=x` is only true if :math:`x` is real and
-   :math:`x>0`.
+.. note:: This result should be :math:`|\dot{\theta}|`. This is a bug in SymPy,
+   see https://github.com/sympy/sympy/issues/23173 for more info.
 
 .. todo:: Why doesn't this simplify to theta dot? I tried ``real=True`` on
    theta.
