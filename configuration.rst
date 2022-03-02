@@ -7,15 +7,21 @@ Four-Bar Linkage
 
 Consider the linkage shown below:
 
-.. _configuration-four-bar
+.. _configuration-four-bar:
 .. figure:: figures/configuration-four-bar.svg
    :align: center
 
-This is a planar `four bar linkage`_ with reference frames :math:`N,A,B,C`
+   a) Shows for links :math:`A`, :math:`B`, :math:`C`, and :math:`N` with
+   respective lengths :math:`l_a,l_b,l_c,l_n` connected at points
+   :math:`P_1,P_2,P_3,P_4`. b) Shows the same linkage that has been seperated
+   at point :math:`P_4` to make it an open chain of links.
+
+This is a planar `four-bar linkage`_ with reference frames :math:`N,A,B,C`
 attached to each bar. Four bar linkages are used in a wide variety of
-mechanisms. One you may be familiar with is this rear supsension on a mountain
+mechanisms. One you may be familiar with is this rear suspension on a mountain
 bicycle:
 
+.. _mountain-bike-suspension:
 .. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/MtbFrameGeometry_FSR.png/320px-MtbFrameGeometry_FSR.png
    :align: center
 
@@ -24,11 +30,14 @@ bicycle:
 
    Cartemere, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
 
-A four bar linkage is an example of a *closed kinematic loop*. The the case of
+.. _four-bar linkage: https://en.wikipedia.org/wiki/Four-bar_linkage
+
+A four bar linkage is an example of a *closed kinematic loop*. The case of
 :numref:`configuration-four-bar` there are two vector paths to point
 :math:`P_4`:
 
 .. math::
+   :label: vector-loop
 
    \bar{r}^{P_4/P_1} = \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3}
 
@@ -42,7 +51,7 @@ the open loop vector equations to points that should coincide.
    import sympy.physics.mechanics as me
    me.init_vprinting()
 
-Setup the variables, refrence frames, and points:
+Setup the variables, reference frames, and points:
 
 .. jupyter-execute::
 
@@ -84,6 +93,7 @@ Now, declare a vector for the other path to :math:`P_4`:
 Now we can form the left hand side of the following equation:
 
 .. math::
+   :label: constraint-expression
 
    \bar{r}^{P_4/P_1} - \left( \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} \right) = 0
 
@@ -111,7 +121,7 @@ associated with a pair of unit vectors in the plane of the mechanism:
 
 For the loop to close, these two expressions must equal zero for all values
 :math:`q_1,q_2,q_3`. These are two nonlinear equations in three time varying
-varialbes. A solution, sometimes analytically but likely only numerical, can be
+variables. A solution, sometimes analytically but likely only numerical, can be
 found if we solve for two of the time varying variables. For example,
 :math:`q_2` and :math:`q_3` can be solved for in terms of :math:`q_1`. We would
 then say that :math:`q_2` and :math:`q_3` depend on :math:`q_1`. These two
@@ -122,15 +132,19 @@ constraints take the form:
 .. math::
    :label: configuration-constraint
 
-   \bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f} \in \mathbb{R}^N
+   \bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^N
 
 These constraints are functions of configuration variables: time varying angles
-and distances.
+and distances. In our case of the four-bar linkage:
 
-.. jupyter-execute::
+.. math::
 
-   q4 = sm.trigsimp(C.x.angle_between(N.x))
-   q4
+   \bar{f}_h(q_1, q_2, q_3) =
+   \begin{bmatrix}
+   l_{a} \cos{\left(q_{1} \right)} + l_{b} \cos{\left(q_{1} + q_{2} \right)} + l_{c} \cos{\left(q_{1} + q_{2} + q_{3} \right)} - l_{n} \\
+   l_{a} \sin{\left(q_{1} \right)} + l_{b} \sin{\left(q_{1} + q_{2} \right)} + l_{c} \sin{\left(q_{1} + q_{2} + q_{3} \right)}
+   \end{bmatrix}
+   \textrm{ where } \bar{f}_h \in \mathbb{R}^2
 
 General Holonomic Constraints
 =============================
@@ -138,19 +152,126 @@ General Holonomic Constraints
 If you consider the points :math:`P_1,P_2,\ldots,P_v` as unconstrained in
 Euclidean space, then we would need :math:`3v` constraint equations to fully
 constrain all of the points. For our four points in the four-bar linkage we
-would need 12 constraints to lock the points in place. Each of the four points
-has an implied constraint that keeps it in the plane:
+would need 12 constraints to lock all the points in place. The figure below
+will be used to illustrate the general idea of constraining configuration.
+
+.. _configuration-constraints:
+.. figure:: figures/configuration-constraints.svg
+   :align: center
+   :width: 400px
+
+Starting with a), there are the four points in 3D Euclidean space fully
+unconstrained. Moving to b), each of the four points can be then constrained to
+be in a plane with:
 
 .. math::
+   :label: planar-constraints
 
-   \bar{r}^{P_1/O}\cdot\hat{n}_z =
-   \bar{r}^{P_2/O}\cdot\hat{n}_z =
-   \bar{r}^{P_3/O}\cdot\hat{n}_z =
+   \bar{r}^{P_1/O}\cdot\hat{n}_z = 0 \\
+   \bar{r}^{P_2/O}\cdot\hat{n}_z = 0 \\
+   \bar{r}^{P_3/O}\cdot\hat{n}_z = 0 \\
    \bar{r}^{P_4/O}\cdot\hat{n}_z = 0
 
-where :math:`O` is a point fixed in :math:`N`. :math:`P_1` and :math:`P_4` are
-fixed in :math:`N` so that makes for 4 more constraint equations. With only the
-z constraint the three bars can translate in x and y and also rotate. Attaching
-:math:`A` to :math:`N` adds two constraints, then :math:`B` to :math:`A`
-another two, and :math:`C` to :math:`B` another 2, and finally :math:`C` to
-:math:`N` another 2.
+where :math:`O` is a point fixed in :math:`N`. This applies four constraints
+leaving 8 coordinates for the planar location of the points. Now at c) we
+constrain the points with:
+
+.. math::
+   :label: length-constraints
+
+   |\bar{r}^{P_2/P_1}| = l_a \\
+   |\bar{r}^{P_3/P_2}| = l_b \\
+   |\bar{r}^{P_4/P_3}| = l_c \\
+   |\bar{r}^{P_4/P_1}| = l_n
+
+These four constraint equations keep the points within the specified distances
+from each other leaving 4 coordinates free. In d) point :math:`P_1` is fixed
+relative to :math:`O` with 2 scalar constraints:
+
+.. math::
+   :label: p1-constraint
+
+   \bar{r}^{P_1/P_0} = 0
+
+Finally in e), :math:`P_4` is constrained with the single scalar:
+
+.. math::
+   :label: p4-constraint
+
+   \bar{r}^{P_4/P_1}\cdot \hat{n}_y = 0
+
+These 11 constraints leave a single free coordinate to describe the orientation
+of :math:`A`, :math:`B`, and :math:`C` in :math:`N`. When we originally
+sketched :numref:`configuration-four-bar` most of these constraints were
+implied, i.e. we drew a planar mechanism with points :math:`P_1` and
+:math:`P_4` fixed in :math:`N`, but formally there are 12 coordinates needed to
+locate the four points and 11 constraints that constrain them to have the
+configuration of a four-bar linkage.
+
+A general holonomic constraint for a set of :math:`v` points with Cartesian
+coordinates is then ([Kane1985]_ pg. 35):
+
+.. math::
+   :math: holonomic-cartesian
+
+   f_h(x_1, y_1, z_1, \ldots, x_v, y_v, z_v, t) = 0
+
+Generalized Coordinates
+=======================
+
+If a set of :math:`v` points are constrained with :math:`M` holonomic
+constraints then only :math:`n` of the Cartesian coordinates are independent
+of each other. The number of independent coordinates is found with
+([Kane1985]_ pg 37):
+
+.. math::
+   :label: num-gen-coord
+
+   n := 3v - M
+
+These :math:`n` independent Cartesian coordinates can also be expressed as
+:math:`n` functions of time :math:`q_1(t),q_2(t),\ldots,q_n(t)` in such a way
+that the constraint equations are always satisfied. These functions
+:math:`q_1(t),q_2(t),\ldots,q_n(t)` are called *generalized coordinates* and
+there are :math:`n` independent coordinates that typically minimize the number
+of explicit constraint equations needed to describe the system's configuration
+at all times :math:`t`.
+
+Take this simple pendulum with points :math:`O` and :math:`P` as an example:
+
+.. figure:: figures/configuration-pendulum.svg
+   :align: center
+   :width: 400px
+
+If the pendulum length :math:`l` is constant and the orientation between
+:math:`A` and :math:`N` can change, then the location of :math:`P` relative to
+:math:`O` can be described with the Cartesian coordinates :math:`x` and
+:math:`y`. It should be clear that :math:`x` and :math:`y` depend on each other
+for this system. The constraint relationship is between those two coordinates
+is:
+
+.. math::
+   :label: pendulum-length-constraint
+
+   x^2 + y^2 = l^2
+
+This implies that only one coordinate is independent, i.e. :math:`n=1`. More
+formally, the two points give :math:`3v=3(2)=6` and there are 2 constraints for
+the planar motion of each point, 2 constraints fixing :math:`O` in :math:`N`
+and 1 constraint fixing the distance from :math:`O` to :math:`P`, making
+:math:`M=5` and thus confirming our intuition :math:`n=6-5=1`.
+
+But there may be functions of time that relieve us from having to consider Eq.
+:math:numref:`pendulum-length-constraint`. For example, these two coordinates
+can also be written as as functions of the angle :math:`q`:
+
+.. math::
+   :label: xy-func-of-q
+
+   x = \cos q \\
+   y = \sin q
+
+and if we describe the configuration with only :math:`q`, the constraint is
+implicitly satisfied. :math:`q` is then a generalized coordinate because it
+satisfies :math:`n=1` and the constraint is implicitly taken care of.
+
