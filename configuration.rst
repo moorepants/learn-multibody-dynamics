@@ -135,8 +135,22 @@ and distances.
 General Holonomic Constraints
 =============================
 
-If you consider each of the points :math:`P_1,P_2,P_3,P_4` 
+If you consider the points :math:`P_1,P_2,\ldots,P_v` as unconstrained in
+Euclidean space, then we would need :math:`3v` constraint equations to fully
+constrain all of the points. For our four points in the four-bar linkage we
+would need 12 constraints to lock the points in place. Each of the four points
+has an implied constraint that keeps it in the plane:
 
-points are located in Euclidean space by three scalars, one scalar
-for each Cartesian coordinate.
+.. math::
 
+   \bar{r}^{P_1/O}\cdot\hat{n}_z =
+   \bar{r}^{P_2/O}\cdot\hat{n}_z =
+   \bar{r}^{P_3/O}\cdot\hat{n}_z =
+   \bar{r}^{P_4/O}\cdot\hat{n}_z = 0
+
+where :math:`O` is a point fixed in :math:`N`. :math:`P_1` and :math:`P_4` are
+fixed in :math:`N` so that makes for 4 more constraint equations. With only the
+z constraint the three bars can translate in x and y and also rotate. Attaching
+:math:`A` to :math:`N` adds two constraints, then :math:`B` to :math:`A`
+another two, and :math:`C` to :math:`B` another 2, and finally :math:`C` to
+:math:`N` another 2.
