@@ -37,8 +37,19 @@ sense. Vectors are equal when all three characteristics are the same.
    Vectors will be drawn as follows:
 
    .. figure:: figures/vectors-figure-notation.svg
+      :align: center
 
       Various ways vectors will be drawn in figures.
+
+   .. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Right-hand_grip_rule.svg/240px-Right-hand_grip_rule.svg.png
+      :align: center
+
+      See `right-hand rule <https://en.wikipedia.org/wiki/Right-hand_rule>`_
+      for a refresher on right handed systems.
+
+      Right_hand_rule_simple.png: The original uploader was Schorschi2 at
+      German Wikipedia.derivative work: Wizard191, Public domain, via Wikimedia
+      Commons
 
 Vectors have these mathematical properties:
 
@@ -132,7 +143,7 @@ Now introduce some scalar variables:
 
    a, b, c, d, e, f = sm.symbols('a, b, c, d, e, f')
 
-The simplest 2D non-unit vector is made up of a single component:
+The simplest 3D non-unit vector is made up of a single component:
 
 .. jupyter-execute::
 
@@ -286,7 +297,9 @@ The dot product is often used to determine:
   (called the projection):
   :math:`\mbox{proj}_\hat{u} \bar{v} = \bar{v} \cdot \hat{u}`
 - if two vectors are perpendicular: :math:`\bar{v} \cdot \bar{w} = 0 \mbox{ if }\bar{v} \perp \bar{w}`
-- Compute power: :math:`P = \bar{F} \cdot \bar{v}`
+- Compute power: :math:`P = \bar{F} \cdot \bar{v}`, where :math:`\bar{F}` is a
+  force vector and :math:`\bar{v}` is the velocity of the point the force is
+  acting on.
 
 Also, dot products are used to convert a vector equation into a scalar equation
 by "dotting" an entire equation with a vector.
