@@ -10,6 +10,7 @@ Consider the linkage shown below:
 .. _configuration-four-bar:
 .. figure:: figures/configuration-four-bar.svg
    :align: center
+   :width: 600px
 
    a) Shows for links :math:`A`, :math:`B`, :math:`C`, and :math:`N` with
    respective lengths :math:`l_a,l_b,l_c,l_n` connected at points
