@@ -278,5 +278,22 @@ and if we describe the configuration with only :math:`q`, the constraint is
 implicitly satisfied. :math:`q` is then a generalized coordinate because it
 satisfies :math:`n=1` and the constraint is implicitly taken care of.
 
-.. todo:: Talk about the generalized coordinates of the four bar linkage. Maybe
-   some questions and solutions.
+Now, let's return to the four-bar linkage example in
+:numref:`configuration-four-bar` and think about what are the generalized
+coordinates of this system.
+
+.. admonition:: Exercise
+
+   Are :math:`q_1,q_2,q_3` generalized coordinates of the four-bar linkage? If
+   not, why?
+
+.. admonition:: Solution
+   :class: dropdown
+
+   Any one of the :math:`q_1,q_2,q_3` can be a generalized coordinate, but only
+   one. The other two are depdendent due to the two constraints. We started
+   with three coordinates :math:`q1,q_2,q_3` describing the open chain
+   :math:`P_1` to :math:`P_2` to :math:`P_3` to :math:`P_4`. Then we have two
+   scalar constraint equations, leaving :math:`n=1`. Thus we can choose
+   :math:`q_1`, :math:`q_3`, *or* :math:`q_3` to be the indepdendent
+   generalized coordinate.
