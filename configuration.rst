@@ -133,7 +133,7 @@ constraints take the form:
 .. math::
    :label: configuration-constraint
 
-   \bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^N
+   \bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M
 
 These constraints are functions of configuration variables: time varying angles
 and distances. In our case of the four-bar linkage:
@@ -145,7 +145,15 @@ and distances. In our case of the four-bar linkage:
    l_{a} \cos{\left(q_{1} \right)} + l_{b} \cos{\left(q_{1} + q_{2} \right)} + l_{c} \cos{\left(q_{1} + q_{2} + q_{3} \right)} - l_{n} \\
    l_{a} \sin{\left(q_{1} \right)} + l_{b} \sin{\left(q_{1} + q_{2} \right)} + l_{c} \sin{\left(q_{1} + q_{2} + q_{3} \right)}
    \end{bmatrix}
+
    \textrm{ where } \bar{f}_h \in \mathbb{R}^2
+
+In SymPy, we'll typically form this column vector as so:
+
+.. jupyter-execute::
+
+   fh = sm.Matrix([fhx, fhy])
+   fh
 
 General Holonomic Constraints
 =============================
@@ -276,3 +284,5 @@ and if we describe the configuration with only :math:`q`, the constraint is
 implicitly satisfied. :math:`q` is then a generalized coordinate because it
 satisfies :math:`n=1` and the constraint is implicitly taken care of.
 
+.. todo:: Talk about the generalized coordinates of the four bar linkage. Maybe
+   some questions and solutions.
