@@ -221,7 +221,7 @@ A general holonomic constraint for a set of :math:`v` points with Cartesian
 coordinates is then ([Kane1985]_ pg. 35):
 
 .. math::
-   :math: holonomic-cartesian
+   :label: holonomic-cartesian
 
    f_h(x_1, y_1, z_1, \ldots, x_v, y_v, z_v, t) = 0
 
