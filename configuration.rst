@@ -140,13 +140,7 @@ and distances. In our case of the four-bar linkage:
 
 .. math::
 
-   \bar{f}_h(q_1, q_2, q_3) =
-   \begin{bmatrix}
-   l_{a} \cos{\left(q_{1} \right)} + l_{b} \cos{\left(q_{1} + q_{2} \right)} + l_{c} \cos{\left(q_{1} + q_{2} + q_{3} \right)} - l_{n} \\
-   l_{a} \sin{\left(q_{1} \right)} + l_{b} \sin{\left(q_{1} + q_{2} \right)} + l_{c} \sin{\left(q_{1} + q_{2} + q_{3} \right)}
-   \end{bmatrix}
-
-   \textrm{ where } \bar{f}_h \in \mathbb{R}^2
+   \bar{f}_h(q_1, q_2, q_3) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^2
 
 In SymPy, we'll typically form this column vector as so:
 
