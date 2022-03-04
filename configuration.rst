@@ -12,10 +12,11 @@ Consider the linkage shown below:
    :align: center
    :width: 600px
 
-   a) Shows for links :math:`A`, :math:`B`, :math:`C`, and :math:`N` with
-   respective lengths :math:`l_a,l_b,l_c,l_n` connected at points
-   :math:`P_1,P_2,P_3,P_4`. b) Shows the same linkage that has been seperated
-   at point :math:`P_4` to make it an open chain of links.
+   a) Shows four links in a plane :math:`A`, :math:`B`, :math:`C`, and
+   :math:`N` with respective lengths :math:`l_a,l_b,l_c,l_n` connected in a
+   closed loop at points :math:`P_1,P_2,P_3,P_4`. b) Shows the same linkage
+   that has been seperated at point :math:`P_4` to make it an open chain of
+   links.
 
 This is a planar `four-bar linkage`_ with reference frames :math:`N,A,B,C`
 attached to each bar. Four bar linkages are used in a wide variety of
@@ -152,20 +153,27 @@ In SymPy, we'll typically form this column vector as so:
 General Holonomic Constraints
 =============================
 
-If you consider the points :math:`P_1,P_2,\ldots,P_v` as unconstrained in
-Euclidean space, then we would need :math:`3v` constraint equations to fully
-constrain all of the points. For our four points in the four-bar linkage we
-would need 12 constraints to lock all the points in place. The figure below
-will be used to illustrate the general idea of constraining configuration.
+If you consider a set of :math:`v` points, :math:`P_1,P_2,\ldots,P_v` that can
+move unconstrained in Euclidean 3D space, then one would need :math:`3v`
+constraint equations to fix the point (fully constrain the motion) in that
+Euclidean space. For the four points in the four-bar linkage, we would then
+need :math:`3(4)=12` constraints to lock all the points fully in place. The
+figure below will be used to illustrate the general idea of constraining the
+configuration of the four bar linkage.
 
 .. _configuration-constraints:
 .. figure:: figures/configuration-constraints.svg
    :align: center
    :width: 400px
 
-Starting with a), there are the four points in 3D Euclidean space fully
-unconstrained. Moving to b), each of the four points can be then constrained to
-be in a plane with:
+   a) Four points in 3D space, b) four points constrained to 2D space, c)
+   points are fixed to adjacent points by a fixed length, d) the first point is
+   fixed at :math:`O` in two dimensions, e) the fourth point is fixed in the
+   :math:`y` coordinate relative to :math:`O`.
+
+Starting with a), there are the four points in 3D Euclidean space that are free
+to move. Moving to b), each of the four points can be then constrained to be in
+a plane with:
 
 .. math::
    :label: planar-constraints
@@ -194,14 +202,15 @@ relative to :math:`O` with 2 scalar constraints:
 .. math::
    :label: p1-constraint
 
-   \bar{r}^{P_1/P_0} = 0
+   \bar{r}^{P_1/O}\cdot\hat{n}_x = 0 \\
+   \bar{r}^{P_1/O}\cdot\hat{n}_y = 0
 
 Finally in e), :math:`P_4` is constrained with the single scalar:
 
 .. math::
    :label: p4-constraint
 
-   \bar{r}^{P_4/P_1}\cdot \hat{n}_y = 0
+   \bar{r}^{P_4/P_1} \cdot \hat{n}_y = 0
 
 These 11 constraints leave a single free coordinate to describe the orientation
 of :math:`A`, :math:`B`, and :math:`C` in :math:`N`. When we originally
@@ -219,13 +228,16 @@ coordinates is then ([Kane1985]_ pg. 35):
 
    f_h(x_1, y_1, z_1, \ldots, x_v, y_v, z_v, t) = 0
 
+We include :math:`t` as it may also be possible that the constraint is an
+explicit function of time (instead of only implicit, as seen above).
+
 Generalized Coordinates
 =======================
 
 If a set of :math:`v` points are constrained with :math:`M` holonomic
-constraints then only :math:`n` of the Cartesian coordinates are independent
-of each other. The number of independent coordinates is found with
-([Kane1985]_ pg 37):
+constraints then only :math:`n` of the Cartesian coordinates are independent of
+each other. The number of independent coordinates is found with ([Kane1985]_ pg
+37):
 
 .. math::
    :label: num-gen-coord
@@ -235,10 +247,13 @@ of each other. The number of independent coordinates is found with
 These :math:`n` independent Cartesian coordinates can also be expressed as
 :math:`n` functions of time :math:`q_1(t),q_2(t),\ldots,q_n(t)` in such a way
 that the constraint equations are always satisfied. These functions
-:math:`q_1(t),q_2(t),\ldots,q_n(t)` are called *generalized coordinates* and
-there are :math:`n` independent coordinates that typically minimize the number
+:math:`q_1(t),q_2(t),\ldots,q_n(t)` are called *generalized coordinates* and it
+is possible to find :math:`n` independent coordinates that minimize the number
 of explicit constraint equations needed to describe the system's configuration
-at all times :math:`t`.
+at all times :math:`t`. These generalized coordinates are typically determined
+by inspection of the system and there is a bit of an art to choosing the best
+set. But you can always fall back to the formal process of constraining each
+relevant point.
 
 Take this simple pendulum with points :math:`O` and :math:`P` as an example:
 
@@ -250,8 +265,7 @@ If the pendulum length :math:`l` is constant and the orientation between
 :math:`A` and :math:`N` can change, then the location of :math:`P` relative to
 :math:`O` can be described with the Cartesian coordinates :math:`x` and
 :math:`y`. It should be clear that :math:`x` and :math:`y` depend on each other
-for this system. The constraint relationship is between those two coordinates
-is:
+for this system. The constraint relationship between those two coordinates is:
 
 .. math::
    :label: pendulum-length-constraint
@@ -260,7 +274,7 @@ is:
 
 This implies that only one coordinate is independent, i.e. :math:`n=1`. More
 formally, the two points give :math:`3v=3(2)=6` and there are 2 constraints for
-the planar motion of each point, 2 constraints fixing :math:`O` in :math:`N`
+the planar motion of each point, 2 constraints fixing :math:`O` in :math:`N`,
 and 1 constraint fixing the distance from :math:`O` to :math:`P`, making
 :math:`M=5` and thus confirming our intuition :math:`n=6-5=1`.
 
@@ -271,16 +285,18 @@ can also be written as as functions of the angle :math:`q`:
 .. math::
    :label: xy-func-of-q
 
-   x = \cos q \\
-   y = \sin q
+   x = l\cos q \\
+   y = l\sin q
 
 and if we describe the configuration with only :math:`q`, the constraint is
 implicitly satisfied. :math:`q` is then a generalized coordinate because it
-satisfies :math:`n=1` and the constraint is implicitly taken care of.
+satisfies :math:`n=1` and we do not have to explicitly define a constraint
+equation.
 
 Now, let's return to the four-bar linkage example in
-:numref:`configuration-four-bar` and think about what are the generalized
-coordinates of this system.
+:numref:`configuration-four-bar` and think about what the generalized
+coordinates of this system are. We know, at least intuitively, that :math:`n=1`
+for the four bar linkage.
 
 .. admonition:: Exercise
 
@@ -292,8 +308,15 @@ coordinates of this system.
 
    Any one of the :math:`q_1,q_2,q_3` can be a generalized coordinate, but only
    one. The other two are depdendent due to the two constraints. We started
-   with three coordinates :math:`q1,q_2,q_3` describing the open chain
+   with three coordinates :math:`q_1,q_2,q_3` describing the open chain
    :math:`P_1` to :math:`P_2` to :math:`P_3` to :math:`P_4`. Then we have two
    scalar constraint equations, leaving :math:`n=1`. Thus we can choose
-   :math:`q_1`, :math:`q_3`, *or* :math:`q_3` to be the indepdendent
+   :math:`q_1`, :math:`q_2`, **or** :math:`q_3` to be the indepdendent
    generalized coordinate.
+
+If we take the formal approach, starting with four unconstrained points, we
+need 11 constraints to describe the system, but if we select generalized
+coordinates to describe the system we only need 2 constraint equations! This
+simplifies the mathematical problem description and, as we will later see, is
+essential for obtaining the simplest forms of the equations of motion of a
+multibody system.
