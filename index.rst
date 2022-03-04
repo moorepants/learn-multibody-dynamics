@@ -27,6 +27,7 @@ Table of Contents
    differentiation
    angular
    translational
+   configuration
    notation
    glossary
    references
