@@ -28,6 +28,7 @@ Table of Contents
    angular
    translational
    configuration
+   motion
    notation
    glossary
    references
