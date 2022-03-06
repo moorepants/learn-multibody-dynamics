@@ -16,3 +16,9 @@
 .align-center .caption {
   text-align: center;
 }
+
+/* Removes the vertical scrollbar on dropdowns. See
+ * https://github.com/moorepants/learn-multibody-dynamics/issues/37 */
+.md-typeset .admonition {
+  overflow: visible !important;
+}
