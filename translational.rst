@@ -198,6 +198,13 @@ our case, we can set :math:`{}^N\bar{v}^O=0` with
 
    O.set_vel(N, 0)
 
+.. note::
+
+   SymPy Mechanics has no way of knowing whether the sculpture is fixed on the
+   road or floating around with some constant speed. All the relative
+   velocities of the various points would not be changed in those two
+   scenarios. Hence, at least the speed of one point must be specified.
+
 Now the velocity in :math:`N` for any point that is connected to :math:`O` by
 the prior :external:py:meth:`~sympy.physics.vector.point.Point.set_pos`
 statements can be found with the
@@ -351,12 +358,12 @@ Now the other terms:
 
 .. jupyter-execute::
 
-   r_R_S = R.pos_from(S)
-   r_R_S
+   r_S_R = R.pos_from(S)
+   r_S_R
 
 .. jupyter-execute::
 
-   N_v_T = N_v_S + me.cross(B.ang_vel_in(N), r_R_S)
+   N_v_T = N_v_S + me.cross(B.ang_vel_in(N), r_S_R)
    N_v_T
 
 And finally the velocity of the pigeon when observed from :math:`N`:
