@@ -140,6 +140,7 @@ These constraints are functions of configuration variables: time varying angles
 and distances. In our case of the four-bar linkage:
 
 .. math::
+   :label: four-bar-constraints
 
    \bar{f}_h(q_1, q_2, q_3) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^2
 
@@ -155,7 +156,7 @@ General Holonomic Constraints
 
 If you consider a set of :math:`v` points, :math:`P_1,P_2,\ldots,P_v` that can
 move unconstrained in Euclidean 3D space, then one would need :math:`3v`
-constraint equations to fix the point (fully constrain the motion) in that
+constraint equations to fix the points (fully constrain the motion) in that
 Euclidean space. For the four points in the four-bar linkage, we would then
 need :math:`3(4)=12` constraints to lock all the points fully in place. The
 figure below will be used to illustrate the general idea of constraining the
@@ -236,8 +237,8 @@ Generalized Coordinates
 
 If a set of :math:`v` points are constrained with :math:`M` holonomic
 constraints then only :math:`n` of the Cartesian coordinates are independent of
-each other. The number of independent coordinates is found with ([Kane1985]_ pg
-37):
+each other. The number of independent coordinates is then defined as
+([Kane1985]_ pg 37):
 
 .. math::
    :label: num-gen-coord
@@ -296,7 +297,10 @@ equation.
 Now, let's return to the four-bar linkage example in
 :numref:`configuration-four-bar` and think about what the generalized
 coordinates of this system are. We know, at least intuitively, that :math:`n=1`
-for the four bar linkage.
+for the four bar linkage. The four-bar linkage in
+:numref:`configuration-four-bar` is described in a way that assumes a number of
+constraints are fulfilled, such as Eqs.  :math:numref:`planar-constraints` and
+:math:numref:`p1-constraint`, so we do not have to formally consider them.
 
 .. admonition:: Exercise
 
@@ -316,7 +320,7 @@ for the four bar linkage.
 
 If we take the formal approach, starting with four unconstrained points, we
 need 11 constraints to describe the system, but if we select generalized
-coordinates to describe the system we only need 2 constraint equations! This
-simplifies the mathematical problem description and, as we will later see, is
-essential for obtaining the simplest forms of the equations of motion of a
-multibody system.
+coordinates to describe the system we only need 2 constraint equations (Eq.
+:math:numref:`four-bar-constraints`)! This simplifies the mathematical problem
+description and, as we will later see, is essential for obtaining the simplest
+forms of the equations of motion of a multibody system.
