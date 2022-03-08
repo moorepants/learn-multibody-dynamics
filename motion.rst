@@ -294,7 +294,8 @@ then it would have to be able to be expressed in this form:
 
 and a condition of integrability is that the mixed partials must commute.
 
-https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
+
+.. todo:: Link to https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
 
 By inspection of ``fn`` we see that we can extract the partial derivatives by
 collecting the coefficients. SymPy's
