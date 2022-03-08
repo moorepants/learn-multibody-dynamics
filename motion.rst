@@ -6,35 +6,50 @@ Motion Constraints
 ==================
 
 In the prior chapter, we discussed constraints on the configuration of a
-system. The configuration considers where points are and how reference frames
+system. Configuration only concerns where points are and how reference frames
 are oriented. In this chapter, we will consider constraints on the motion of a
-system.
-
-Take for example parallel parking a car as a motivating example.
+system. Motion concerns how points and reference frames move. Take parallel
+parking a car as a motivating example.
 
 .. _motion-parallel:
 .. figure:: figures/motion-parallel.svg
    :align: center
 
+   a) two positions (or configurations) of car 2 relative to cars 1 and 3, b)
+   simplest motion to move car 2 into an empy spot between cars 1 and 3, c)
+   actual motion to move car 2 into the empty spot
+
 We know that car 2 can be in either the left or right location in a), i.e. the
 car's configuration permits either location. But the scenario in b) isn't
 possible. A car can't move from the left configuration to the right
-configuration by simply moving to the right [*]_. Although, this surely would
-be nice if we could. A car has wheels and only the front wheels can be steered,
-so the scenario in c) is the only way for the car to end up in the right
-configuration. The car has to move in a specific way to get from one
-configruation to another. This entails that we have some kind of constraint on
-the motion but not the configuration. Constraints such as these are called
-*nonholonomic constraints* and they take the form:
+configuration by simply moving directly to the right [*]_. Although, this
+surely would be nice if we could. A car has wheels and only the front wheels
+can be steered, so the scenario in c) is the only way for the car to end up in
+the correct final configuration. The car has to *move* in a specific way to get
+from one configuration to another. This entails that we have some kind of
+constraint on the motion but not the configuration. Constraints such as these
+are called *nonholonomic constraints* and they take the form:
 
 .. math::
-   :label: nonholonomic-constraints
+   :label: nonholonomic-constraints-qdot
+
+   \bar{f}_n(\dot{\bar{q}}, \bar{q}, t) = 0 \\
+   \textrm{ where } \\
+   \bar{f}_n \in \mathbb{R}^m \\
+   \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
+
+.. math::
+   :label: nonholonomic-constraints-u
 
    \bar{f}_n(\bar{u}, \bar{q}, t) = 0 \\
    \textrm{ where } \\
    \bar{f}_n \in \mathbb{R}^m \\
    \bar{u} = \left[ u_1, \ldots, u_n\right]^T \in \mathbb{R}^n\\
    \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
+
+It is important to note that any constraint is just a model of a physical
+phenomena. We know that if we push hard enough and low enough that the car's
+lateral motion is not constrained.
 
 Kinematical Differential Equations
 ==================================
