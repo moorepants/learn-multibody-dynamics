@@ -242,6 +242,9 @@ velocity in the body fixed :math:`y` direction must equal zero at all times.
 
 .. _Chaplygin Sleigh: https://en.wikipedia.org/wiki/Chaplygin_sleigh
 
+.. figure:: figures/motion-sleigh.svg
+   :align: center
+
 The velocity of :math:`P` is found like so:
 
 .. jupyter-execute::
@@ -328,6 +331,8 @@ We see that to for the last two pairs, the mixed partials do not commute. This
 proves that :math:`f_n` is not integrable and is thus an essential nonholonomic
 constraint.
 
+.. todo:: Differentiate a holonomic constraint and show that it is integrable.
+
 Snakeboard
 ==========
 
@@ -352,12 +357,20 @@ classic video from 1993 shows how to propel the board:
 
 .. _fig-snakeboard:
 .. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Snakeboard_down.jpg/640px-Snakeboard_down.jpg
+   :align: center
 
    Example of a snakeboard that shows the two footpads each with attached truck
    and pair of wheels that are connected by the coupler.
 
    Николайков Вячеслав, `CC BY-SA 3.0
    <https://creativecommons.org/licenses/by-sa/3.0>`_, via Wikimedia Commons
+
+.. todo:: Add unit vectors to this figure.
+
+.. figure:: figures/motion-snakeboard.svg
+   :align: center
+
+   Configuration diagram of a planar snakeboard model.
 
 .. jupyter-execute::
 
@@ -412,6 +425,24 @@ The angular velocities of each reference frame are:
 
 .. jupyter-execute::
 
+   fn = sm.Matrix([Bo.vel(N).dot(B.y),
+                   Co.vel(N).dot(C.y)])
+   fn = sm.trigsimp(fn)
+   fn
+
+Now introduce some generalized speeds.
+
+.. math::
+
+   u_i = \dot{q}_i \textrm{ for } i=1,2,4,5 \\
+   u_3 = \frac{l\dot{q}_3}{2}
+
+Now replace all of the time derivatives of the generalized coordinates with the
+generalized speeds. We use :external:py:meth:`~sympy.core.basic.Basic.subs`
+here because the replacement isn't an exact replacement.
+
+.. jupyter-execute::
+
    u1, u2, u3, u4, u5 = me.dynamicsymbols('u1, u2, u3, u4, u5')
 
    u_repl = {
@@ -422,26 +453,107 @@ The angular velocities of each reference frame are:
        q5.diff(): u5
    }
 
-   fn = sm.Matrix([Bo.vel(N).dot(B.y).subs(u_repl),
-                   Co.vel(N).dot(C.y).subs(u_repl)])
-   fn = sm.trigsimp(fn)
+   fn = fn.subs(u_repl)
    fn
+
+These nonholonomic constraints take this form:
+
+.. math::
+
+   \bar{f}_n(u_1, u_2, u_3, q_3, q_4, q_5) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^2
+
+Two of the generalized speeds must be selected as dependent generalized speeds
+because these equations let us solve for two in terms of the third. In general,
+the nonholonomic constraints are always linear in the generalized speeds. If we
+introduce :math:`\bar{u}_s` as a vector of independent generalized speeds and
+:math:`\bar{u}_r` as a vector of dependent generalized speeds, the nonholonomic
+constraints can be written as:
+
+.. math::
+
+   \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) =
+   \mathbf{A}_r \bar{u}_r - \mathbf{A}_s \bar{u}_s - \bar{b}_s = 0
+
+or
+
+.. math::
+
+    \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_s\right) \\
+    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n
+
+For the snakeboard let's choose :math:`\bar{u}_s = [u_3, u_4, u_5]^T` as the
+independent generalized speeds and :math:`\bar{u}_r = [u_1, u_2]^T` as the
+dependent generalized speeds.
 
 .. jupyter-execute::
 
    us = sm.Matrix([u3, u4, u5])
    ur = sm.Matrix([u1, u2])
 
-   As = fn.jacobian(us)
-   Ar = fn.jacobian(ur)
+:math:`\mathbf{A}_r` are the linear coefficients of :math:`\bar{u}_r` so:
 
-   An = -Ar.LUsolve(As)
+.. jupyter-execute::
+
+   Ar = fn.jacobian(ur)
+   Ar
+
+:math:`\mathbf{A}_s` are the negative of the linear coefficients of
+:math:`\bar{u}_s` so:
+
+.. jupyter-execute::
+
+   As = -fn.jacobian(us)
+   As
+
+:math:`-\bar{b}_s` remains when :math:`\bar{u}=0`:
+
+.. jupyter-execute::
+
+   bs = -fn.xreplace(dict(zip([u1, u2, u3, u4, u5], [0, 0, 0, 0, 0])))
+   bs
+
+:math:`\mathbf{A}_n` and :math:`\bar{b}_n` are formed by solving the linear
+system:
+
+.. jupyter-execute::
+
+   An = Ar.LUsolve(As)
+   An = sm.simplify(An)
    An
 
 .. jupyter-execute::
 
-   Bn = -Ar.LUsolve(fn.xreplace(dict(zip(us, [0, 0, 0]))).xreplace(dict(zip(ur, [0, 0]))))
-   Bn
+   bn = Ar.LUsolve(bs)
+   bn
+
+We now have the dependent generalized speeds written as functions of the
+indepdendent generalized speeds:
+
+.. jupyter-execute::
+
+   sm.Eq(ur, An*us + bn)
+
+Degrees of Freedom
+==================
+
+For simple nonholonomic systems observed in a reference frame :math:`A`, such
+as the Chapylign Sleigh or the Snakeboard, the *degrees of freedom* in
+:math:`A` are equal to the number of independent generalized speeds. The number
+of degrees of freedom :math:`p` is defined as:
+
+.. math::
+
+   p := n - m
+
+where :math:`n` is the number of generalized coordinates and :math:`m` are the
+number of nonholonomic constraints (and thus dependent generalized speeds). If
+there are no nonholonomic constraints, the system is a holonomic system in
+:math:`A` and :math:`p=n` making the number of degrees of freedom equal to the
+number of generalized coordinates.
+
+The Chaplighn Sliegh has :math:`p = 3 - 1 = 2` degrees of freedom and the
+Snakeboard has :math:`p = 5 - 2 = 3` degrees of freedom. The four bar linkage
+of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom.
 
 .. rubric:: Footnotes
 
