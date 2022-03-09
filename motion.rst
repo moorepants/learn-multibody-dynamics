@@ -44,8 +44,8 @@ are called *nonholonomic constraints* and they take the form:
    \bar{f}_n \in \mathbb{R}^m \\
    \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
 
-The constraints involve the time derivatives of the generalized cooordinates
-and arise from scalar equations derived from velocities.
+The :math:`m` constraints involve the time derivatives of the generalized
+cooordinates and arise from scalar equations derived from velocities.
 
 Chaplygin Sleigh
 ================
@@ -89,7 +89,8 @@ the :math:`A` reference frame:
 
    P.vel(N).express(A)
 
-The single scalar nonholonomic constraint then takes this form:
+The single scalar nonholonomic constraint :math:`\bar{r}^{P/O}\cdot\hat{a}_y`
+then takes this form:
 
 .. jupyter-execute::
 
@@ -117,14 +118,14 @@ coordinates, but we know that if we integrate this equation with respect to
 time we can retrieve the original holonomic constraint, so it really isn't a
 nonholonomic constraint even though it looks like one.
 
-Thus, if we can integrate :math:`f_n` with respect to time and we arrive at a
+So if we can integrate :math:`f_n` with respect to time and we arrive at a
 function of only the generalized coordinates and time, then we do not have an
-essential nonholonomic constraint, but a holonomic constraint in disguise. It
-is not generally possible to integrate :math:`f_n` so we can check the
-integrability of :math:`f_n` indirectly.
+essential nonholonomic constraint, but a holonomic constraint in disguise.
+Unfortunately, it is not generally possible to integrate :math:`f_n` so we can
+check the integrability of :math:`f_n` indirectly.
 
 If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
-then it would have to be able to be expressed in this form:
+then it must be able to be expressed in this form:
 
 .. math::
    :label: eq-diff-holonomic
@@ -135,11 +136,12 @@ then it would have to be able to be expressed in this form:
    \frac{\partial f_h}{\partial \theta} \frac{d\theta}{dt} +
    \frac{\partial f_h}{\partial t}
 
-and a `condition of integrability is that the mixed partials must commute
-<https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives>`_. By inspection
-of ``fn`` we see that we can extract the partial derivatives by collecting the
-coefficients. SymPy's :external:py:meth:`~sympy.core.expr.Expr.coeff` can
-extract the linear coefficients for us:
+and a `condition of integrability is that the mixed partial derivatives must
+commute <https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives>`_. By
+inspection of :math:`f_n` we see that we can extract the partial derivatives by
+collecting the coefficients. SymPy's
+:external:py:meth:`~sympy.core.expr.Expr.coeff` can extract the linear
+coefficients for us:
 
 .. jupyter-execute::
 
@@ -150,8 +152,8 @@ extract the linear coefficients for us:
    dfdx, dfdy, dfdth
 
 Each pair of mixed partials can be calculated. For example
-:math:`\frac{\partial^2 f_h}{\partial x \partial y}` and
-:math:`\frac{\partial^2 f_h}{\partial y \partial x}`:
+:math:`\frac{\partial^2 f_h}{\partial y \partial x}` and
+:math:`\frac{\partial^2 f_h}{\partial x \partial y}`:
 
 .. jupyter-execute::
 
@@ -176,19 +178,19 @@ constraint.
 Kinematical Differential Equations
 ==================================
 
-In Eq. :math:numref:`eq-nonholonomic-qdot` we show the form of the constraints
-in terms of :math:`\dot{\bar{q}}`. We know that Newton's Second Law
-:math:`\sum\bar{F} = m\bar{a}` will require acceleration, which is the second
-time derivative of position. Newton's Second Law is a second order differential
-equation, because it involves these second derivatives. Any second order
-differential equation can be represented by two first order differential
-equations by introducing a new variable for any first derivative terms. We are
-working towards writing the equations of motion of a multibody system, which
-are differential equations, in a first order form. To do this, we now introduce
-the variables :math:`u_1, \ldots, u_n` and define them as linear functions of
-the time derivatives of the generalized coordinates :math:`\dot{q}_1, \ldots,
-\dot{q}_n`. These variables are called *generalized speeds*. They take the
-form:
+In Eq. :math:numref:`eq-nonholonomic-qdot` we show the form of the nonholonomic
+constraints in terms of :math:`\dot{\bar{q}}`. We know that Newton's Second Law
+:math:`\sum\bar{F} = m\bar{a}` will require calculation of acceleration, which
+is the second time derivative of position. Newton's Second Law is a second
+order differential equation because it involves these second derivatives. Any
+second order differential equation can be equivalently represented by two first
+order differential equations by introducing a new variable for any first
+derivative terms. We are working towards writing the equations of motion of a
+multibody system, which will be differential equations in a first order form.
+To do this, we now introduce the variables :math:`u_1, \ldots, u_n` and define
+them as linear functions of the time derivatives of the generalized coordinates
+:math:`\dot{q}_1, \ldots, \dot{q}_n`. These variables are called *generalized
+speeds*. They take the form:
 
 .. math::
    :label: eq-generalized-speeds
@@ -204,8 +206,8 @@ equations as such:
 
    \dot{\bar{q}} = \mathbf{Y}_k^{-1}\left(\bar{u} - \bar{z}_k\right)
 
-Eq. :math:numref:`eq-kinematical-diff-eq` are called *kinematical differential
-equations*.
+Eq. :math:numref:`eq-kinematical-diff-eq` are called the *kinematical
+differential equations*.
 
 The most common, and always valid, choice of generalized speeds is:
 
@@ -217,8 +219,8 @@ The most common, and always valid, choice of generalized speeds is:
 where :math:`\mathbf{I}` is the identity matrix. This results in :math:`u_i =
 \dot{q}_i` for :math:`i=1,\ldots,n`.
 
-If we introduce generalized speeds, the nonholonomic constraints can then be
-written as:
+Now that we have introduced generalized speeds, the nonholonomic constraints
+can then be written as:
 
 .. math::
    :label: nonholonomic-constraints-u
@@ -232,8 +234,17 @@ written as:
 Choosing Generalized Speeds
 ===========================
 
-Take for example the angular velocity of a reference frame which is oriented
-with a :math:`z\textrm{-}x\textrm{-}y` body fixed orientation:
+There are many possible choices for generalized speed and you are free to
+select them as you please, as long as they fit the form of equation
+:math:numref:`generalized-speeds` and :math:`\mathbf{Y}_k` is invertible.
+
+Some selections of generalized speeds can reduce the complexity of important
+velocity expressions and if selected carefully may reduce the complexity of the
+equations of motion we will derive in a later chapters.
+
+To see some examples of selecting generalized speeds, take for example the
+angular velocity of a reference frame which is oriented with a
+:math:`z\textrm{-}x\textrm{-}y` body fixed orientation:
 
 .. jupyter-execute::
 
@@ -270,6 +281,10 @@ angular velocity takes this form:
    Yk_plus_zk = qdot
    Yk_plus_zk
 
+Recall from :ref:`sec-solving-linear-systems` that the Jacobian is a simple way
+to extract the coefficients of linear terms into a coefficient matrix. In this
+case, we see that this results in the identity matrix.
+
 .. jupyter-execute::
 
    Yk = Yk_plus_zk.jacobian(qdot)
@@ -280,7 +295,8 @@ angular velocity takes this form:
    zk = Yk_plus_zk.xreplace(dict(zip(qdot, sm.zeros(3, 1))))
    zk
 
-The linear equation can be solved for the :math:`\dot{q}`'s:
+The linear equation can be solved for the :math:`\dot{q}`'s, (Eq.
+:math:numref:`eq-kinematical-diff-eq`):
 
 .. jupyter-execute::
 
@@ -327,6 +343,8 @@ so that:
 
    zk = Yk_plus_zk.xreplace(dict(zip(qdot, sm.zeros(3, 1))))
    zk
+
+Now we form:
 
 .. jupyter-execute::
 
@@ -386,13 +404,6 @@ so that:
 
    sm.Eq(qdot, sm.trigsimp(Yk.LUsolve(u - zk)))
 
-There are many more possible choices and you are free to select the generalized
-coordinates as you please, as long as they fit the form of equation
-:math:numref:`generalized-speeds` and :math:`\mathbf{Y}_k` is invertible.
-
-The selection of generalized speeds can reduce the complexity of important
-velocity expressions, and if selected carefully may reduce the complexity of
-the equations of motion we will derive in a later chapters.
 
 
 Snakeboard
