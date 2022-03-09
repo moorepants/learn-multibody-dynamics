@@ -2,16 +2,22 @@
 Nonholonomic Constraints
 ========================
 
+.. jupyter-execute::
+
+   import sympy as sm
+   import sympy.physics.mechanics as me
+   me.init_vprinting(use_latex='mathjax')
+
 Motion Constraints
 ==================
 
-In the prior chapter, we discussed constraints on the configuration of a
-system. Configuration only concerns where points are and how reference frames
-are oriented. In this chapter, we will consider constraints on the motion of a
-system. Motion concerns how points and reference frames move. Take parallel
-parking a car as a motivating example.
+In :ref:`chp-holonomic-constraints`, we discussed constraints on the
+configuration of a system. Configuration only concerns where points are and how
+reference frames are oriented. In this chapter, we will consider constraints on
+the motion of a system. Motion concerns how points and reference frames move.
+Take parallel parking a car as a motivating example.
 
-.. _motion-parallel:
+.. _fig-motion-parallel:
 .. figure:: figures/motion-parallel.svg
    :align: center
 
@@ -31,32 +37,39 @@ constraint on the motion but not the configuration. Constraints such as these
 are called *nonholonomic constraints* and they take the form:
 
 .. math::
-   :label: nonholonomic-constraints-qdot
+   :label: eq-nonholonomic-qdot
 
    \bar{f}_n(\dot{\bar{q}}, \bar{q}, t) = 0 \\
    \textrm{ where } \\
    \bar{f}_n \in \mathbb{R}^m \\
    \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
 
-It is important to note that any constraint is just a model of a physical
-phenomena. We know that if we push hard enough and low enough that the car's
-lateral motion is not constrained.
+The constraints involve the time derivatives of the generalized cooordinates
+and arise from scalar equations derived from velocities.
 
 Chaplygin Sleigh
 ================
 
-Take the simple example of the `Chaplygin Sleigh`_. A sleigh can slide along a
-flat plane, but can only move in the direction it is oriented. This system is
-described by three generalized coordinates :math:`x,y,\theta`. For the motion
-to only occur along it's body fixed :math:`x` direction, the component of
-velocity in the body fixed :math:`y` direction must equal zero at all times.
+Take the simple example of the `Chaplygin Sleigh`_, sketched out in
+:numref:`fig-motion-sleigh`. A sleigh can slide along a flat plane, but can
+only move in the direction it is pointing, much like the car above. This system
+is described by three generalized coordinates :math:`x,y,\theta`. For the
+motion to only occur along its body fixed :math:`\hat{a}_x` direction, the
+component of velocity in the body fixed :math:`\hat{a}_y` direction must equal
+zero at all times.
 
 .. _Chaplygin Sleigh: https://en.wikipedia.org/wiki/Chaplygin_sleigh
 
+.. _fig-motion-sleigh:
 .. figure:: figures/motion-sleigh.svg
    :align: center
 
-The velocity of :math:`P` is found like so:
+   Configuration diagram of a Chaplygin Sleigh. The rectange :math:`A`
+   represents a sleigh moving on a plane. Point :math:`P` represents the center
+   of the sleigh.
+
+Using SymPy Mechanics we can find the velocity of :math:`P` and express it in
+the :math:`A` reference frame:
 
 .. jupyter-execute::
 
@@ -76,8 +89,7 @@ The velocity of :math:`P` is found like so:
 
    P.vel(N).express(A)
 
-The motion constraint takes this form (without introducing generalized speeds
-for simplicity):
+The single scalar nonholonomic constraint then takes this form:
 
 .. jupyter-execute::
 
@@ -85,45 +97,61 @@ for simplicity):
    fn
 
 How do we know that this is, in fact, a nonoholomic constraint and not simply
-the time derivative of a holonomic constraint? If we can integrate :math:`f_n`
-with respect to time and we arrive at a function of only the generalized
-coordinates and time, then we do not have an essential nonholonomic constraint,
-but a holnomic constraint in disquise. It is not generally possible to
-integrate :math:`f_n` easily so we can check the integrability of :math:`f_n`
-indirectly.
+the time derivative of a holonomic constraint?
+
+Recall one of the four-bar linkage holononomic constraints arising from Eq.
+:math:numref:`constraint-expression` and time differentiate it:
+
+.. jupyter-execute::
+
+   t = me.dynamicsymbols._t
+
+   q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
+   la, lb, lc, ln = sm.symbols('l_a, l_b, l_c, l_n')
+
+   fhx = la*sm.cos(q1) + lb*sm.cos(q1 + q2) + lc*sm.cos(q1 + q2 + q3) - ln
+   sm.trigsimp(fhx.diff(t))
+
+This looks like a nonholonomic constraint, i.e. it has time derivatives of the
+coordinates, but we know that if we integrate this equation with respect to
+time we can retrieve the original holonomic constraint, so it really isn't a
+nonholonomic constraint even though it looks like one.
+
+Thus, if we can integrate :math:`f_n` with respect to time and we arrive at a
+function of only the generalized coordinates and time, then we do not have an
+essential nonholonomic constraint, but a holonomic constraint in disguise. It
+is not generally possible to integrate :math:`f_n` so we can check the
+integrability of :math:`f_n` indirectly.
 
 If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
 then it would have to be able to be expressed in this form:
 
 .. math::
+   :label: eq-diff-holonomic
 
-   \frac{d f_h}{dt} =
+   f_n = \frac{d f_h}{dt} =
    \frac{\partial f_h}{\partial x} \frac{dx}{dt} +
    \frac{\partial f_h}{\partial y} \frac{dy}{dt} +
    \frac{\partial f_h}{\partial \theta} \frac{d\theta}{dt} +
    \frac{\partial f_h}{\partial t}
 
-and a condition of integrability is that the mixed partials must commute.
-
-
-.. todo:: Link to https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
-
-By inspection of ``fn`` we see that we can extract the partial derivatives by
-collecting the coefficients. SymPy's
-:external:py:meth:`~sympy.core.basic.Basic.coeff` can extract the coefficients
-for us:
+and a `condition of integrability is that the mixed partials must commute
+<https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives>`_. By inspection
+of ``fn`` we see that we can extract the partial derivatives by collecting the
+coefficients. SymPy's :external:py:meth:`~sympy.core.expr.Expr.coeff` can
+extract the linear coefficients for us:
 
 .. jupyter-execute::
 
-   dfdx = fn.coeff(x.diff())
-   dfdy = fn.coeff(y.diff())
-   dfdth = fn.coeff(theta.diff())
+   dfdx = fn.coeff(x.diff(t))
+   dfdy = fn.coeff(y.diff(t))
+   dfdth = fn.coeff(theta.diff(t))
 
    dfdx, dfdy, dfdth
 
 Each pair of mixed partials can be calculated. For example
-:math:`\frac{\partial*2 f_h}{\partial x \partial y}` and
-:math:`\frac{\partial*2 f_h}{\partial y \partial x}`:
+:math:`\frac{\partial^2 f_h}{\partial x \partial y}` and
+:math:`\frac{\partial^2 f_h}{\partial y \partial x}`:
 
 .. jupyter-execute::
 
@@ -143,9 +171,54 @@ We see that to for the last two pairs, the mixed partials do not commute. This
 proves that :math:`f_n` is not integrable and is thus an essential nonholonomic
 constraint.
 
-.. todo:: Differentiate a holonomic constraint and show that it is integrable.
+.. todo:: Apply the mixed partials check to the four bar linkage equation.
+
 Kinematical Differential Equations
 ==================================
+
+In Eq. :math:numref:`eq-nonholonomic-qdot` we show the form of the constraints
+in terms of :math:`\dot{\bar{q}}`. We know that Newton's Second Law
+:math:`\sum\bar{F} = m\bar{a}` will require acceleration, which is the second
+time derivative of position. Newton's Second Law is a second order differential
+equation, because it involves these second derivatives. Any second order
+differential equation can be represented by two first order differential
+equations by introducing a new variable for any first derivative terms. We are
+working towards writing the equations of motion of a multibody system, which
+are differential equations, in a first order form. To do this, we now introduce
+the variables :math:`u_1, \ldots, u_n` and define them as linear functions of
+the time derivatives of the generalized coordinates :math:`\dot{q}_1, \ldots,
+\dot{q}_n`. These variables are called *generalized speeds*. They take the
+form:
+
+.. math::
+   :label: eq-generalized-speeds
+
+   \bar{u} := \mathbf{Y}_k(\bar{q}, t) \dot{\bar{q}} + \bar{z}_k(\bar{q}, t)
+
+:math:`\bar{u}` must be chosen such that :math:`\mathbf{Y}_k` is invertible. If
+we solve for :math:`\dot{\bar{q}}` we can write these first order differential
+equations as such:
+
+.. math::
+   :label: eq-kinematical-diff-eq
+
+   \dot{\bar{q}} = \mathbf{Y}_k^{-1}\left(\bar{u} - \bar{z}_k\right)
+
+Eq. :math:numref:`eq-kinematical-diff-eq` are called *kinematical differential
+equations*.
+
+The most common, and always valid, choice of generalized speeds is:
+
+.. math::
+   :label: generalized-speeds
+
+   \bar{u} = \mathbf{I} \dot{\bar{q}}
+
+where :math:`\mathbf{I}` is the identity matrix. This results in :math:`u_i =
+\dot{q}_i` for :math:`i=1,\ldots,n`.
+
+If we introduce generalized speeds, the nonholonomic constraints can then be
+written as:
 
 .. math::
    :label: nonholonomic-constraints-u
@@ -156,36 +229,8 @@ Kinematical Differential Equations
    \bar{u} = \left[ u_1, \ldots, u_n\right]^T \in \mathbb{R}^n\\
    \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
 
-
-The variables :math:`u_1, \ldots, u_n` are defined as linear functions of the
-time derivatives of the generalized coordinates :math:`\dot{q}_1, \ldots,
-\dot{q}_n`. These variables are called generalized speeds. They take the form:
-
-.. math::
-   :label: generalized-speeds
-
-   \bar{u} := \mathbf{Y}_k \dot{\bar{q}} + \bar{z}_k(\bar{q}, t)
-
-:math:`\bar{u}` must be chosen such that :math:`\mathbf{Y}_k` is invertible.
-Eq. :math:numref:`generalized-speeds` are called *kinematical differential
-equations*. The most common, and always valid, choice of generalized speeds
-is:
-
-.. math::
-   :label: generalized-speeds
-
-   \bar{u} = \mathbf{I} \dot{\bar{q}}
-
-where :math:`u_i = \dot{q}_i` for :math:`i=1,\ldots,n`.
-
 Choosing Generalized Speeds
 ===========================
-
-.. jupyter-execute::
-
-   import sympy as sm
-   import sympy.physics.mechanics as me
-   me.init_vprinting(use_latex='mathjax')
 
 Take for example the angular velocity of a reference frame which is oriented
 with a :math:`z\textrm{-}x\textrm{-}y` body fixed orientation:
@@ -568,6 +613,8 @@ there are no nonholonomic constraints, the system is a holonomic system in
 :math:`A` and :math:`p=n` making the number of degrees of freedom equal to the
 number of generalized coordinates.
 
+.. todo:: Turn this last paragraph into exercises.
+
 The Chaplighn Sliegh has :math:`p = 3 - 1 = 2` degrees of freedom and the
 Snakeboard has :math:`p = 5 - 2 = 3` degrees of freedom. The four bar linkage
 of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom.
@@ -575,4 +622,7 @@ of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom.
 .. rubric:: Footnotes
 
 .. [*] Well, we could find a very strong person to push th ecar sideways,
-   overcoming the very high resisting friction force.
+   overcoming the very high resisting friction force. It is important to note
+   that any constraint is just a model of a physical phenomena. We know that if
+   we push hard enough and low enough that the car's lateral motion is not
+   constrained.
