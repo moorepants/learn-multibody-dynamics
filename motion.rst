@@ -38,6 +38,115 @@ are called *nonholonomic constraints* and they take the form:
    \bar{f}_n \in \mathbb{R}^m \\
    \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
 
+It is important to note that any constraint is just a model of a physical
+phenomena. We know that if we push hard enough and low enough that the car's
+lateral motion is not constrained.
+
+Chaplygin Sleigh
+================
+
+Take the simple example of the `Chaplygin Sleigh`_. A sleigh can slide along a
+flat plane, but can only move in the direction it is oriented. This system is
+described by three generalized coordinates :math:`x,y,\theta`. For the motion
+to only occur along it's body fixed :math:`x` direction, the component of
+velocity in the body fixed :math:`y` direction must equal zero at all times.
+
+.. _Chaplygin Sleigh: https://en.wikipedia.org/wiki/Chaplygin_sleigh
+
+.. figure:: figures/motion-sleigh.svg
+   :align: center
+
+The velocity of :math:`P` is found like so:
+
+.. jupyter-execute::
+
+   x, y, theta = me.dynamicsymbols('x, y, theta')
+
+   N = me.ReferenceFrame('N')
+   A = me.ReferenceFrame('A')
+
+   A.orient_axis(N, theta, N.z)
+
+   O = me.Point('O')
+   P = me.Point('P')
+
+   P.set_pos(O, x*N.x + y*N.y)
+
+   O.set_vel(N, 0)
+
+   P.vel(N).express(A)
+
+The motion constraint takes this form (without introducing generalized speeds
+for simplicity):
+
+.. jupyter-execute::
+
+   fn = P.vel(N).dot(A.y)
+   fn
+
+How do we know that this is, in fact, a nonoholomic constraint and not simply
+the time derivative of a holonomic constraint? If we can integrate :math:`f_n`
+with respect to time and we arrive at a function of only the generalized
+coordinates and time, then we do not have an essential nonholonomic constraint,
+but a holnomic constraint in disquise. It is not generally possible to
+integrate :math:`f_n` easily so we can check the integrability of :math:`f_n`
+indirectly.
+
+If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
+then it would have to be able to be expressed in this form:
+
+.. math::
+
+   \frac{d f_h}{dt} =
+   \frac{\partial f_h}{\partial x} \frac{dx}{dt} +
+   \frac{\partial f_h}{\partial y} \frac{dy}{dt} +
+   \frac{\partial f_h}{\partial \theta} \frac{d\theta}{dt} +
+   \frac{\partial f_h}{\partial t}
+
+and a condition of integrability is that the mixed partials must commute.
+
+
+.. todo:: Link to https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
+
+By inspection of ``fn`` we see that we can extract the partial derivatives by
+collecting the coefficients. SymPy's
+:external:py:meth:`~sympy.core.basic.Basic.coeff` can extract the coefficients
+for us:
+
+.. jupyter-execute::
+
+   dfdx = fn.coeff(x.diff())
+   dfdy = fn.coeff(y.diff())
+   dfdth = fn.coeff(theta.diff())
+
+   dfdx, dfdy, dfdth
+
+Each pair of mixed partials can be calculated. For example
+:math:`\frac{\partial*2 f_h}{\partial x \partial y}` and
+:math:`\frac{\partial*2 f_h}{\partial y \partial x}`:
+
+.. jupyter-execute::
+
+   dfdx.diff(y), dfdy.diff(x)
+
+and the other two pairs:
+
+.. jupyter-execute::
+
+   dfdx.diff(theta), dfdth.diff(x)
+
+.. jupyter-execute::
+
+   dfdy.diff(theta), dfdth.diff(y)
+
+We see that to for the last two pairs, the mixed partials do not commute. This
+proves that :math:`f_n` is not integrable and is thus an essential nonholonomic
+constraint.
+
+.. todo:: Differentiate a holonomic constraint and show that it is integrable.
+Kinematical Differential Equations
+==================================
+
 .. math::
    :label: nonholonomic-constraints-u
 
@@ -47,12 +156,6 @@ are called *nonholonomic constraints* and they take the form:
    \bar{u} = \left[ u_1, \ldots, u_n\right]^T \in \mathbb{R}^n\\
    \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
 
-It is important to note that any constraint is just a model of a physical
-phenomena. We know that if we push hard enough and low enough that the car's
-lateral motion is not constrained.
-
-Kinematical Differential Equations
-==================================
 
 The variables :math:`u_1, \ldots, u_n` are defined as linear functions of the
 time derivatives of the generalized coordinates :math:`\dot{q}_1, \ldots,
@@ -246,108 +349,6 @@ The selection of generalized speeds can reduce the complexity of important
 velocity expressions, and if selected carefully may reduce the complexity of
 the equations of motion we will derive in a later chapters.
 
-Chaplygin Sleigh
-================
-
-Take the simple example of the `Chaplygin Sleigh`_. A sleigh can slide along a
-flat plane, but can only move in the direction it is oriented. This system is
-described by three generalized coordinates :math:`x,y,\theta`. For the motion
-to only occur along it's body fixed :math:`x` direction, the component of
-velocity in the body fixed :math:`y` direction must equal zero at all times.
-
-.. _Chaplygin Sleigh: https://en.wikipedia.org/wiki/Chaplygin_sleigh
-
-.. figure:: figures/motion-sleigh.svg
-   :align: center
-
-The velocity of :math:`P` is found like so:
-
-.. jupyter-execute::
-
-   x, y, theta = me.dynamicsymbols('x, y, theta')
-
-   N = me.ReferenceFrame('N')
-   A = me.ReferenceFrame('A')
-
-   A.orient_axis(N, theta, N.z)
-
-   O = me.Point('O')
-   P = me.Point('P')
-
-   P.set_pos(O, x*N.x + y*N.y)
-
-   O.set_vel(N, 0)
-
-   P.vel(N).express(A)
-
-The motion constraint takes this form (without introducing generalized speeds
-for simplicity):
-
-.. jupyter-execute::
-
-   fn = P.vel(N).dot(A.y)
-   fn
-
-How do we know that this is, in fact, a nonoholomic constraint and not simply
-the time derivative of a holonomic constraint? If we can integrate :math:`f_n`
-with respect to time and we arrive at a function of only the generalized
-coordinates and time, then we do not have an essential nonholonomic constraint,
-but a holnomic constraint in disquise. It is not generally possible to
-integrate :math:`f_n` easily so we can check the integrability of :math:`f_n`
-indirectly.
-
-If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
-then it would have to be able to be expressed in this form:
-
-.. math::
-
-   \frac{d f_h}{dt} =
-   \frac{\partial f_h}{\partial x} \frac{dx}{dt} +
-   \frac{\partial f_h}{\partial y} \frac{dy}{dt} +
-   \frac{\partial f_h}{\partial \theta} \frac{d\theta}{dt} +
-   \frac{\partial f_h}{\partial t}
-
-and a condition of integrability is that the mixed partials must commute.
-
-
-.. todo:: Link to https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
-
-By inspection of ``fn`` we see that we can extract the partial derivatives by
-collecting the coefficients. SymPy's
-:external:py:meth:`~sympy.core.basic.Basic.coeff` can extract the coefficients
-for us:
-
-.. jupyter-execute::
-
-   dfdx = fn.coeff(x.diff())
-   dfdy = fn.coeff(y.diff())
-   dfdth = fn.coeff(theta.diff())
-
-   dfdx, dfdy, dfdth
-
-Each pair of mixed partials can be calculated. For example
-:math:`\frac{\partial*2 f_h}{\partial x \partial y}` and
-:math:`\frac{\partial*2 f_h}{\partial y \partial x}`:
-
-.. jupyter-execute::
-
-   dfdx.diff(y), dfdy.diff(x)
-
-and the other two pairs:
-
-.. jupyter-execute::
-
-   dfdx.diff(theta), dfdth.diff(x)
-
-.. jupyter-execute::
-
-   dfdy.diff(theta), dfdth.diff(y)
-
-We see that to for the last two pairs, the mixed partials do not commute. This
-proves that :math:`f_n` is not integrable and is thus an essential nonholonomic
-constraint.
-
-.. todo:: Differentiate a holonomic constraint and show that it is integrable.
 
 Snakeboard
 ==========
