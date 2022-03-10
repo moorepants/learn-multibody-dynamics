@@ -367,7 +367,7 @@ so that:
 
 .. jupyter-execute::
 
-   zk = Yk_plus_zk.xreplace(dict(zip(qdot, sm.zeros(3, 1))))
+   zk = Yk_plus_zk.xreplace(qd_zero_repl)
    zk
 
 Now we form:
@@ -425,7 +425,7 @@ so that:
 
 .. jupyter-execute::
 
-   zk = Yk_plus_zk.xreplace(dict(zip(qdot, sm.zeros(3, 1))))
+   zk = Yk_plus_zk.xreplace(qd_zero_repl)
    zk
 
 .. jupyter-execute::
@@ -469,12 +469,19 @@ classic video from 1993 shows how to propel the board:
 .. figure:: figures/motion-snakeboard.svg
    :align: center
 
-   Configuration diagram of a planar snakeboard model.
+   Configuration diagram of a planar Snakeboard model.
+
+Start by defining the time varying variables and constants:
 
 .. jupyter-execute::
 
    q1, q2, q3, q4, q5 = me.dynamicsymbols('q1, q2, q3, q4, q5')
    l = sm.symbols('l')
+
+The reference frames are all simple rotations about the axis normal to the
+plane:
+
+.. jupyter-execute::
 
    N = me.ReferenceFrame('N')
    A = me.ReferenceFrame('A')
@@ -485,7 +492,7 @@ classic video from 1993 shows how to propel the board:
    B.orient_axis(A, q4, A.z)
    C.orient_axis(A, q5, A.z)
 
-The angular velocities of each reference frame are:
+The angular velocities of each reference frame are then:
 
 .. jupyter-execute::
 
@@ -499,6 +506,8 @@ The angular velocities of each reference frame are:
 
    C.ang_vel_in(N)
 
+Establish the position vectors among the points:
+
 .. jupyter-execute::
 
    O = me.Point('O')
@@ -510,9 +519,14 @@ The angular velocities of each reference frame are:
    Bo.set_pos(Ao, l/2*A.x)
    Co.set_pos(Ao, -l/2*A.x)
 
-   O.set_vel(N, 0)
+The velocity of :math:`A_o` in :math:`N` is a simple time derivative:
 
+.. jupyter-execute::
+
+   O.set_vel(N, 0)
    Ao.vel(N)
+
+The two point theorem is handy for computing the other two velocities:
 
 .. jupyter-execute::
 
@@ -525,14 +539,14 @@ The angular velocities of each reference frame are:
 The unit vectors :math:`B` and :math:`C` are aligned with the wheels of the
 Snakeboard. This lets us impose that there is no velocity in the direction
 normal to the wheel's rolling direction by taking dot products with the
-respectively reference frames' y direction unit vector to form the two
+respectively reference frames' :math:`y` direction unit vector to form the two
 nonholonomic constraints:
 
 .. math::
    :label: eq-snakeboard-constraints
 
-   {}^Av^{Bo} \cdot \hat{b}_y = 0 \\
-   {}^Av^{Co} \cdot \hat{c}_y = 0
+   {}^A\bar{v}^{Bo} \cdot \hat{b}_y = 0 \\
+   {}^A\bar{v}^{Co} \cdot \hat{c}_y = 0
 
 .. jupyter-execute::
 
@@ -677,4 +691,7 @@ number of generalized coordinates.
 
 The Chapylgin Sleigh has :math:`p = 3 - 1 = 2` degrees of freedom and the
 Snakeboard has :math:`p = 5 - 2 = 3` degrees of freedom. The four bar linkage
-of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom.
+of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom. It is not
+typically easy to visualize the degrees of freedom of a nonholonomic system,
+but for holonomic systems thought experiments where you vary one or two
+generalized coordinates at a time can help you visualize the motion.
