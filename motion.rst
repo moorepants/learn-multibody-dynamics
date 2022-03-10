@@ -28,13 +28,14 @@ Take parallel parking a car as a motivating example.
 We know that car 2 can be in either the left or right location in a), i.e. the
 car's configuration permits either location. But the scenario in b) isn't
 possible. A car can't move from the left configuration to the right
-configuration by simply moving directly to the right [*]_. Although, this
-surely would be nice if we could. A car has wheels and only the front wheels
-can be steered, so the scenario in c) is the only way for the car to end up in
-the correct final configuration. The car has to *move* in a specific way to get
-from one configuration to another. This entails that we have some kind of
-constraint on the motion but not the configuration. Constraints such as these
-are called *nonholonomic constraints* and they take the form:
+configuration by simply moving directly to the right (see the note below if you
+are thinking that is not true). Although, this surely would be nice if we
+could. A car has wheels and only the front wheels can be steered, so the
+scenario in c) is the only way for the car to end up in the correct final
+configuration. The car has to *move* in a specific way to get from one
+configuration to another. This entails that we have some kind of constraint on
+the motion but not the configuration. Constraints such as these are called
+*nonholonomic constraints* and they take the form:
 
 .. math::
    :label: eq-nonholonomic-qdot
@@ -45,7 +46,16 @@ are called *nonholonomic constraints* and they take the form:
    \bar{q} = \left[ q_1, \ldots, q_n\right]^T \in \mathbb{R}^n
 
 The :math:`m` constraints involve the time derivatives of the generalized
-cooordinates and arise from scalar equations derived from velocities.
+coordinates and arise from scalar equations derived from velocities.
+
+.. note::
+
+   We could find a very strong person to push the car sideways, overcoming the
+   very high resisting friction force. It is important to note that any
+   constraint is just a model of a physical phenomena. We know that if we push
+   hard enough and low enough that the car's lateral motion is not constrained.
+   Also, if the car were on ice, then the nonholomonic constraint would be a
+   poor modelling decision.
 
 Chaplygin Sleigh
 ================
@@ -91,6 +101,14 @@ the :math:`A` reference frame:
 
 The single scalar nonholonomic constraint :math:`\bar{r}^{P/O}\cdot\hat{a}_y`
 then takes this form:
+
+.. math::
+   :label: eq-chaplygin-sleigh-constraint
+
+   {}^Nv^P \cdot \hat{a}_y = 0
+
+because there can be no velocity component in the :math:`\hat{a}_y` direction.
+With SymPy, this is:
 
 .. jupyter-execute::
 
@@ -309,6 +327,7 @@ Another valid choice is to set the :math:`u`'s equal to each measure number of
 the angular velocity expressed in :math:`B`:
 
 .. math::
+   :label: u-choice-2
 
    u_1 = {}^A\bar{\omega}^B \cdot \hat{b}_x \\
    u_2 = {}^A\bar{\omega}^B \cdot \hat{b}_y \\
@@ -317,6 +336,7 @@ the angular velocity expressed in :math:`B`:
 so that:
 
 .. math::
+   :label: omega-choice-2
 
    {}^A\bar{\omega}^B = u_1\hat{b}_x + u_2\hat{b}_y + u_3\hat{b}_z
 
@@ -365,6 +385,7 @@ Another valid choice is to set the :math:`u`'s equal to each measure number of
 the angular velocity expressed in :math:`A`:
 
 .. math::
+   :label: u-choice-3
 
    u_1 = {}^A\bar{\omega}^B \cdot \hat{a}_x \\
    u_2 = {}^A\bar{\omega}^B \cdot \hat{a}_y \\
@@ -373,6 +394,7 @@ the angular velocity expressed in :math:`A`:
 so that:
 
 .. math::
+   :label: omega-choice-3
 
    {}^A\bar{\omega}^B = u_1\hat{a}_x + u_2\hat{a}_y + u_3\hat{a}_z
 
@@ -403,8 +425,6 @@ so that:
 .. jupyter-execute::
 
    sm.Eq(qdot, sm.trigsimp(Yk.LUsolve(u - zk)))
-
-
 
 Snakeboard
 ==========
@@ -496,6 +516,18 @@ The angular velocities of each reference frame are:
 
    Co.v2pt_theory(Ao, N, A)
 
+The unit vectors :math:`B` and :math:`C` are aligned with the wheels of the
+Snakeboard. This lets us impose that there is no velocity in the direction
+normal to the wheel's rolling direction by taking dot products with the
+respectively reference frames' y direction unit vector to form the two
+nonholonomic constraints:
+
+.. math::
+   :label: eq-snakeboard-constraints
+
+   {}^Av^{Bo} \cdot \hat{b}_y = 0 \\
+   {}^Av^{Co} \cdot \hat{c}_y = 0
+
 .. jupyter-execute::
 
    fn = sm.Matrix([Bo.vel(N).dot(B.y),
@@ -503,16 +535,21 @@ The angular velocities of each reference frame are:
    fn = sm.trigsimp(fn)
    fn
 
-Now introduce some generalized speeds.
+Now we introduce some generalized speeds. By inspection of the above constraint
+equations, we can see that defining a generalized speed equal to
+:math:`\frac{l\dot{q}_3}{2}` can simplify the equations a bit. So define these
+generalized speeds:
 
 .. math::
+   :label: eq-snakeboard-gen-speeds
 
    u_i = \dot{q}_i \textrm{ for } i=1,2,4,5 \\
    u_3 = \frac{l\dot{q}_3}{2}
 
 Now replace all of the time derivatives of the generalized coordinates with the
 generalized speeds. We use :external:py:meth:`~sympy.core.basic.Basic.subs`
-here because the replacement isn't an exact replacement.
+here because the replacement isn't an exact replacement (in the sense of
+:external:py:meth:`~sympy.core.basic.Basic.xreplace`).
 
 .. jupyter-execute::
 
@@ -532,17 +569,20 @@ here because the replacement isn't an exact replacement.
 These nonholonomic constraints take this form:
 
 .. math::
+   :label: eq-general-con
 
    \bar{f}_n(u_1, u_2, u_3, q_3, q_4, q_5) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^2
 
-Two of the generalized speeds must be selected as dependent generalized speeds
-because these equations let us solve for two in terms of the third. In general,
-the nonholonomic constraints are always linear in the generalized speeds. If we
-introduce :math:`\bar{u}_s` as a vector of independent generalized speeds and
-:math:`\bar{u}_r` as a vector of dependent generalized speeds, the nonholonomic
-constraints can be written as:
+We now have two equations with three unknown generalized speeds. We can solve
+for two of the generalized speeds in terms of the third. So we select two as
+dependent generalized speeds and one as an independent generalized speed. In
+general, the nonholonomic constraints are always linear in the generalized
+speeds. If we introduce :math:`\bar{u}_s` as a vector of independent
+generalized speeds and :math:`\bar{u}_r` as a vector of dependent generalized
+speeds, the nonholonomic constraints can be written as:
 
 .. math::
+   :label: eq-contraint-linear-form
 
    \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) =
    \mathbf{A}_r \bar{u}_r - \mathbf{A}_s \bar{u}_s - \bar{b}_s = 0
@@ -550,9 +590,10 @@ constraints can be written as:
 or
 
 .. math::
+   :label: eq-contraint-linear-form-solve
 
-    \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_s\right) \\
-    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n
+   \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_s\right) \\
+   \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n
 
 For the snakeboard let's choose :math:`\bar{u}_s = [u_3, u_4, u_5]^T` as the
 independent generalized speeds and :math:`\bar{u}_r = [u_1, u_2]^T` as the
@@ -600,7 +641,7 @@ system:
    bn
 
 We now have the dependent generalized speeds written as functions of the
-indepdendent generalized speeds:
+independent generalized speeds:
 
 .. jupyter-execute::
 
@@ -615,6 +656,7 @@ as the Chapylign Sleigh or the Snakeboard, the *degrees of freedom* in
 of degrees of freedom :math:`p` is defined as:
 
 .. math::
+   :label: eq-dof-definition
 
    p := n - m
 
@@ -629,11 +671,3 @@ number of generalized coordinates.
 The Chaplighn Sliegh has :math:`p = 3 - 1 = 2` degrees of freedom and the
 Snakeboard has :math:`p = 5 - 2 = 3` degrees of freedom. The four bar linkage
 of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom.
-
-.. rubric:: Footnotes
-
-.. [*] Well, we could find a very strong person to push th ecar sideways,
-   overcoming the very high resisting friction force. It is important to note
-   that any constraint is just a model of a physical phenomena. We know that if
-   we push hard enough and low enough that the car's lateral motion is not
-   constrained.
