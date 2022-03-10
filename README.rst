@@ -109,6 +109,22 @@ followed for this text:
    H3
    ^^
 
+Reference styles:
+
+.. code:: rst
+
+   :label:`eq-my-equation-name`
+   :math:numref:`eq-my-equation-name`
+
+   .. _sec-my-section-name:
+   :ref:`sec-my-section-name`
+
+   .. _chp-my-chapter-name:
+   :ref:`chp-my-chapter-name`
+
+   .. _fig-my-figure-name:
+   :numref:`fig-my-figure-name`
+
 jupyer-sphinx
 -------------
 
