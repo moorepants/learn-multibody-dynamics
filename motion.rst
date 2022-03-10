@@ -99,13 +99,12 @@ the :math:`A` reference frame:
 
    P.vel(N).express(A)
 
-The single scalar nonholonomic constraint :math:`\bar{r}^{P/O}\cdot\hat{a}_y`
-then takes this form:
+The single scalar nonholonomic constraint then takes this form:
 
 .. math::
    :label: eq-chaplygin-sleigh-constraint
 
-   {}^Nv^P \cdot \hat{a}_y = 0
+   {}^N\bar{v}^P \cdot \hat{a}_y = 0
 
 because there can be no velocity component in the :math:`\hat{a}_y` direction.
 With SymPy, this is:
@@ -115,10 +114,10 @@ With SymPy, this is:
    fn = P.vel(N).dot(A.y)
    fn
 
-How do we know that this is, in fact, a nonoholomic constraint and not simply
+How do we know that this is, in fact, a nonholonomic constraint and not simply
 the time derivative of a holonomic constraint?
 
-Recall one of the four-bar linkage holononomic constraints arising from Eq.
+Recall one of the four-bar linkage holonomic constraints arising from Eq.
 :math:numref:`constraint-expression` and time differentiate it:
 
 .. jupyter-execute::
@@ -143,7 +142,7 @@ Unfortunately, it is not generally possible to integrate :math:`f_n` so we can
 check the integrability of :math:`f_n` indirectly.
 
 If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
-then it must be able to be expressed in this form:
+:math:`f_h` then it must be able to be expressed in this form:
 
 .. math::
    :label: eq-diff-holonomic
@@ -230,7 +229,7 @@ differential equations*.
 The most common, and always valid, choice of generalized speeds is:
 
 .. math::
-   :label: generalized-speeds
+   :label: eq-simplest-generalized-speeds
 
    \bar{u} = \mathbf{I} \dot{\bar{q}}
 
@@ -254,15 +253,13 @@ Choosing Generalized Speeds
 
 There are many possible choices for generalized speed and you are free to
 select them as you please, as long as they fit the form of equation
-:math:numref:`generalized-speeds` and :math:`\mathbf{Y}_k` is invertible.
-
+:math:numref:`eq-generalized-speeds` and :math:`\mathbf{Y}_k` is invertible.
 Some selections of generalized speeds can reduce the complexity of important
 velocity expressions and if selected carefully may reduce the complexity of the
-equations of motion we will derive in a later chapters.
-
-To see some examples of selecting generalized speeds, take for example the
-angular velocity of a reference frame which is oriented with a
-:math:`z\textrm{-}x\textrm{-}y` body fixed orientation:
+equations of motion we will derive in a later chapters. To see some examples of
+selecting generalized speeds, take for example the angular velocity of a
+reference frame which is oriented with a :math:`z\textrm{-}x\textrm{-}y` body
+fixed orientation:
 
 .. jupyter-execute::
 
@@ -300,17 +297,26 @@ angular velocity takes this form:
    Yk_plus_zk
 
 Recall from :ref:`sec-solving-linear-systems` that the Jacobian is a simple way
-to extract the coefficients of linear terms into a coefficient matrix. In this
-case, we see that this results in the identity matrix.
+to extract the coefficients of linear terms into a coefficient matrix for a
+system of linear equations. In this case, we see that this results in the
+identity matrix.
 
 .. jupyter-execute::
 
    Yk = Yk_plus_zk.jacobian(qdot)
    Yk
 
+Now find :math:`\bar{z}_k` by setting the time derivatives of the generalized
+coordinates to zero:
+
 .. jupyter-execute::
 
-   zk = Yk_plus_zk.xreplace(dict(zip(qdot, sm.zeros(3, 1))))
+   qd_zero_repl = dict(zip(qdot, sm.zeros(3, 1)))
+   qd_zero_repl
+
+.. jupyter-execute::
+
+   zk = Yk_plus_zk.xreplace(qd_zero_repl)
    zk
 
 The linear equation can be solved for the :math:`\dot{q}`'s, (Eq.
@@ -445,7 +451,7 @@ classic video from 1993 shows how to propel the board:
 
 .. _snakeboard: https://en.wikipedia.org/wiki/Snakeboard
 
-:numref:`fig-snakeboard` shows what a real snakeboard looks like and
+:numref:`fig-snakeboard` shows what a real Snakeboard looks like and
 :numref:`fig-snakeboard-configuration` shows a configuration diagram.
 
 .. _fig-snakeboard:
@@ -575,8 +581,9 @@ These nonholonomic constraints take this form:
 
 We now have two equations with three unknown generalized speeds. We can solve
 for two of the generalized speeds in terms of the third. So we select two as
-dependent generalized speeds and one as an independent generalized speed. In
-general, the nonholonomic constraints are always linear in the generalized
+dependent generalized speeds and one as an independent generalized speed.
+Because nonholonomic constraints are derived from measure numbers of velocity
+vectors, the nonholonomic constraints are always linear in the generalized
 speeds. If we introduce :math:`\bar{u}_s` as a vector of independent
 generalized speeds and :math:`\bar{u}_r` as a vector of dependent generalized
 speeds, the nonholonomic constraints can be written as:
@@ -595,7 +602,7 @@ or
    \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_s\right) \\
    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n
 
-For the snakeboard let's choose :math:`\bar{u}_s = [u_3, u_4, u_5]^T` as the
+For the Snakeboard let's choose :math:`\bar{u}_s = [u_3, u_4, u_5]^T` as the
 independent generalized speeds and :math:`\bar{u}_r = [u_1, u_2]^T` as the
 dependent generalized speeds.
 
@@ -651,7 +658,7 @@ Degrees of Freedom
 ==================
 
 For simple nonholonomic systems observed in a reference frame :math:`A`, such
-as the Chapylign Sleigh or the Snakeboard, the *degrees of freedom* in
+as the Chapylgin Sleigh or the Snakeboard, the *degrees of freedom* in
 :math:`A` are equal to the number of independent generalized speeds. The number
 of degrees of freedom :math:`p` is defined as:
 
@@ -668,6 +675,6 @@ number of generalized coordinates.
 
 .. todo:: Turn this last paragraph into exercises.
 
-The Chaplighn Sliegh has :math:`p = 3 - 1 = 2` degrees of freedom and the
+The Chapylgin Sleigh has :math:`p = 3 - 1 = 2` degrees of freedom and the
 Snakeboard has :math:`p = 5 - 2 = 3` degrees of freedom. The four bar linkage
 of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom.
