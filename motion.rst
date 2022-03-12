@@ -604,14 +604,14 @@ speeds, the nonholonomic constraints can be written as:
    :label: eq-contraint-linear-form
 
    \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) =
-   \mathbf{A}_r \bar{u}_r - \mathbf{A}_s \bar{u}_s - \bar{b}_s = 0
+   \mathbf{A}_r \bar{u}_r - \mathbf{A}_s \bar{u}_s - \bar{b}_{rs} = 0
 
 or
 
 .. math::
    :label: eq-contraint-linear-form-solve
 
-   \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_s\right) \\
+   \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_{rs}\right) \\
    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n
 
 For the Snakeboard let's choose :math:`\bar{u}_s = [u_3, u_4, u_5]^T` as the
@@ -638,7 +638,7 @@ dependent generalized speeds.
    As = -fn.jacobian(us)
    As
 
-:math:`-\bar{b}_s` remains when :math:`\bar{u}=0`:
+:math:`-\bar{b}_{rs}` remains when :math:`\bar{u}=0`:
 
 .. jupyter-execute::
 
