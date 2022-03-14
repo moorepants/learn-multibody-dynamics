@@ -37,7 +37,7 @@ volumetric boundary, the total mass becomes an integral of the general form:
 .. math::
    :label: eq-zeroth-moment-rigid-body
 
-   m := \int_{\textrm{volume}} \rho dV
+   m := \int_{\textrm{solid}} \rho dV
 
 Mass Center
 ===========
@@ -55,7 +55,7 @@ mass center of the set of particles. The mass center is defined as:
 .. math::
    :label: mass-center-rigid-body
 
-   \bar{r}^{S_o/O} = \frac{ \int_{\textrm{mass}} \bar{r} dm }{ \int_{\textrm{mass}} dm }
+   \bar{r}^{S_o/O} = \frac{ \int_{\textrm{solid}} \bar{r} dm }{ \int_{\textrm{solid}} dm }
 
 .. jupyter-execute::
 
@@ -155,14 +155,15 @@ The *radius of gyration* about a line through :math:`O` parallel to
 
    k_{aa} := \sqrt{\frac{I_{aa}}{m}}
 
-Inertia Dyadic
+Inertia Matrix
 ==============
 
-For mutually perpendicular unit vectors in :math:`A` the moments of inertia
-with repsect to :math:`O` about each unit vector can be computed and the
-products of inertia among the pairs of perpendiculr vectors can also be
-computed. This, in general, generates six unique inertia scalars. These scalars
-are typically presented as a symmetric inertia matrix (or inertia tensor):
+For mutually perpendicular unit vectors fixed in reference frame :math:`A` the
+moments of inertia with repsect to :math:`O` for each unit vector can be
+computed and the products of inertia among the pairs of perpendiculr unit
+vectors can also be computed. This, in general, generates nine unique inertia
+scalars. These scalars are typically presented as a symmetric inertia matrix
+(or inertia tensor):
 
 .. math::
 
@@ -173,8 +174,8 @@ are typically presented as a symmetric inertia matrix (or inertia tensor):
    \end{bmatrix}_A
 
 where :math:`I_{xy}=I_{yx}`, :math:`I_{xz}=I_{zx}`, and :math:`I_{yz}=I_{zy}`
-and the subscript :math:`A` indicates that these are relative to the unit
-vectors of :math:`A`.
+and the subscript :math:`A` indicates that these scalars are relative to unit
+vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`.
 
 This second order tensor is similar to the the first order tensors (vectors)
 we've already worked with:
@@ -182,52 +183,98 @@ we've already worked with:
 .. math::
 
    \begin{bmatrix}
-   a_1 \\
-   0 \\
-   0
+   v_1 \\
+   v_2 \\
+   v_3
    \end{bmatrix}_A
 
-but we have notation for writing such a vector, i.e. :math:`a_1\hat{a}_x`.
+but we have notation for writing such a vector that allows us to combine
+components expressed in different reference frames:
 
-If we introduce the outer product operator between two vectors:
+.. math::
+
+   v_1\hat{a}_x + v_2\hat{a}_y + v_3\hat{a}_z
+
+There also exists an analgous form for second order tensors.
+
+Dyadics
+=======
+
+If we introduce the `outer product`_ operator between two vectors we see that
+it generates a matrix akin to the inertia matrix above.
+
+.. math::
+
+   \begin{bmatrix}
+   v_1 \\ v_2 \\ v_3
+   \end{bmatrix}_A
+   \otimes
+   \begin{bmatrix}
+     w_1 \\ w_2 \\ w_3
+   \end{bmatrix}_A
+   =
+   \begin{bmatrix}
+   v_1w_1 & v_1w_2 & v_1w_3 \\
+   v_2w_1 & v_2w_2 & v_2w_3 \\
+   v_3w_1 & v_3w_2 & v_3w_3 \\
+   \end{bmatrix}_A
+
+.. _outer product: https://en.wikipedia.org/wiki/Outer_product
+
+In SymPy Mechanics outer products can be taken between two vectors:
 
 .. jupyter-execute::
 
-   a1, a2, a3 = sm.symbols('a1, a2, a3')
-   b1, b2, b3 = sm.symbols('b1, b2, b3')
+   v1, v2, v3 = sm.symbols('v1, v2, v3')
+   w1, w2, w3 = sm.symbols('w1, w2, w3')
 
-   a1*me.outer(A.x, A.x)
+   A = me.ReferenceFrame('A')
 
-.. jupyter-execute::
+   v = v1*A.x + v2*A.y + v3*A.z
+   w = w1*A.x + w2*A.y + w3*A.z
 
-   a1*me.outer(A.x, A.x).to_matrix(A)
-
-.. jupyter-execute::
-
-   v = a1*A.x + a2*A.y + a3*A.z
-
-   B = me.ReferenceFrame('B')
-
-   w = b1*B.x + b2*B.y + b3*B.z
-
-.. jupyter-execute::
-
-   theta = sm.symbols("theta")
-   B.orient_axis(A, theta, A.x)
-
-   Q = v.outer(w)
+   Q = me.outer(v, w)
    Q
+
+but the result is not the matrix form show above, but instead the result is a
+dyadic_. The dyadic is the analogous form for second order tensors as that
+we've been using for first order tensors. The matrix form can be found with
+:external:py:meth:`~sympy.physics.vector.dyadic.Dyadic.to_matrix`:
+
+.. _dyadic: https://en.wikipedia.org/wiki/Dyadics
 
 .. jupyter-execute::
 
    Q.to_matrix(A)
 
+The dyadic is made up of scalars multiplied by unit dyads. Examples of unit
+dyads are:
+
 .. jupyter-execute::
 
-   Q.to_matrix(B)
+   me.outer(A.x, A.x)
 
-This is convenident because we can create dyadics, just like vectors, which are
-make up of components in different reference frames:
+.. jupyter-execute::
+
+   me.outer(A.x, A.x).to_matrix(A)
+
+.. jupyter-execute::
+
+   me.outer(A.y, A.z)
+
+.. jupyter-execute::
+
+   me.outer(A.y, A.z).to_matrix(A)
+
+These unit dyads can be formed from unit vectors that are fixed in different
+reference frames. This is convenident because we can create dyadics, just like
+vectors, which are make up of components in different reference frames:
+
+.. jupyter-execute::
+
+   theta = sm.symbols("theta")
+   B = me.ReferenceFrame('B')
+   B.orient_axis(A, theta, A.x)
 
 .. jupyter-execute::
 
@@ -242,8 +289,6 @@ make up of components in different reference frames:
 
    P.to_matrix(A)
 
-.. todo:: Show dyadic properties including pre and post multiplication.
-
 The unit dyadic is defined as:
 
 .. jupyter-execute::
@@ -257,12 +302,37 @@ and it represents the identity matrix:
 
    U.to_matrix(A)
 
-Using the triple vector product identify the inertia vector can be written as:
+.. todo:: ReferenceFrame should have an attribute that returns the unit dyadic
+   (or dyads).
+
+Properties of dyadics
+=====================
+
+- Scalar multiplication: :math:`\alpha(\bar{u}\otimes\bar{v}) = \alpha\bar{u}\otimes\bar{v} = \bar{u}\otimes\alpha\bar{v}`
+- Distributive: :math:`\bar{u}\otimes(\bar{v} + \bar{w}) = \bar{u}\otimes\bar{v} + \bar{u}\otimes\bar{w}`
+- Left and right dot product with a vector (results in a vector):
+
+  - :math:`\bar{u}\cdot(\bar{v}\otimes\bar{w}) = (\bar{u}\cdot\bar{v})\bar{w}`
+  - :math:`(\bar{u}\otimes\bar{v})\cdot\bar{w} = \bar{u}(\bar{v}\cdot\bar{w})`
+
+- Left and right cross product with a vector (results in a dyadic):
+
+  - :math:`\bar{u}\times(\bar{v}\otimes\bar{w}) = (\bar{u}\times\bar{v})\otimes\bar{w}`
+  - :math:`(\bar{u}\otimes\bar{v})\times\bar{w} = \bar{u}\otimes(\bar{v}\times\bar{w})`
+
+- Not commutative: :math:`\breve{U}\bar{u} \neq \bar{u}\breve{U}`
+
+Inertia Dyadic
+==============
+
+Using the triple vector product identify
+:math:`\bar{a}\times(\bar{b}\times\bar{c}) = \bar{b}(\bar{a}\cdot\bar{c}) -
+\bar{c}(\bar{a}\cdot\bar{b}` the inertia vector can be written as:
 
 .. math::
 
-   \bar{I}_a = \sum_{i=1}^\nu m_i \left(\hat{n}_a \bar{r}^2 -
-   \hat{n}_a\cdot\bar{r}\bar{r}\right)
+   \bar{I}_a = \sum_{i=1}^\nu m_i \left(\hat{n}_a \bar{r}^{P_i/O}\cdot\bar{r}^{P_i/O} -
+   \hat{n}_a\cdot\bar{r}^{P_i/O}\otimes\bar{r}^{P_i/O}\right)
 
 .. math::
 
@@ -272,6 +342,14 @@ Using the triple vector product identify the inertia vector can be written as:
    \hat{n}_a \cdot \bar{r}^{P_i/O} \bar{r}^{P_i/O}
    \right)
 
+.. math::
+
+   \bar{I}_a =
+   \hat{n}_a \cdot\sum_{i=1}^\nu m_i \left(
+    \breve{U} \left(\bar{r}^{P_i/O}\right)^2 -
+    \bar{r}^{P_i/O} \bar{r}^{P_i/O}
+   \right) = \hat{n}_a \cdot \breve{I}
+
 We can now remove the dependence on :math:`\hat{n}_a` and arrive at the inertia
 dyadic of the set of particles relative to :math:`O`:
 
@@ -280,7 +358,7 @@ dyadic of the set of particles relative to :math:`O`:
    \breve{I} :=
    \sum_{i=1}^\nu m_i \left(
    \breve{U} \left(\bar{r}^{P_i/O}\right)^2 -
-   \bar{r}^{P_i/O} \bar{r}^{P_i/O}
+   \bar{r}^{P_i/O} \otimes \bar{r}^{P_i/O}
    \right)
 
 
@@ -305,13 +383,14 @@ coordinate system in any reference frame.
 Angular Momentum
 ================
 
+.. math::
 
+   {}^A \mathbf{H}^{S/S_o} = \breve{I} \cdot {}^A\bar{\omega}^B
 
-Parallel Axis
-=============
+.. jupyter-execute::
 
-Composite Inertias
-==================
+   w1, w2, w3 = me.dynamicsymbols('omega1, omega2, omega3')
+   I = me.inertia(B, Ixx, Iyy, Izz, Ixy, Iyz, Ixz)
+   A_w_B = w1*B.x + w2*B.y + w3*B.z
 
-Principal Moments of Inertia
-============================
+   I.dot(A_w_B)
