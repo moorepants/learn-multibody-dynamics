@@ -1,0 +1,767 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Holonomic Constraints &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Nonholonomic Constraints" href="motion.html" />
+    <link rel="prev" title="Translational Kinematics" href="translational.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#configuration" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Holonomic Constraints </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder="Search"
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Holonomic  Constraints </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Holonomic  Constraints</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#configuration--page-root" class="md-nav__link">Holonomic  Constraints</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#four-bar-linkage" class="md-nav__link">Four-Bar Linkage</a>
+        </li>
+        <li class="md-nav__item"><a href="#general-holonomic-constraints" class="md-nav__link">General Holonomic Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#generalized-coordinates" class="md-nav__link">Generalized Coordinates</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/configuration.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="wherenext.html" class="md-nav__link">Where To Go Next</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="glossary.html" class="md-nav__link">Glossary</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#configuration--page-root" class="md-nav__link">Holonomic  Constraints</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#four-bar-linkage" class="md-nav__link">Four-Bar Linkage</a>
+        </li>
+        <li class="md-nav__item"><a href="#general-holonomic-constraints" class="md-nav__link">General Holonomic Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#generalized-coordinates" class="md-nav__link">Generalized Coordinates</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/configuration.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="holonomic-constraints">
+<span id="chp-holonomic-constraints"></span><h1 id="configuration--page-root">Holonomic  Constraints<a class="headerlink" href="#configuration--page-root" title="Permalink to this headline">¶</a></h1>
+<section id="four-bar-linkage">
+<h2 id="four-bar-linkage">Four-Bar Linkage<a class="headerlink" href="#four-bar-linkage" title="Permalink to this headline">¶</a></h2>
+<p>Consider the linkage shown below:</p>
+<figure class="align-center" id="id4">
+<span id="configuration-four-bar"></span><a class="reference internal image-reference" href="_images/configuration-four-bar.svg"><img alt="_images/configuration-four-bar.svg" src="_images/configuration-four-bar.svg" width="600px"/></a>
+<figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">a) Shows four links in a plane <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(C\)</span>, and
+<span class="math notranslate nohighlight">\(N\)</span> with respective lengths <span class="math notranslate nohighlight">\(l_a,l_b,l_c,l_n\)</span> connected in a
+closed loop at points <span class="math notranslate nohighlight">\(P_1,P_2,P_3,P_4\)</span>. b) Shows the same linkage
+that has been seperated at point <span class="math notranslate nohighlight">\(P_4\)</span> to make it an open chain of
+links.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>This is a planar <a class="reference external" href="https://en.wikipedia.org/wiki/Four-bar_linkage">four-bar linkage</a> with reference frames <span class="math notranslate nohighlight">\(N,A,B,C\)</span>
+attached to each bar. Four bar linkages are used in a wide variety of
+mechanisms. One you may be familiar with is this rear suspension on a mountain
+bicycle:</p>
+<figure class="align-center" id="id5">
+<span id="mountain-bike-suspension"></span><img alt="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/MtbFrameGeometry_FSR.png/320px-MtbFrameGeometry_FSR.png" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/MtbFrameGeometry_FSR.png/320px-MtbFrameGeometry_FSR.png"/>
+<figcaption>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">Four bar linkage shown in blue, red, orange, and green used in the rear
+suspension mechanism of a mountain bicycle.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<p>Cartemere, CC BY-SA 3.0 &lt;<a class="reference external" href="https://creativecommons.org/licenses/by-sa/3.0">https://creativecommons.org/licenses/by-sa/3.0</a>&gt;, via Wikimedia Commons</p>
+</div>
+</figcaption>
+</figure>
+<p>A four bar linkage is an example of a <em>closed kinematic loop</em>. The case of
+<a class="reference internal" href="#configuration-four-bar"><span class="std std-numref">Fig. 22</span></a> there are two vector paths to point
+<span class="math notranslate nohighlight">\(P_4\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-vector-loop">
+<span class="eqno">(64)<a class="headerlink" href="#equation-vector-loop" title="Permalink to this equation">¶</a></span>\[\bar{r}^{P_4/P_1} = \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3}\]</div>
+<p>For the loop to close, the two vector paths must equate. We can resolve this by
+disconnecting the loop at some location, <span class="math notranslate nohighlight">\(P_4\)</span> in our case, and forming
+the open loop vector equations to points that should coincide.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">sympy.physics.mechanics</span> <span class="k">as</span> <span class="nn">me</span>
+<span class="n">me</span><span class="o">.</span><span class="n">init_vprinting</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Setup the variables, reference frames, and points:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'q1, q2, q3'</span><span class="p">)</span>
+<span class="n">la</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">lc</span><span class="p">,</span> <span class="n">ln</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'l_a, l_b, l_c, l_n'</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'C'</span><span class="p">)</span>
+
+<span class="n">A</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">q3</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+<span class="n">P1</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'P1'</span><span class="p">)</span>
+<span class="n">P2</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'P2'</span><span class="p">)</span>
+<span class="n">P3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'P3'</span><span class="p">)</span>
+<span class="n">P4</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'P4'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>SymPy Mechanics will warn you if you try to establish a closed loop among a set
+of points and you should not do that. Instead you will establish positions
+among points on one open leg of the chain:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span> <span class="n">la</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">P3</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">P2</span><span class="p">,</span> <span class="n">lb</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">P4</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">P3</span><span class="p">,</span> <span class="n">lc</span><span class="o">*</span><span class="n">C</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">P4</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">P1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle l_{c}\mathbf{\hat{c}_x} + l_{b}\mathbf{\hat{b}_x} + l_{a}\mathbf{\hat{a}_x}\]</div>
+</div>
+</div>
+<p>Now, declare a vector for the other path to <span class="math notranslate nohighlight">\(P_4\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r_P1_P4</span> <span class="o">=</span> <span class="n">ln</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now we can form the left hand side of the following equation:</p>
+<div class="math notranslate nohighlight" id="equation-constraint-expression">
+<span class="eqno">(65)<a class="headerlink" href="#equation-constraint-expression" title="Permalink to this equation">¶</a></span>\[\bar{r}^{P_4/P_1} - \left( \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} \right) = 0\]</div>
+<p>Using <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.pos_from" title="(in SymPy v1.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pos_from()</span></code></a> for the
+open loop leg made of points and the additional vector:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loop</span> <span class="o">=</span> <span class="n">P4</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">P1</span><span class="p">)</span> <span class="o">-</span> <span class="n">r_P1_P4</span>
+<span class="n">loop</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle l_{c}\mathbf{\hat{c}_x} + l_{b}\mathbf{\hat{b}_x} + l_{a}\mathbf{\hat{a}_x} -  l_{n}\mathbf{\hat{n}_x}\]</div>
+</div>
+</div>
+<p>This “loop” vector equation must equate to zero for our linkage to always be a
+closed loop. We have a planar mechanism, so we can extract two scalar equations
+associated with a pair of unit vectors in the plane of the mechanism:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fhx</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+<span class="n">fhx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle l_{a} \cos{\left(q_{1} \right)} + l_{b} \cos{\left(q_{1} + q_{2} \right)} + l_{c} \cos{\left(q_{1} + q_{2} + q_{3} \right)} - l_{n}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fhy</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+<span class="n">fhy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle l_{a} \sin{\left(q_{1} \right)} + l_{b} \sin{\left(q_{1} + q_{2} \right)} + l_{c} \sin{\left(q_{1} + q_{2} + q_{3} \right)}\]</div>
+</div>
+</div>
+<p>For the loop to close, these two expressions must equal zero for all values
+<span class="math notranslate nohighlight">\(q_1,q_2,q_3\)</span>. These are two nonlinear equations in three time varying
+variables. A solution, sometimes analytically but likely only numerical, can be
+found if we solve for two of the time varying variables. For example,
+<span class="math notranslate nohighlight">\(q_2\)</span> and <span class="math notranslate nohighlight">\(q_3\)</span> can be solved for in terms of <span class="math notranslate nohighlight">\(q_1\)</span>. We would
+then say that <span class="math notranslate nohighlight">\(q_2\)</span> and <span class="math notranslate nohighlight">\(q_3\)</span> depend on <span class="math notranslate nohighlight">\(q_1\)</span>. These two
+equations are called holonomic constraints, or configuration constraints
+because they constrain the kinematic configuration to be a loop. Holonomic
+constraints take the form:</p>
+<div class="math notranslate nohighlight" id="equation-configuration-constraint">
+<span class="eqno">(66)<a class="headerlink" href="#equation-configuration-constraint" title="Permalink to this equation">¶</a></span>\[\bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M\]</div>
+<p>These constraints are functions of configuration variables: time varying angles
+and distances. In our case of the four-bar linkage:</p>
+<div class="math notranslate nohighlight" id="equation-four-bar-constraints">
+<span class="eqno">(67)<a class="headerlink" href="#equation-four-bar-constraints" title="Permalink to this equation">¶</a></span>\[\bar{f}_h(q_1, q_2, q_3) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^2\]</div>
+<p>In SymPy, we’ll typically form this column vector as so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fh</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">fhx</span><span class="p">,</span> <span class="n">fhy</span><span class="p">])</span>
+<span class="n">fh</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}l_{a} \cos{\left(q_{1} \right)} + l_{b} \cos{\left(q_{1} + q_{2} \right)} + l_{c} \cos{\left(q_{1} + q_{2} + q_{3} \right)} - l_{n}\\l_{a} \sin{\left(q_{1} \right)} + l_{b} \sin{\left(q_{1} + q_{2} \right)} + l_{c} \sin{\left(q_{1} + q_{2} + q_{3} \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+</section>
+<section id="general-holonomic-constraints">
+<h2 id="general-holonomic-constraints">General Holonomic Constraints<a class="headerlink" href="#general-holonomic-constraints" title="Permalink to this headline">¶</a></h2>
+<p>If you consider a set of <span class="math notranslate nohighlight">\(v\)</span> points, <span class="math notranslate nohighlight">\(P_1,P_2,\ldots,P_v\)</span> that can
+move unconstrained in Euclidean 3D space, then one would need <span class="math notranslate nohighlight">\(3v\)</span>
+constraint equations to fix the points (fully constrain the motion) in that
+Euclidean space. For the four points in the four-bar linkage, we would then
+need <span class="math notranslate nohighlight">\(3(4)=12\)</span> constraints to lock all the points fully in place. The
+figure below will be used to illustrate the general idea of constraining the
+configuration of the four bar linkage.</p>
+<figure class="align-center" id="id6">
+<span id="configuration-constraints"></span><a class="reference internal image-reference" href="_images/configuration-constraints.svg"><img alt="_images/configuration-constraints.svg" src="_images/configuration-constraints.svg" width="400px"/></a>
+<figcaption>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text">a) Four points in 3D space, b) four points constrained to 2D space, c)
+points are fixed to adjacent points by a fixed length, d) the first point is
+fixed at <span class="math notranslate nohighlight">\(O\)</span> in two dimensions, e) the fourth point is fixed in the
+<span class="math notranslate nohighlight">\(y\)</span> coordinate relative to <span class="math notranslate nohighlight">\(O\)</span>.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Starting with a), there are the four points in 3D Euclidean space that are free
+to move. Moving to b), each of the four points can be then constrained to be in
+a plane with:</p>
+<div class="math notranslate nohighlight" id="equation-planar-constraints">
+<span class="eqno">(68)<a class="headerlink" href="#equation-planar-constraints" title="Permalink to this equation">¶</a></span>\[\begin{split}\bar{r}^{P_1/O}\cdot\hat{n}_z = 0 \\
+\bar{r}^{P_2/O}\cdot\hat{n}_z = 0 \\
+\bar{r}^{P_3/O}\cdot\hat{n}_z = 0 \\
+\bar{r}^{P_4/O}\cdot\hat{n}_z = 0\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(O\)</span> is a point fixed in <span class="math notranslate nohighlight">\(N\)</span>. This applies four constraints
+leaving 8 coordinates for the planar location of the points. Now at c) we
+constrain the points with:</p>
+<div class="math notranslate nohighlight" id="equation-length-constraints">
+<span class="eqno">(69)<a class="headerlink" href="#equation-length-constraints" title="Permalink to this equation">¶</a></span>\[\begin{split}|\bar{r}^{P_2/P_1}| = l_a \\
+|\bar{r}^{P_3/P_2}| = l_b \\
+|\bar{r}^{P_4/P_3}| = l_c \\
+|\bar{r}^{P_4/P_1}| = l_n\end{split}\]</div>
+<p>These four constraint equations keep the points within the specified distances
+from each other leaving 4 coordinates free. In d) point <span class="math notranslate nohighlight">\(P_1\)</span> is fixed
+relative to <span class="math notranslate nohighlight">\(O\)</span> with 2 scalar constraints:</p>
+<div class="math notranslate nohighlight" id="equation-p1-constraint">
+<span class="eqno">(70)<a class="headerlink" href="#equation-p1-constraint" title="Permalink to this equation">¶</a></span>\[\begin{split}\bar{r}^{P_1/O}\cdot\hat{n}_x = 0 \\
+\bar{r}^{P_1/O}\cdot\hat{n}_y = 0\end{split}\]</div>
+<p>Finally in e), <span class="math notranslate nohighlight">\(P_4\)</span> is constrained with the single scalar:</p>
+<div class="math notranslate nohighlight" id="equation-p4-constraint">
+<span class="eqno">(71)<a class="headerlink" href="#equation-p4-constraint" title="Permalink to this equation">¶</a></span>\[\bar{r}^{P_4/P_1} \cdot \hat{n}_y = 0\]</div>
+<p>These 11 constraints leave a single free coordinate to describe the orientation
+of <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, and <span class="math notranslate nohighlight">\(C\)</span> in <span class="math notranslate nohighlight">\(N\)</span>. When we originally
+sketched <a class="reference internal" href="#configuration-four-bar"><span class="std std-numref">Fig. 22</span></a> most of these constraints were
+implied, i.e. we drew a planar mechanism with points <span class="math notranslate nohighlight">\(P_1\)</span> and
+<span class="math notranslate nohighlight">\(P_4\)</span> fixed in <span class="math notranslate nohighlight">\(N\)</span>, but formally there are 12 coordinates needed to
+locate the four points and 11 constraints that constrain them to have the
+configuration of a four-bar linkage.</p>
+<p>A general holonomic constraint for a set of <span class="math notranslate nohighlight">\(v\)</span> points with Cartesian
+coordinates is then (<a class="reference internal" href="references.html#kane1985" id="id2"><span>[Kane1985]</span></a> pg. 35):</p>
+<div class="math notranslate nohighlight" id="equation-holonomic-cartesian">
+<span class="eqno">(72)<a class="headerlink" href="#equation-holonomic-cartesian" title="Permalink to this equation">¶</a></span>\[f_h(x_1, y_1, z_1, \ldots, x_v, y_v, z_v, t) = 0\]</div>
+<p>We include <span class="math notranslate nohighlight">\(t\)</span> as it may also be possible that the constraint is an
+explicit function of time (instead of only implicit, as seen above).</p>
+</section>
+<section id="generalized-coordinates">
+<h2 id="generalized-coordinates">Generalized Coordinates<a class="headerlink" href="#generalized-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>If a set of <span class="math notranslate nohighlight">\(v\)</span> points are constrained with <span class="math notranslate nohighlight">\(M\)</span> holonomic
+constraints then only <span class="math notranslate nohighlight">\(n\)</span> of the Cartesian coordinates are independent of
+each other. The number of independent coordinates is then defined as
+(<a class="reference internal" href="references.html#kane1985" id="id3"><span>[Kane1985]</span></a> pg 37):</p>
+<div class="math notranslate nohighlight" id="equation-num-gen-coord">
+<span class="eqno">(73)<a class="headerlink" href="#equation-num-gen-coord" title="Permalink to this equation">¶</a></span>\[n := 3v - M\]</div>
+<p>These <span class="math notranslate nohighlight">\(n\)</span> independent Cartesian coordinates can also be expressed as
+<span class="math notranslate nohighlight">\(n\)</span> functions of time <span class="math notranslate nohighlight">\(q_1(t),q_2(t),\ldots,q_n(t)\)</span> in such a way
+that the constraint equations are always satisfied. These functions
+<span class="math notranslate nohighlight">\(q_1(t),q_2(t),\ldots,q_n(t)\)</span> are called <em>generalized coordinates</em> and it
+is possible to find <span class="math notranslate nohighlight">\(n\)</span> independent coordinates that minimize the number
+of explicit constraint equations needed to describe the system’s configuration
+at all times <span class="math notranslate nohighlight">\(t\)</span>. These generalized coordinates are typically determined
+by inspection of the system and there is a bit of an art to choosing the best
+set. But you can always fall back to the formal process of constraining each
+relevant point.</p>
+<p>Take this simple pendulum with points <span class="math notranslate nohighlight">\(O\)</span> and <span class="math notranslate nohighlight">\(P\)</span> as an example:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="_images/configuration-pendulum.svg"><img alt="_images/configuration-pendulum.svg" src="_images/configuration-pendulum.svg" width="400px"/></a>
+</figure>
+<p>If the pendulum length <span class="math notranslate nohighlight">\(l\)</span> is constant and the orientation between
+<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(N\)</span> can change, then the location of <span class="math notranslate nohighlight">\(P\)</span> relative to
+<span class="math notranslate nohighlight">\(O\)</span> can be described with the Cartesian coordinates <span class="math notranslate nohighlight">\(x\)</span> and
+<span class="math notranslate nohighlight">\(y\)</span>. It should be clear that <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> depend on each other
+for this system. The constraint relationship between those two coordinates is:</p>
+<div class="math notranslate nohighlight" id="equation-pendulum-length-constraint">
+<span class="eqno">(74)<a class="headerlink" href="#equation-pendulum-length-constraint" title="Permalink to this equation">¶</a></span>\[x^2 + y^2 = l^2\]</div>
+<p>This implies that only one coordinate is independent, i.e. <span class="math notranslate nohighlight">\(n=1\)</span>. More
+formally, the two points give <span class="math notranslate nohighlight">\(3v=3(2)=6\)</span> and there are 2 constraints for
+the planar motion of each point, 2 constraints fixing <span class="math notranslate nohighlight">\(O\)</span> in <span class="math notranslate nohighlight">\(N\)</span>,
+and 1 constraint fixing the distance from <span class="math notranslate nohighlight">\(O\)</span> to <span class="math notranslate nohighlight">\(P\)</span>, making
+<span class="math notranslate nohighlight">\(M=5\)</span> and thus confirming our intuition <span class="math notranslate nohighlight">\(n=6-5=1\)</span>.</p>
+<p>But there may be functions of time that relieve us from having to consider Eq.
+<a class="reference internal" href="#equation-pendulum-length-constraint">(74)</a>. For example, these two coordinates
+can also be written as as functions of the angle <span class="math notranslate nohighlight">\(q\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-xy-func-of-q">
+<span class="eqno">(75)<a class="headerlink" href="#equation-xy-func-of-q" title="Permalink to this equation">¶</a></span>\[\begin{split}x = l\cos q \\
+y = l\sin q\end{split}\]</div>
+<p>and if we describe the configuration with only <span class="math notranslate nohighlight">\(q\)</span>, the constraint is
+implicitly satisfied. <span class="math notranslate nohighlight">\(q\)</span> is then a generalized coordinate because it
+satisfies <span class="math notranslate nohighlight">\(n=1\)</span> and we do not have to explicitly define a constraint
+equation.</p>
+<p>Now, let’s return to the four-bar linkage example in
+<a class="reference internal" href="#configuration-four-bar"><span class="std std-numref">Fig. 22</span></a> and think about what the generalized
+coordinates of this system are. We know, at least intuitively, that <span class="math notranslate nohighlight">\(n=1\)</span>
+for the four bar linkage. The four-bar linkage in
+<a class="reference internal" href="#configuration-four-bar"><span class="std std-numref">Fig. 22</span></a> is described in a way that assumes a number of
+constraints are fulfilled, such as Eqs.  <a class="reference internal" href="#equation-planar-constraints">(68)</a> and
+<a class="reference internal" href="#equation-p1-constraint">(70)</a>, so we do not have to formally consider them.</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Are <span class="math notranslate nohighlight">\(q_1,q_2,q_3\)</span> generalized coordinates of the four-bar linkage? If
+not, why?</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p>Any one of the <span class="math notranslate nohighlight">\(q_1,q_2,q_3\)</span> can be a generalized coordinate, but only
+one. The other two are depdendent due to the two constraints. We started
+with three coordinates <span class="math notranslate nohighlight">\(q_1,q_2,q_3\)</span> describing the open chain
+<span class="math notranslate nohighlight">\(P_1\)</span> to <span class="math notranslate nohighlight">\(P_2\)</span> to <span class="math notranslate nohighlight">\(P_3\)</span> to <span class="math notranslate nohighlight">\(P_4\)</span>. Then we have two
+scalar constraint equations, leaving <span class="math notranslate nohighlight">\(n=1\)</span>. Thus we can choose
+<span class="math notranslate nohighlight">\(q_1\)</span>, <span class="math notranslate nohighlight">\(q_2\)</span>, <strong>or</strong> <span class="math notranslate nohighlight">\(q_3\)</span> to be the indepdendent
+generalized coordinate.</p>
+</div>
+<p>If we take the formal approach, starting with four unconstrained points, we
+need 11 constraints to describe the system, but if we select generalized
+coordinates to describe the system we only need 2 constraint equations (Eq.
+<a class="reference internal" href="#equation-four-bar-constraints">(67)</a>)! This simplifies the mathematical problem
+description and, as we will later see, is essential for obtaining the simplest
+forms of the equations of motion of a multibody system.</p>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="translational.html" title="Translational Kinematics"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> Previous </span> Translational Kinematics </span>
+              </div>
+            </a>
+          
+          
+            <a href="motion.html" title="Nonholonomic Constraints"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> Next </span> Nonholonomic Constraints </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

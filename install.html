@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Install the Software &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Jupyter and Python" href="jupyter-python.html" />
+    <link rel="prev" title="License" href="license.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#install" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Install the Software </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder="Search"
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Install the Software </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Install the Software</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#install--page-root" class="md-nav__link">Install the Software</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#miniconda" class="md-nav__link">1) Miniconda</a>
+        </li>
+        <li class="md-nav__item"><a href="#conda-forge" class="md-nav__link">2) Conda Forge</a>
+        </li>
+        <li class="md-nav__item"><a href="#install-packages" class="md-nav__link">3) Install Packages</a>
+        </li>
+        <li class="md-nav__item"><a href="#open-jupyter-notebook" class="md-nav__link">4) Open Jupyter Notebook</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/install.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic  Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="wherenext.html" class="md-nav__link">Where To Go Next</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="glossary.html" class="md-nav__link">Glossary</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#install--page-root" class="md-nav__link">Install the Software</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#miniconda" class="md-nav__link">1) Miniconda</a>
+        </li>
+        <li class="md-nav__item"><a href="#conda-forge" class="md-nav__link">2) Conda Forge</a>
+        </li>
+        <li class="md-nav__item"><a href="#install-packages" class="md-nav__link">3) Install Packages</a>
+        </li>
+        <li class="md-nav__item"><a href="#open-jupyter-notebook" class="md-nav__link">4) Open Jupyter Notebook</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/install.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="install-the-software">
+<h1 id="install--page-root">Install the Software<a class="headerlink" href="#install--page-root" title="Permalink to this headline">¶</a></h1>
+<p>If you would like to run the software on your own computer, follow these
+instructions.</p>
+<section id="miniconda">
+<h2 id="miniconda">1) Miniconda<a class="headerlink" href="#miniconda" title="Permalink to this headline">¶</a></h2>
+<p>If you already have Anaconda or Miniconda on your computer from another class,
+you can skip this step or delete your prior Anaconda/Miniconda folder on your
+computer to uninstall it. Anaconda or Miniconda are functionally the same, but
+Anaconda comes with much more pre-installed software. Miniconda is a stripped
+down version so that you can install only what you desire.</p>
+<p>Download miniconda for your operating system:</p>
+<p><a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">https://docs.conda.io/en/latest/miniconda.html</a></p>
+<p>Install as a user, not an administrator, when asked. This will install the
+package manager conda and configure your computer to use the Python installed
+with Miniconda when you open a terminal or command prompt.</p>
+</section>
+<section id="conda-forge">
+<h2 id="conda-forge">2) Conda Forge<a class="headerlink" href="#conda-forge" title="Permalink to this headline">¶</a></h2>
+<p>Configure conda to download packages from <a class="reference external" href="https://conda-forge.org/">Conda Forge</a> as the primary
+download source. Conda Forge is a community maintained collection of compatible
+software packages and offers a larger number of packages than the default
+configuration.</p>
+<p>Open either the terminal (Linux/Mac) or the Anaconda command prompt (Windows)
+and type the following commands followed by the &lt;enter&gt; key to execute the
+commands.</p>
+<p>This first command adds Conda Forge as a download source for software
+packages:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda config --add channels conda-forge
+</pre></div>
+</div>
+<p>This ensures conda selects packages from Conda Forge first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda config --set channel_priority strict
+</pre></div>
+</div>
+<p>Now that Conda Forge packages are available, update everything that is already
+installed with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda update --all
+</pre></div>
+</div>
+<p>This command could take some minutes, especially if you are using Anaconda
+because it has many more package compatibilities to work out.</p>
+</section>
+<section id="install-packages">
+<h2 id="install-packages">3) Install Packages<a class="headerlink" href="#install-packages" title="Permalink to this headline">¶</a></h2>
+<p>Now you can install the packages that are required for these materials with
+this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install ipympl ipython ipywidgets jupyter matplotlib notebook numpy pythreejs scipy <span class="s2">"sympy&gt;=1.9"</span>
+</pre></div>
+</div>
+</section>
+<section id="open-jupyter-notebook">
+<h2 id="open-jupyter-notebook">4) Open Jupyter Notebook<a class="headerlink" href="#open-jupyter-notebook" title="Permalink to this headline">¶</a></h2>
+<p>To check that everything works, type the command to open Jupyter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter notebook
+</pre></div>
+</div>
+<p>Jupyter should open in your web browser and you should be able to run the
+scripts and notebooks found on the other pages.</p>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="license.html" title="License"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> Previous </span> License </span>
+              </div>
+            </a>
+          
+          
+            <a href="jupyter-python.html" title="Jupyter and Python"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> Next </span> Jupyter and Python </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

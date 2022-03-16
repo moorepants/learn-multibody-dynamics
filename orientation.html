@@ -1,0 +1,1220 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Orientation of Reference Frames &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Vectors" href="vectors.html" />
+    <link rel="prev" title="SymPy" href="sympy.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#orientation" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Orientation of Reference Frames </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder="Search"
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Contents:</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Orientation of Reference Frames </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Orientation of Reference Frames</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#orientation--page-root" class="md-nav__link">Orientation of Reference Frames</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#reference-frames" class="md-nav__link">Reference Frames</a>
+        </li>
+        <li class="md-nav__item"><a href="#unit-vectors" class="md-nav__link">Unit Vectors</a>
+        </li>
+        <li class="md-nav__item"><a href="#simple-orientations" class="md-nav__link">Simple Orientations</a>
+        </li>
+        <li class="md-nav__item"><a href="#direction-cosine-matrix" class="md-nav__link">Direction Cosine Matrix</a>
+        </li>
+        <li class="md-nav__item"><a href="#successive-orientations" class="md-nav__link">Successive Orientations</a>
+        </li>
+        <li class="md-nav__item"><a href="#sympy-mechanics" class="md-nav__link">SymPy Mechanics</a>
+        </li>
+        <li class="md-nav__item"><a href="#gimbal-and-euler-angles" class="md-nav__link">Gimbal and Euler Angles</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/orientation.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic  Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="wherenext.html" class="md-nav__link">Where To Go Next</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="glossary.html" class="md-nav__link">Glossary</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#orientation--page-root" class="md-nav__link">Orientation of Reference Frames</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#reference-frames" class="md-nav__link">Reference Frames</a>
+        </li>
+        <li class="md-nav__item"><a href="#unit-vectors" class="md-nav__link">Unit Vectors</a>
+        </li>
+        <li class="md-nav__item"><a href="#simple-orientations" class="md-nav__link">Simple Orientations</a>
+        </li>
+        <li class="md-nav__item"><a href="#direction-cosine-matrix" class="md-nav__link">Direction Cosine Matrix</a>
+        </li>
+        <li class="md-nav__item"><a href="#successive-orientations" class="md-nav__link">Successive Orientations</a>
+        </li>
+        <li class="md-nav__item"><a href="#sympy-mechanics" class="md-nav__link">SymPy Mechanics</a>
+        </li>
+        <li class="md-nav__item"><a href="#gimbal-and-euler-angles" class="md-nav__link">Gimbal and Euler Angles</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/orientation.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="orientation-of-reference-frames">
+<span id="orientation"></span><h1 id="orientation--page-root">Orientation of Reference Frames<a class="headerlink" href="#orientation--page-root" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/11a1eb541afe6fe0a61a8da17b40b99e/orientation.py"><code class="xref download docutils literal notranslate"><span class="pre">orientation.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/d920dc010b9409ebc98138c570a01531/orientation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">orientation.ipynb</span></code></a>.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">init_printing</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<section id="reference-frames">
+<h2 id="reference-frames">Reference Frames<a class="headerlink" href="#reference-frames" title="Permalink to this headline">¶</a></h2>
+<p>In the study of multibody dynamics, we are interested in observing motion of
+connected and interacting objects in three dimensional space. This observation
+necessitates the concept of a frame of reference, or <span class="xref std std-term">reference frame</span>,
+which is an abstraction defined by the set of all points in <a class="reference external" href="https://en.wikipedia.org/wiki/Euclidean_space">Euclidean space</a>
+that is carried by the observer of any given state of motion. Practically
+speaking, it is useful to image your eye as an observer of motion. Your eye can
+orient itself in 3D space to view the motion of objects from any direction and
+the motion of objects will appear differently in the set of points associated
+with the reference frame attached to your eye depending on your eye’s
+orientation.</p>
+<p>It is important to note that a reference frame is not equivalent to a
+coordinate system. Any number of coordinate systems can be attached to a
+reference frame. We will characterize a reference frame by a right-handed set
+of mutually perpendicular unit vectors.</p>
+</section>
+<section id="unit-vectors">
+<h2 id="unit-vectors">Unit Vectors<a class="headerlink" href="#unit-vectors" title="Permalink to this headline">¶</a></h2>
+<p>Vectors have a magnitude, direction, and sense (<span class="math notranslate nohighlight">\(\pm\)</span>). Unit vectors have
+a magnitude of 1. Unit vectors can be fixed, orientation-wise, to a reference
+frame. For a reference frame named <span class="math notranslate nohighlight">\(N\)</span> we will define the three mutually
+perpendicular unit vectors as <span class="math notranslate nohighlight">\(\hat{n}_x, \hat{n}_y, \hat{n}_z\)</span> where
+these right-handed <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_product">cross products</a> hold:</p>
+<div class="math notranslate nohighlight" id="equation-right-hand-rule">
+<span class="eqno">(1)<a class="headerlink" href="#equation-right-hand-rule" title="Permalink to this equation">¶</a></span>\[\begin{split}\hat{n}_x \times \hat{n}_y &amp; = \hat{n}_z \\
+\hat{n}_y \times \hat{n}_z &amp; = \hat{n}_x \\
+\hat{n}_z \times \hat{n}_x &amp; = \hat{n}_y\end{split}\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unit vectors will be designated using the “hat”, e.g. <span class="math notranslate nohighlight">\(\hat{v}\)</span>.</p>
+</div>
+<p>These unit vectors are fixed in the reference frame <span class="math notranslate nohighlight">\(N\)</span>. If a second
+reference frame <span class="math notranslate nohighlight">\(A\)</span> is defined, also with its set of right-handed
+mutually perpendicular unit vectors <span class="math notranslate nohighlight">\(\hat{a}_x, \hat{a}_y, \hat{a}_z\)</span>
+then we can establish the relative orientation of these two reference frames
+based on the angles among the two frames’ unit vectors.</p>
+<figure class="align-default" id="id5">
+<span id="orientation-vector-position"></span><img alt="_images/orientation-vector-position.svg" src="_images/orientation-vector-position.svg"/><figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">The image on the left and right represent the same set of right-handed
+mutually perpendicular unit vectors. Vectors, in general, do not have a
+position and can be drawn anywhere in the reference frame. Drawing them with
+their tails coincident is simply done for convenience.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="simple-orientations">
+<h2 id="simple-orientations">Simple Orientations<a class="headerlink" href="#simple-orientations" title="Permalink to this headline">¶</a></h2>
+<p>Starting with two reference frames <span class="math notranslate nohighlight">\(N\)</span> and <span class="math notranslate nohighlight">\(A\)</span> in which their sets
+of unit vectors are initially aligned, the <span class="math notranslate nohighlight">\(A\)</span> frame can then be simply
+oriented about the common parallel <span class="math notranslate nohighlight">\(z\)</span> unit vectors of the two frames. We
+then say “reference frame <span class="math notranslate nohighlight">\(A\)</span> is oriented with respect to reference frame
+<span class="math notranslate nohighlight">\(N\)</span> about the shared <span class="math notranslate nohighlight">\(z\)</span> unit vectors through an angle
+<span class="math notranslate nohighlight">\(\theta\)</span>. A visual representation of this orientation is:</p>
+<figure class="align-default" id="id6">
+<span id="orientation-simple"></span><img alt="_images/orientation-simple.svg" src="_images/orientation-simple.svg"/><figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">View of the parallel <span class="math notranslate nohighlight">\(xy\)</span> planes of the simply oriented reference
+frames.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>From the above figure these relationships between the <span class="math notranslate nohighlight">\(\hat{a}\)</span> and
+<span class="math notranslate nohighlight">\(\hat{n}\)</span> unit vectors can be deduced:</p>
+<div class="math notranslate nohighlight" id="equation-simple-orientation-unit-vector-relation">
+<span class="eqno">(2)<a class="headerlink" href="#equation-simple-orientation-unit-vector-relation" title="Permalink to this equation">¶</a></span>\[\begin{split}\hat{a}_x &amp; = \cos{\theta} \hat{n}_x + \sin{\theta} \hat{n}_y + 0 \hat{n}_z \\
+\hat{a}_y &amp; = -\sin{\theta} \hat{n}_x + \cos{\theta} \hat{n}_y + 0 \hat{n}_z \\
+\hat{a}_z &amp; = 0 \hat{n}_x + 0 \hat{n}_y + 1 \hat{n}_z\end{split}\]</div>
+<p>These equations can also be written in matrix form:</p>
+<div class="math notranslate nohighlight" id="equation-simple-orientation-unit-vector-relation-matrix">
+<span class="eqno">(3)<a class="headerlink" href="#equation-simple-orientation-unit-vector-relation-matrix" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{a}_x \\
+  \hat{a}_y \\
+  \hat{a}_z
+\end{bmatrix}
+=
+\begin{bmatrix}
+  \cos{\theta} &amp; \sin{\theta} &amp; 0 \\
+  -\sin{\theta} &amp; \cos{\theta} &amp; 0 \\
+  0 &amp;  0  &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+  \hat{n}_x \\
+  \hat{n}_y \\
+  \hat{n}_z
+\end{bmatrix}\end{split}\]</div>
+<p>This matrix uniquely describes the orientation between the two reference frames
+and so we can give it its own variable:</p>
+<div class="math notranslate nohighlight" id="equation-simple-orient-dcm">
+<span class="eqno">(4)<a class="headerlink" href="#equation-simple-orient-dcm" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{a}_x \\
+  \hat{a}_y \\
+  \hat{a}_z
+\end{bmatrix}
+=
+{}^A\mathbf{C}^N
+\begin{bmatrix}
+  \hat{n}_x \\
+  \hat{n}_y \\
+  \hat{n}_z
+\end{bmatrix}\end{split}\]</div>
+<p>This matrix <span class="math notranslate nohighlight">\({}^A\mathbf{C}^N\)</span> maps vectors expressed in the <span class="math notranslate nohighlight">\(N\)</span>
+frame to vectors expressed in the <span class="math notranslate nohighlight">\(A\)</span> frame. This matrix has an important
+property, which we will demonstrate with SymPy.  Start by creating the matrix:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'theta'</span><span class="p">)</span>
+
+<span class="n">A_C_N</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="p">[</span><span class="o">-</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">A_C_N</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)} &amp; 0\\- \sin{\left(\theta \right)} &amp; \cos{\left(\theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>If we’d like the inverse relationship between the two sets of unit vectors and
+<span class="math notranslate nohighlight">\({}^A\mathbf{C}^N\)</span> is invertible, then:</p>
+<div class="math notranslate nohighlight" id="equation-dcm-inverse">
+<span class="eqno">(5)<a class="headerlink" href="#equation-dcm-inverse" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{n}_x \\
+  \hat{n}_y \\
+  \hat{n}_z
+\end{bmatrix}
+=
+\left({}^A\mathbf{C}^N\right)^{-1}
+\begin{bmatrix}
+  \hat{a}_x \\
+  \hat{a}_y \\
+  \hat{a}_z
+\end{bmatrix}\end{split}\]</div>
+<p>SymPy can find this matrix inverse:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">A_C_N</span><span class="o">.</span><span class="n">inv</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\theta \right)} &amp; - \sin{\left(\theta \right)} &amp; 0\\\sin{\left(\theta \right)} &amp; \cos{\left(\theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>SymPy can also find the transpose of this matrix;</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A_C_N</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\theta \right)} &amp; - \sin{\left(\theta \right)} &amp; 0\\\sin{\left(\theta \right)} &amp; \cos{\left(\theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Notably, the inverse and the transpose are the same here. It turns out that
+this will be generally true for these matrices that describe the orientation
+between reference frames. Following the notation convention, this holds:</p>
+<div class="math notranslate nohighlight" id="equation-dcm-inverse-transpose">
+<span class="eqno">(6)<a class="headerlink" href="#equation-dcm-inverse-transpose" title="Permalink to this equation">¶</a></span>\[{}^N\mathbf{C}^A = \left({}^A\mathbf{C}^N\right)^{-1} = \left({}^A\mathbf{C}^N\right)^T\]</div>
+</section>
+<section id="direction-cosine-matrix">
+<span id="id1"></span><h2 id="direction-cosine-matrix">Direction Cosine Matrix<a class="headerlink" href="#direction-cosine-matrix" title="Permalink to this headline">¶</a></h2>
+<p>If now <span class="math notranslate nohighlight">\(A\)</span> is oriented relative to <span class="math notranslate nohighlight">\(N\)</span> and the pairwise angles
+between each <span class="math notranslate nohighlight">\(\hat{a}\)</span> and <span class="math notranslate nohighlight">\(\hat{n}\)</span> mutually perpendicular unit
+vectors are measured, an orientation matrix for an arbitrary orientation can be
+defined.  For example, the figure below shows the three angles
+<span class="math notranslate nohighlight">\(\alpha_{xx},\alpha_{xy},\alpha_{xz}\)</span> relating <span class="math notranslate nohighlight">\(\hat{a}_x\)</span> to each
+<span class="math notranslate nohighlight">\(\hat{n}\)</span> unit vector.</p>
+<figure class="align-default" id="id7">
+<span id="orientation-three-angles"></span><img alt="_images/orientation-three-angles.svg" src="_images/orientation-three-angles.svg"/><figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Three angles relating <span class="math notranslate nohighlight">\(\hat{a}_x\)</span> to the unit vectors of <span class="math notranslate nohighlight">\(N\)</span>.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Similarly to the simple example above, we can write these equations:</p>
+<div class="math notranslate nohighlight" id="equation-direction-cosine-unit-vectors">
+<span class="eqno">(7)<a class="headerlink" href="#equation-direction-cosine-unit-vectors" title="Permalink to this equation">¶</a></span>\[\begin{split}\hat{a}_x &amp; = \cos\alpha_{xx} \hat{n}_x +\cos\alpha_{xy} \hat{n}_y + \cos\alpha_{xz} \hat{n}_z \\
+\hat{a}_y &amp; = \cos\alpha_{yx} \hat{n}_x +\cos\alpha_{yy} \hat{n}_y + \cos\alpha_{yz} \hat{n}_z \\
+\hat{a}_z &amp; = \cos\alpha_{zx} \hat{n}_x +\cos\alpha_{zy} \hat{n}_y + \cos\alpha_{zz} \hat{n}_z\end{split}\]</div>
+<p>Since we are working with mutually perpendicular unit vectors the cosine of the
+angle between each pair of unit vectors is equivalent to the dot product
+between the two vectors, so this also holds:</p>
+<div class="math notranslate nohighlight" id="equation-orientation-0">
+<span class="eqno">(8)<a class="headerlink" href="#equation-orientation-0" title="Permalink to this equation">¶</a></span>\[\begin{split}\hat{a}_x = (\hat{a}_x \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_x \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_x \cdot \hat{n}_z) \hat{n}_z \\
+\hat{a}_y = (\hat{a}_y \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_y \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_y \cdot \hat{n}_z) \hat{n}_z \\
+\hat{a}_x = (\hat{a}_z \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_z \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_z \cdot \hat{n}_z) \hat{n}_z \\\end{split}\]</div>
+<p>Now the general <span class="xref std std-term">direction cosine matrix</span> of <span class="math notranslate nohighlight">\(A\)</span> with respect to
+<span class="math notranslate nohighlight">\(N\)</span> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-dcm-dot-full-eq">
+<span class="eqno">(9)<a class="headerlink" href="#equation-dcm-dot-full-eq" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{a}_x \\
+  \hat{a}_y \\
+  \hat{a}_z
+\end{bmatrix}
+=
+\begin{bmatrix}
+  \hat{a}_x \cdot \hat{n}_x &amp;\hat{a}_x \cdot \hat{n}_y &amp; \hat{a}_x \cdot \hat{n}_z \\
+  \hat{a}_y \cdot \hat{n}_x &amp;\hat{a}_y \cdot \hat{n}_y &amp; \hat{a}_y \cdot \hat{n}_z \\
+  \hat{a}_z \cdot \hat{n}_x &amp;\hat{a}_z \cdot \hat{n}_y &amp; \hat{a}_z \cdot \hat{n}_z
+\end{bmatrix}
+\begin{bmatrix}
+  \hat{n}_x \\
+  \hat{n}_y \\
+  \hat{n}_z
+\end{bmatrix}\end{split}\]</div>
+<p>where the general direction cosine matrix is then:</p>
+<div class="math notranslate nohighlight" id="equation-dcm-dot-products">
+<span class="eqno">(10)<a class="headerlink" href="#equation-dcm-dot-products" title="Permalink to this equation">¶</a></span>\[\begin{split}{}^A\mathbf{C}^N
+=
+\begin{bmatrix}
+  \hat{a}_x \cdot \hat{n}_x &amp;\hat{a}_x \cdot \hat{n}_y &amp; \hat{a}_x \cdot \hat{n}_z \\
+  \hat{a}_y \cdot \hat{n}_x &amp;\hat{a}_y \cdot \hat{n}_y &amp; \hat{a}_y \cdot \hat{n}_z \\
+  \hat{a}_z \cdot \hat{n}_x &amp;\hat{a}_z \cdot \hat{n}_y &amp; \hat{a}_z \cdot \hat{n}_z
+\end{bmatrix}\end{split}\]</div>
+<p>This matrix uniquely defines the relative orientation between reference frames
+<span class="math notranslate nohighlight">\(N\)</span> and <span class="math notranslate nohighlight">\(A\)</span>, it is invertible, and its inverse is equal to the
+transpose, as shown above in the simple example. The direction cosine matrix
+found in the prior section for a simple orientation is a specific case of this
+more general definition. The direction cosine matrix is also referred to as a
+rotation matrix in some texts.</p>
+</section>
+<section id="successive-orientations">
+<span id="id2"></span><h2 id="successive-orientations">Successive Orientations<a class="headerlink" href="#successive-orientations" title="Permalink to this headline">¶</a></h2>
+<p>Successive orientations of a series of reference frames provides a convenient
+way to manage orientation among more than a single pair. Below, an additional
+reference frame <span class="math notranslate nohighlight">\(B\)</span> is shown that is simply oriented with respect to
+<span class="math notranslate nohighlight">\(A\)</span> in the same way that <span class="math notranslate nohighlight">\(A\)</span> is from <span class="math notranslate nohighlight">\(N\)</span> above.</p>
+<figure class="align-default" id="id8">
+<span id="orientation-simple-successive"></span><img alt="_images/orientation-simple-successive.svg" src="_images/orientation-simple-successive.svg"/><figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Two successive simple orientations through angles <span class="math notranslate nohighlight">\(\theta\)</span> and then
+<span class="math notranslate nohighlight">\(\alpha\)</span>.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>We know that we can define these two relationships between each pair of
+reference frames:</p>
+<div class="math notranslate nohighlight" id="equation-dcm-suc-01">
+<span class="eqno">(11)<a class="headerlink" href="#equation-dcm-suc-01" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{a}_x \\
+  \hat{a}_y \\
+  \hat{a}_z
+\end{bmatrix}
+=
+{}^A\mathbf{C}^N
+\begin{bmatrix}
+  \hat{n}_x \\
+  \hat{n}_y \\
+  \hat{n}_z
+\end{bmatrix}\end{split}\]</div>
+<div class="math notranslate nohighlight" id="equation-dcm-suc-02">
+<span class="eqno">(12)<a class="headerlink" href="#equation-dcm-suc-02" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{b}_x \\
+  \hat{b}_y \\
+  \hat{b}_z
+\end{bmatrix}
+=
+{}^B\mathbf{C}^A
+\begin{bmatrix}
+  \hat{a}_x \\
+  \hat{a}_y \\
+  \hat{a}_z
+\end{bmatrix}\end{split}\]</div>
+<p>Now, substitute the first equation into the second to get:</p>
+<div class="math notranslate nohighlight" id="equation-dcm-multiply-eq">
+<span class="eqno">(13)<a class="headerlink" href="#equation-dcm-multiply-eq" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{b}_x \\
+  \hat{b}_y \\
+  \hat{b}_z
+\end{bmatrix}
+=
+{}^B\mathbf{C}^A
+{}^A\mathbf{C}^N
+\begin{bmatrix}
+  \hat{n}_x \\
+  \hat{n}_y \\
+  \hat{n}_z
+\end{bmatrix}\end{split}\]</div>
+<p>showing that the direction cosine matrix between <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(N\)</span>
+results from matrix multiplying the intermediate direction cosine matrices.</p>
+<div class="math notranslate nohighlight" id="equation-dcm-simple-relationship">
+<span class="eqno">(14)<a class="headerlink" href="#equation-dcm-simple-relationship" title="Permalink to this equation">¶</a></span>\[{}^B\mathbf{C}^N
+=
+{}^B\mathbf{C}^A
+{}^A\mathbf{C}^N\]</div>
+<p>This holds for any series of successive orientations:</p>
+<div class="math notranslate nohighlight" id="equation-dcm-relation">
+<span class="eqno">(15)<a class="headerlink" href="#equation-dcm-relation" title="Permalink to this equation">¶</a></span>\[{}^Z\mathbf{C}^A
+=
+{}^Z\mathbf{C}^Y
+{}^Y\mathbf{C}^X
+\ldots
+{}^C\mathbf{C}^B
+{}^B\mathbf{C}^A\]</div>
+<p>Using <a class="reference internal" href="#orientation-simple-successive"><span class="std std-numref">Fig. 4</span></a> as an explicit example of this
+property, we start with the already defined <span class="math notranslate nohighlight">\({}^A\mathbf{C}^N\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A_C_N</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)} &amp; 0\\- \sin{\left(\theta \right)} &amp; \cos{\left(\theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\({}^B\mathbf{C}^A\)</span> can then be defined similarly:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'alpha'</span><span class="p">)</span>
+
+<span class="n">B_C_A</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="p">[</span><span class="o">-</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">B_C_A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\alpha \right)} &amp; \sin{\left(\alpha \right)} &amp; 0\\- \sin{\left(\alpha \right)} &amp; \cos{\left(\alpha \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Finally, <span class="math notranslate nohighlight">\({}^B\mathbf{C}^N\)</span> can be found by matrix multiplication:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">B_C_N</span> <span class="o">=</span> <span class="n">B_C_A</span><span class="o">*</span><span class="n">A_C_N</span>
+<span class="n">B_C_N</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \sin{\left(\alpha \right)} \sin{\left(\theta \right)} + \cos{\left(\alpha \right)} \cos{\left(\theta \right)} &amp; \sin{\left(\alpha \right)} \cos{\left(\theta \right)} + \sin{\left(\theta \right)} \cos{\left(\alpha \right)} &amp; 0\\- \sin{\left(\alpha \right)} \cos{\left(\theta \right)} - \sin{\left(\theta \right)} \cos{\left(\alpha \right)} &amp; - \sin{\left(\alpha \right)} \sin{\left(\theta \right)} + \cos{\left(\alpha \right)} \cos{\left(\theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Simplifying these trigonometric expressions shows the expected result:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">B_C_N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\alpha + \theta \right)} &amp; \sin{\left(\alpha + \theta \right)} &amp; 0\\- \sin{\left(\alpha + \theta \right)} &amp; \cos{\left(\alpha + \theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+</section>
+<section id="sympy-mechanics">
+<h2 id="sympy-mechanics">SymPy Mechanics<a class="headerlink" href="#sympy-mechanics" title="Permalink to this headline">¶</a></h2>
+<p>As shown above, SymPy nicely handles the formulation of direction cosine
+matrices, but SymPy offers a more useful abstraction for these things. The
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/mechanics/index.html#module-sympy.physics.mechanics" title="(in SymPy v1.10)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sympy.physics.mechanics</span></code></a> module includes numerous objects and
+functions that ease the bookkeeping and mental models needed to manage various
+aspects of multibody dynamics. We will import the module consistently as:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy.physics.mechanics</span> <span class="k">as</span> <span class="nn">me</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">mechanics</span></code> includes a way to define and orient reference frames. To create a
+reference frame, use <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceFrame()</span></code></a> and provide a name for your frame.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The right-handed mutually perpendicular unit vectors associated with a
+reference frame are accessed with <code class="docutils literal notranslate"><span class="pre">.x</span></code>, <code class="docutils literal notranslate"><span class="pre">.y</span></code>, and <code class="docutils literal notranslate"><span class="pre">.z</span></code>, like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( \mathbf{\hat{n}_x}, \  \mathbf{\hat{n}_y}, \  \mathbf{\hat{n}_z}\right)\]</div>
+</div>
+</div>
+<p>Using <a class="reference internal" href="#orientation-simple-successive"><span class="std std-numref">Fig. 4</span></a> again as an example, we can
+define all three reference frames:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(N, A, B)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We have already defined the direction cosine matrices for these two successive
+orientations. For example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A_C_N</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)} &amp; 0\\- \sin{\left(\theta \right)} &amp; \cos{\left(\theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>relates <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(N\)</span>. <code class="docutils literal notranslate"><span class="pre">ReferenceFrame</span></code> objects can be oriented wrt
+respect to one another. The <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame.orient_explicit" title="(in SymPy v1.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">orient_explicit()</span></code></a> method allows you
+to set the direction cosine matrix explicitly:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N</span><span class="o">.</span><span class="n">orient_explicit</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_C_N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now you can ask for the direction cosine matrix of <span class="math notranslate nohighlight">\(A\)</span> with respect to
+<span class="math notranslate nohighlight">\(N\)</span>, i.e. <span class="math notranslate nohighlight">\({}^A\mathbf{C}^N\)</span>, using the <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame.orient_explicit" title="(in SymPy v1.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dcm()</span></code></a> method:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)} &amp; 0\\- \sin{\left(\theta \right)} &amp; \cos{\left(\theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note very carefully what version of the direction cosine matrix you pass to
+<code class="docutils literal notranslate"><span class="pre">.orient_explicit()</span></code>. Check its docstring with <code class="docutils literal notranslate"><span class="pre">N.orient_explicit?</span></code>.</p>
+</div>
+<p>But even better for this case is the <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame.orient_axis" title="(in SymPy v1.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">orient_axis()</span></code></a> method. This method
+allows you to define simple orientations between reference frames more naturally.
+You provide the frame to orient from, the angle to orient through, and the vector to
+orient about.  For example, orient <span class="math notranslate nohighlight">\(B\)</span> with respect to <span class="math notranslate nohighlight">\(A\)</span> through
+<span class="math notranslate nohighlight">\(\alpha\)</span> about <span class="math notranslate nohighlight">\(\hat{a}_z\)</span> by:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now the direction cosine matrix is automatically calculated and is returned
+with the <code class="docutils literal notranslate"><span class="pre">.dcm()</span></code> method:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\alpha \right)} &amp; \sin{\left(\alpha \right)} &amp; 0\\- \sin{\left(\alpha \right)} &amp; \cos{\left(\alpha \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The inverse is also defined on <code class="docutils literal notranslate"><span class="pre">A</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\alpha \right)} &amp; - \sin{\left(\alpha \right)} &amp; 0\\\sin{\left(\alpha \right)} &amp; \cos{\left(\alpha \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>So each pair of reference frames are aware of its orientation partner (or
+partners). Now that we’ve established orientations between <span class="math notranslate nohighlight">\(N\)</span> and
+<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, we might want to know the relationships
+between <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(N\)</span>. Remember that matrix multiplication of the two
+successive direction cosine matrices provides the answer:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\alpha + \theta \right)} &amp; \sin{\left(\alpha + \theta \right)} &amp; 0\\- \sin{\left(\alpha + \theta \right)} &amp; \cos{\left(\alpha + \theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>But, the answer can also be found by calling <code class="docutils literal notranslate"><span class="pre">.dcm()</span></code> with the two reference
+frames in question. As long as there is a successive path between the two
+reference frames, this is sufficient for obtaining the desired direction cosine
+matrix:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\alpha + \theta \right)} &amp; \sin{\left(\alpha + \theta \right)} &amp; 0\\- \sin{\left(\alpha + \theta \right)} &amp; \cos{\left(\alpha + \theta \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Lastly, recall the general definition of the direction cosine matrix. We showed
+that the dot product of pairs of unit vectors give the entries to the direction
+cosine matrix. <code class="docutils literal notranslate"><span class="pre">mechanics</span></code> has a <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/functions.html#sympy.physics.vector.functions.dot" title="(in SymPy v1.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dot()</span></code></a> function that can calculate the dot
+product of two vectors. Using it on two of the unit vector pairs returns the
+expected direction cosine matrix entry:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \cos{\left(\alpha + \theta \right)}\]</div>
+</div>
+</div>
+</section>
+<section id="gimbal-and-euler-angles">
+<h2 id="gimbal-and-euler-angles">Gimbal and Euler Angles<a class="headerlink" href="#gimbal-and-euler-angles" title="Permalink to this headline">¶</a></h2>
+<p>This camera stabilization <a class="reference external" href="https://en.wikipedia.org/wiki/Gimbal">gimbal</a> has three <a class="reference external" href="https://en.wikipedia.org/wiki/Revolute_joint">revolute joints</a> that orient the
+camera <span class="math notranslate nohighlight">\(D\)</span> relative to the handgrip frame <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<figure class="align-default" id="id9">
+<img alt="https://objects-us-east-1.dream.io/mechmotum/orientation-camera-gimbal.png" src="https://objects-us-east-1.dream.io/mechmotum/orientation-camera-gimbal.png"/>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Four reference frames labeled on the Turnigy Pro Steady Hand Camera Gimbal.
+<em>Image copyright HobbyKing, used under fair use for educational purposes.</em></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>If we introduce two additional auxiliary reference frames: <span class="math notranslate nohighlight">\(B\)</span> and
+<span class="math notranslate nohighlight">\(C\)</span>, we can use three successive simple orientations to go from <span class="math notranslate nohighlight">\(A\)</span> to
+<span class="math notranslate nohighlight">\(D\)</span>. Using the same technique for the successive simple orientations above,
+but now managing the three dimensional orientations, we can formulate the
+direction cosine matrices for the reference frames.</p>
+<p>Watch this video to get a sense of the orientation axes for each intermediate
+auxiliary reference frame:</p>
+<center>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/xQMBIXqWcjI?start=177" title="YouTube video player" width="560">
+</iframe>
+</center><p>We first orient <span class="math notranslate nohighlight">\(B\)</span> with respect to <span class="math notranslate nohighlight">\(A\)</span> about the shared <span class="math notranslate nohighlight">\(z\)</span>
+unit vector through the angle <span class="math notranslate nohighlight">\(\psi\)</span>, as shown below:</p>
+<figure class="align-default" id="id10">
+<span id="orientation-gimbal-psi"></span><a class="reference internal image-reference" href="_images/orientation-gimbal-psi.svg"><img alt="_images/orientation-gimbal-psi.svg" src="_images/orientation-gimbal-psi.svg" width="200px"/></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">View of the <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> <span class="math notranslate nohighlight">\(x\textrm{-}y\)</span> plane showing the
+orientation of <span class="math notranslate nohighlight">\(B\)</span> relative to <span class="math notranslate nohighlight">\(A\)</span> about <span class="math notranslate nohighlight">\(z\)</span> through angle
+<span class="math notranslate nohighlight">\(\psi\)</span>.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>and then using <code class="docutils literal notranslate"><span class="pre">ReferenceFrame</span></code> objects:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psi</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'psi'</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+<span class="n">B</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\psi \right)} &amp; \sin{\left(\psi \right)} &amp; 0\\- \sin{\left(\psi \right)} &amp; \cos{\left(\psi \right)} &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Now orient <span class="math notranslate nohighlight">\(C\)</span> with respect to <span class="math notranslate nohighlight">\(B\)</span> about their shared <span class="math notranslate nohighlight">\(x\)</span>
+unit vector through angle <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<figure class="align-default" id="id11">
+<span id="orientation-gimbal-theta"></span><a class="reference internal image-reference" href="_images/orientation-gimbal-theta.svg"><img alt="_images/orientation-gimbal-theta.svg" src="_images/orientation-gimbal-theta.svg" width="200px"/></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">View of the <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> <span class="math notranslate nohighlight">\(y\textrm{-}z\)</span> plane showing the
+orientation of <span class="math notranslate nohighlight">\(C\)</span> relative to <span class="math notranslate nohighlight">\(B\)</span> about <span class="math notranslate nohighlight">\(x\)</span> through angle
+<span class="math notranslate nohighlight">\(\theta\)</span>.</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'theta'</span><span class="p">)</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'C'</span><span class="p">)</span>
+
+<span class="n">C</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">C</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1 &amp; 0 &amp; 0\\0 &amp; \cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)}\\0 &amp; - \sin{\left(\theta \right)} &amp; \cos{\left(\theta \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Finally, orient the camera <span class="math notranslate nohighlight">\(D\)</span> with respect to <span class="math notranslate nohighlight">\(C\)</span> about their
+shared <span class="math notranslate nohighlight">\(y\)</span> unit vector through the angle <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<figure class="align-default" id="id12">
+<a class="reference internal image-reference" href="_images/orientation-gimbal-phi.svg"><img alt="_images/orientation-gimbal-phi.svg" src="_images/orientation-gimbal-phi.svg" width="200px"/></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">View of the <span class="math notranslate nohighlight">\(C\)</span> and <span class="math notranslate nohighlight">\(D\)</span> <span class="math notranslate nohighlight">\(x\textrm{-}z\)</span> plane showing the
+orientation of <span class="math notranslate nohighlight">\(D\)</span> relative to <span class="math notranslate nohighlight">\(C\)</span> about <span class="math notranslate nohighlight">\(y\)</span> through angle
+<span class="math notranslate nohighlight">\(\varphi\)</span>.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phi</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'varphi'</span><span class="p">)</span>
+
+<span class="n">D</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'D'</span><span class="p">)</span>
+
+<span class="n">D</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">D</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\cos{\left(\varphi \right)} &amp; 0 &amp; - \sin{\left(\varphi \right)}\\0 &amp; 1 &amp; 0\\\sin{\left(\varphi \right)} &amp; 0 &amp; \cos{\left(\varphi \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>With all of the intermediate orientations defined, when can now ask for the
+relationship <span class="math notranslate nohighlight">\({}^D\mathbf{C}^A\)</span> of the camera <span class="math notranslate nohighlight">\(D\)</span> relative to the
+handgrip frame <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">D</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \sin{\left(\psi \right)} \sin{\left(\theta \right)} \sin{\left(\varphi \right)} + \cos{\left(\psi \right)} \cos{\left(\varphi \right)} &amp; \sin{\left(\psi \right)} \cos{\left(\varphi \right)} + \sin{\left(\theta \right)} \sin{\left(\varphi \right)} \cos{\left(\psi \right)} &amp; - \sin{\left(\varphi \right)} \cos{\left(\theta \right)}\\- \sin{\left(\psi \right)} \cos{\left(\theta \right)} &amp; \cos{\left(\psi \right)} \cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)}\\\sin{\left(\psi \right)} \sin{\left(\theta \right)} \cos{\left(\varphi \right)} + \sin{\left(\varphi \right)} \cos{\left(\psi \right)} &amp; \sin{\left(\psi \right)} \sin{\left(\varphi \right)} - \sin{\left(\theta \right)} \cos{\left(\psi \right)} \cos{\left(\varphi \right)} &amp; \cos{\left(\theta \right)} \cos{\left(\varphi \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>With these three orientations the camera can be oriented arbitrarily relative
+to the handgrip frame. These successive <span class="math notranslate nohighlight">\(z\textrm{-}x\textrm{-}y\)</span>
+orientations are a standard way of describing the orientation of two reference
+frames and are often referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a> <a class="footnote-reference brackets" href="#id4" id="id3">*</a>.</p>
+<p>There are 12 valid sets of successive orientations. We will also refer to these 12
+possible orientation sets as body fixed orientations. As we will soon see, a rigid
+body and a reference frame are synonymous from an orientation perspective and
+each successive orientations rotates about a shared unit vector fixed in both of
+the reference frames (or bodies), thus “body fixed orientations”. The method
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame.orient_body_fixed" title="(in SymPy v1.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">orient_body_fixed()</span></code></a> can be used to
+establish the relationship between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(D\)</span> without the need to
+create auxiliary reference frames <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'D'</span><span class="p">)</span>
+
+<span class="n">D</span><span class="o">.</span><span class="n">orient_body_fixed</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">),</span> <span class="s1">'zxy'</span><span class="p">)</span>
+
+<span class="n">D</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \sin{\left(\psi \right)} \sin{\left(\theta \right)} \sin{\left(\varphi \right)} + \cos{\left(\psi \right)} \cos{\left(\varphi \right)} &amp; \sin{\left(\psi \right)} \cos{\left(\varphi \right)} + \sin{\left(\theta \right)} \sin{\left(\varphi \right)} \cos{\left(\psi \right)} &amp; - \sin{\left(\varphi \right)} \cos{\left(\theta \right)}\\- \sin{\left(\psi \right)} \cos{\left(\theta \right)} &amp; \cos{\left(\psi \right)} \cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)}\\\sin{\left(\psi \right)} \sin{\left(\theta \right)} \cos{\left(\varphi \right)} + \sin{\left(\varphi \right)} \cos{\left(\psi \right)} &amp; \sin{\left(\psi \right)} \sin{\left(\varphi \right)} - \sin{\left(\theta \right)} \cos{\left(\psi \right)} \cos{\left(\varphi \right)} &amp; \cos{\left(\theta \right)} \cos{\left(\varphi \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Leonhard_Euler">Euler</a> technically only discovered 6 of the 12 orientation sets. One of these sets
+is shown in this figure:</p>
+<figure class="align-default" id="id13">
+<span id="orientation-euler-animation"></span><img alt="https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif"/>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text"><span class="math notranslate nohighlight">\(z\textrm{-}x\textrm{-}z\)</span> Euler angle visualization.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<p><a class="reference external" href="https://commons.wikimedia.org/wiki/File:Euler2a.gif">Euler2.gif: Juansemperederivative work: Xavax</a>, CC BY-SA 3.0, via
+Wikimedia Commons</p>
+</div>
+</figcaption>
+</figure>
+<p>The <span class="math notranslate nohighlight">\(z\textrm{-}x\textrm{-}z\)</span> Euler angles shown in
+<a class="reference internal" href="#orientation-euler-animation"><span class="std std-numref">Fig. 9</span></a> are then created like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'D'</span><span class="p">)</span>
+
+<span class="n">D</span><span class="o">.</span><span class="n">orient_body_fixed</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">),</span> <span class="s1">'zxz'</span><span class="p">)</span>
+
+<span class="n">D</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \sin{\left(\psi \right)} \sin{\left(\varphi \right)} \cos{\left(\theta \right)} + \cos{\left(\psi \right)} \cos{\left(\varphi \right)} &amp; \sin{\left(\psi \right)} \cos{\left(\varphi \right)} + \sin{\left(\varphi \right)} \cos{\left(\psi \right)} \cos{\left(\theta \right)} &amp; \sin{\left(\theta \right)} \sin{\left(\varphi \right)}\\- \sin{\left(\psi \right)} \cos{\left(\theta \right)} \cos{\left(\varphi \right)} - \sin{\left(\varphi \right)} \cos{\left(\psi \right)} &amp; - \sin{\left(\psi \right)} \sin{\left(\varphi \right)} + \cos{\left(\psi \right)} \cos{\left(\theta \right)} \cos{\left(\varphi \right)} &amp; \sin{\left(\theta \right)} \cos{\left(\varphi \right)}\\\sin{\left(\psi \right)} \sin{\left(\theta \right)} &amp; - \sin{\left(\theta \right)} \cos{\left(\psi \right)} &amp; \cos{\left(\theta \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id3">*</a></span></dt>
+<dd><p>Technically, this set of angles for the gimbal are one of the 6 Tait-Bryan angles,
+but “Euler Angles” is used as a general term to describe both Tait-Bryan angles
+and “proper Euler angles”.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="sympy.html" title="SymPy"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> Previous </span> SymPy </span>
+              </div>
+            </a>
+          
+          
+            <a href="vectors.html" title="Vectors"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> Next </span> Vectors </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+/* The material css has a dropdown class and it sets the width to 125px. This
+ * overrides that to make sure the toggle dropdowns are full width. The
+ * sphinx_togglebutton has to be loaded first in the conf.py extensions list (I
+ * think)
+ */
+.toggle {
+    width: 100%;
+}
+/* Ensures that ..figure:: aligns to the center. */
+.align-center img {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Ensures that ..figure:: captions align to the center. */
+.align-center .caption {
+  text-align: center;
+}
+
+/* Removes the vertical scrollbar on dropdowns. See
+ * https://github.com/moorepants/learn-multibody-dynamics/issues/37 */
+.md-typeset .admonition {
+  overflow: visible !important;
+}
