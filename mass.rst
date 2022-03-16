@@ -8,17 +8,22 @@ Mass
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
-In the prior chapters we have developed the tools to formulate the kinematics
+In the prior chapters, we have developed the tools to formulate the kinematics
 of points and reference frames. The kinematics are the first of three essential
-parts needed to form the equations of motion of a multibody system.
+parts needed to form the equations of motion of a multibody system; the other
+two being the mass distribution and the forces acting on the system.
 
 When a point is associated with a particle of mass :math:`m` or a reference
-frame is associated with a body that has a mass distribution, Newton's and
-Euler's Second Laws of motion show that the time rate of change of the linear
-and angular momenta must be equal to the forces and torques acting on the
-particle or body. The momentum of the particle is determined by its mass and
-velocity and the angular momentum is determined by the distribution of mass and
-the angular velocity.
+frame is associated with a body that has some mass distribution, `Newton's`_
+and `Euler's`_ second laws of motion show that the time rate of change of the
+linear and angular momenta must be equal to the forces and torques acting on
+the particle or body, respectively. The momentum of the particle is determined
+by its mass and velocity and the angular momentum is determined by the
+distribution of mass and the angular velocity. In this chapter, the formulation
+of mass and its distribution will be introduced.
+
+.. _Newton's: https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion
+.. _Euler's: https://en.wikipedia.org/wiki/Euler%27s_laws_of_motion
 
 Mass
 ====
@@ -32,7 +37,8 @@ total mass, or *zeroth moment of mass*, is defined as:
    m := \sum_{i=1}^\nu m_i
 
 For a body with a density :math:`\rho` defined at each point within its
-volumetric boundary, the total mass becomes an integral of the general form:
+volumetric :math:`V` boundary, the total mass becomes an integral of the
+general form:
 
 .. math::
    :label: eq-zeroth-moment-rigid-body
@@ -42,10 +48,11 @@ volumetric boundary, the total mass becomes an integral of the general form:
 Mass Center
 ===========
 
-If each particle is located at positions :math:`\bar{r}_i,\ldots,\bar{r}_\nu`
-relative to a point :math:`O` and the first mass moment, :math:`\sum_{i=1}^\nu
-m_i \bar{r}_i` is equal to 0 then the point :math:`S_o` is refered to as the
-mass center of the set of particles. The mass center is defined as:
+If each particle in a set of particles is located at positions
+:math:`\bar{r}_i,\ldots,\bar{r}_\nu` relative to a point :math:`O` and the
+first mass moment, :math:`\sum_{i=1}^\nu m_i \bar{r}_i` is equal to 0 then the
+point :math:`S_o` is referred to as the mass center of the set of particles.
+The mass center is defined as:
 
 .. math::
    :label: mass-center-particles
@@ -81,11 +88,10 @@ Mass Distribution
 =================
 
 The inertia, or second moment of mass, describes the distribution of mass
-relative to a point.
-
-For a set of particles :math:`P_1,\ldots,P_\nu` with locations
-:math:`\bar{r}^{P_i/O}` for :math:`i=1,\ldots,\nu` relative to :math:`O` the
-inertia vector for a unit vector :math:`\hat{n}_a` is defined as:
+relative to a point about an axis. For a set of particles
+:math:`P_1,\ldots,P_\nu` with positions :math:`\bar{r}^{P_i/O}` for
+:math:`i=1,\ldots,\nu` relative to a point :math:`O` the *inertia vector* about
+unit vector :math:`\hat{n}_a` is defined as ([Kane1985]_, pg. 61):
 
 .. math::
    :label: inertia-vector-particles
@@ -93,28 +99,45 @@ inertia vector for a unit vector :math:`\hat{n}_a` is defined as:
    \bar{I}_a := \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times
    \bar{r}^{P_i/O}  \right)
 
-.. todo:: Show the inertia vector for a rigid body.
+This vector describes the sum of mass distribution of each particle about a
+line that is parallel to :math:`\hat{n}_a` that passes through :math:`O`.
 
-For a single particle, the magnitude of :math:`\bar{I}_a` is:
+.. _fig-mass-inertia-vector:
+.. figure:: figures/mass-inertia-vector.svg
+   :align: center
+
+   Inertia vector for a single particle :math:`P` and its relationship to
+   :math:`\hat{n}_a`.
+
+For a single particle, as shown in :numref:`fig-mass-inertia-vector` the
+magnitude of :math:`\bar{I}_a` is:
 
 .. math::
-   :label: intertia-vector-magnitude
+   :label: inertia-vector-magnitude
 
    \left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2 \sin\theta
 
 where :math:`\theta` is angle between :math:`\bar{r}^{P/O}` and
-:math:`\hat{n}_a`. If :math:`\hat{n}_a` is perpendicular to
-:math:`\bar{r}^{P/O}` then the magnitude is:
+:math:`\hat{n}_a`. We see that :math:`\bar{I}_a` is always perpendicular to
+:math:`\bar{r}^{P/O}` and scales with :math:`m`, :math:`| \bar{r}^{P/O} |^2`,
+and :math:`\sin\theta`.
+
+If :math:`\hat{n}_a` is perpendicular to :math:`\bar{r}^{P/O}` then the
+magnitude is:
 
 .. math::
    :label: intertia-vector-magnitude-perp
 
    \left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2
 
-The inertia vector for the set of :math:`\nu` particles relative to :math:`O`
+If :math:`\hat{n}_a` is parallel to :math:`\bar{r}^{P/O}` then the magnitude is
+zero.
+
+The inertia vector fully describes the distribution of the particles with
+respect to :math:`O` about :math:`\hat{n}_a`.
 
 A component of :math:`\bar{I}_a` in the :math:`\hat{n}_b` direction is called
-an inertia scalar and is defined as:
+an *inertia scalar* and is defined as ([Kane1985]_, pg 62):
 
 .. math::
    :label: inertia-scalar
@@ -125,6 +148,7 @@ The inertia scalar can be rewritten using Eq.
 :math:numref:`inertia-vector-particles`:
 
 .. math::
+   :label: eq-product-of-inertia
 
    I_{ab} =
    \sum_{i=1}^\nu m_i
@@ -138,11 +162,17 @@ This form implies that:
 
    I_{ab} = I_{ba}
 
-If :math:`\hat{n}_a = \hat{n}_b` then this inertia scalar is called a "moment
-of inertia" and if :math:`\hat{n}_a \neq \hat{n}_b` it is called a "product of
-inertia". When :math:`\hat{n}_a = \hat{n}_b`
+If :math:`\hat{n}_a = \hat{n}_b` then this inertia scalar is called a *moment
+of inertia* and if :math:`\hat{n}_a \neq \hat{n}_b` it is called a *product of
+inertia*. Moments of inertia describe the mass distribution about a single axis
+whereas products of inertia describe the mass distribution relative to two
+axes.
+
+When :math:`\hat{n}_a = \hat{n}_b` Eq.  :math:numref:`eq-product-of-inertia`
+reduces to:
 
 .. math::
+   :label: eq-moment-of-inertia
 
    I_{aa} =
    \sum_{i=1}^\nu m_i
@@ -158,14 +188,16 @@ The *radius of gyration* about a line through :math:`O` parallel to
 Inertia Matrix
 ==============
 
-For mutually perpendicular unit vectors fixed in reference frame :math:`A` the
-moments of inertia with repsect to :math:`O` for each unit vector can be
-computed and the products of inertia among the pairs of perpendiculr unit
-vectors can also be computed. This, in general, generates nine unique inertia
-scalars. These scalars are typically presented as a symmetric inertia matrix
-(or inertia tensor):
+For mutually perpendicular unit vectors fixed in reference frame :math:`A`, the
+moments of inertia with respect to :math:`O` about each unit vector and the
+products of inertia among the pairs of perpendicular unit vectors can also be
+computed. This, in general, results in nine inertia scalars that describe the
+mass distribution of a set of particles or a solid body in 3D space. These
+scalars are typically presented as a symmetric *inertia matrix* (also called an
+*inertia tensor*) that takes this form:
 
 .. math::
+   :label: eq-inertia-matrix
 
    \begin{bmatrix}
     I_{xx} & I_{xy} & I_{xz} \\
@@ -177,10 +209,11 @@ where :math:`I_{xy}=I_{yx}`, :math:`I_{xz}=I_{zx}`, and :math:`I_{yz}=I_{zy}`
 and the subscript :math:`A` indicates that these scalars are relative to unit
 vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`.
 
-This second order tensor is similar to the the first order tensors (vectors)
-we've already worked with:
+This matrix (or second order tensor) is similar to the vectors (or first order
+tensors) we've already worked with:
 
 .. math::
+   :label: eq-column-vector
 
    \begin{bmatrix}
    v_1 \\
@@ -188,14 +221,15 @@ we've already worked with:
    v_3
    \end{bmatrix}_A
 
-but we have notation for writing such a vector that allows us to combine
-components expressed in different reference frames:
+Recall that we have a notation for writing such a vector that allows us to
+combine components expressed in different reference frames:
 
 .. math::
 
    v_1\hat{a}_x + v_2\hat{a}_y + v_3\hat{a}_z
 
-There also exists an analgous form for second order tensors.
+There also exists an analogous form for second order tensors that are
+associated with different reference frames called a *dyadic*.
 
 Dyadics
 =======
@@ -221,7 +255,8 @@ it generates a matrix akin to the inertia matrix above.
 
 .. _outer product: https://en.wikipedia.org/wiki/Outer_product
 
-In SymPy Mechanics outer products can be taken between two vectors:
+In SymPy Mechanics outer products can be taken between two vectors to create
+the dyadic :math:`\breve{Q}`:
 
 .. jupyter-execute::
 
@@ -267,19 +302,24 @@ dyads are:
    me.outer(A.y, A.z).to_matrix(A)
 
 These unit dyads can be formed from unit vectors that are fixed in different
-reference frames. This is convenident because we can create dyadics, just like
-vectors, which are make up of components in different reference frames:
+reference frames. This is convenient because we can create dyadics, just like
+vectors, which are make up of components in different reference frames. For
+example:
 
 .. jupyter-execute::
 
    theta = sm.symbols("theta")
-   B = me.ReferenceFrame('B')
-   B.orient_axis(A, theta, A.x)
 
-.. jupyter-execute::
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+
+   B.orient_axis(A, theta, A.x)
 
    P = 2*me.outer(B.x, B.x) + 3*me.outer(A.x, B.y) + 4*me.outer(B.z, A.z)
    P
+
+The dyadic :math:`\breve{P}` can be expressed in unit dyads of :math:`A` or
+:math:`B`:
 
 .. jupyter-execute::
 
@@ -289,14 +329,35 @@ vectors, which are make up of components in different reference frames:
 
    P.to_matrix(A)
 
-The unit dyadic is defined as:
+.. jupyter-execute::
+
+   P.express(B)
+
+.. jupyter-execute::
+
+   P.to_matrix(B)
+
+The *unit dyadic* is defined as:
+
+.. math::
+   :label: eq-unit-dyadic
+
+   \breve{U} =
+   \hat{a}_x \otimes \hat{a}_x +
+   \hat{a}_y \otimes \hat{a}_y +
+   \hat{a}_z \otimes \hat{a}_z
+
+.. todo:: I need a notation to distinguish a unit dyadic like we do with unit
+   vectors and vectors.
+
+The unit dyadic can be created with SymPy:
 
 .. jupyter-execute::
 
    U = me.outer(A.x, A.x) + me.outer(A.y, A.y) + me.outer(A.z, A.z)
    U
 
-and it represents the identity matrix:
+and it represents the identity matrix in :math:`A`:
 
 .. jupyter-execute::
 
@@ -305,7 +366,7 @@ and it represents the identity matrix:
 .. todo:: ReferenceFrame should have an attribute that returns the unit dyadic
    (or dyads).
 
-Properties of dyadics
+Properties of Dyadics
 =====================
 
 - Scalar multiplication: :math:`\alpha(\bar{u}\otimes\bar{v}) = \alpha\bar{u}\otimes\bar{v} = \bar{u}\otimes\alpha\bar{v}`
@@ -320,65 +381,106 @@ Properties of dyadics
   - :math:`\bar{u}\times(\bar{v}\otimes\bar{w}) = (\bar{u}\times\bar{v})\otimes\bar{w}`
   - :math:`(\bar{u}\otimes\bar{v})\times\bar{w} = \bar{u}\otimes(\bar{v}\times\bar{w})`
 
-- Not commutative: :math:`\breve{U}\bar{u} \neq \bar{u}\breve{U}`
+- Not commutative: :math:`\breve{V}\bar{u} \neq \bar{u}\breve{V}`
+- Unit dyadic vector multiplication: :math:`\breve{U}\bar{v} = \bar{v}\breve{U} = \bar{v}`
 
 Inertia Dyadic
 ==============
 
-Using the triple vector product identify
+Using the `vector triple product`_ identity (
 :math:`\bar{a}\times(\bar{b}\times\bar{c}) = \bar{b}(\bar{a}\cdot\bar{c}) -
-\bar{c}(\bar{a}\cdot\bar{b}` the inertia vector can be written as:
+\bar{c}(\bar{a}\cdot\bar{b})`), the inertia vector can be
+written as ([Kane1985]_, pg 68):
+
+.. _vector triple product: https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product
 
 .. math::
+   :label: eq-apply-triple-vec-product
 
-   \bar{I}_a = \sum_{i=1}^\nu m_i \left(\hat{n}_a \bar{r}^{P_i/O}\cdot\bar{r}^{P_i/O} -
-   \hat{n}_a\cdot\bar{r}^{P_i/O}\otimes\bar{r}^{P_i/O}\right)
+   \bar{I}_a & = \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times \bar{r}^{P_i/O}  \right) \\
+   \bar{I}_a & = \sum_{i=1}^\nu m_i
+   \left[\hat{n}_a \left( \bar{r}^{P_i/O} \cdot \bar{r}^{P_i/O} \right) -
+   \bar{r}^{P_i/O} \left( \bar{r}^{P_i/O} \cdot \hat{n}_a \right) \right]
+
+
+Now by introducing the unit dyadic, it can be written with dyadics:
 
 .. math::
 
    \bar{I}_a =
-   \sum_{i=1}^\nu m_i \left(
-   \hat{n}_a \cdot \breve{U} \left(\bar{r}^{P_i/O}\right)^2 -
-   \hat{n}_a \cdot \bar{r}^{P_i/O} \bar{r}^{P_i/O}
-   \right)
+   \sum_{i=1}^\nu m_i \left[
+   \left|\bar{r}^{P_i/O}\right|^2 \hat{n}_a \cdot \breve{U}  -
+   \hat{n}_a \cdot \left(\bar{r}^{P_i/O} \otimes \bar{r}^{P_i/O}\right)
+   \right]
+
+:math:`\hat{n}_a` can be pulled out of the summation:
 
 .. math::
 
    \bar{I}_a =
-   \hat{n}_a \cdot\sum_{i=1}^\nu m_i \left(
-    \breve{U} \left(\bar{r}^{P_i/O}\right)^2 -
-    \bar{r}^{P_i/O} \bar{r}^{P_i/O}
-   \right) = \hat{n}_a \cdot \breve{I}
-
-We can now remove the dependence on :math:`\hat{n}_a` and arrive at the inertia
-dyadic of the set of particles relative to :math:`O`:
-
-.. math::
-
-   \breve{I} :=
+   \hat{n}_a \cdot
    \sum_{i=1}^\nu m_i \left(
-   \breve{U} \left(\bar{r}^{P_i/O}\right)^2 -
+   \left|\bar{r}^{P_i/O}\right|^2 \breve{U}  -
    \bar{r}^{P_i/O} \otimes \bar{r}^{P_i/O}
    \right)
 
+The *inertia dyadic* :math:`\breve{I}` of a set of particles relative to
+:math:`O` is now defined as:
 
-This form is basis independent and the position vectors can be express in any
-coordinate system in any reference frame.
+.. math::
+   :label: eq-inertia-dyadic
+
+   \breve{I} :=
+   \sum_{i=1}^\nu m_i \left(
+   \left|\bar{r}^{P_i/O}\right|^2 \breve{U}  -
+   \bar{r}^{P_i/O} \otimes \bar{r}^{P_i/O}
+   \right)
+
+where:
+
+.. math::
+
+   \hat{I}_a = \hat{n}_a \cdot \breve{I}
+
+Note that we have now described the inertia of the set of particles without
+needing to specify a vector :math:`\hat{n}_a`. The vectors and dyadics in Eq.
+:math:numref:`eq-inertia-dyadic` can be written in terms of any reference frame
+unit vectors of unit dyads.
+
+In SymPy Mechanics, simple inertia dyadics in terms of the unit vectors of a
+single reference frame can quickly be generated with
+:external:py:func:`~sympy.physics.mechanics.functions.inertia`. For example:
 
 .. jupyter-execute::
 
-   Ixx, Iyy, Izz, Ixy, Iyz, Ixz = sm.symbols('I_{xx}, I_{yy}, I_{zz}, I_{xy}, I_{yz}, I_{xz}')
+   Ixx, Iyy, Izz = sm.symbols('I_{xx}, I_{yy}, I_{zz}')
+   Ixy, Iyz, Ixz = sm.symbols('I_{xy}, I_{yz}, I_{xz}')
 
-   I = me.inertia(A, Ixx, Iyy, Izz, Ixy, Iyz, Ixz)
+   I = me.inertia(A, Ixx, Iyy, Izz, ixy=Ixy, iyz=Iyz, izx=Ixz)
    I
 
 .. jupyter-execute::
 
    I.to_matrix(A)
 
+This inertia dyadic can easily be expressed relative to another reference frame
+if the orientation is defined:
+
 .. jupyter-execute::
 
    sm.trigsimp(I.to_matrix(B))
+
+This applies the matrix transform to express an inertia matrix in other
+reference frame:
+
+.. math::
+   :label: eq-inertia-transform
+
+   {}^B\mathbf{C}^A \quad \mathbf{I} \quad {}^A\mathbf{C}^B
+
+.. jupyter-execute::
+
+   sm.trigsimp(B.dcm(A)*I.to_matrix(A)*A.dcm(B))
 
 Angular Momentum
 ================
