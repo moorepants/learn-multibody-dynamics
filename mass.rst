@@ -36,7 +36,7 @@ total mass, or *zeroth moment of mass*, is defined as:
 
    m := \sum_{i=1}^\nu m_i
 
-For a body with a density :math:`\rho` defined at each point within its
+For a solid body with a density :math:`\rho` defined at each point within its
 volumetric :math:`V` boundary, the total mass becomes an integral of the
 general form:
 
@@ -63,6 +63,9 @@ The mass center is defined as:
    :label: mass-center-rigid-body
 
    \bar{r}^{S_o/O} = \frac{ \int_{\textrm{solid}} \bar{r} dm }{ \int_{\textrm{solid}} dm }
+
+.. todo:: Fix the notation for the mass center and the explanation, as they
+   aren't quite clear or consistent with the rest of the page.
 
 .. jupyter-execute::
 
@@ -98,6 +101,8 @@ unit vector :math:`\hat{n}_a` is defined as ([Kane1985]_, pg. 61):
 
    \bar{I}_a := \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times
    \bar{r}^{P_i/O}  \right)
+
+.. todo:: Add the rigid body form of the inertia vector.
 
 This vector describes the sum of mass distribution of each particle about a
 line that is parallel to :math:`\hat{n}_a` that passes through :math:`O`.
@@ -402,7 +407,6 @@ written as ([Kane1985]_, pg 68):
    \left[\hat{n}_a \left( \bar{r}^{P_i/O} \cdot \bar{r}^{P_i/O} \right) -
    \bar{r}^{P_i/O} \left( \bar{r}^{P_i/O} \cdot \hat{n}_a \right) \right]
 
-
 Now by introducing the unit dyadic, it can be written with dyadics:
 
 .. math::
@@ -440,7 +444,9 @@ where:
 
 .. math::
 
-   \hat{I}_a = \hat{n}_a \cdot \breve{I}
+   \bar{I}_a = \hat{n}_a \cdot \breve{I}
+
+.. todo:: Add the rigid body form of the inertia dyadic equation.
 
 Note that we have now described the inertia of the set of particles without
 needing to specify a vector :math:`\hat{n}_a`. The vectors and dyadics in Eq.
@@ -476,7 +482,7 @@ reference frame:
 .. math::
    :label: eq-inertia-transform
 
-   {}^B\mathbf{C}^A \quad \mathbf{I} \quad {}^A\mathbf{C}^B
+   {}^B\mathbf{C}^A \ \mathbf{I} \ {}^A\mathbf{C}^B
 
 .. jupyter-execute::
 
