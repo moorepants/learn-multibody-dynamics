@@ -29,6 +29,7 @@ Table of Contents
    translational
    configuration
    motion
+   wherenext
    notation
    glossary
    references
