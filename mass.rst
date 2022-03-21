@@ -11,16 +11,16 @@ Mass
 In the prior chapters, we have developed the tools to formulate the kinematics
 of points and reference frames. The kinematics are the first of three essential
 parts needed to form the equations of motion of a multibody system; the other
-two being the mass distribution and the forces acting on the system.
+two being the mass distribution of and the forces acting on the system.
 
 When a point is associated with a particle of mass :math:`m` or a reference
-frame is associated with a body that has some mass distribution, `Newton's`_
-and `Euler's`_ second laws of motion show that the time rate of change of the
-linear and angular momenta must be equal to the forces and torques acting on
-the particle or body, respectively. The momentum of the particle is determined
-by its mass and velocity and the angular momentum is determined by the
-distribution of mass and the angular velocity. In this chapter, the formulation
-of mass and its distribution will be introduced.
+frame is associated with a rigid body that has some mass distribution,
+`Newton's`_ and `Euler's`_ second laws of motion show that the time rate of
+change of the linear and angular momenta must be equal to the forces and
+torques acting on the particle or rigid body, respectively. The momentum of the
+particle is determined by its mass and velocity and the angular momentum of the
+rigid body is determined by the distribution of mass and its angular velocity.
+In this chapter, we will introduce mass and its distribution.
 
 .. _Newton's: https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion
 .. _Euler's: https://en.wikipedia.org/wiki/Euler%27s_laws_of_motion
@@ -29,7 +29,7 @@ Mass
 ====
 
 Given a set of :math:`\nu` particles with masses :math:`m_1,\ldots,m_\nu` the
-total mass, or *zeroth moment of mass*, is defined as:
+total mass, or *zeroth moment of mass*, of the set is defined as:
 
 .. math::
    :label: eq-zeroth-moment
@@ -49,10 +49,18 @@ Mass Center
 ===========
 
 If each particle in a set of particles is located at positions
-:math:`\bar{r}_i,\ldots,\bar{r}_\nu` relative to a point :math:`O` and the
-first mass moment, :math:`\sum_{i=1}^\nu m_i \bar{r}_i` is equal to 0 then the
-point :math:`S_o` is referred to as the mass center of the set of particles.
-The mass center is defined as:
+:math:`\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}` the *first mass moment* can be
+defined as:
+
+.. math::
+   :label: eq-first-moment
+
+   \sum_{i=1}^\nu m_i \bar{r}^{P_i/O}
+
+There is then a point :math:`\bar{r}^{S_o/O}` 
+When t is equal to zero then the point :math:`S_o`
+is referred to as the mass center of the set of particles.  The mass center is
+defined as:
 
 .. math::
    :label: mass-center-particles
@@ -127,16 +135,14 @@ where :math:`\theta` is angle between :math:`\bar{r}^{P/O}` and
 :math:`\bar{r}^{P/O}` and scales with :math:`m`, :math:`| \bar{r}^{P/O} |^2`,
 and :math:`\sin\theta`.
 
-If :math:`\hat{n}_a` is perpendicular to :math:`\bar{r}^{P/O}` then the
+If :math:`\hat{n}_a` is parallel to :math:`\bar{r}^{P/O}` then the magnitude is
+zero. If :math:`\hat{n}_a` is perpendicular to :math:`\bar{r}^{P/O}` then the
 magnitude is:
 
 .. math::
    :label: intertia-vector-magnitude-perp
 
    \left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2
-
-If :math:`\hat{n}_a` is parallel to :math:`\bar{r}^{P/O}` then the magnitude is
-zero.
 
 The inertia vector fully describes the distribution of the particles with
 respect to :math:`O` about :math:`\hat{n}_a`.
@@ -490,6 +496,9 @@ reference frame:
 
 Angular Momentum
 ================
+
+.. todo:: Flesh out this example more for particles and rigid bodies. Or remove
+   for now. Could turn it into a homework problem.
 
 .. math::
 
