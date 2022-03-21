@@ -166,7 +166,7 @@ an *inertia scalar* and is defined as ([Kane1985]_, pg 62):
 .. math::
    :label: inertia-scalar
 
-   I_{ab} := \hat{I}_{a} \cdot \hat{n}_b
+   I_{ab} := \bar{I}_{a} \cdot \hat{n}_b
 
 The inertia scalar can be rewritten using Eq.
 :math:numref:`inertia-vector-particles`:
