@@ -17,8 +17,8 @@ When a point is associated with a particle of mass :math:`m` or a reference
 frame is associated with a rigid body that has some mass distribution,
 `Newton's`_ and `Euler's`_ second laws of motion show that the time rate of
 change of the linear and angular momenta must be equal to the forces and
-torques acting on the particle or rigid body, respectively. The momentum of the
-particle is determined by its mass and velocity and the angular momentum of the
+torques acting on the particle or rigid body, respectively. The momentum of a
+particle is determined by its mass and velocity and the angular momentum of a
 rigid body is determined by the distribution of mass and its angular velocity.
 In this chapter, we will introduce mass and its distribution.
 
@@ -48,8 +48,8 @@ general form:
 Mass Center
 ===========
 
-If each particle in a set of particles is located at positions
-:math:`\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}` the *first mass moment* can be
+If each particle in a set of :math:`S` particles is located at positions
+:math:`\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}` the *first moment of mass* can be
 defined as:
 
 .. math::
@@ -57,23 +57,26 @@ defined as:
 
    \sum_{i=1}^\nu m_i \bar{r}^{P_i/O}
 
-There is then a point :math:`\bar{r}^{S_o/O}` 
-When t is equal to zero then the point :math:`S_o`
-is referred to as the mass center of the set of particles.  The mass center is
+There is then a point :math:`S_o` located by :math:`\bar{r}^{S_o/O}` which has
+a first mass moment equal to zero. This point is referred to as the *mass
+center* (or *center of msss*) of the set of particles. The mass center is
 defined as:
 
 .. math::
    :label: mass-center-particles
 
-   \bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}_i }{\sum_{i=1}^\nu m_i}
+   \bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} }{\sum_{i=1}^\nu m_i}
+
+or the first moment divided by the zeroth moment. For a solid body, this takes
+on the integral form:
 
 .. math::
    :label: mass-center-rigid-body
 
-   \bar{r}^{S_o/O} = \frac{ \int_{\textrm{solid}} \bar{r} dm }{ \int_{\textrm{solid}} dm }
+   \bar{r}^{S_o/O} = \frac{ \int_{\textrm{solid}} \rho \bar{r} dV }{ \int_{\textrm{solid}} \rho dV }
 
-.. todo:: Fix the notation for the mass center and the explanation, as they
-   aren't quite clear or consistent with the rest of the page.
+The particle form (Eq. :math:numref:`mass-center-particles`) can be calculated
+using vectors and scalars in SymPy Mechanics:
 
 .. jupyter-execute::
 
@@ -89,7 +92,7 @@ defined as:
              m3*(x3*A.x + y3*A.y + z3*A.z)) / (m1 + m2 + m3)
    r_O_So
 
-If :math:`m_2=2m_1` and :math:`m_3=3m_1` then:
+Then, for example, if :math:`m_2=2m_1` and :math:`m_3=3m_1` then:
 
 .. jupyter-execute::
 
@@ -100,9 +103,10 @@ Mass Distribution
 
 The inertia, or second moment of mass, describes the distribution of mass
 relative to a point about an axis. For a set of particles
-:math:`P_1,\ldots,P_\nu` with positions :math:`\bar{r}^{P_i/O}` for
-:math:`i=1,\ldots,\nu` relative to a point :math:`O` the *inertia vector* about
-unit vector :math:`\hat{n}_a` is defined as ([Kane1985]_, pg. 61):
+:math:`P_1,\ldots,P_\nu` with positions
+:math:`\bar{r}^{P_1/O},\ldots,\bar{r}^{P_\nu/O}` all relative to a point
+:math:`O` the *inertia vector* about the unit vector :math:`\hat{n}_a` is
+defined as ([Kane1985]_, pg. 61):
 
 .. math::
    :label: inertia-vector-particles
@@ -112,8 +116,11 @@ unit vector :math:`\hat{n}_a` is defined as ([Kane1985]_, pg. 61):
 
 .. todo:: Add the rigid body form of the inertia vector.
 
-This vector describes the sum of mass distribution of each particle about a
-line that is parallel to :math:`\hat{n}_a` that passes through :math:`O`.
+This vector describes the sum of each mass's contirubtion to the mass
+distribution of the set about a line that is parallel to :math:`\hat{n}_a` and
+passes through :math:`O`. Figure :numref:`fig-mass-inertia-vector` shows a
+visual representation of this vector for a single particle :math:`P` with mass
+:math:`m`.
 
 .. _fig-mass-inertia-vector:
 .. figure:: figures/mass-inertia-vector.svg
@@ -122,8 +129,7 @@ line that is parallel to :math:`\hat{n}_a` that passes through :math:`O`.
    Inertia vector for a single particle :math:`P` and its relationship to
    :math:`\hat{n}_a`.
 
-For a single particle, as shown in :numref:`fig-mass-inertia-vector` the
-magnitude of :math:`\bar{I}_a` is:
+For this single particle the magnitude of :math:`\bar{I}_a` is:
 
 .. math::
    :label: inertia-vector-magnitude
@@ -135,9 +141,9 @@ where :math:`\theta` is angle between :math:`\bar{r}^{P/O}` and
 :math:`\bar{r}^{P/O}` and scales with :math:`m`, :math:`| \bar{r}^{P/O} |^2`,
 and :math:`\sin\theta`.
 
-If :math:`\hat{n}_a` is parallel to :math:`\bar{r}^{P/O}` then the magnitude is
-zero. If :math:`\hat{n}_a` is perpendicular to :math:`\bar{r}^{P/O}` then the
-magnitude is:
+If :math:`\hat{n}_a` happens to be parallel to :math:`\bar{r}^{P/O}` then the
+magnitude of :math:`\bar{I}_a` is zero. If :math:`\hat{n}_a` is perpendicular
+to :math:`\bar{r}^{P/O}` then the magnitude is:
 
 .. math::
    :label: intertia-vector-magnitude-perp
