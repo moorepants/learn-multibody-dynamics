@@ -546,7 +546,11 @@ other reference frame:
 
    .. jupyter-execute::
 
+      Ixx, Iyy, Izz = sm.symbols('I_{xx}, I_{yy}, I_{zz}')
+      Ixy, Iyz, Ixz = sm.symbols('I_{xy}, I_{yz}, I_{xz}')
       w1, w2, w3 = me.dynamicsymbols('omega1, omega2, omega3')
+
+      B = me.ReferenceFrame('B')
 
       I = me.inertia(B, Ixx, Iyy, Izz, Ixy, Iyz, Ixz)
 
@@ -554,4 +558,50 @@ other reference frame:
 
       I.dot(A_w_B)
 
-.. todo:: Add parallel axis theorem.
+Parallel Axis Theorem
+=====================
+
+If you know the central inertia dyadic of a rigid body :math:`B` (or
+equivalently a set of particles) about it's mass center :math:`B_o` then it is
+possible to calculate the inertia dyadic about any other point :math:`O`. The
+*parallel axis theorem* is ([Kane1985]_, pg. 70):
+
+.. math::
+   :label: eq-parallel-axis-theorem
+
+   \breve{I}^{B/O} = \breve{I}^{B/B_o} + \breve{I}^{B_o/O}
+
+The last term is the inertia of a particle with mass :math:`m` (total mass of
+the body or set of particles) located at the mass center about point :math:`O`.
+
+.. math::
+   :label: eq-parallel-axis-theorem
+
+   \breve{I}^{B_o/O} = m \left(
+   \left|\bar{r}^{B_o/O}\right|^2 \breve{U}  -
+   \bar{r}^{B_o/O} \otimes \bar{r}^{B_o/O}
+   \right)
+
+When :math:`B_o` is displaced from point :math:`O` by three Cartesian distances
+:math:`d_x,d_y,d_z` the general form of the last term in Eq.
+:math:numref:`eq-parallel-axis-theorem` can be found:
+
+.. jupyter-execute::
+
+   dx, dy, dz, m = sm.symbols('d_x, d_y, d_z, m')
+
+   N = me.ReferenceFrame('N')
+
+   r_O_Bo = dx*N.x + dy*N.y + dz*N.z
+
+   U = me.outer(N.x, N.x) + me.outer(N.y, N.y) + me.outer(N.z, N.z)
+
+   I_Bo_O = m*(me.dot(r_O_Bo, r_O_Bo)*U - me.outer(r_O_Bo, r_O_Bo))
+   I_Bo_O
+
+The matrix form of this dyadic shows the typical presentation of the parallel
+axis addition term:
+
+.. jupyter-execute::
+
+   I_Bo_O.to_matrix(N)
