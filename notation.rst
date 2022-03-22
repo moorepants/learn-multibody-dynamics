@@ -71,3 +71,5 @@ then an example of a variable name that we use in the code.
 :math:`\bar{f}_h(q_1, \ldots, q_n) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`
    Vector function of :math:`M` holonomic constraint equations among the
    :math:`n` generalized coordinates.
+:math:`\breve{Q}`
+   Dyadics are indicated with a breve accent.
