@@ -1,6 +1,6 @@
-====
-Mass
-====
+=================
+Mass Distribution
+=================
 
 .. jupyter-execute::
 
