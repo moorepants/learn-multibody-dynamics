@@ -25,6 +25,24 @@ In this chapter, we will introduce mass and its distribution.
 .. _Newton's: https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion
 .. _Euler's: https://en.wikipedia.org/wiki/Euler%27s_laws_of_motion
 
+Particles and Rigid Bodies
+==========================
+
+We will introduce and use the concepts of particles and rigid bodies in this
+chapter. Both are abstractions of real translating and rotating objects.
+Particles are points, that have a location in Euclidean space, which have a
+volumetrically infinitesimal mass associated with them. Rigid bodies are made
+up of a reference frame, that have orientation, which have an associated
+continuous distribution of mass. Each point in the distribution of mass can
+translate.
+
+For example, an airplane can be modeled as a rigid body when one is concerned
+with both its translation and orientation. This could be useful when
+investigating its minimum turn radii and banking angle. But it could also be
+modeled as a particle when one is only concerned with its translation; for
+example when you observing the motion of the airplane from a location outside
+the Earth's atmosphere.
+
 Mass
 ====
 
@@ -605,3 +623,64 @@ axis addition term:
 .. jupyter-execute::
 
    I_Bo_O.to_matrix(N)
+
+Principal Axes and Moments of Inertia
+=====================================
+
+If the inertia vector :math:`\bar{I}_a` with respect to point :math:`O` is
+parallel to its unit vector :math:`\hat{n}_a` then the line through :math:`O`
+and parallel to :math:`\hat{n}_a` is called a *principal axis* of the set of
+particles or rigid body. The plane that is normal to :math:`\hat{n}_a` is
+called a *principal plane*. The moment of inertia about this principal axis is
+called a *principal moment of inertia*. The consequence of :math:`\bar{I}_a`
+being parallel to :math:`\hat{n}_a` is that the products of inertia are all
+zero. The *principal inertia dyadic* can then be written as so:
+
+.. math::
+   :label: eq-principal-inertia-dyadic
+
+   \breve{I}^{B/O} =
+   I_{11} \hat{b}_1 \otimes \hat{b}_1 +
+   I_{22} \hat{b}_2 \otimes \hat{b}_2 +
+   I_{33} \hat{b}_3 \otimes \hat{b}_3
+
+where :math:`\hat{b}_1,\hat{b}_2,\hat{b}_3` are mutually perpendicular unit
+vectors in :math:`B` that are each parallel to a principal axis and
+:math:`I_{11},I_{22},I_{33}` are all principal moments of inertia.
+
+Geometrically symmetric objects with uniform mass density have principal planes
+that are perpendicular with the planes of symmetry of the geometry. But there
+also exist unique principal axes for non-symmetric and non-uniform density
+objects.
+
+The principal axes and their associated principal moments of inertia can be
+found by solving the eigenvalue problem. The eigenvalues of an arbitrary
+inertia matrix are the principal moments of inertia and the normalized
+eigenvectors are the unit vectors parallel to the principal axes.
+
+.. warning::
+
+   Finding the eigenvalues of a 3x3 matrix require finding the roots of the
+   `cubic equation`_. It is possible to find the symbolic solution, but it is
+   not a simple result. Unless you really need the symbolic result, it is best
+   to solve for principal axes and moments of inertia numerically.
+
+.. _cubic equation: https://en.wikipedia.org/wiki/Cubic_equation
+
+Here is an example of finding the principal axes and associated moments of
+inertia with SymPy:
+
+.. jupyter-execute::
+
+   I = sm.Matrix([[1.0451, 0.0, -0.1123],
+                  [0.0, 2.403, 0.0],
+                  [-0.1123, 0.0, 1.8501]])
+   I
+
+The :external:py:meth:`~sympy.matrices.matrices.MatrixEigen.eigenvects` method on a
+SymPy matrix returns a list of tuples that each contain ``(eigenvalue,
+multiplicity, eigenvector)``:
+
+.. jupyter-execute::
+
+   I.eigenvects()
