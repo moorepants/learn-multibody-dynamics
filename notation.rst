@@ -11,7 +11,7 @@ then an example of a variable name that we use in the code.
    Scalars are normal font.
 :math:`\bar{v}`, ``v``
    Vectors are indicated with a bar.
-:math:`\hat{u}`, ``uhat``
+:math:`\hat{u}`, ``uhat = u.normalize()``
    Unit vectors are indicated with a hat.
 :math:`A`, ``A``
    Reference frame :math:`A`.
@@ -68,8 +68,23 @@ then an example of a variable name that we use in the code.
 :math:`{}^A\bar{a}^P`, ``A_a_P``
    Translational acceleration of point :math:`P` when observed from reference
    frame or rigid body :math:`A`.
-:math:`\bar{f}_h(q_1, \ldots, q_n) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`
+:math:`\bar{f}_h(q_1, \ldots, q_N, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`
    Vector function of :math:`M` holonomic constraint equations among the
-   :math:`n` generalized coordinates.
-:math:`\breve{Q}`
+   :math:`N` coordinates.
+:math:`\bar{f}_n(u_1, \ldots, u_n, q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^m`
+   Vector function of :math:`m` nonholonomic constraint equations among the
+   :math:`n` generalized speeds and generalized coordinates.
+:math:`\bar{I}^{B/O}_a`
+   Inertia vector of rigid body :math:`B` with respect to point :math:`O` about
+   the unit vector :math:`\hat{n}_a`.
+:math:`\breve{Q}`, ``Q``
    Dyadics are indicated with a breve accent.
+:math:`\breve{I}^{B/O}`, ``I_B_O``
+   Inertia dyadic of body :math:`B` or set of particles :math:`B` with respect
+   to point :math:`O`.
+:math:`\breve{I}^{B/B_o}`, ``I_B_Bo``
+   Central inertia dyadic of body :math:`B` or set of particles :math:`B` with respect
+   to mass center :math:`B_o`.
+:math:`{}^A \mathbf{H}^{B/O}`, ``A_H_B_O``
+   Angular momentum of rigid body :math:`B` with respect to point :math:`O` in
+   reference frame :math:`A`.
