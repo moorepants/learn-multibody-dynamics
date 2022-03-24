@@ -588,12 +588,14 @@ Parallel Axis Theorem
 If you know the central inertia dyadic of a rigid body :math:`B` (or
 equivalently a set of particles) about it's mass center :math:`B_o` then it is
 possible to calculate the inertia dyadic about any other point :math:`O`. The
-*parallel axis theorem* is ([Kane1985]_, pg. 70):
+`parallel axis theorem`_ is ([Kane1985]_, pg. 70):
 
 .. math::
    :label: eq-parallel-axis-theorem
 
    \breve{I}^{B/O} = \breve{I}^{B/B_o} + \breve{I}^{B_o/O}
+
+.. _parallel axis theorem: https://en.wikipedia.org/wiki/Parallel_axis_theorem
 
 The last term is the inertia of a particle with mass :math:`m` (total mass of
 the body or set of particles) located at the mass center about point :math:`O`.
