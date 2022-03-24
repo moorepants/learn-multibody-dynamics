@@ -418,6 +418,12 @@ and it represents the identity matrix in :math:`A`:
 
    U.to_matrix(A)
 
+Note that the unit dyadic is the same when expressed in any reference frame:
+
+.. jupyter-execute::
+
+   U.express(B).simplify()
+
 .. todo:: ReferenceFrame should have an attribute that returns the unit dyadic
    (or dyads).
 
