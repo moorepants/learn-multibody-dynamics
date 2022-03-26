@@ -58,10 +58,12 @@ If each vector in the resultant is bound, the sum of the moments about
 Couple
 ======
 
-A *couple* is a set of bound vectors with zero resultant. A couple can have as
-many vectors as desired or needed with a minimum number being two, such that
-:math:`\bar{R}=0`. A couple composed of two vectors is called a *simple
-couple*.
+A set of bound vectors with a resultant equal to zero is called a *couple*.  A
+couple can have as many vectors as desired or needed with a minimum number
+being two, such that :math:`\bar{R}=0`. A couple composed of two vectors is
+called a *simple couple*.
+
+.. todo:: add figure with three sketches of couples
 
 The *torque* of a couple is the moment of the couple about a point. Because the
 resultant of a couple is zero, the torque of a couple is the same about all
@@ -70,13 +72,55 @@ points.
 Equivalence Replacement
 =======================
 
+Two sets of bound vectors are equivalent when they have these two properties:
+
+1. equal resultants
+2. equal moments about any point
+
+If 1 and 2 are true, the sets are said to be replacements of each other.
+Couples that have equal torques are equivalent, since the resultants are zero
+and moments about any point is equal to the value of the torque.
+
+The moment about one point :math:`P` is related to the moment about another
+point :math:`Q` by ([Kane1985_], pg. 91):
+
+.. math::
+   :label: eq-moment-another-point
+
+   \bar{M}^{S/P} = \bar{M}^{S/Q} + \bar{r}^{P/Q} \times \bar{R}^{S/Q}
+
+:math:`\bar{R}^{S/Q}` is the resultant of the set of bound vectors about point
+:math:`Q`.
+
+.. todo:: Show a figure here to represent the left and right sides of the
+   equation.
+
+Given a set of bound vectors and a set of bound vectors that consist of a
+torque of a couple :math:`\bar{T}` and vector :math:`\bar{v}` bound to an
+arbitrary point :math:`P` it is a necessary and sufficient condition that the
+second set is a replacement of the first if:
+
+.. math::
+   :label: eq-couple-torque-repl
+
+   \bar{T} = \bar{M}^{S/P} \\
+   \bar{v} = \bar{R}^S
+
+This means that every set of bound vectors can be replaced by an equivalent
+torque of a couple and a single bound vector that is the resultant of the
+replaced set.  This is the simplest replacement and simplifies the descritpion
+of forces acting on bodies and particle sets.
 
 Specifying Forces and Torques
 =============================
 
 Equal & Opposite
 
+Gravity
+
 Springs & Dampers
+
+Friction
 
 Aerodynamic
 
