@@ -668,8 +668,12 @@ objects.
 
 The principal axes and their associated principal moments of inertia can be
 found by solving the eigenvalue problem. The eigenvalues of an arbitrary
-inertia matrix are the principal moments of inertia and the normalized
-eigenvectors are the unit vectors parallel to the principal axes.
+inertia matrix are the principal moments of inertia and the eigenvectors are
+the unit vectors parallel to the mutually perpendicular principal axes.
+Recalling that the inertia matrix is a symmetric matrix of real numbers, we
+know then that it is Hermitian and therefore all its eigenvalues are real.
+Symmetric matrices are also diagonalizable and the eigenvectors will then be
+orthonormal.
 
 .. warning::
 
