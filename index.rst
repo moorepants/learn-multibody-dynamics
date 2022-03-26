@@ -30,6 +30,7 @@ Table of Contents
    configuration
    motion
    mass
+   loads
    notation
    glossary
    references
