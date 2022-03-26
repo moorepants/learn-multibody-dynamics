@@ -323,7 +323,7 @@ the dyadic :math:`\breve{Q}` using
    Q = me.outer(v, w)
    Q
 
-The result is not the matrix form show in Eq.
+The result is not the matrix form shown in Eq.
 :math:numref:`eq-vector-outer-product`, but instead the result is a dyadic. The
 dyadic is the analogous form for second order tensors as what we've been using
 for first order tensors. If the matrix form is needed, it can be found with
@@ -444,8 +444,11 @@ Dyadics have similar properties as vectors but are not necessarily commutative.
   - :math:`\bar{u}\times(\bar{v}\otimes\bar{w}) = (\bar{u}\times\bar{v})\otimes\bar{w}`
   - :math:`(\bar{u}\otimes\bar{v})\times\bar{w} = \bar{u}\otimes(\bar{v}\times\bar{w})`
 
-- Not commutative: :math:`\breve{V}\cdot\bar{u} \neq \bar{u}\cdot\breve{V}`
-- Unit dyadic vector multiplication: :math:`\breve{U}\cdot\bar{v} = \bar{v}\cdot\breve{U} = \bar{v}`
+- Dot products between arbitrary vectors and arbitrary dyadics are not
+  commutative: :math:`\breve{V}\cdot\bar{u} \neq \bar{u}\cdot\breve{V}`
+- Dot products between arbitrary vectors and the unit dyadic are commutative
+  and result in the vector itself: :math:`\breve{U}\cdot\bar{v} =
+  \bar{v}\cdot\breve{U} = \bar{v}`
 
 Inertia Dyadic
 ==============
@@ -586,9 +589,11 @@ Parallel Axis Theorem
 =====================
 
 If you know the central inertia dyadic of a rigid body :math:`B` (or
-equivalently a set of particles) about it's mass center :math:`B_o` then it is
-possible to calculate the inertia dyadic about any other point :math:`O`. The
-`parallel axis theorem`_ is ([Kane1985]_, pg. 70):
+equivalently a set of particles) about its mass center :math:`B_o` then it is
+possible to calculate the inertia dyadic about any other point :math:`O`. To do
+so, you must account for the inertial contribution due to the distance between
+the points :math:`O` and :math:`B_o`. This is done with the `parallel axis
+theorem`_ ([Kane1985]_, pg. 70):
 
 .. math::
    :label: eq-parallel-axis-theorem
