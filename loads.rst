@@ -233,40 +233,106 @@ mass center of each rigid body or particle in a multibody system. See
 [Kane1985]_ pg. XX for the more general case of Newton's Law of Gravitation
 which often comes into play for modeling spacecraft.
 
+.. jupyter-execute::
+
+   m, g = sm.symbols('m, g')
+
+   Fg = -m*g*N.y
+
 Springs & Dampers
 -----------------
 
 Idealized springs and dampers are useful models of elements that have distance
-and velocity depedent forces and torques.
+and velocity depedent forces and torques. A spring with free length :math:`q_0`
+and :math:`q_1,q_2` locate the ends of the spring along a line parallel to the
+:math:`\hat{n}_x` direction taking a sign convention that a positive spring
+force acting on the :math:`q_2` end of the spring is in the negative
+:math:`\hat{n}_x` direction . If the spring is linear with stiffness :math:`k`
+the spring force vector is then:
 
 .. jupyter-execute::
 
-   q0, k, c = sm.symbols('q0, k, c')
-
+   q0, k = sm.symbols('q0, k')
    q1, q2 = me.dynamicsymbols('q1, q2')
 
+   displacement = q2 - q1 - q0
+
+   Fs = -k*displacement*N.x
+   Fs
+
+.. todo:: Add figure of spring and damper with force directions.
+
+Similarly, a linear damping force with damping coefficient :math:`c` is defined
+as:
+
+.. jupyter-execute::
+
+   c = sm.symbols('c')
    t = me.dynamicsymbols._t
 
-   delq = q2 - q1 + q0
-
-   Fs = k*delq*N.x
-   Fc = c*delq.diff(t)*N.x
+   Fc = -c*displacement.diff(t)*N.x
+   Fc
 
 Friction
 --------
 
-The simplest model of friction is Coulomb's Law.
+Coulomb's Law is the simplest model of friction constant friction.
 
 .. jupyter-execute::
 
-   mu = sm.symbols('mu')
-   q = me.dynamicsymbols('q')
+   mu, m, g = sm.symbols('mu, m, g')
 
-   Ff = mu*sm.Piecewise((q, q.diff() > 0), (-q, q.diff() < 0), (0, True))*N.x
+   Fn = m*g
+
+   Ff = sm.Piecewise((mu*Fn, displacement.diff(t) > 0),
+                     (0, True),
+                     (-mu*Fn, displacement.diff(t) < 0))*N.x
+   Ff
+
+.. jupyter-execute::
+
+   Ff = mu*Fn*sm.sign(displacement.diff(t))*N.x
    Ff
 
 Aerodynamic
 -----------
 
-Contact
--------
+Aerodynamic drag of a blunt body is dominated by the frontal area drag. If
+:math:`P` is always located at the aerodynamic center of a body then the
+aerodynamic drag is:
+
+.. jupyter-execute::
+
+   A, Cd, rho = sm.symbols('A, Cd, rho')
+   ux, uy, uz = me.dynamicsymbols('u_x, u_y, u_z')
+
+   N_v_P = ux*N.x + uy*N.y + uz*N.z
+
+   Fd = -N_v_P.normalize()*Cd*A*rho/2*N_v_P.dot(N_v_P)
+   Fd
+
+Collision
+---------
+
+If two points, a point and a surface, or two surfaces collide the impact
+behavior depends on the material properties and mass of the colliding bodies. A
+simple way to model impact is to create a stiff spring that only engages if one
+body pentrates the other body.
+
+.. jupyter-execute::
+
+   x, y, z = me.dynamicsymbols('x, y, z')
+
+   r_O_P = x*N.x + y*N.y + z*N.z
+
+   penetration = r_O_P.dot(N.z)
+
+   Fc = sm.Piecewise((-k*penetration, penetration < 0), (0, True))
+   Fc
+
+.. jupyter-execute::
+
+   Fc = sm.Abs(penetration) / penetration
+   Fc
+
+.. todo:: Add a model with some damping in the plane direction.
