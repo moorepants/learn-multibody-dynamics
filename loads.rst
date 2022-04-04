@@ -12,7 +12,7 @@ Forces and Torques (Loads)
 
    import sympy as sm
    import sympy.physics.mechanics as me
-   sm.init_printing(use_latex='mathjax')
+   me.init_vprinting(use_latex='mathjax')
 
 Bound and Free Vectors
 ======================
@@ -111,17 +111,162 @@ torque of a couple and a single bound vector that is the resultant of the
 replaced set.  This is the simplest replacement and simplifies the descritpion
 of forces acting on bodies and particle sets.
 
+Take for example the birds eye view of a four wheeled car which has front
+steering and motors at each wheel allowing for precise control of the
+propulsion forces at each wheel. A diagram of the forces acting at each wheel
+is shown in Figure.
+
+.. todo:: Creating car figure.
+
+.. jupyter-execute::
+
+   l, w = sm.symbols('l, w')
+   Ffl, Ffr, Frl, Frr = me.dynamicsymbols('F_{fl}, F_{fr}, F_{rl}, F_{rr}')
+   alphafl, alphafr = me.dynamicsymbols(r'\alpha_{fl}, \alpha_{fr}')
+   alpharl, alpharr = me.dynamicsymbols(r'\alpha_{rl}, \alpha_{rr}')
+   delta = me.dynamicsymbols('delta')
+
+   B = me.ReferenceFrame('B')
+   W = me.ReferenceFrame('W')
+   FR = me.ReferenceFrame('FR')
+   FL = me.ReferenceFrame('FL')
+   RR = me.ReferenceFrame('RR')
+   RL = me.ReferenceFrame('RL')
+
+   W.orient_axis(B, delta, B.z)
+   FR.orient_axis(W, alphafr, W.z)
+   FL.orient_axis(W, alphafl, W.z)
+   RR.orient_axis(B, alpharr, B.z)
+   RL.orient_axis(B, alpharl, B.z)
+
+   R = Ffl*FL.y + Ffr*FR.y + Frl*RL.y + Frr*RR.y
+   R
+
+.. jupyter-execute::
+
+   T = (me.cross(l/2*B.y - w/2*B.x, Ffl*FL.y) +
+        me.cross(l/2*B.y + w/2*B.x, Ffr*FR.y) +
+        me.cross(-l/2*B.y - w/2*B.x, Frl*RL.y) +
+        me.cross(-l/2*B.y + w/2*B.x, Frr*RR.y))
+   T = T.simplify()
+   T
+
+Since we can always describe the forces acting on a rigid body as a resultant
+force and an associate torque of a couple, we will take advantage of this
+simpler form.
+
 Specifying Forces and Torques
 =============================
 
+Forces are bound vectors that can be considered acting on specific points, thus
+we will require a force vector and a point to fully describe these bound
+vectors. Methods and functions in SymPy mechanics that make use of forces will
+typically require a tuple containing a vector and a point, for example the
+resultant force acting on the mass center of of the car :math:`B_o` would be
+specified like so:
+
+.. jupyter-execute::
+
+   Bo = me.Point('Bo')
+
+   (R, Bo)
+
+Torques of a couple are free vectors (not bound to a line of action) but
+represent the couple acting on a rigid body (or set of particles), thus a
+reference frame associated with a rigid body will be used to describe the
+torque.
+
+.. jupyter-execute::
+
+   (T, B)
+
+We will refer to both forces and torques as *loads*.
+
 Equal & Opposite
+----------------
+
+Both forces and torques applied to a multibody system must obey `Newton's Third
+Law`_, i.e. forces and toorques act equal and opposite. Take for example a
+torque from a motor that causes a pinned lever :math:`B` to rotate relative to the
+ground :math:`N`. 
+
+.. jupyter-execute::
+
+   N = me.ReferenceFrame('N')
+   B = me.ReferenceFrame('B')
+
+   T = me.dynamicsymbols('T')
+
+   Tm = T*N.z
+
+   (Tm, B), (-Tm, N)
+
+.. warning::
+
+   Careful about your sign convention. It is equally valid to choose `(-Tm, B),
+   (Tm, N)`. But it is useful to choose a sign convention such that when the
+   signs of angular velocity and torque are the same it means power into the
+   system (from the motor in this case). So `B.orient_axis(N, q, N.z)`
+   corresponds to `(T*N.z, B)` to power in with both are positive or both are
+   negative. This is just a convention though and the choice of force and
+   torque signs can be anything, just make sure you know and understand what it
+   is!
+
+.. _Newton's Third Law: https://en.wikipedia.org/wiki/Newton's_laws_of_motion#Third_law
+
+Contributing and Non-contributing
+---------------------------------
+
+Contributing forces and torques are those that do work on the multibody system.
+Non-contributing forces and torques do no work on the system. An example of
+non-contributing forces are the contact forces between two rigid bodies if the
+two bodies are connected at a single point.
 
 Gravity
+-------
+
+We will often be interested in a multibody systems motion when it is subject to
+gravitational forces. The simplest case is a constant unidirectional
+gravitional field, which is appropriate model for small objects moving about on
+and near the Earth's surface. The gravitational forces can be applied to the
+mass center of each rigid body or particle in a multibody system. See
+[Kane1985]_ pg. XX for the more general case of Newton's Law of Gravitation
+which often comes into play for modeling spacecraft.
 
 Springs & Dampers
+-----------------
+
+Idealized springs and dampers are useful models of elements that have distance
+and velocity depedent forces and torques.
+
+.. jupyter-execute::
+
+   q0, k, c = sm.symbols('q0, k, c')
+
+   q1, q2 = me.dynamicsymbols('q1, q2')
+
+   t = me.dynamicsymbols._t
+
+   delq = q2 - q1 + q0
+
+   Fs = k*delq*N.x
+   Fc = c*delq.diff(t)*N.x
 
 Friction
+--------
+
+The simplest model of friction is Coulomb's Law.
+
+.. jupyter-execute::
+
+   mu = sm.symbols('mu')
+   q = me.dynamicsymbols('q')
+
+   Ff = mu*sm.Piecewise((q, q.diff() > 0), (-q, q.diff() < 0), (0, True))*N.x
+   Ff
 
 Aerodynamic
+-----------
 
 Contact
+-------
