@@ -1,6 +1,6 @@
-==================
-Forces and Torques
-==================
+=========================
+Force, Moment, and Torque
+=========================
 
 .. note::
 
@@ -14,15 +14,26 @@ Forces and Torques
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
-.. todo:: Define force and torque.
+Force
+=====
+
+A *force* is an abstraction we use to describe the thing that causes mass to
+move (i.e. accelerate from a stationary state). There are four `fundamental
+forces of nature`_ of which all other forces can be derived from. Moments and
+torques can be described using forces and have analgous relationships as
+particles have to a rigid body being made up of a set of particles spatially
+fixed together. Forces, moments, and torques have magnitude and direction and
+thus we use vectors to describe them mathematically.
+
+.. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_forces
 
 Bound and Free Vectors
 ======================
 
-Vectors may have a *line of action* or not. A line of action is parallel to the
-vector and passes through a particular point. If a vector has a line of action,
-it is said to be *bound* to its line of action. If a vector is not bound to a
-line of action it is said to be *free*.
+Vectors may have a *line of action*. A line of action is parallel to the vector
+and passes through a particular point. If a vector has a line of action, it is
+said to be *bound* to its line of action. If a vector is not bound to a line of
+action it is said to be *free*.
 
 Angular velocity is an example of a free vector. It has a direction and
 magnitude, but is not associated with any line of action. A force vector, on
@@ -35,8 +46,8 @@ Moment
 ======
 
 If a vector is a bound vector, then we can define its *moment* about a point.
-The moment math:`\bar{M}` of bound vector :math:`\bar{v}` about point :math:`P`
-is a vector itself and is defined as ([Kane1985]_, pg XX):
+The moment :math:`\bar{M}` of bound vector :math:`\bar{v}` about point
+:math:`P` is a vector itself and is defined as ([Kane1985]_, pg 90):
 
 .. math::
    :label: eq-moment-definition
@@ -52,7 +63,7 @@ A moment can be the result of a set of vectors. The *resultant* of a set
 .. math::
    :label: eq-resultant-definition
 
-   \bar{R}^{S} := \sum{i=1}^{\nu} \bar{v}_i
+   \bar{R}^{S} := \sum_{i=1}^{\nu} \bar{v}_i
 
 If each vector in the resultant is bound, the sum of the moments due to each
 vector about :math:`P` is call the moment of :math:`\bar{R}^{S}` about
@@ -61,7 +72,7 @@ vector about :math:`P` is call the moment of :math:`\bar{R}^{S}` about
 .. math::
    :label: eq-sum-moments
 
-   \bar{M}^{S/P} = \sum{i=1}^{\nu} \bar{r}^{L_i/P} \times \bar{v}_i
+   \bar{M}^{S/P} = \sum_{i=1}^{\nu} \bar{r}^{L_i/P} \times \bar{v}_i
 
 The moment of bound vectors :math:`S` about one point :math:`P` is related to
 the moment about another point :math:`Q` by ([Kane1985_], pg. 91):
@@ -83,13 +94,21 @@ Couple
 A set of bound vectors with a resultant equal to zero is called a *couple*. A
 couple can have as many vectors as desired or needed with a minimum number
 being two, such that :math:`\bar{R}^{S}=0`. A couple composed of two vectors is
-called a *simple couple*.
+called a *simple couple*. :numref:`fig-force-couples` shows a few examples of
+couples.
 
-.. todo:: add figure with three sketches of couples
+.. todo:: I started this caption with "a)" and that caused docutils to error
+   and not recognize it as a caption.
 
-The *torque* of a couple is the moment of the couple about a point. Because the
-resultant of a couple is zero, the torque of a couple is the same about all
-points. The torque, being a moment, is also a vector.
+.. _fig-force-couples:
+.. figure:: figures/force-couples.svg
+   :align: center
+
+   Three couples: a) simple couple, b) & c) couples made up of multiple forces
+
+The *torque* of a couple :math:`\bar{T}` is the moment of the couple about a
+point. Because the resultant of a couple is zero, the torque of a couple is the
+same about all points. The torque, being a moment, is also a vector.
 
 Equivalence & Replacement
 =========================
@@ -106,7 +125,7 @@ and moments about any point are equal to the torque.
 Given a set of bound vectors :math:`S` and a set of bound vectors that consist
 of a torque of a couple :math:`\bar{T}` and vector :math:`\bar{v}` bound to an
 arbitrary point :math:`P` it is a necessary and sufficient condition that the
-second set is a replacement of the first if ([Kane1985]_, pg XX):
+second set is a replacement of the first if ([Kane1985]_, pg 95):
 
 .. math::
    :label: eq-couple-torque-repl
@@ -122,9 +141,13 @@ bodies.
 Take for example the birds eye view of a four wheeled car which has front
 steering and motors at each wheel allowing for precise control of the
 propulsion forces at each wheel. A diagram of the forces acting at each wheel
-is shown in Figure.
+is shown in :numref:`fig-force-car-replacement`.
 
-.. todo:: Creating car figure.
+.. _fig-force-car-replacement:
+.. figure:: figures/force-car-replacement.svg
+   :align: center
+
+   Forces acting at each tire replaced with a resultant and a torque.
 
 .. jupyter-execute::
 
@@ -152,7 +175,7 @@ The resultant of the forces is:
 .. jupyter-execute::
 
    R = Ffl*FL.y + Ffr*FR.y + Frl*RL.y + Frr*RR.y
-   R
+   R.express(B).simplify()
 
 This resultant is bound to a line of action through :math:`B_o`. The associated
 couple is then:

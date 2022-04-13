@@ -88,3 +88,6 @@ then an example of a variable name that we use in the code.
 :math:`{}^A \mathbf{H}^{B/O}`, ``A_H_B_O``
    Angular momentum of rigid body :math:`B` with respect to point :math:`O` in
    reference frame :math:`A`.
+:math:`\bar{R}^{S/Q}`
+   Resultant of the vector set :math:`S` bound to a line of action through
+   point :math:`Q`.
