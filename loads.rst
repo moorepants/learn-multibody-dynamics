@@ -311,7 +311,9 @@ point the force is applied.
 .. _work: https://en.wikipedia.org/wiki/Work_(physics)
 
 For example, the gravitational force acting on a particle moving through a
-unidirectional constant gravitational field does work on the system.
+unidirectional constant gravitational field (i.e. graviational force is equal
+in magnitude, doesn't change, and always the same direction) does work on the
+system.
 
 *Non-contributing forces* do no work on the system. For example, when a force
 acts between two points that have no relative motion, no work is done. Examples
