@@ -20,7 +20,7 @@ Force
 A *force* is an abstraction we use to describe the thing that causes mass to
 move (i.e. accelerate from a stationary state). There are four `fundamental
 forces of nature`_ of which all other forces can be derived from. Moments and
-torques can be described using forces and have analgous relationships as
+torques can be described using forces and have analogous relationships as
 particles have to a rigid body being made up of a set of particles spatially
 fixed together. Forces, moments, and torques have magnitude and direction and
 thus we use vectors to describe them mathematically.
@@ -149,6 +149,12 @@ is shown in :numref:`fig-force-car-replacement`.
 
    Forces acting at each tire replaced with a resultant and a torque.
 
+.. todo:: The torque should probably not have :math:`B_o` in the superscript
+   because it is the same about any point. But the moment is calculated about
+   that point. Not sure the best notation.
+
+   Add the length and width to figure.
+
 .. jupyter-execute::
 
    l, w = sm.symbols('l, w')
@@ -157,12 +163,20 @@ is shown in :numref:`fig-force-car-replacement`.
    alpharl, alpharr = me.dynamicsymbols(r'\alpha_{rl}, \alpha_{rr}')
    delta = me.dynamicsymbols('delta')
 
+
+With the symbols defined, I use some auxiliary reference frames to establish
+the orientations with :math:`B` behind the car body, :math:`W` being the steered
+front wheels, and the others to establish the direction of the force at each
+wheel.
+
+.. jupyter-execute::
+
    B = me.ReferenceFrame('B')
    W = me.ReferenceFrame('W')
-   FR = me.ReferenceFrame('FR')
-   FL = me.ReferenceFrame('FL')
-   RR = me.ReferenceFrame('RR')
-   RL = me.ReferenceFrame('RL')
+   FR = me.ReferenceFrame('F_R')
+   FL = me.ReferenceFrame('F_L')
+   RR = me.ReferenceFrame('R_R')
+   RL = me.ReferenceFrame('R_L')
 
    W.orient_axis(B, delta, B.z)
    FR.orient_axis(W, alphafr, W.z)
@@ -170,28 +184,28 @@ is shown in :numref:`fig-force-car-replacement`.
    RR.orient_axis(B, alpharr, B.z)
    RL.orient_axis(B, alpharl, B.z)
 
-The resultant of the forces is:
+The resultant of the forces expressed in the :math:`B` frame is then:
 
 .. jupyter-execute::
 
-   R = Ffl*FL.y + Ffr*FR.y + Frl*RL.y + Frr*RR.y
+   R = Ffl*FL.x + Ffr*FR.x + Frl*RL.x + Frr*RR.x
    R.express(B).simplify()
 
 This resultant is bound to a line of action through :math:`B_o`. The associated
-couple is then:
+couple is then calculated as the total moment about :math:`B_o`:
 
 .. jupyter-execute::
 
-   T = (me.cross(l/2*B.y - w/2*B.x, Ffl*FL.y) +
-        me.cross(l/2*B.y + w/2*B.x, Ffr*FR.y) +
-        me.cross(-l/2*B.y - w/2*B.x, Frl*RL.y) +
-        me.cross(-l/2*B.y + w/2*B.x, Frr*RR.y))
-   T = T.simplify()
+   T = (me.cross(l/2*B.x - w/2*B.y, Ffl*FL.x) +
+        me.cross(l/2*B.x + w/2*B.y, Ffr*FR.x) +
+        me.cross(-l/2*B.x - w/2*B.y, Frl*RL.x) +
+        me.cross(-l/2*B.x + w/2*B.y, Frr*RR.x))
+   T = T.express(B).simplify()
    T
 
 Since we can always describe the forces acting on a rigid body as a resultant
-force and an associate torque of a couple, we will take advantage of this
-simpler form.
+force and an associate torque of a couple, we will often take advantage of this
+simpler form for constructing models.
 
 Specifying Forces and Torques
 =============================
@@ -200,8 +214,8 @@ Forces are bound vectors that can be considered acting on specific points, thus
 we will always need a vector and a point to fully describe the force. Methods
 and functions in SymPy Mechanics that make use of forces will typically require
 a tuple containing a point and a vector, for example the resultant force
-:math:`R^{B/B_o}` acting on the mass center of of the car would be specified
-like so:
+:math:`R^{B/B_o}` acting on the mass center of the car would be specified like
+so:
 
 .. jupyter-execute::
 
@@ -210,7 +224,7 @@ like so:
    force
 
 Torques of a couple are free vectors (not bound to a line of action) but
-represent the couple acting on a rigid body, thus a reference frame associated
+represent a couple acting on a rigid body, thus a reference frame associated
 with a rigid body and the vector representing the torque will be used to
 describe the torque in SymPy Mechanics. For example:
 
@@ -221,15 +235,32 @@ describe the torque in SymPy Mechanics. For example:
 
 We will often refer to forces and torques collectively as *loads*.
 
+.. todo:: Open an issue in SymPy about these tuples not rendering as typeset
+   math.
+
 Equal & Opposite
 ================
 
 Both forces and torques applied to a multibody system must obey `Newton's Third
 Law`_, i.e. that forces and torques act equal and opposite. Take for example a
 torque from a motor that causes a pinned lever :math:`B` to rotate relative to
-the ground :math:`N`. The motor torque occurs between the ground and the lever
-(or more precisely the stator and the rotor which are fixed to the ground and
-the lever). A sign convention must be chosen for the equal and opposite torque.
+the ground :math:`N` shown in :numref:`fig-force-equal-opposite`. The motor
+torque occurs between the ground and the lever (or more precisely the stator
+and the rotor which are fixed to the ground and the lever). A sign convention
+must be chosen for the equal and opposite torque.
+
+.. _fig-force-equal-opposite:
+.. figure:: figures/force-equal-opposite.svg
+   :align: center
+   :width: 400px
+
+   A motor stator :math:`N` fixed to ground with an arm fixed to the motor
+   rotor :math:`B` shown as one unit in a) and as seperate bodies in b) with
+   equal and opposite torque vectors applied to the pair of bodies representing
+   the torque of a couple generated by the motor. We've arbitrarily selected a
+   the sign convention shown, i.e. a positive value of torque applies a postive
+   torque to :math:`B` and a negative torque to :math:`N` if the torque is
+   parallel to :math:`\hat{n}_z=\hat{b}_z`.
 
 .. _Newton's Third Law: https://en.wikipedia.org/wiki/Newton's_laws_of_motion#Third_law
 
@@ -241,7 +272,6 @@ The motor torque can be specified as a time varying vector:
 
    N = me.ReferenceFrame('N')
    B = me.ReferenceFrame('B')
-   B.orient_axis(N, q, N.z)
 
    Tm = T*N.z
 
@@ -264,46 +294,64 @@ with equal and opposite torques applied to each body.
    torque signs can be anything, just make sure you know and understand what it
    is!
 
-Contributing and Non-contributing
-=================================
+Contributing and Non-contributing Forces
+========================================
 
-*Contributing forces and torques* are those that do work on the multibody
-system. Work is defined as:
+*Contributing forces* are those that do work on the multibody system. Work_ of
+a force :math:`\bar{F}` acting over path :math:`S` is defined as:
 
 .. math::
    :label: eq-work-definition
 
-   W = \int \bar{F} \cdot d\bar{x}
+   W = \int_S \bar{F} \cdot d\bar{s}
 
-The gravitational force acting on a particle moving through a unidirectional
-constant gravitational field does work on the system.
+where :math:`d\bar{s}` is the differential vector tangent to the path at the
+point the force is applied.
 
-*Non-contributing forces and torques* do no work on the system. For example,
-when a force acts between two points that have no relative motion, no work is
-done. The contact forces between two rigid bodies if the two bodies are
-connected at a single point.
+.. _work: https://en.wikipedia.org/wiki/Work_(physics)
+
+For example, the gravitational force acting on a particle moving through a
+unidirectional constant gravitational field does work on the system.
+
+*Non-contributing forces* do no work on the system. For example, when a force
+acts between two points that have no relative motion, no work is done. Examples
+of non-contributing forces:
+
+a. contact forces on particles across smooth (frictionless) surfaces of rigid
+   bodies
+b. any internal contact and body (distance) forces between any two points in a
+   rigid body
+c. contact forces between bodies rolling without slipping on each other (special
+   case of a.)
+
+Later we will see how generalized coordinates relieve us from having to specify
+an non-contributing forces.
 
 Gravity
 =======
 
 We will often be interested in a multibody systems motion when it is subject to
 gravitational forces. The simplest case is a constant unidirectional
-gravitional field, which is appropriate model for small objects moving on and
-near the Earth's surface. The gravitational forces can be applied soley to the
-mass centers of each rigid body in a multibody system as a resultant force. The
-gravitional torque on the bodies is zero because the force is equal in
-magnitude for each particle in the body. See [Kane1985]_ pg. XX for the more
-general case of Newton's Law of Gravitation where this is not the case which
-often comes into play for modeling spacecraft.
+gravitational field, which is appropriate model for objects moving on and near
+the Earth's surface. The gravitational forces can be applied solely to the mass
+centers of each rigid body in a multibody system as a resultant force. The
+gravitational torque on the bodies is zero because the force is equal in
+magnitude for each particle in the body. See [Kane1985]_ pg. 110 for the more
+general case of `Newton's Law of Universal Gravitation`_ where this is not the
+case. Studies of spacecraft dynamics often require considering both gravitational
+forces and moments.
 
-In SymPy Mechanics a gravitational force acting on a particle of mass :math:`m`
-with acceleration due to gravity being :math:`g` in the :math:`-\hat{n}_y`
-direction would take this form:
+.. _Newton's Law of Universal Gravitation: https://en.wikipedia.org/wiki/Newton's_law_of_universal_gravitation
+
+In SymPy Mechanics, a gravitational force acting on a particle of mass
+:math:`m` with acceleration due to gravity being :math:`g` in the
+:math:`-\hat{n}_y` direction would take this form:
 
 .. jupyter-execute::
 
    m, g = sm.symbols('m, g')
    Fg = -m*g*N.y
+   Fg
 
 Springs & Dampers
 =================
@@ -311,10 +359,21 @@ Springs & Dampers
 Idealized springs and dampers are useful models of elements that have distance
 and velocity dependent forces and torques. A spring with free length
 :math:`q_0` and where :math:`q_1,q_2` locate the ends of the spring along a
-line parallel to the :math:`\hat{n}_x` direction taking a sign convention that
-a positive spring force acting on the :math:`q_2` end of the spring is in the
-negative :math:`\hat{n}_x` direction . If the spring is linear with stiffness
-:math:`k` the spring force vector is then:
+line parallel to the :math:`\hat{n}_x`.
+
+If we displace :math:`P` in the positive :math:`\hat{n}_x` direction the spring
+will apply a force in the negative :math:`\hat{n}_x` direction on point
+:math:`P`. So we chose a sign convention that the force on :math:`P` from the
+spring is opposite the direction of the displacement.
+
+.. _fig-force-spring:
+.. figure:: figures/force-spring.svg
+   :align: center
+
+   Diagram of a spring.
+
+If the spring is linear with stiffness :math:`k` the spring force vector is
+then:
 
 .. jupyter-execute::
 
@@ -322,11 +381,15 @@ negative :math:`\hat{n}_x` direction . If the spring is linear with stiffness
    q1, q2 = me.dynamicsymbols('q1, q2')
 
    displacement = q2 - q1 - q0
+   displacement
+
+Here a positive displacement represents the spring in tension and a negative
+displacement is compression.
+
+.. jupyter-execute::
 
    Fs = -k*displacement*N.x
    Fs
-
-.. todo:: Add figure of spring and damper with force directions.
 
 Similarly, a linear damping force with damping coefficient :math:`c` is defined
 as:
@@ -339,29 +402,31 @@ as:
    Fc = -c*displacement.diff(t)*N.x
    Fc
 
-Aerodynamic
-===========
+Aerodynamic Drag
+================
 
-Aerodynamic drag of a blunt body is dominated by the frontal area drag and the
+Aerodynamic drag_ of a blunt body is dominated by the frontal area drag and the
 magnitude of this drag force can be modeled with the following equation:
 
 .. math::
    :label: eq-aerodynamic-drag
 
-   \frac{1}{2}\rhoC_dAv^2
+   \frac{1}{2}\rho C_dAv^2
 
 where :math:`\rho` is the density of the air, :math:`C_d` is the drag
 coefficient, :math:`A` is the frontal area, and :math:`v` is the air speed
 relative to the body.
 
-If a body is moving in still air at an aribtrary velocity and point :math:`P`
+.. _drag: https://en.wikipedia.org/wiki/Drag_(physics)
+
+If a body is moving in still air at an arbitrary velocity and point :math:`P`
 is the aerodynamic center of the body then the aerodynamic drag force vector
 that opposes the motion can be found with such an equation:
 
 .. jupyter-execute::
 
    A, Cd, rho = sm.symbols('A, C_d, rho')
-   ux, uy, uz = me.dynamicsymbols('u_x, u_y, u_z')
+   ux, uy, uz = me.dynamicsymbols('u_x, u_y, u_z', real=True)
 
    N_v_P = ux*N.x + uy*N.y + uz*N.z
 
@@ -375,12 +440,30 @@ equation for the drag force vector reduces to:
 
    Fd.xreplace({uy: 0, uz:0})
 
-.. todo:: This may be incorrect should have Abs(ux).
-
 Friction
 ========
 
-Coulomb's Law is the simplest model of friction constant friction.
+Coulomb's Law provides a simple model of dry friction_ between two objects. It
+takes the scalar form:
+
+.. math::
+   :label: eq-coulomb-friction
+
+   F_f =
+   \begin{cases}
+   \mu F_N & v < 0 \\
+   0 & v = 0 \\
+   -\mu F_N & v > 0
+   \end{cases}
+
+where :math:`F_N` is the normal force between the two objects, :math:`v` is the
+relative speed between the two objects, and :math:`\mu` is the coefficient of
+friction.
+
+.. _friction: https://en.wikipedia.org/wiki/Friction
+
+SymPy's :external:py:class:`~sympy.functions.elementary.piecewise.Piecewise` is
+one way to create a symbolic representation of this function:
 
 .. jupyter-execute::
 
@@ -388,39 +471,121 @@ Coulomb's Law is the simplest model of friction constant friction.
 
    Fn = m*g
 
-   Ff = sm.Piecewise((mu*Fn, displacement.diff(t) > 0),
-                     (-mu*Fn, displacement.diff(t) < 0),
+   displacement = q2 - q1
+
+   Ff = sm.Piecewise((mu*Fn, displacement.diff(t) < 0),
+                     (-mu*Fn, displacement.diff(t) > 0),
                      (0, True))*N.x
    Ff
 
+The `signum function`_
+(:external:py:function:`~sympy.functions.elementary.complexes.sign`) can also
+be used in a similar and simpler form:
+
+.. _signum function: https://en.wikipedia.org/wiki/Sign_function
+
 .. jupyter-execute::
 
-   Ff = mu*Fn*sm.sign(displacement.diff(t))*N.x
+   Ff = -mu*Fn*sm.sign(displacement.diff(t))*N.x
    Ff
-
 
 Collision
 =========
 
 If two points, a point and a surface, or two surfaces collide the impact
-behavior depends on the material properties and mass of the colliding bodies. A
-simple way to model impact is to create a stiff spring that only engages if one
-body pentrates the other body.
+behavior depends on the material properties and mass of the colliding bodies.
+In general, elastic and inelastic momentum balances for just before and after
+impact can be solved for the multibody system. This will be introduced in a
+later chapter. For a simpler but, as we will learn, often less favorable for
+numerical evaluation approach. Impact can be captured by creating a stiff
+spring that only engages if one body penetrates the other body. Some viscous
+damping can be included to capture the inelastic aspects.
+
+.. _fig-force-collision:
+.. figure:: figures/force-collision.svg
+   :align: center
+
+   Particle :math:`P` colliding with a surface.
+
+For example, if modeling a particle :math:`P` that impacts a surface normal to
+:math:`\hat{n}_z` that contains point :math:`O` the penetration of the particle
+into the surface (if positive :math:`z` is out and negative :math:`z` is inside
+the surface) can be described with:
+
+.. math::
+   :label: eq-penetration
+
+   z_p = \frac{| \bar{r}^{P/O} \cdot \hat{n}_z | - \bar{r}^{P/O} \cdot \hat{n}_z}{2}
+
+This is equivalent to a piecewise function that is zero if the particle is above
+the surface and is the penetration distance if below the surface.
 
 .. jupyter-execute::
 
-   x, y, z = me.dynamicsymbols('x, y, z')
+   x, y, z = me.dynamicsymbols('x, y, z', real=True)
 
    r_O_P = x*N.x + y*N.y + z*N.z
 
-   penetration = r_O_P.dot(N.z)
+   zh = r_O_P.dot(N.z)
 
-   Fc = sm.Piecewise((-k*penetration, penetration < 0), (0, True))
-   Fc
+   zp = (sm.Abs(zh) - zh)/2
+   zp
+
+A nonlinear spring, for example one that is proportional to :math:`z_p^3` will
+give more stiffness the more penetration. Combining with some viscous damping
+the vertical force on :math:`P` is:
 
 .. jupyter-execute::
 
-   Fc = sm.Abs(penetration) / penetration
-   Fc
+   k, c = sm.symbols('k, c')
 
-.. todo:: Add a model with some damping in the plane direction.
+   Fz = (k*zp**3 + c*zp.diff(t))*N.z
+   Fz
+
+A Coulomb friction force can slow the particle's sliding on the surface:
+
+.. jupyter-execute::
+
+   mu = sm.symbols('mu')
+
+   vx = r_O_P.dot(N.x).diff(t)
+   vy = r_O_P.dot(N.y).diff(t)
+
+   Fx = -sm.Abs(vx)/vx*mu*Fz.dot(N.z)*N.x
+   Fy = -sm.Abs(vy)/vy*mu*Fz.dot(N.z)*N.y
+   Fx, Fy
+
+These measure numbers for the force vector then evaluate to zero when there is
+no penetration :math:`z_p` and evaluates to a spring and damper and Coulomb
+friction when there is.
+
+.. todo:: This needs some work, the first one should evaluate to zero.
+
+.. jupyter-execute::
+
+   vz = me.dynamicsymbols('v_z', negative=True)
+
+   repl = {z.diff(): vz, z: 0}
+
+   Fx.xreplace(repl), Fy.xreplace(repl), Fz.xreplace(repl)
+
+.. jupyter-execute::
+
+   repl = {z.diff(): vz, z: 2}
+
+   Fx.xreplace(repl), Fy.xreplace(repl), Fz.xreplace(repl)
+
+.. jupyter-execute::
+
+   repl = {z.diff(): vz, z: -2}
+
+   Fx.xreplace(repl), Fy.xreplace(repl), Fz.xreplace(repl)
+
+Finally, the force on the particle can be fully described:
+
+.. todo:: This fails to render.
+
+.. jupyter-execute::
+
+   #Fc = Fx*N.x + Fy*N.y + Fz*N.z
+   #Fc
