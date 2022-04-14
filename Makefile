@@ -20,7 +20,12 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 resizesvg:
-	inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit *.svg
+	# this seems to work without opening the gui
+	inkscape --export-plain-svg=test.svg --export-area-drawing ./generalized-forces-partial-velocities.svg
+	# once i have inkscape 1.0 this should work
+	#inkscape --export-type=svg --export-area-drawing ./generalized-forces-partial-velocities.svg
+	# this requires opening the gui
+	#inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit *.svg
 
 autobuild:
 	sphinx-autobuild -b html --ignore "$(shell pwd)/_build/jupyter_execute/*" . _build/html/
