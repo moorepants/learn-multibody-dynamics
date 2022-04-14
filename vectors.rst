@@ -564,6 +564,7 @@ the light bulb :math:`P_4` is located relative to :math:`P_3` by the distances
 .. _vectors-desk-lamp:
 .. figure:: figures/vectors-desk-lamp.svg
    :align: center
+   :width: 500px
 
    Configuration diagram of a balanced-arm desk lamp.
 
