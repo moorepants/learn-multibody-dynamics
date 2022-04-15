@@ -17,13 +17,13 @@ Force, Moment, and Torque
 Force
 =====
 
-A *force* is an abstraction we use to describe the thing that causes mass to
+A *force* is an abstraction we use to describe something that causes mass to
 move (i.e. accelerate from a stationary state). There are four `fundamental
 forces of nature`_ of which all other forces can be derived from. Moments and
-torques can be described using forces and have analogous relationships as
-particles have to a rigid body being made up of a set of particles spatially
-fixed together. Forces, moments, and torques have magnitude and direction and
-thus we use vectors to describe them mathematically.
+torques are derived from forces to provide an abstraction which corresponds to
+causing distributed mass to rotate (i.e. angularly accelerate). Forces,
+moments, and torques have magnitude and direction and thus we use vectors to
+describe them mathematically.
 
 .. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_forces
 
@@ -42,6 +42,11 @@ where on the body it is applied to resolve the force's effect. A force vector
 acting on rigid body :math:`B` at point :math:`P` has a line of action through
 :math:`P` and parallel to the force vector.
 
+.. figure:: figures/force-bound-free.svg
+   :align: center
+
+   Depicition of bound a) and free b) vectors.
+
 Moment
 ======
 
@@ -56,6 +61,14 @@ The moment :math:`\bar{M}` of bound vector :math:`\bar{v}` about point
 
 :math:`\bar{r}^{L/P}` is a position vector from :math:`P` to any point
 :math:`L` on the line of action of :math:`\bar{v}`.
+
+.. _fig-force-moment:
+.. figure:: figures/force-moment.svg
+   :align: center
+
+   :math:`\bar{v}` is bound to a line that passes through point :math:`L`. The
+   moment can be calculated based on a position vector from :math:`P` to any
+   point on the line, for example :math:`L_1,L_2` or :math:`L_3` as shown.
 
 A moment can be the result of a set of vectors. The *resultant* of a set
 :math:`S` of vectors :math:`\bar{v}_1,\ldots,\bar{v}_\nu` is defined as:
@@ -74,28 +87,65 @@ vector about :math:`P` is call the moment of :math:`\bar{R}^{S}` about
 
    \bar{M}^{S/P} = \sum_{i=1}^{\nu} \bar{r}^{L_i/P} \times \bar{v}_i
 
-The moment of bound vectors :math:`S` about one point :math:`P` is related to
-the moment about another point :math:`Q` by ([Kane1985_], pg. 91):
+where :math:`L_i` is a point on the line of action of the associated
+:math:`\bar{v}_i`.
+
+The moment of the set of bound vectors :math:`S` about one point :math:`P` is
+related to the moment of the set about another point :math:`Q` by ([Kane1985_],
+pg. 91):
 
 .. math::
    :label: eq-moment-another-point
 
    \bar{M}^{S/P} = \bar{M}^{S/Q} + \bar{r}^{P/Q} \times \bar{R}^{S/Q}
 
-:math:`\bar{R}^{S/Q}` is the resultant of the set :math:`S` bound to a line of
-action through :math:`Q`.
+where :math:`\bar{R}^{S/Q}` is the resultant of the set :math:`S` bound to a
+line of action through point :math:`Q`.
 
-.. todo:: Show a figure here to represent the left and right sides of the
-   equation.
+For example, take the set :math:`S` of two bound vectors :math:`\bar{F}_1` and
+:math:`\bar{F}_2` bound to lines of action through points :math:`P_1` and
+:math:`P_2`, respectively. Below I've given the vectors some arbitrary
+direction and magnitude.
+
+.. jupyter-execute::
+
+   N = me.ReferenceFrame('N')
+
+   F1 = 2*N.x + 3*N.y
+   F2 = -4*N.x + 5*N.y
+
+   r_O_P1 = 2*N.x
+   r_O_P2 = 3*N.x
+
+:math:`\bar{M}^{S/P}` can be calculated directly using Eq.
+:math:numref:`eq-sum-moments`:
+
+.. jupyter-execute::
+
+   r_O_P = -5*N.x
+
+   M_S_P = me.cross(r_O_P1 - r_O_P, F1) + me.cross(r_O_P2 - r_O_P, F2)
+   M_S_P
+
+Or if :math:`\bar{M}^{S/Q}` is known, as well as :math:`\bar{r}^{P/Q}`, then
+the Eq. :math:numref:`eq-moment-another-point` could be used:
+
+.. jupyter-execute::
+
+   r_O_Q = 5*N.y
+   M_S_Q = me.cross(r_O_P1 - r_O_Q, F1) + me.cross(r_O_P2 - r_O_Q, F2)
+
+   M_S_P = M_S_Q + me.cross(r_O_Q - r_O_P, F1 + F2)
+   M_S_P
 
 Couple
 ======
 
-A set of bound vectors with a resultant equal to zero is called a *couple*. A
-couple can have as many vectors as desired or needed with a minimum number
-being two, such that :math:`\bar{R}^{S}=0`. A couple composed of two vectors is
-called a *simple couple*. :numref:`fig-force-couples` shows a few examples of
-couples.
+A set :math:`S` of bound vectors with a resultant equal to zero is called a
+*couple*. A couple can have as many vectors as desired or needed with a minimum
+number being two, such that :math:`\bar{R}^{S}=0`. A couple composed of two
+vectors is called a *simple couple*. :numref:`fig-force-couples` shows a few
+examples of couples.
 
 .. todo:: I started this caption with "a)" and that caused docutils to error
    and not recognize it as a caption.
@@ -106,7 +156,7 @@ couples.
 
    Three couples: a) simple couple, b) & c) couples made up of multiple forces
 
-The *torque* of a couple :math:`\bar{T}` is the moment of the couple about a
+The *torque* of a couple, :math:`\bar{T}`, is the moment of the couple about a
 point. Because the resultant of a couple is zero, the torque of a couple is the
 same about all points. The torque, being a moment, is also a vector.
 
@@ -131,7 +181,7 @@ second set is a replacement of the first if ([Kane1985]_, pg 95):
    :label: eq-couple-torque-repl
 
    \bar{T} = \bar{M}^{S/P} \\
-   \bar{v} = \bar{R}^S
+   \bar{v} = \bar{R}^{S/P}
 
 This means that every set of bound vectors can be replaced by an equivalent
 torque of a couple and a single bound vector that is the resultant of the
@@ -147,13 +197,10 @@ is shown in :numref:`fig-force-car-replacement`.
 .. figure:: figures/force-car-replacement.svg
    :align: center
 
-   Forces acting at each tire replaced with a resultant and a torque.
+   Set :math:`S` of forces acting at each tire can be replaced with a resultant
+   and a torque at a specified point, in this case :math:`B_o`.
 
-.. todo:: The torque should probably not have :math:`B_o` in the superscript
-   because it is the same about any point. But the moment is calculated about
-   that point. Not sure the best notation.
-
-   Add the length and width to figure.
+In SymPy Mechanics, first define the symbols:
 
 .. jupyter-execute::
 
@@ -163,11 +210,10 @@ is shown in :numref:`fig-force-car-replacement`.
    alpharl, alpharr = me.dynamicsymbols(r'\alpha_{rl}, \alpha_{rr}')
    delta = me.dynamicsymbols('delta')
 
-
 With the symbols defined, I use some auxiliary reference frames to establish
-the orientations with :math:`B` behind the car body, :math:`W` being the steered
-front wheels, and the others to establish the direction of the force at each
-wheel.
+the orientations with :math:`B` behind the car body, :math:`W` being the
+steered front wheels, and the others to establish the direction of the force at
+each wheel.
 
 .. jupyter-execute::
 
@@ -214,7 +260,7 @@ Forces are bound vectors that can be considered acting on specific points, thus
 we will always need a vector and a point to fully describe the force. Methods
 and functions in SymPy Mechanics that make use of forces will typically require
 a tuple containing a point and a vector, for example the resultant force
-:math:`R^{B/B_o}` acting on the mass center of the car would be specified like
+:math:`R^{S/B_o}` acting on the mass center of the car would be specified like
 so:
 
 .. jupyter-execute::
@@ -245,9 +291,10 @@ Both forces and torques applied to a multibody system must obey `Newton's Third
 Law`_, i.e. that forces and torques act equal and opposite. Take for example a
 torque from a motor that causes a pinned lever :math:`B` to rotate relative to
 the ground :math:`N` shown in :numref:`fig-force-equal-opposite`. The motor
-torque occurs between the ground and the lever (or more precisely the stator
-and the rotor which are fixed to the ground and the lever). A sign convention
-must be chosen for the equal and opposite torque.
+torque can be modeled to occur between the stator and the rotor. We've
+arbitrarily selected the sign convention shown, i.e. a positive value of torque
+applies a positive torque to :math:`B` and a negative torque to :math:`N` if
+the torque is parallel to :math:`\hat{n}_z=\hat{b}_z`.
 
 .. _fig-force-equal-opposite:
 .. figure:: figures/force-equal-opposite.svg
@@ -257,10 +304,7 @@ must be chosen for the equal and opposite torque.
    A motor stator :math:`N` fixed to ground with an arm fixed to the motor
    rotor :math:`B` shown as one unit in a) and as seperate bodies in b) with
    equal and opposite torque vectors applied to the pair of bodies representing
-   the torque of a couple generated by the motor. We've arbitrarily selected a
-   the sign convention shown, i.e. a positive value of torque applies a postive
-   torque to :math:`B` and a negative torque to :math:`N` if the torque is
-   parallel to :math:`\hat{n}_z=\hat{b}_z`.
+   the torque of a couple generated by the motor.
 
 .. _Newton's Third Law: https://en.wikipedia.org/wiki/Newton's_laws_of_motion#Third_law
 
@@ -285,14 +329,13 @@ with equal and opposite torques applied to each body.
 
 .. warning::
 
-   Careful about your sign convention. It is equally valid to choose `(B, -Tm),
-   (N, Tm)`. But it is useful to choose a sign convention such that when the
-   signs of angular velocity and torque are the same it corresponds to power
-   into the system (from the motor in this case). So `B.orient_axis(N, q, N.z)`
-   corresponds to `(T*N.z, B)` to power in with both are positive or both are
-   negative. This is just a convention though and the choice of force and
-   torque signs can be anything, just make sure you know and understand what it
-   is!
+   The sign conventions are really just a convention. It is also valid to
+   choose `(B, -Tm), (N, Tm)` or even `(B, Tm), (N, Tm)` and `(B, -Tm), (B,
+   -Tm)`. But it is useful to choose a sign convention such that when the signs
+   of angular velocity and torque are the same it corresponds to power into the
+   system. So, for example, `B.orient_axis(N, q, N.z)` corresponds to `(T*N.z,
+   B)` and power in. The key thing is that you know what your convention is so
+   that you can interpret numerical results and signs correctly.
 
 Contributing and Non-contributing Forces
 ========================================
@@ -311,37 +354,37 @@ point the force is applied.
 .. _work: https://en.wikipedia.org/wiki/Work_(physics)
 
 For example, the gravitational force acting on a particle moving through a
-unidirectional constant gravitational field (i.e. graviational force is equal
-in magnitude, doesn't change, and always the same direction) does work on the
-system.
+unidirectional constant gravitational field (i.e. where the gravitational force
+is equal in magnitude, doesn't change, and always the same direction) does work
+on the system.
 
 *Non-contributing forces* do no work on the system. For example, when a force
 acts between two points that have no relative motion, no work is done. Examples
 of non-contributing forces:
 
-a. contact forces on particles across smooth (frictionless) surfaces of rigid
+1. contact forces on particles across smooth (frictionless) surfaces of rigid
    bodies
-b. any internal contact and body (distance) forces between any two points in a
+2. any internal contact and body (distance) forces between any two points in a
    rigid body
-c. contact forces between bodies rolling without slipping on each other (special
-   case of a.)
+3. contact forces between bodies rolling without slipping on each other which
+   is a special case of 1.
 
-Later we will see how generalized coordinates relieve us from having to specify
-an non-contributing forces.
+In the next chapter, we will see how the use of generalized coordinates relieve
+us from having to specify any non-contributing forces.
 
 Gravity
 =======
 
-We will often be interested in a multibody systems motion when it is subject to
-gravitational forces. The simplest case is a constant unidirectional
-gravitational field, which is appropriate model for objects moving on and near
-the Earth's surface. The gravitational forces can be applied solely to the mass
-centers of each rigid body in a multibody system as a resultant force. The
-gravitational torque on the bodies is zero because the force is equal in
-magnitude for each particle in the body. See [Kane1985]_ pg. 110 for the more
-general case of `Newton's Law of Universal Gravitation`_ where this is not the
-case. Studies of spacecraft dynamics often require considering both gravitational
-forces and moments.
+We will often be interested in a multibody system's motion when it is subject
+to gravitational forces. The simplest case is a constant unidirectional
+gravitational field, which is an appropriate model for objects moving on and
+near the Earth's surface. The gravitational forces can be applied solely to the
+mass centers of each rigid body as a resultant force. The gravitational torque
+on the bodies is zero because the force is equal in magnitude for each particle
+in the body. See [Kane1985]_ pg. 110 for the more general model of `Newton's
+Law of Universal Gravitation`_ where this is not the case. Studies of
+spacecraft dynamics often require considering both gravitational forces and
+moments.
 
 .. _Newton's Law of Universal Gravitation: https://en.wikipedia.org/wiki/Newton's_law_of_universal_gravitation
 
@@ -361,7 +404,7 @@ Springs & Dampers
 Idealized springs and dampers are useful models of elements that have distance
 and velocity dependent forces and torques. A spring with free length
 :math:`q_0` and where :math:`q_1,q_2` locate the ends of the spring along a
-line parallel to the :math:`\hat{n}_x`.
+line parallel to :math:`\hat{n}_x` is shown in :numref:`fig-force-spring`.
 
 If we displace :math:`P` in the positive :math:`\hat{n}_x` direction the spring
 will apply a force in the negative :math:`\hat{n}_x` direction on point
@@ -372,7 +415,9 @@ spring is opposite the direction of the displacement.
 .. figure:: figures/force-spring.svg
    :align: center
 
-   Diagram of a spring.
+   Diagram of a spring with a sign convention that tension is positive.
+   :math:`P` is shown seperated from the end of the spring to show the equal
+   and opposite forces.
 
 If the spring is linear with stiffness :math:`k` the spring force vector is
 then:
@@ -393,8 +438,13 @@ displacement is compression.
    Fs = -k*displacement*N.x
    Fs
 
-Similarly, a linear damping force with damping coefficient :math:`c` is defined
-as:
+Friction
+========
+
+Dampers_ are often used in parallel or series with springs to provide an energy
+dissipation via viscous-like friction. Springs combined with dampers allow for
+classical second order under-, over-, and critically-damped motion. A linear
+viscous damper with damping coefficient :math:`c` can be defined like so:
 
 .. jupyter-execute::
 
@@ -404,48 +454,9 @@ as:
    Fc = -c*displacement.diff(t)*N.x
    Fc
 
-Aerodynamic Drag
-================
+.. _Dampers: https://en.wikipedia.org/wiki/Dashpot
 
-Aerodynamic drag_ of a blunt body is dominated by the frontal area drag and the
-magnitude of this drag force can be modeled with the following equation:
-
-.. math::
-   :label: eq-aerodynamic-drag
-
-   \frac{1}{2}\rho C_dAv^2
-
-where :math:`\rho` is the density of the air, :math:`C_d` is the drag
-coefficient, :math:`A` is the frontal area, and :math:`v` is the air speed
-relative to the body.
-
-.. _drag: https://en.wikipedia.org/wiki/Drag_(physics)
-
-If a body is moving in still air at an arbitrary velocity and point :math:`P`
-is the aerodynamic center of the body then the aerodynamic drag force vector
-that opposes the motion can be found with such an equation:
-
-.. jupyter-execute::
-
-   A, Cd, rho = sm.symbols('A, C_d, rho')
-   ux, uy, uz = me.dynamicsymbols('u_x, u_y, u_z', real=True)
-
-   N_v_P = ux*N.x + uy*N.y + uz*N.z
-
-   Fd = -N_v_P.normalize()*Cd*A*rho/2*N_v_P.dot(N_v_P)
-   Fd
-
-If the motion is only along the :math:`\hat{n}_x` direction, for example, the
-equation for the drag force vector reduces to:
-
-.. jupyter-execute::
-
-   Fd.xreplace({uy: 0, uz:0})
-
-Friction
-========
-
-Coulomb's Law provides a simple model of dry friction_ between two objects. It
+Coulomb's Law provides simple model of dry friction_ between two objects. It
 takes the scalar form:
 
 .. math::
@@ -490,6 +501,44 @@ be used in a similar and simpler form:
 
    Ff = -mu*Fn*sm.sign(displacement.diff(t))*N.x
    Ff
+
+Aerodynamic Drag
+================
+
+Aerodynamic drag_ of a blunt body is dominated by the frontal area drag and the
+magnitude of this drag force can be modeled with the following equation:
+
+.. math::
+   :label: eq-aerodynamic-drag
+
+   \frac{1}{2}\rho C_dAv^2
+
+where :math:`\rho` is the density of the air, :math:`C_d` is the drag
+coefficient, :math:`A` is the frontal area, and :math:`v` is the air speed
+relative to the body.
+
+.. _drag: https://en.wikipedia.org/wiki/Drag_(physics)
+
+If a body is moving in still air at an arbitrary velocity and point :math:`P`
+is the aerodynamic center of the body then the aerodynamic drag force vector
+that opposes the motion can be found with such an equation:
+
+.. jupyter-execute::
+
+   A, Cd, rho = sm.symbols('A, C_d, rho')
+   ux, uy, uz = me.dynamicsymbols('u_x, u_y, u_z', real=True)
+
+   N_v_P = ux*N.x + uy*N.y + uz*N.z
+
+   Fd = -N_v_P.normalize()*Cd*A*rho/2*N_v_P.dot(N_v_P)
+   Fd
+
+If the motion is only along the :math:`\hat{n}_x` direction, for example, the
+equation for the drag force vector reduces to:
+
+.. jupyter-execute::
+
+   Fd.xreplace({uy: 0, uz:0})
 
 Collision
 =========
