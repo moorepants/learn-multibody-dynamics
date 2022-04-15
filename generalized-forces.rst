@@ -2,6 +2,12 @@
 Generalized Forces
 ==================
 
+.. note::
+
+   You can download this example as a Python script:
+   :jupyter-download:script:`generalized-forces` or Jupyter Notebook:
+   :jupyter-download:notebook:`generalized-forces`.
+
 At this point we have developed the three primary ingredients to formulate the
 equations of motion of a multibody system:
 
@@ -9,36 +15,34 @@ equations of motion of a multibody system:
 2. Mass and Mass Distribution
 3. Forces, Moments, and Torques
 
-For a single rigid body with constant mass and inertia, its equations of motion
-can be written as:
+For a single rigid body :math:`B` the `Newton-Euler Equations of Motion`_ can
+be written as follows:
 
 .. math::
    :label: eq-newton-euler
 
-   \bar{F} = \frac{{}^N d\bar{p}}{dt} \\
-   \bar{M} = \frac{{}^N d\bar{H}}{dt} \\
-   \bar{p} = m\bar{v} \\
-   \bar{H} = \breve{I} \cdot \bar{\omega}
+   \bar{F} = & \frac{{}^N d \bar{p}}{dt} \textrm{ where } \bar{p} = m_B{}^N\bar{v}^{B_o} \\
+   \bar{T} = & \frac{{}^N d\bar{H}}{dt} \textrm{ where }
+   \bar{H} = \breve{I}^{B/B_o} \cdot {}^N\bar{\omega}^{B}
 
-.. math::
-   :label: eq-newton-euler-
-
-   \bar{F} = m\frac{{}^N d\bar{v}}{dt} \\
-   \bar{M} = \breve{I} \cdot\frac{{}^N d\bar{\omega}}{dt}
+.. _Newton-Euler Equations of Motion: https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations
 
 For a set of rigid bodies and particles that make up a multibody system,
-defined with generalized coordinates and speeds, the change in the generalized
-speeds. The generalized speeds characterize completely the motion of the
-system.
+defined with generalized coordinates and speeds, the generalized speeds
+characterize completely the motion of the system. The velocities and angular
+velocities of every particle and rigid body in the system are a function of
+these generalized speeds. The time rate of change in the generalized speeds
+will then play a criticale role of the right hand side of the equations of
+motion, as shown in Eq. :math:numref:`eq-newton-euler`.
 
 Take for example the multibody system shown in
 :numref:`fig-generalized-forces-multi-pendulum`. A force :math:`\bar{F}`
-applied at point :math:`Q` will cause all of the particles to move. The motion
-of the particles are described by the velocities, which are functions of the
-generalized speeds. Thus :math:`\bar{F}` will cause all of the generalized
-speeds to change. But how much does each :math:`u_i` change? The so called
-*partial velocites* of :math:`Q` in :math:`N` provide the answer to this
-question.
+applied at point :math:`Q` will cause all three of the lower particles to move.
+The motion of the particles are described by the velocities, which are
+functions of the generalized speeds. Thus :math:`\bar{F}` will, in general,
+cause all of the generalized speeds to change. But how much does each
+generalized speed change? The so called *partial velocites* of :math:`Q` in
+:math:`N` will provide the answer to this question.
 
 .. _fig-generalized-forces-multi-pendulum:
 .. figure:: figures/generalized-forces-multi-pendulum.svg
@@ -53,8 +57,8 @@ Partial Velocities
 Recall that all translational and angular velocities of a multibody system can
 be written in terms of the generalized speeds. These velocities can be
 expressed uniquely as linear functions of the generalized speeds. For a
-holonomic system with :math:`n` degrees of freedom the velocities can be
-written as so:
+holonomic system with :math:`n` degrees of freedom any velocity or angular
+velocity can be written as:
 
 .. math::
    :label: eq-holonomic-partial-velocities
@@ -62,23 +66,24 @@ written as so:
    \bar{v} = \sum_{r=1}^n \bar{v}_r u_r + \bar{v}_t \\
    \bar{\omega} = \sum_{r=1}^n \bar{\omega}_r u_r + \bar{\omega}_t
 
-:math:`\bar{v}_r` and :math:`\bar{\omega}_r` are called the rth partial
-velocity and angular velocity of :math:`B` in :math:`N`. :math:`\bar{v}_t` and
-:math:`\bar{\omega}_t` are the remainders. Since the velocities are linear in
-the generalized speeds:
+:math:`\bar{v}_r` and :math:`\bar{\omega}_r` are called the r\ :sup:`th`
+holonomic partial velocity and angular velocity, respectively.
+:math:`\bar{v}_t` and :math:`\bar{\omega}_t` are the remainders that are not
+linear in a generalized speed. Since the velocities are linear in the
+generalized speeds the partial velocities are equivalent to the partial
+derivatives with respect to the generalized speeds:
 
 .. math::
+   :label: eq-partial-vel-partial-deriv
 
-   \bar{\omega}_r = \frac{\partial \omega}{\partial u_r} \\
-   \bar{v}_r = \frac{\partial v}{\partial u_r} \\
-
-.. math::
-
-   \bar{\omega}_t = \frac{\partial \omega}{\partial t} \\
+   \bar{v}_r = \frac{\partial v}{\partial u_r} \quad
    \bar{v}_t = \frac{\partial v}{\partial t} \\
+   \bar{\omega}_r = \frac{\partial \omega}{\partial u_r} \quad
+   \bar{\omega}_t = \frac{\partial \omega}{\partial t}
 
-Thus the partial velocities can be considered as the sensitivity of
-:math:`\bar{v}` and :math:`\bar{\omega}` to changes in :math:`u_r`.
+
+This means that the partial velocities can be considered being the sensitivity
+of :math:`\bar{v}` and :math:`\bar{\omega}` to changes in :math:`u_r`.
 
 Figure :numref:`fig-generalized-forces-partial-velocities` gives a graphical
 interpretation of how a velocity of :math:`P` in :math:`N` is made up of
