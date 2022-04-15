@@ -20,10 +20,9 @@ Force
 A *force* is an abstraction we use to describe something that causes mass to
 move (i.e. accelerate from a stationary state). There are four `fundamental
 forces of nature`_ of which all other forces can be derived from. Moments and
-torques are derived from forces to provide an abstraction which corresponds to
-causing distributed mass to rotate (i.e. angularly accelerate). Forces,
-moments, and torques have magnitude and direction and thus we use vectors to
-describe them mathematically.
+torques arise from forces and are abstractions useful in describing what causes
+distributed mass rotation. Forces, moments, and torques have magnitude and
+direction and thus we use vectors to describe them mathematically.
 
 .. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_forces
 
@@ -492,8 +491,8 @@ one way to create a symbolic representation of this function:
    Ff
 
 The `signum function`_
-(:external:py:function:`~sympy.functions.elementary.complexes.sign`) can also
-be used in a similar and simpler form:
+(:external:py:class:`~sympy.functions.elementary.complexes.sign`) can also be
+used in a similar and simpler form:
 
 .. _signum function: https://en.wikipedia.org/wiki/Sign_function
 
@@ -546,11 +545,11 @@ Collision
 If two points, a point and a surface, or two surfaces collide the impact
 behavior depends on the material properties and mass of the colliding bodies.
 In general, elastic and inelastic momentum balances for just before and after
-impact can be solved for the multibody system. This will be introduced in a
-later chapter. For a simpler but, as we will learn, often less favorable for
-numerical evaluation approach. Impact can be captured by creating a stiff
-spring that only engages if one body penetrates the other body. Some viscous
-damping can be included to capture the inelastic aspects.
+impact can be solved for the multibody system. For a simpler but, as we will
+learn, often less favorable for numerical evaluation approach. Impact can be
+captured by creating a stiff spring that only engages if one body penetrates
+the other body. Some viscous damping can be included to capture the inelastic
+aspects.
 
 .. _fig-force-collision:
 .. figure:: figures/force-collision.svg
@@ -559,17 +558,27 @@ damping can be included to capture the inelastic aspects.
    Particle :math:`P` colliding with a surface.
 
 For example, if modeling a particle :math:`P` that impacts a surface normal to
-:math:`\hat{n}_z` that contains point :math:`O` the penetration of the particle
-into the surface (if positive :math:`z` is out and negative :math:`z` is inside
-the surface) can be described with:
+:math:`\hat{n}_z` that contains point :math:`O` the penetration :math:`z_p` of
+the particle into the surface (if positive :math:`z` is out and negative
+:math:`z` is inside the surface) can be described with:
 
 .. math::
    :label: eq-penetration
 
    z_p = \frac{| \bar{r}^{P/O} \cdot \hat{n}_z | - \bar{r}^{P/O} \cdot \hat{n}_z}{2}
 
-This is equivalent to a piecewise function that is zero if the particle is above
-the surface and is the penetration distance if below the surface.
+This is equivalent to this piecewise function:
+
+.. math::
+   :label: eq-penetration-piecewise
+
+   z_p =
+   \begin{cases}
+   0 & \bar{r}^{P/O} \cdot \hat{n}_z > 0 \\
+   \bar{r}^{P/O} \cdot \hat{n}_z & \bar{r}^{P/O} \cdot \hat{n}_z \leq 0
+   \end{cases}
+
+In SymPy, this can be defined like so:
 
 .. jupyter-execute::
 
@@ -582,15 +591,15 @@ the surface and is the penetration distance if below the surface.
    zp = (sm.Abs(zh) - zh)/2
    zp
 
-A nonlinear spring, for example one that is proportional to :math:`z_p^3` will
-give more stiffness the more penetration. Combining with some viscous damping
-the vertical force on :math:`P` is:
+A nonlinear spring that is proportional to :math:`z_p^3` will give more
+stiffness the more penetration. Combining with some viscous damping the
+vertical force on :math:`P` is:
 
 .. jupyter-execute::
 
    k, c = sm.symbols('k, c')
 
-   Fz = (k*zp**3 + c*zp.diff(t))*N.z
+   Fz = (k*zp**3 + c*sm.Piecewise((zh.diff(), zh < 0), (0, True)))*N.z
    Fz
 
 A Coulomb friction force can slow the particle's sliding on the surface:
@@ -603,14 +612,17 @@ A Coulomb friction force can slow the particle's sliding on the surface:
    vy = r_O_P.dot(N.y).diff(t)
 
    Fx = -sm.Abs(vx)/vx*mu*Fz.dot(N.z)*N.x
+   Fx
+
+.. jupyter-execute::
+
    Fy = -sm.Abs(vy)/vy*mu*Fz.dot(N.z)*N.y
-   Fx, Fy
+   Fy
 
 These measure numbers for the force vector then evaluate to zero when there is
 no penetration :math:`z_p` and evaluates to a spring and damper and Coulomb
-friction when there is.
-
-.. todo:: This needs some work, the first one should evaluate to zero.
+friction when there is. For example, using so numerical values to set the
+penetration:
 
 .. jupyter-execute::
 
@@ -632,11 +644,9 @@ friction when there is.
 
    Fx.xreplace(repl), Fy.xreplace(repl), Fz.xreplace(repl)
 
-Finally, the force on the particle can be fully described:
-
-.. todo:: This fails to render.
+Finally, the total force on the particle can be fully described:
 
 .. jupyter-execute::
 
-   #Fc = Fx*N.x + Fy*N.y + Fz*N.z
-   #Fc
+   Fc = Fx + Fy + Fz
+   Fc
