@@ -543,7 +543,7 @@ where the resultant *inertia force* on the i\ :sup:`th` particle is:
    \bar{R}^*_i := -m_i {}^A\bar{a}^{P_i}_i
 
 The generalized inertia force for a single rigid body :math:`B` with mass
-:mass:`m_B`, mass center :math:`B_o`, and central inertia dyadic
+:math:`m_B`, mass center :math:`B_o`, and central inertia dyadic
 :math:`\breve{I}^{B/Bo}` is defined as:
 
 .. math::
