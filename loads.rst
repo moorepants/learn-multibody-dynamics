@@ -546,7 +546,7 @@ If two points, a point and a surface, or two surfaces collide the impact
 behavior depends on the material properties and mass of the colliding bodies.
 In general, elastic and inelastic momentum balances for just before and after
 impact can be solved for the multibody system. For a simpler but, as we will
-learn, often less favorable for numerical evaluation approach. Impact can be
+learn, often less favorable for numerical evaluation approach, impact can be
 captured by creating a stiff spring that only engages if one body penetrates
 the other body. Some viscous damping can be included to capture the inelastic
 aspects.

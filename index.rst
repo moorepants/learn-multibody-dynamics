@@ -31,6 +31,7 @@ Table of Contents
    motion
    mass
    loads
+   generalized-forces
    notation
    glossary
    references

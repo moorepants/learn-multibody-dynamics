@@ -97,3 +97,33 @@ then an example of a variable name that we use in the code.
    Moment of the resultant of the vector set :math:`S` about point :math:`P`.
 :math:`\bar{T}^{B}`
    Torque of couple acting on reference frame or body :math:`B`.
+:math:`{}^A\bar{v}_r^P`
+   r\ :sup:`th` holonomic partial velocity of point :math:`P` in reference
+   frame :math:`A` associated with the generalized speed :math:`u_r`.
+:math:`{}^A\bar{\omega}_r^B`
+   r\ :sup:`th` holonomic partial angular velocity of reference frame :math:`B`
+   in reference frame :math:`A` associated with the generalized speed
+   :math:`u_r`.
+:math:`{}^A\tilde{v}_r^P`
+   r\ :sup:`th` nonholonomic partial velocity of point :math:`P` in reference
+   frame :math:`A` associated with the generalized speed :math:`u_r`.
+:math:`{}^A\tilde{\omega}_r^B`
+   r\ :sup:`th` nonholonomic partial angular velocity of reference frame
+   :math:`B` in reference frame :math:`A` associated with the generalized speed
+   :math:`u_r`.
+:math:`F_r`
+   r\ :sup:`th` holonomic generalized active force associated with the
+   generalized speed :math:`u_r`.
+:math:`\tilde{F}_r`
+   r\ :sup:`th` nonholonomic generalized active force associated with the
+   generalized speed :math:`u_r`.
+:math:`\bar{F}_r`
+   Column vector of all generalized active forces (holonomic or nonholonomic).
+:math:`F^*_r`
+   r\ :sup:`th` holonomic generalized inertia force associated with the
+   generalized speed :math:`u_r`.
+:math:`\tilde{F}^*_r`
+   r\ :sup:`th` holonomic generalized inertia force associated with the
+   generalized speed :math:`u_r`.
+:math:`\bar{F}^*_r`
+   Column vector of all generalized active forces (holonomic or nonholonomic).
