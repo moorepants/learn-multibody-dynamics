@@ -29,6 +29,9 @@ Table of Contents
    translational
    configuration
    motion
+   mass
+   loads
+   generalized-forces
    notation
    glossary
    references

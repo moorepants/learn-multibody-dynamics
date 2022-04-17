@@ -11,7 +11,7 @@ then an example of a variable name that we use in the code.
    Scalars are normal font.
 :math:`\bar{v}`, ``v``
    Vectors are indicated with a bar.
-:math:`\hat{u}`, ``uhat``
+:math:`\hat{u}`, ``uhat = u.normalize()``
    Unit vectors are indicated with a hat.
 :math:`A`, ``A``
    Reference frame :math:`A`.
@@ -68,6 +68,62 @@ then an example of a variable name that we use in the code.
 :math:`{}^A\bar{a}^P`, ``A_a_P``
    Translational acceleration of point :math:`P` when observed from reference
    frame or rigid body :math:`A`.
-:math:`\bar{f}_h(q_1, \ldots, q_n) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`
+:math:`\bar{f}_h(q_1, \ldots, q_N, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`
    Vector function of :math:`M` holonomic constraint equations among the
-   :math:`n` generalized coordinates.
+   :math:`N` coordinates.
+:math:`\bar{f}_n(u_1, \ldots, u_n, q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^m`
+   Vector function of :math:`m` nonholonomic constraint equations among the
+   :math:`n` generalized speeds and generalized coordinates.
+:math:`\bar{I}^{B/O}_a`
+   Inertia vector of rigid body :math:`B` with respect to point :math:`O` about
+   the unit vector :math:`\hat{n}_a`.
+:math:`\breve{Q}`, ``Q``
+   Dyadics are indicated with a breve accent.
+:math:`\breve{I}^{B/O}`, ``I_B_O``
+   Inertia dyadic of body :math:`B` or set of particles :math:`B` with respect
+   to point :math:`O`.
+:math:`\breve{I}^{B/B_o}`, ``I_B_Bo``
+   Central inertia dyadic of body :math:`B` or set of particles :math:`B` with respect
+   to mass center :math:`B_o`.
+:math:`{}^A \mathbf{H}^{B/O}`, ``A_H_B_O``
+   Angular momentum of rigid body :math:`B` with respect to point :math:`O` in
+   reference frame :math:`A`.
+:math:`\bar{R}^{S}`
+   Resultant of the vector set :math:`S`.
+:math:`\bar{R}^{S/Q}`
+   Resultant of the vector set :math:`S` bound to a line of action through
+   point :math:`Q`.
+:math:`\bar{M}^{S/P}`
+   Moment of the resultant of the vector set :math:`S` about point :math:`P`.
+:math:`\bar{T}^{B}`
+   Torque of couple acting on reference frame or body :math:`B`.
+:math:`{}^A\bar{v}_r^P`
+   r\ :sup:`th` holonomic partial velocity of point :math:`P` in reference
+   frame :math:`A` associated with the generalized speed :math:`u_r`.
+:math:`{}^A\bar{\omega}_r^B`
+   r\ :sup:`th` holonomic partial angular velocity of reference frame :math:`B`
+   in reference frame :math:`A` associated with the generalized speed
+   :math:`u_r`.
+:math:`{}^A\tilde{v}_r^P`
+   r\ :sup:`th` nonholonomic partial velocity of point :math:`P` in reference
+   frame :math:`A` associated with the generalized speed :math:`u_r`.
+:math:`{}^A\tilde{\omega}_r^B`
+   r\ :sup:`th` nonholonomic partial angular velocity of reference frame
+   :math:`B` in reference frame :math:`A` associated with the generalized speed
+   :math:`u_r`.
+:math:`F_r`
+   r\ :sup:`th` holonomic generalized active force associated with the
+   generalized speed :math:`u_r`.
+:math:`\tilde{F}_r`
+   r\ :sup:`th` nonholonomic generalized active force associated with the
+   generalized speed :math:`u_r`.
+:math:`\bar{F}_r`
+   Column vector of all generalized active forces (holonomic or nonholonomic).
+:math:`F^*_r`
+   r\ :sup:`th` holonomic generalized inertia force associated with the
+   generalized speed :math:`u_r`.
+:math:`\tilde{F}^*_r`
+   r\ :sup:`th` holonomic generalized inertia force associated with the
+   generalized speed :math:`u_r`.
+:math:`\bar{F}^*_r`
+   Column vector of all generalized active forces (holonomic or nonholonomic).
