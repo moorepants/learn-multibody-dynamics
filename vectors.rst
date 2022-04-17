@@ -600,7 +600,7 @@ create the necessary symbols and reference frames.
 
 .. jupyter-execute::
 
-   q1, q2, q3, q4 = sm.symbols('q1, q2, q3, q4')
+   q1, q2, q3, q4, q5 = sm.symbols('q1, q2, q3, q4, q5')
    l1, l2, l3, l4 = sm.symbols('l1, l2, l3, l4')
    N = me.ReferenceFrame('N')
    A = me.ReferenceFrame('A')
@@ -625,7 +625,7 @@ And finally :math:`C` relative to :math:`B`.
 
 .. jupyter-execute::
 
-   C.orient_body_fixed(B, (q3, q4, 0), 'XZX')
+   C.orient_body_fixed(B, (q4, q5, 0), 'XZX')
 
 We can now create position vectors between pairs of points in the most
 convenient frame to do so, i.e. the reference frame in which both points are
