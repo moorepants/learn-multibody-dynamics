@@ -17,19 +17,21 @@ Generalized Forces
 At this point we have developed the three primary ingredients to formulate the
 equations of motion of a multibody system:
 
-1. Angular and Translational Kinematics
+1. (Constrained) Angular and Translational Kinematics
 2. Mass and Mass Distribution
 3. Forces, Moments, and Torques
 
-For a single rigid body :math:`B` with mass center :math:`B_o` and central
-inertia dyadic :math:`\breve{I}^{B/B_o}` the `Newton-Euler Equations of
-Motion`_ in the inertial reference frame :math:`N` can be written as follows:
+For a single rigid body :math:`B` with mass :math:`m_B`, mass center
+:math:`B_o`, and central inertia dyadic :math:`\breve{I}^{B/B_o}` having a
+resultant force :math:`\bar{F}` at :math:`B_o` and moment :math:`\bar{M}` about
+:math:`B_o` the `Newton-Euler Equations of Motion`_ in the inertial reference
+frame :math:`N` can be written as follows:
 
 .. math::
    :label: eq-newton-euler
 
-   \sum \bar{F} = & \frac{{}^N d \bar{p}}{dt} \textrm{ where } \bar{p} = m_B{}^N\bar{v}^{B_o} \\
-   \sum \bar{M} = & \frac{{}^N d\bar{H}}{dt} \textrm{ where }
+   \bar{F} = & \frac{{}^N d \bar{p}}{dt} \quad \textrm{ where } \bar{p} = m_B{}^N\bar{v}^{B_o} \\
+   \bar{M} = & \frac{{}^N d\bar{H}}{dt} \quad \textrm{ where }
    \bar{H} = \breve{I}^{B/B_o} \cdot {}^N\bar{\omega}^{B}
 
 The left hand side contains the forces, moments, and torques (3.) acting on the
@@ -43,8 +45,8 @@ defined with generalized coordinates, generalized speeds, and constraints, the
 generalized speeds characterize completely the motion of the system. The
 velocities and angular velocities of every particle and rigid body in the
 system are a function of these generalized speeds. The time rate of change of
-the generalized speeds :math:`\frac{du}{dt}` will then play a criticale role in
-the formulation of theof the right hand side of the multibody system equations
+the generalized speeds :math:`\frac{du}{dt}` will then play a critical role in
+the formulation of the right hand side of the multibody system equations
 of motion.
 
 Take for example the multibody system shown in
@@ -74,7 +76,7 @@ be written in terms of the generalized speeds. These velocities can be
 expressed uniquely as linear functions of the generalized speeds, by
 definition. For a holonomic system with :math:`n` degrees of freedom any
 translational velocity or angular velocity can be written as ([Kane1985]_, pg.
-XX):
+45):
 
 .. math::
    :label: eq-holonomic-partial-velocities
@@ -201,18 +203,18 @@ calculate a set of partial velocities:
 
 If a system is nonholonomic, it is also true that every translational and
 angular velocity can be expressed uniquely in terms of the :math:`p`
-independent generalized speeds (see Eq
+independent generalized speeds (see Eq.
 :math:numref:`eq-contraint-linear-form-solve`). Thus we can also define the
 *nonholonomic partial velocities* :math:`\tilde{v}_r` and *nonholonomic partial
-angular velocities* :math:`\tilde{v}_r` as per ([Kane1985]_, pg. XX):
+angular velocities* :math:`\tilde{v}_r` as per ([Kane1985]_, pg. 46):
 
 .. math::
-   :label: eq-holonomic-partial-velocities
+   :label: eq-nonholonomic-partial-velocities
 
    \bar{v} = \sum_{r=1}^p \tilde{v}_r u_r + \tilde{v}_t \\
    \bar{\omega} = \sum_{r=1}^p \tilde{\omega}_r u_r + \tilde{\omega}_t
 
-See [Kane1985]_ pg. XX for the relationship between holonomic and nonholonomic
+See [Kane1985]_ pg. 48 for the relationship between holonomic and nonholonomic
 partial velocities.
 
 Generalized Active Forces
@@ -226,14 +228,14 @@ forces onto the partial velocity of its associated particle and summing the
 projections, we arrive at the total scalar force contribution in the direction
 of the generalized speed. We call these scalar values, one for each generalized
 speed, the *generalized active forces*. The r\ :sup:`th` generalized active
-force for this system in A is defined as ([Kane1985]_, pg. XX):
+force for this system in A is defined as ([Kane1985]_, pg. 99):
 
 .. math::
    :label: eq-rth-gen-active-force
 
    F_r := \sum_{i=1}^\nu {}^A\bar{v}^{P_i}_r \cdot \bar{R}_i
 
-Notice that the r\ :sup:`th` geenralized active force is:
+Notice that the r\ :sup:`th` generalized active force is:
 
 1. a scalar value
 2. has contributions from all particles except if :math:`{}^N\bar{v}^{P_i}
@@ -272,7 +274,7 @@ pendulum made up of two particles :math:`P_1` and :math:`P_2` with masses
    Double simple pendulum a) kinematic schematic, b) free body diagram of
    :math:`P_1`, c) free body diagram of :math:`P_2`.
 
-To calculate the geenralized active forces we first find the velocities of each
+To calculate the generalized active forces we first find the velocities of each
 particle and write them in terms of the generalized speeds which we define as
 :math:`u_1=\dot{q}_1,u_2=\dot{q}_2`.
 
@@ -321,9 +323,9 @@ We will need the partial velocities with respect to the two generalized speeds:
    v_P2_2 = N_v_P2.diff(u2, N)
    v_P1_1, v_P1_2, v_P2_1, v_P2_2
 
-To determinte the resultant forces acting on each particle we isolate each
+To determine the resultant forces acting on each particle we isolate each
 particle from the system and draw a free body diagram with all of the forces
-acting on the particle. Each particle has a gravitional force as well as
+acting on the particle. Each particle has a gravitational force as well as
 distance, or tension, forces that ensure the particle stays connected to the
 massless rod. The resultant forces on each particle are then:
 
@@ -353,8 +355,8 @@ active forces can then be found:
    F2 = me.dot(v_P1_2, R1) + me.dot(v_P2_2, R2)
    F2
 
-Notice that the distance forces :math:`\bar{T}_1,\bar{T}_2` are not present in
-the generalized active forces :math:`F_1` or :math:`F_2`. This is not by
+Notice that the distance forces :math:`T_1,T_2` are not present in the
+generalized active forces :math:`F_1` or :math:`F_2`. This is not by
 coincidence, but will always be true for noncontributing forces. They are in
 fact named "noncontributing" because they do not contribute to the generalized
 active forces (nor the equations of motion). Noncontributing forces need not be
@@ -372,7 +374,7 @@ If a holonomic multibody system with :math:`n` degrees of freedom includes a
 rigid body :math:`B` then the loads acting on :math:`B` can be described by a
 resultant force bound to an arbitrary point :math:`Q` in :math:`B` and a couple
 with torque :math:`\bar{T}`. The generalized active force for a single rigid
-body in a multibody system is defined as ([Kane1985]_, pg. XX):
+body in a multibody system is defined as ([Kane1985]_, pg. 106):
 
 .. math::
    :label: eq-gaf-rigid-body
@@ -390,6 +392,7 @@ summed to obtain the total generalized active force.
 .. _fig-generalized-forces-3d-rods:
 .. figure:: figures/generalized-forces-3d-rods.svg
    :align: center
+   :width: 400px
 
    A multibody system comprised of two uniformly dense thin rods of length
    :math:`L` and mass :math:`m`. Rod :math:`A` is pineed at :math:`O` and can
@@ -513,25 +516,27 @@ Generalized Inertia Forces
 equations, time derivatives of linear and angular momentum, to the generalized
 speeds for a multibody system. For a holonomic multibody system made up of a
 set of :math:`\nu` particles the r\ :sup:`th` generalized inertia force is
-defined as ([Kane1985]_, pg. XX):
+defined as ([Kane1985]_, pg. 124):
 
 .. math::
 
    F_r^* := \sum_{i=1}^\nu {}^A\bar{v}^{P_i}_r \cdot \bar{R}^*_i
 
-where
+where the resultant inertial force on the i\ :sup:`th` particle is:
 
 .. math::
 
    \bar{R}^*_i := -m_i {}^A\bar{a}^{P_i}_i
 
 The generalized inertia force for a single rigid body :math:`B` with mass
-center :math:`B_o` and central inerta dyadic :math:`\breve{I}^{B/Bo}` is
+center :math:`B_o` and central inertia dyadic :math:`\breve{I}^{B/Bo}` is
 defined as:
 
 .. math::
 
-   (F_r^*)_B = {}^A\bar{v}^{B_o}_r \cdot \bar{R}^* + {}^A\bar{\omega}^B_r \cdot \bar{T}^*
+   (F_r^*)_B := {}^A\bar{v}^{B_o}_r \cdot \bar{R}^* + {}^A\bar{\omega}^B_r \cdot \bar{T}^*
+
+where the inertial resultant and torque on the body are:
 
 .. math::
 
@@ -592,17 +597,22 @@ calculate the generalized inertia forces:
    Ao.acc(N), Bo.acc(N)
 
 The central moment of inertia of a thin uniformly dense rod of mass :math:`m`
-and length :math:`L` is:
+and length :math:`L` about any axis normal to its length is:
 
 .. jupyter-execute::
 
    I = m*L**2/12
    I
 
+This can be used to formulate the central inertia dyadics of each rod:
+
 .. jupyter-execute::
 
    I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
+   I_A_Ao, I_B_Bo
+
+The resultant inertial forces acting at the mass center of each body are:
 
 .. jupyter-execute::
 
@@ -611,12 +621,22 @@ and length :math:`L` is:
 
    Rs_Ao, Rs_Bo
 
+And the inertial torques acting on each body are:
+
 .. jupyter-execute::
 
-   Ts_A = -(A.ang_acc_in(N).dot(I_A_Ao) + me.cross(A.ang_vel_in(N), I_A_Ao).dot(A.ang_vel_in(N)))
-   Ts_B = -(B.ang_acc_in(N).dot(I_B_Bo) + me.cross(B.ang_vel_in(N), I_B_Bo).dot(B.ang_vel_in(N)))
+   Ts_A = -(A.ang_acc_in(N).dot(I_A_Ao) +
+            me.cross(A.ang_vel_in(N), I_A_Ao).dot(A.ang_vel_in(N)))
+   Ts_A
 
-   Ts_A, Ts_B
+.. jupyter-execute::
+
+   Ts_B = -(B.ang_acc_in(N).dot(I_B_Bo) +
+            me.cross(B.ang_vel_in(N), I_B_Bo).dot(B.ang_vel_in(N)))
+   Ts_B
+
+Now the generalized inertia forces can be formed by projecting onto the partial
+velocities:
 
 .. jupyter-execute::
 
@@ -631,3 +651,13 @@ and length :math:`L` is:
    Frs = sm.Matrix([F1s, F2s])
    Frs
 
+For nonholonomic systems with :math:`p` degrees of freedom in reference frame
+:math:`A`, the :math:`p` generalized active forces can be formed instead. The
+nonholonomic generalized active force contributions from a particle :math:`P`
+and rigid body :math:`B` are:
+
+.. math::
+   :label: eq-nonholonomic-gaf
+
+   (\tilde{F}^*_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
+   (\tilde{F}^*_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
