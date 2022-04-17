@@ -17,7 +17,7 @@ Generalized Forces
 At this point we have developed the three primary ingredients to formulate the
 equations of motion of a multibody system:
 
-1. (Constrained) Angular and Translational Kinematics
+1. Angular and Translational Kinematics
 2. Mass and Mass Distribution
 3. Forces, Moments, and Torques
 
@@ -72,11 +72,11 @@ Partial Velocities
 ==================
 
 Recall that all translational and angular velocities of a multibody system can
-be written in terms of the generalized speeds. These velocities can be
-expressed uniquely as linear functions of the generalized speeds, by
-definition. For a holonomic system with :math:`n` degrees of freedom any
-translational velocity or angular velocity can be written as ([Kane1985]_, pg.
-45):
+be written in terms of the generalized speeds. By definition (Eq.
+:math:numref:`eq-generalized-speeds`), these velocities can be expressed
+uniquely as linear functions of the generalized speeds. For a holonomic system
+with :math:`n` degrees of freedom in a single reference frame any translational
+velocity or angular velocity can be written as ([Kane1985]_, pg.  45):
 
 .. math::
    :label: eq-holonomic-partial-velocities
@@ -85,28 +85,31 @@ translational velocity or angular velocity can be written as ([Kane1985]_, pg.
    \bar{\omega} = \sum_{r=1}^n \bar{\omega}_r u_r + \bar{\omega}_t
 
 We call :math:`\bar{v}_r` and :math:`\bar{\omega}_r` the r\ :sup:`th` holonomic
-partial velocity and angular velocity, respectively. :math:`\bar{v}_t` and
-:math:`\bar{\omega}_t` are the remainder terms that are not linear in a
-generalized speed. Since the velocities are linear in the generalized speeds,
-the partial velocities are equal to the partial derivatives with respect to the
-generalized speeds:
+partial velocity and angular velocity in the single reference frame,
+respectively. :math:`\bar{v}_t` and :math:`\bar{\omega}_t` are the remainder
+terms that are not linear in a generalized speed. Since the velocities are
+linear in the generalized speeds, the partial velocities are equal to the
+partial derivatives with respect to the generalized speeds:
 
 .. math::
    :label: eq-partial-vel-partial-deriv
 
-   \bar{v}_r = \frac{\partial v}{\partial u_r} \quad
-   \bar{v}_t = \frac{\partial v}{\partial t} \\
-   \bar{\omega}_r = \frac{\partial \omega}{\partial u_r} \quad
-   \bar{\omega}_t = \frac{\partial \omega}{\partial t}
+   \bar{v}_r = \frac{\partial \bar{v}}{\partial u_r} \quad
+   \bar{v}_t = \frac{\partial \bar{v}}{\partial t} \\
+   \bar{\omega}_r = \frac{\partial \bar{\omega}}{\partial u_r} \quad
+   \bar{\omega}_t = \frac{\partial \bar{\omega}}{\partial t}
 
-The reference frame these partials are taken with respect to should match that
-which the velocities are with respect to.
+.. note::
+
+   The reference frame these partials are taken with respect to should match
+   that which the velocities are with respect to.
 
 Given that the partial velocities are partial derivative, means that we may
 interpret the partial velocities as the sensitivities of translational and
-angular velocities to changes in :math:`u_r`.
-
-Figure :numref:`fig-generalized-forces-partial-velocities` gives a graphical
+angular velocities to changes in :math:`u_r`. The partial velocities give an
+idea of how any given velocity or angular velocity will change if one of the
+generalized speeds changes. Figure
+:numref:`fig-generalized-forces-partial-velocities` gives a graphical
 interpretation of how a velocity of :math:`P` in :math:`N` is made up of
 partial velocities and a remainder.
 
@@ -115,11 +118,10 @@ partial velocities and a remainder.
    :align: center
    :width: 400px
 
-   Velocity vector :math:`{}^N\bar{v}^P` of point :math:`P` can be expressed as
+   Velocity vector :math:`{}^N\bar{v}^P` of point :math:`P` shown expressed as
    a sum of linear combinations of generalized speeds and partial velocity
    vectors and a remainder vector. In this case there are two generalized
-   speeds and the partial velocities give an idea of how :math:`{}^N\bar{v}^P`
-   will change if one of the generalized speeds changes.
+   speeds.
 
 Partial velocities can be determined by inspection of velocity vector
 expressions or calculated by taking the appropriate partial derivatives. Take,
@@ -139,8 +141,8 @@ for :math:`{}^N\bar{v}^A`, :math:`{}^N\bar{v}^B`, and
    by the generalized coordinate :math:`q_2`.
 
 First calculate the velocities and ensure they are only in terms of the
-generalized speeds and generalized coordinates. In this case, we assume
-:math:`u_1=\dot{q}_1,u2=\dot{q}_2`.
+generalized speeds and generalized coordinates. In this case, we have chosen
+:math:`u_1=\dot{q}_1` and :math:`u2=\dot{q}_2`.
 
 .. jupyter-execute::
 
@@ -195,7 +197,7 @@ find the six partial velocities:
 
 SymPy Mechanics provides a convenience function
 :external:py:func:`~sympy.physics.vector.functions.partial_velocity` to
-calculate a set of partial velocities:
+calculate a set of partial velocities for a set of generalized speeds:
 
 .. jupyter-execute::
 
@@ -204,9 +206,9 @@ calculate a set of partial velocities:
 If a system is nonholonomic, it is also true that every translational and
 angular velocity can be expressed uniquely in terms of the :math:`p`
 independent generalized speeds (see Eq.
-:math:numref:`eq-contraint-linear-form-solve`). Thus we can also define the
+:math:numref:`eq-contraint-linear-form-solve`). Thus, we can also define the
 *nonholonomic partial velocities* :math:`\tilde{v}_r` and *nonholonomic partial
-angular velocities* :math:`\tilde{v}_r` as per ([Kane1985]_, pg. 46):
+angular velocities* :math:`\tilde{\omega}_r` as per ([Kane1985]_, pg. 46):
 
 .. math::
    :label: eq-nonholonomic-partial-velocities
