@@ -223,19 +223,22 @@ Generalized Active Forces
 =========================
 
 Suppose we have a holonomic multibody system made up of :math:`\nu` particles
-with :math:`n` degrees of freedom moving in a reference frame :math:`A` that
-are described by generalized speeds :math:`u_1,\ldots,u_n`. Each particle may
-have a resultant force :math:`\bar{R}` applied to it. By projecting each of the
+with :math:`n` degrees of freedom in a reference frame :math:`A` that are
+described by generalized speeds :math:`u_1,\ldots,u_n`. Each particle may have
+a resultant force :math:`\bar{R}` applied to it. By projecting each of the
 forces onto the partial velocity of its associated particle and summing the
-projections, we arrive at the total scalar force contribution in the direction
-of the generalized speed. We call these scalar values, one for each generalized
-speed, the *generalized active forces*. The r\ :sup:`th` generalized active
-force for this system in A is defined as ([Kane1985]_, pg. 99):
+projections, we arrive at the total scalar force contribution associated with
+changes in that generalized speed. We call these scalar values, one for each
+generalized speed, the *generalized active forces*. The r\ :sup:`th` holonomic
+generalized active force for this system in A is defined as ([Kane1985]_, pg.
+99):
 
 .. math::
-   :label: eq-rth-gen-active-force
+   :label: eq-rth-gaf
 
    F_r := \sum_{i=1}^\nu {}^A\bar{v}^{P_i}_r \cdot \bar{R}_i
+
+where :math:`i` represents the i\ :sup:`th` particle.
 
 Notice that the r\ :sup:`th` generalized active force is:
 
@@ -245,7 +248,7 @@ Notice that the r\ :sup:`th` generalized active force is:
 3. associated with the r\ :sup:`th` generalized speed
 
 We will typically collect all of the generalized active forces in a column
-vector:
+vector to allow for matrix operations with these values:
 
 .. math::
    :label: eq-rth-gen-active-force
@@ -258,16 +261,15 @@ vector:
    \sum_{i=1}^\nu {}^A\bar{v}_n^{P_i} \cdot \bar{R}_i
    \end{bmatrix}
 
-The partial velocities transform the forces applied to the system from their
-Cartesian vector space to a new generalized speed vector space.
+Eq. :math:numref:`eq-rth-gaf` shows that the partial velocities transform the
+forces applied to the multibody system from their Cartesian vector space to a
+new generalized speed vector space.
 
-Now let us calculate the generalized active forces for a simple particle
-system. :numref:`fig-generalized-forces-double-pendulum` shows a double simple
-pendulum made up of two particles :math:`P_1` and :math:`P_2` with masses
-:math:`m_1` and :math:`m_2` respectively.
-
-.. todo:: Add point O to the figure, add g, add P1 and P2 to right figures, add
-   a, b, c.
+Now let us calculate the generalized active forces for a simple multibody
+system made up of only particles.
+:numref:`fig-generalized-forces-double-pendulum` shows a double simple pendulum
+made up of two particles :math:`P_1` and :math:`P_2` with masses :math:`m_1`
+and :math:`m_2` respectively.
 
 .. _fig-generalized-forces-double-pendulum:
 .. figure:: figures/generalized-forces-double-pendulum.svg
@@ -282,7 +284,7 @@ particle and write them in terms of the generalized speeds which we define as
 
 .. jupyter-execute::
 
-   L = sm.symbols('L')
+   l = sm.symbols('l')
    q1, q2, u1, u2 = me.dynamicsymbols('q1, q2, u1, u2')
 
    N = me.ReferenceFrame('N')
@@ -298,8 +300,8 @@ particle and write them in terms of the generalized speeds which we define as
 
    O.set_vel(N, 0)
 
-   P1.set_pos(O, -L*A.y)
-   P2.set_pos(P1, -L*B.y)
+   P1.set_pos(O, -l*A.y)
+   P2.set_pos(P1, -l*B.y)
 
    P1.v2pt_theory(O, N, A)
    P2.v2pt_theory(P1, N, B)
@@ -315,7 +317,8 @@ particle and write them in terms of the generalized speeds which we define as
 
    N_v_P1, N_v_P2
 
-We will need the partial velocities with respect to the two generalized speeds:
+We will need the partial velocities of each particle with respect to the two
+generalized speeds, giving four partial velocities:
 
 .. jupyter-execute::
 
@@ -361,22 +364,24 @@ Notice that the distance forces :math:`T_1,T_2` are not present in the
 generalized active forces :math:`F_1` or :math:`F_2`. This is not by
 coincidence, but will always be true for noncontributing forces. They are in
 fact named "noncontributing" because they do not contribute to the generalized
-active forces (nor the equations of motion). Noncontributing forces need not be
-considered, in general, and we will not include them in further examples.
+active forces (nor the full equations of motion we eventually arrive at).
+Noncontributing forces need not be considered in the resultants, in general,
+and we will not include them in further examples.
 
 Notice also that the generalized forces have units of :math:`\textrm{force}
 \times \textrm{length}`. This is because our generalized speeds are angular
 rates. If our generalized speeds were linear rates, the generalized forces
 would have units of :math:`\textrm{force}`.
 
-Generalized Active Forces of a Rigid Body
+Generalized Active Forces on a Rigid Body
 =========================================
 
-If a holonomic multibody system with :math:`n` degrees of freedom includes a
-rigid body :math:`B` then the loads acting on :math:`B` can be described by a
-resultant force bound to an arbitrary point :math:`Q` in :math:`B` and a couple
-with torque :math:`\bar{T}`. The generalized active force for a single rigid
-body in a multibody system is defined as ([Kane1985]_, pg. 106):
+If a holonomic multibody system with :math:`n` degrees of freedom in reference
+frame :math:`A` includes a rigid body :math:`B` then the loads acting on
+:math:`B` can be described by a resultant force :math:`\bar{R}` bound to an
+arbitrary point :math:`Q` in :math:`B` and a couple with torque
+:math:`\bar{T}`. The generalized active force then for a single rigid body in a
+multibody system is defined as ([Kane1985]_, pg. 106):
 
 .. math::
    :label: eq-gaf-rigid-body
@@ -386,10 +391,10 @@ body in a multibody system is defined as ([Kane1985]_, pg. 106):
 A generalized active force for each rigid body and particle in a system must be
 summed to obtain the total generalized active force.
 
-:numref:`fig-generalized-forces-3d-rods` shows two thin rods of length
-:math:`L` that are connected at points :math:`O` and :math:`B_o`.
-
-.. todo:: Add the torsion springs, lenght L, Ao
+To demonstrate finding the generalized active forces for a multibody system
+with two rigid bodies consider :numref:`fig-generalized-forces-3d-rods` which
+shows two thin rods of length :math:`l` that are connected at points :math:`O`
+and :math:`B_o`.
 
 .. _fig-generalized-forces-3d-rods:
 .. figure:: figures/generalized-forces-3d-rods.svg
@@ -397,10 +402,12 @@ summed to obtain the total generalized active force.
    :width: 400px
 
    A multibody system comprised of two uniformly dense thin rods of length
-   :math:`L` and mass :math:`m`. Rod :math:`A` is pineed at :math:`O` and can
+   :math:`L` and mass :math:`m`. Rod :math:`A` is pinned at :math:`O` and can
    rotate about :math:`\hat{n}_z` through :math:`q_1`. Rod :math:`B` is pinned
    to :math:`A` and can rotate relative to :math:`A` about :math:`\hat{a}_x`
-   through :math:`q_2`.
+   through :math:`q_2`. Linear torisional springs of stiffnes :math:`k` with a
+   free length of zero resists each relative rotation. Gravitational forces are
+   in the :math:`\hat{n}_x` direction.
 
 The first step is to define the necessary velocities we'll need: translational
 velocities of the two mass centers and the angular velocities of each body. We
@@ -408,7 +415,7 @@ use the simple definition of the generalized speeds :math:`u_i=\dot{q}_i`.
 
 .. jupyter-execute::
 
-   m, g, k, L = sm.symbols('m, g, k, L')
+   m, g, k, l = sm.symbols('m, g, k, l')
    q1, q2, u1, u2 = me.dynamicsymbols('q1, q2, u1, u2')
 
    N = me.ReferenceFrame('N')
@@ -425,8 +432,8 @@ use the simple definition of the generalized speeds :math:`u_i=\dot{q}_i`.
    Ao = me.Point('A_O')
    Bo = me.Point('B_O')
 
-   Ao.set_pos(O, L/2*A.x)
-   Bo.set_pos(O, L*A.x)
+   Ao.set_pos(O, l/2*A.x)
+   Bo.set_pos(O, l*A.x)
 
    O.set_vel(N, 0)
    Ao.v2pt_theory(O, N, A)
@@ -434,7 +441,7 @@ use the simple definition of the generalized speeds :math:`u_i=\dot{q}_i`.
 
    Ao.vel(N), Bo.vel(N), A.ang_vel_in(N), B.ang_vel_in(N)
 
-Now determine the holonomic partial velocities:
+Now determine the holonomic partial velocities in :math:`N`:
 
 .. jupyter-execute::
 
@@ -445,7 +452,7 @@ Now determine the holonomic partial velocities:
 
    v_Ao_1, v_Ao_2, v_Bo_1, v_Bo_2
 
-and the holonomic partial angular velocities:
+and the holonomic partial angular velocities in :math:`N`:
 
 .. jupyter-execute::
 
@@ -467,8 +474,8 @@ forces):
 
    R_Ao, R_Bo
 
-With linear torsion springs between A and N and A and B the torques acting on
-each body are:
+With linear torsion springs between frames A and N and frames A and B the
+torques acting on each body are:
 
 .. jupyter-execute::
 
@@ -478,7 +485,7 @@ each body are:
    T_A, T_B
 
 Now, a generalized active force component can be found for each body and each
-generalized speed using :math:numref:`eq-generalized-active-force-rigid-body`:
+generalized speed using :math:numref:`eq-gaf-rigid-body`:
 
 .. jupyter-execute::
 
@@ -500,7 +507,7 @@ column vector gives the generalized active forces for the system:
    Fr = sm.Matrix([F1, F2])
    Fr
 
-For nonholonomic systems with :math:`p` degrees of freedom in reference frame
+For a nonholonomic system with :math:`p` degrees of freedom in reference frame
 :math:`A`, the :math:`p` generalized active forces can be formed instead. The
 nonholonomic generalized active force contributions from a particle :math:`P`
 and rigid body :math:`B` are:
@@ -511,38 +518,45 @@ and rigid body :math:`B` are:
    (\tilde{F}_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
    (\tilde{F}_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
 
+See [Kane1985]_ pg. 99 for the relationship between holonomic and nonholonomic
+generalized active forces.
+
 Generalized Inertia Forces
 ==========================
 
-*Generalized inertia forces* map the right hand side of the Newton-Euler
-equations, time derivatives of linear and angular momentum, to the generalized
-speeds for a multibody system. For a holonomic multibody system made up of a
-set of :math:`\nu` particles the r\ :sup:`th` generalized inertia force is
-defined as ([Kane1985]_, pg. 124):
+Analogous to the generalized active forces and their relationship to the left
+hand side of the Newtwon-Euler equations (Eq. :math:numref:`eq-newton-euler`,
+*generalized inertia forces* map the right hand side of the Newton-Euler
+equations, time derivatives of linear and angular momentum, to the vector space
+of the generalized speeds for a multibody system. For a holonomic multibody
+system in :math:`A` made up of a set of :math:`\nu` particles the r\ :sup:`th`
+generalized inertia force is defined as ([Kane1985]_, pg. 124):
 
 .. math::
 
    F_r^* := \sum_{i=1}^\nu {}^A\bar{v}^{P_i}_r \cdot \bar{R}^*_i
 
-where the resultant inertial force on the i\ :sup:`th` particle is:
+where the resultant *inertia force* on the i\ :sup:`th` particle is:
 
 .. math::
 
    \bar{R}^*_i := -m_i {}^A\bar{a}^{P_i}_i
 
 The generalized inertia force for a single rigid body :math:`B` with mass
-center :math:`B_o` and central inertia dyadic :math:`\breve{I}^{B/Bo}` is
-defined as:
+:mass:`m_B`, mass center :math:`B_o`, and central inertia dyadic
+:math:`\breve{I}^{B/Bo}` is defined as:
 
 .. math::
 
    (F_r^*)_B := {}^A\bar{v}^{B_o}_r \cdot \bar{R}^* + {}^A\bar{\omega}^B_r \cdot \bar{T}^*
 
-where the inertial resultant and torque on the body are:
+where the inertia force on the body is:
 
 .. math::
 
-   \bar{R}^* := -m_i {}^A\bar{a}^{B_o}
+   \bar{R}^* := -m_{B} {}^A\bar{a}^{B_o}
+
+and the *inertia torque* on the body are
 
 .. math::
 
@@ -552,11 +566,12 @@ where the inertial resultant and torque on the body are:
    \right)
 
 Coming back to the system in :numref:`fig-generalized-forces-3d-rods` we can
-calculate the generalized inertia forces:
+now calculate the generalized inertia forces for the two rigid body system.
+First, the velocities and partial velocities are found as before:
 
 .. jupyter-execute::
 
-   m, g, k, L = sm.symbols('m, g, k, L')
+   m, g, k, l = sm.symbols('m, g, k, l')
    q1, q2, u1, u2 = me.dynamicsymbols('q1, q2, u1, u2')
 
    N = me.ReferenceFrame('N')
@@ -573,8 +588,8 @@ calculate the generalized inertia forces:
    Ao = me.Point('A_O')
    Bo = me.Point('B_O')
 
-   Ao.set_pos(O, L/2*A.x)
-   Bo.set_pos(O, L*A.x)
+   Ao.set_pos(O, l/2*A.x)
+   Bo.set_pos(O, l*A.x)
 
    O.set_vel(N, 0)
    Ao.v2pt_theory(O, N, A)
@@ -590,20 +605,24 @@ calculate the generalized inertia forces:
    w_B_1 = B.ang_vel_in(N).diff(u1, N)
    w_B_2 = B.ang_vel_in(N).diff(u2, N)
 
-.. jupyter-execute::
-
-   A.ang_acc_in(N), B.ang_acc_in(N)
+We will need the translational accelerations of the mass centers and the
+angular accelerations of each body expressed in terms of the generalized
+speeds, their derivatives, and the generalized coordinates:
 
 .. jupyter-execute::
 
    Ao.acc(N), Bo.acc(N)
+
+.. jupyter-execute::
+
+   A.ang_acc_in(N), B.ang_acc_in(N)
 
 The central moment of inertia of a thin uniformly dense rod of mass :math:`m`
 and length :math:`L` about any axis normal to its length is:
 
 .. jupyter-execute::
 
-   I = m*L**2/12
+   I = m*l**2/12
    I
 
 This can be used to formulate the central inertia dyadics of each rod:
@@ -614,7 +633,7 @@ This can be used to formulate the central inertia dyadics of each rod:
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
    I_A_Ao, I_B_Bo
 
-The resultant inertial forces acting at the mass center of each body are:
+The resultant inertia forces acting at the mass center of each body are:
 
 .. jupyter-execute::
 
@@ -623,7 +642,7 @@ The resultant inertial forces acting at the mass center of each body are:
 
    Rs_Ao, Rs_Bo
 
-And the inertial torques acting on each body are:
+And the inertia torques acting on each body are:
 
 .. jupyter-execute::
 
@@ -637,8 +656,8 @@ And the inertial torques acting on each body are:
             me.cross(B.ang_vel_in(N), I_B_Bo).dot(B.ang_vel_in(N)))
    Ts_B
 
-Now the generalized inertia forces can be formed by projecting onto the partial
-velocities:
+Now the generalized inertia forces can be formed by projecting the inertia
+force and inertia torque onto the partial velocities:
 
 .. jupyter-execute::
 
@@ -647,13 +666,18 @@ velocities:
    F2s_A = v_Ao_2.dot(Rs_Ao) + w_A_2.dot(Ts_A)
    F2s_B = v_Bo_2.dot(Rs_Bo) + w_B_2.dot(Ts_B)
 
+We then sum for each generalized speed and then stack them in a column vector
+:math:`\bar{F}_r^*`:
+
+.. jupyter-execute::
+
    F1s = F1s_A + F1s_B
    F2s = F2s_A + F2s_B
 
    Frs = sm.Matrix([F1s, F2s])
    Frs
 
-For nonholonomic systems with :math:`p` degrees of freedom in reference frame
+For a nonholonomic system with :math:`p` degrees of freedom in reference frame
 :math:`A`, the :math:`p` generalized active forces can be formed instead. The
 nonholonomic generalized active force contributions from a particle :math:`P`
 and rigid body :math:`B` are:
@@ -663,3 +687,6 @@ and rigid body :math:`B` are:
 
    (\tilde{F}^*_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
    (\tilde{F}^*_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
+
+The relationship between the nonholonomic and holonomic generalized inertia
+forces is give in [Kane1985]_ pg. 124.
