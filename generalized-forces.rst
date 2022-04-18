@@ -243,7 +243,7 @@ where :math:`i` represents the i\ :sup:`th` particle.
 Notice that the r\ :sup:`th` generalized active force is:
 
 1. a scalar value
-2. has contributions from all particles except if :math:`{}^N\bar{v}^{P_i}
+2. has contributions from all particles except if :math:`{}^A\bar{v}^{P_i}
    \perp \bar{R}_i`
 3. associated with the r\ :sup:`th` generalized speed
 
@@ -483,6 +483,9 @@ torques acting on each body are:
    T_B = -k*q2*A.x
 
    T_A, T_B
+
+Note that :math:`k q_2\hat{a}_x` in :math:`\bar{T}_A` is the reaction torque of
+of body :math:`B` on :math:`A` via the torsional spring.
 
 Now, a generalized active force component can be found for each body and each
 generalized speed using :math:numref:`eq-gaf-rigid-body`:
