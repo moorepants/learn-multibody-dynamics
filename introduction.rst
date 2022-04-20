@@ -60,7 +60,7 @@ Multibody Dynamics course taught by Mont Hubbard and the late Fidelis O. Eke at
 the University of California, Davis from sometime in the 80s until 2016. Prof.
 Eke was a PhD student of Thomas Kane at Stanford and Prof. Hubbard adopted
 Prof. Kane's approach to dynamics after moving to UC Davis from Stanford[*]_.
-The 10 week course was based on Thomas Kane's and David Levinsion's 1985 book
+The 10 week course was based on Thomas Kane's and David Levinson's 1985 book
 "Dynamics, Theory and Application" and followed the book and companion
 computational materials closely.
 
@@ -78,8 +78,8 @@ engineers used at that time, this included the tool Autolev that was developed
 by Kane's collaborators for the automation of multibody dynamics modeling. Luke
 wrote the first version of PyDy as a Google Summer of Code participant in 2009.
 Gilbert followed him by implementing a new version as SymPy Mechanics in 2011
-also as a Google SUmmer of Code participant. We Gilbert's implementation in
-this this text. Combined with the power of SymPy and Jupyter Notebooks (IPython
+also as a Google Summer of Code participant. We Gilbert's implementation in
+this text. Combined with the power of SymPy and Jupyter Notebooks (IPython
 Notebooks back then), SymPy Mechanics provides a computational tool that is
 especially helpful for learning and teaching multibody dynamics.  It is also
 equally useful for advanced modeling in research and industry.
@@ -110,11 +110,11 @@ approximate order of first contribution:
 - Sudeep Sidhu, 2020
 - Abhinav Kamath, 2020
 
-Peter Stahlecker and Jan Heinen provided page by page review of the while
+Peter Stahlecker and Jan Heinen provided page-by-page review of the text while
 drafting the first version. Their feedback has helped improve the text in many
 ways.
 
-.. [*] Mont was working on a skateboard dynamics model in the the late 70s and
+.. [*] Mont was working on a skateboard dynamics model in the late 70s and
    presented his model to an audience that included Thomas Kane. As the story
    goes, Prof. Kane approached Mont after the lecture to privately tell him his
    dynamics model was incorrect. Mont then took it upon himself to learn Kane's
