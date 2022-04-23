@@ -60,6 +60,11 @@ respectively.
    0
    \end{bmatrix}
 
+.. figure:: figures/eom-double-rod-pendulum.svg
+   :align: center
+
+   TODO: Add caption.
+
 .. jupyter-execute::
 
    import sympy as sm
@@ -211,7 +216,7 @@ Numerical Evaluation
        1.0,  # kg
        9.81,  # m/s**2
        0.01,  # Nm/rad
-       0.01,  # N/m
+       2.0,  # N/m
        0.6,  # m
    ]
 
@@ -226,10 +231,6 @@ Numerical Evaluation
 
 Forward Simulation
 ==================
-
-.. jupyter-execute::
-
-   from scipy.integrate import solve_ivp
 
 .. jupyter-execute::
 
@@ -258,20 +259,115 @@ Forward Simulation
 
        qd = u
        M, F = eval_MF(q, u, p)
-       ud = np.linalg.solve(M, F)
+       ud = np.linalg.solve(M, np.squeeze(F))
 
        xd = np.empty_like(x)
        xd[:3] = qd
-       xd[:3] = ud
+       xd[3:] = ud
 
        return xd
 
-    x0 = np.empty(6)
-    x0[:3] = q_vals
-    x0[3:] = u_vals
+   x0 = np.empty(6)
+   x0[:3] = q_vals
+   x0[3:] = u_vals
 
-    solve_ivp(eval_rhs, (0.0, 10.0), x0, args=(p_vals,))
-
-
+   eval_rhs(0.1, x0, p_vals)
 
 
+.. math::
+
+   \bar{x}_i =
+
+.. jupyter-execute::
+
+   def euler_integrate(rhs_func, tspan, initial_cond, p_vals):
+       delt = 0.01  # seconds/sample
+       num_samples = int((tspan[1] - tspan[0])/delt)
+       ts = np.linspace(tspan[0], tspan[1], num=num_samples + 1)
+
+       x = np.empty((len(ts), len(initial_cond)))
+
+       # Set the initial conditions to the first element.
+       x[0, :] = initial_cond
+
+       # Use a for loop to sequentially calculate each new x.
+       for i, ti in enumerate(ts[:-1]):
+           x[i + 1, :] = x[i, :] + delt*rhs_func(ti, x[i, :], p_vals)
+
+       return ts, x
+
+.. jupyter-execute::
+
+   ts, xs = euler_integrate(eval_rhs, (0.0, 2.0), x0, p_vals)
+
+.. jupyter-execute::
+
+   ts
+
+.. jupyter-execute::
+
+   type(ts), ts.shape
+
+.. jupyter-execute::
+
+   xs
+
+.. jupyter-execute::
+
+   type(xs), xs.shape
+
+.. jupyter-execute::
+
+   import matplotlib.pyplot as plt
+
+   plt.plot(ts, xs);
+
+.. jupyter-execute::
+
+   def plot_results(ts, xs):
+
+       fig, axes = plt.subplots(4, 1, sharex=True)
+
+       fig.set_size_inches((10.0, 6.0))
+
+       axes[0].plot(ts, np.rad2deg(xs[:, :2]))
+       axes[1].plot(ts, xs[:, 2])
+       axes[2].plot(ts, np.rad2deg(xs[:, 3:5]))
+       axes[3].plot(ts, xs[:, 5])
+
+       axes[0].legend([me.mlatex(q[0], mode='inline'),
+                       me.mlatex(q[1], mode='inline')])
+       axes[1].legend([me.mlatex(q[2], mode='inline')])
+       axes[2].legend([me.mlatex(u[0], mode='inline'),
+                       me.mlatex(u[1], mode='inline')])
+       axes[3].legend([me.mlatex(u[2], mode='inline')])
+
+       axes[0].set_ylabel('Angle [deg]')
+       axes[1].set_ylabel('Distance [m]')
+       axes[2].set_ylabel('Angular Rate [deg/s]')
+       axes[3].set_ylabel('Speed [m/s]')
+
+       axes[3].set_xlabel('Time [s]')
+
+       fig.tight_layout()
+
+       return axes
+
+   plot_results(ts, xs)
+
+.. jupyter-execute::
+
+   from scipy.integrate import solve_ivp
+
+   res = solve_ivp(eval_rhs, (0.0, 2.0), x0, args=(p_vals,))
+
+.. jupyter-execute::
+
+   plot_results(res.t, res.y.T)
+
+.. jupyter-execute::
+
+   plt.plot(ts, xs, 'k', res.t, res.y.T, 'b')
+
+How do we know that the equations of motion are correct?
+========================================================
