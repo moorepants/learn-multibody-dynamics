@@ -1,34 +1,61 @@
-===================
-Equations of Motion
-===================
+===========================================
+Unconstrained Holonomic Equations of Motion
+===========================================
+
+.. note::
+
+   You can download this example as a Python script:
+   :jupyter-download:script:`eom` or Jupyter Notebook:
+   :jupyter-download:notebook:`eom`.
+
+.. jupyter-execute::
+
+   import sympy as sm
+   import sympy.physics.mechanics as me
+   me.init_vprinting(use_latex='mathjax')
 
 In the previous chapter, we introduced the generalized active forces and the
-generalized inertia forces. Together, these two pieces give us the dynamical
-differential equations. The dynamical differential equations are:
+generalized inertia forces. Together, these two pieces give us the *dynamical
+differential equations*. The dynamical differential equations for a holonomic
+system are defined as and they are a function of the generalized coordinates,
+the generalized speeds, the time derivatives of the genaralized speeds, and
+time:
 
 .. math::
    :label: eq-kanes-equations
 
    \bar{F}_r + \bar{F}^*_r = \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)  = 0
 
-We also call these equations *Kane's Equations* due to the formulation
-presented in [Kane1985]_.
+We also call these equations *Kane's Equations* as they were introduced in this
+form in [Kane1985]_. The dynamical differential equations can only be formed
+with respect to an `inertial reference frame`_. An inertial reference frame is
+one that is not accelerating, or can be assumed not to be with respect to the
+motion of the bodies of interest. An inertial referene frame is one, where
+Newton's First Law holds, i.e. objects at rest stay at rest unless an external
+force acts on them.
 
-:math:`\bar{F}^*_r` is linear in the time derivatives of the generalized speeds
-and also contains velocitiy dependent terms such as centripal and Coriolis
-forces and rotational velocity couplings. Dynamics texts will often present
-it in this form:
+.. _inertial reference frame: https://en.wikipedia.org/wiki/Inertial_frame_of_reference
+
+:math:`\bar{F}^*_r` is always linear in the time derivatives of the generalized
+speeds and contains velocity dependent terms such as the centripal and Coriolis
+forces and the rotational velocity coupling terms. Dynamics texts will often
+present it in this form, showing the linear nature:
 
 .. math::
-
-   \bar{F}^*_r = \mathbf{M}(q, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t)
+   :label: eq-canonical-eom-form
+   \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t) &= \bar{F}(\bar{u}, \bar{q}, t) \\
+   -\bar{F}^*_r &= \bar{F}_r
 
 where :math:`\mathbf{M}` is called the *mass matrix* and :math:`\bar{C}` is are
-the forces due to velocity effects.
+the forces due to the various velocity effects.
+
+.. todo:: Same something about how M is always invertible and positive definite
+   (I think).
 
 The kinematical and dynamical differential equations constitute the *equations
-of motion* for a holonomic multibody system. These equations are ordinary
-differential equations in the generalized speeds and generalized coordinates.
+of motion* for an unconstrained holonomic multibody system. These equations are
+ordinary differential equations in the generalized speeds and generalized
+coordinates.
 
 .. math::
    :label: eq-equations-of-motion
@@ -36,23 +63,24 @@ differential equations in the generalized speeds and generalized coordinates.
    \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)  = 0 \\
    \bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t)  = 0
 
-They are also linear in :math:`\dot{\bar{u}}` and :math:`\dot{\bar{q}}`,
-respectively.
+and since they are both linear in :math:`\dot{\bar{u}}` and
+:math:`\dot{\bar{q}}`, respectively, they can be written in a combined form:
 
 .. math::
+   :label: eq-intermediate-state-form
 
    \begin{bmatrix}
-   \bar{M} && 0 \\
-   0 && \bar{Y}
+   \mathbf{Y}_k && 0 \\
+   0 && \mathbf{Y}_d \\
    \end{bmatrix}
    \begin{bmatrix}
-   \dot{\bar{u}} \\
-   \dot{\bar{q}}
+   \dot{\bar{q}} \\
+   \dot{\bar{u}}
    \end{bmatrix}
    +
    \begin{bmatrix}
-   \bar{f} \\
-   \bar{f}
+   \bar{z}_k(\bar{u}, \bar{q}, t) \\
+   \bar{z}_d(\bar{u}, \bar{q}, t)
    \end{bmatrix}
    =
    \begin{bmatrix}
@@ -60,16 +88,40 @@ respectively.
    0
    \end{bmatrix}
 
+which we write as:
+
+.. math::
+   :label: eq-state-form
+
+   \mathbf{Y}
+   \dot{\bar{x}}
+   +
+   \bar{z}
+   = \bar{0}
+
+where :math:`\bar{x}=[\bar{q} \quad \bar{u}]^T` is called the *state* of the
+system and is comprised of the generalized coordinates and generalized speeds.
+
+Returning to the example from the previous chapter, I will add a additional
+particle of mass :math:`m/4` at point :math:`Q` that can slides along the rod
+:math:`B` and is attached to point :math:`B_o` via a linear translational
+spring with stiffness :math:`k_l` and located by generalized coordinate
+:math:`q_3`. See :numref:`fig-eom-double-rod-pendulum` for a visual
+description.
+
+.. _fig-eom-double-rod-pendulum:
 .. figure:: figures/eom-double-rod-pendulum.svg
    :align: center
+   :width: 600px
 
-   TODO: Add caption.
+   Three dimensional pendulum made up of two pinned rods and a sliding mass on
+   rod :math:`B`. Each degree of freedom is resisted by a linear spring.
+
+The following code is reproduced from the prior chapter and gives the
+velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
+:math:`B` in the inertial reference frame :math:`N`.
 
 .. jupyter-execute::
-
-   import sympy as sm
-   import sympy.physics.mechanics as me
-   me.init_vprinting(use_latex='mathjax')
 
    m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
    q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
@@ -88,35 +140,46 @@ respectively.
    O = me.Point('O')
    Ao = me.Point('A_O')
    Bo = me.Point('B_O')
-   Q = me.Point('Q')
 
    Ao.set_pos(O, l/2*A.x)
    Bo.set_pos(O, l*A.x)
-   Q.set_pos(Bo, q3*B.y)
 
    O.set_vel(N, 0)
    Ao.v2pt_theory(O, N, A)
    Bo.v2pt_theory(O, N, A)
-   Q.set_vel(B, u3*B.y)
-   Q.v1pt_theory(Bo, N, B)
 
-   R_Ao = m*g*N.x
-   R_Bo = m*g*N.x + kl*q3*B.y
-   R_Q = m*g*N.x - kl*q3*B.y
-   T_A = -kt*q1*N.z + kt*q2*A.x
-   T_B = -kt*q2*A.x
+   Ao.vel(N), Bo.vel(N), A.ang_vel_in(N), B.ang_vel_in(N)
 
-   I = m*l**2/12
-   I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
-   I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
+We now have the partical at :math:`Q` so we need its velocity for its
+contribution to  :math:`F_r` and :math:`F_r^*`. :math:`Q` is moving in
+:math:`B` so the one point velocity theorem can be used.
 
 .. jupyter-execute::
 
-   points = [Ao, Bo, Q]
-   forces = [R_Ao, R_Bo, R_Q]
-   frames = [A, B]
-   torques = [T_A, T_B]
-   inertias = [I_A_Ao, I_B_Bo]
+   Q = me.Point('Q')
+   Q.set_pos(Bo, q3*B.y)
+   Q.set_vel(B, u3*B.y)
+   Q.v1pt_theory(Bo, N, B)
+
+   Q.vel(N)
+
+We will also need the accelerations of the points and frames for the
+generalized inertia forces. For points :math:`A_o`, :math:`B_o` and frames
+:math:`A` and :math:`B` these are nicely expressed in terms of
+:math:`\dot{\bar{u}}, \bar{u}, \bar{q}`:
+
+.. jupyter-execute::
+
+   Ao.acc(N), Bo.acc(N), A.ang_acc_in(N), B.ang_acc_in(N)
+
+but the acceleration of point :math:`Q` contains :math:`\dot{\bar{q}}` terms,
+so we need to eliminate those with the kinematical differential equations:
+
+.. jupyter-execute::
+
+   Q.acc(N)
+
+.. jupyter-execute::
 
    t = me.dynamicsymbols._t
 
@@ -124,250 +187,138 @@ respectively.
                 q2.diff(t): u2,
                 q3.diff(t): u3}
 
+   Q.set_acc(N, Q.acc(N).xreplace(qdot_repl))
+   Q.acc(N)
+
+Now we formulate the resultant forces and torques on each relevant point and
+frame:
+
+.. jupyter-execute::
+
+   R_Ao = m*g*N.x
+   R_Bo = m*g*N.x + kl*q3*B.y
+   R_Q = m*g*N.x - kl*q3*B.y
+   T_A = -kt*q1*N.z + kt*q2*A.x
+   T_B = -kt*q2*A.x
+
+The inertia dyadics of the two rods are:
+
+.. jupyter-execute::
+
+   I = m*l**2/12
+   I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
+   I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
+
+With all of the necessary elements present for forming :math:`\bar{F}_r` and
+:math:`\bar{F}_r^*` we can take advantage of Python for loops to systematically
+formulate the generalized forces and inertia forces:
+
+.. jupyter-execute::
+
+   points = [Ao, Bo, Q]
+   forces = [R_Ao, R_Bo, R_Q]
+   masses = [m, m, m/4]
+
+   frames = [A, B]
+   torques = [T_A, T_B]
+   inertias = [I_A_Ao, I_B_Bo]
+
    Fr = []
    Frs = []
+
    for ur in [u1, u2, u3]:
 
       Fri = 0
       Frsi = 0
 
-      for Pi, Ri in zip(points, forces):
+      for Pi, Ri, mi in zip(points, forces, masses):
          vr = Pi.vel(N).diff(ur, N)
          Fri += vr.dot(Ri)
-         Rs = -m*Pi.acc(N).xreplace(qdot_repl)
+         Rs = -mi*Pi.acc(N)
          Frsi += vr.dot(Rs)
 
       for Bi, Ti, Ii in zip(frames, torques, inertias):
          wr = Bi.ang_vel_in(N).diff(ur, N)
          Fri += wr.dot(Ti)
          Ts = -(Bi.ang_acc_in(N).dot(Ii) +
-                me.cross(Bi.ang_vel_in(N), Ii).dot(
-                Bi.ang_vel_in(N)).xreplace(qdot_repl))
+                me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
          Frsi += wr.dot(Ts)
 
       Fr.append(Fri)
       Frs.append(Frsi)
+
+The generalized forces are:
 
 .. jupyter-execute::
 
    Fr = sm.Matrix(Fr)
    Fr
 
+The generalized inertia forces are:
+
 .. jupyter-execute::
 
    Frs = sm.Matrix(Frs)
    Frs
 
-.. jupyter-execute::
-
-   q = sm.Matrix([q1, q2, q3])
-   u = sm.Matrix([u1, u2, u3])
-
-   t = me.dynamicsymbols._t
-   ud = u.diff(t)
-
-   ud_zerod = {udr: 0 for udr in ud}
-
-.. jupyter-execute::
-
-   M = Frs.jacobian(ud)
-   M
-
-.. jupyter-execute::
-
-   F = Frs.xreplace(ud_zerod) + Fr
-   F
-
-.. jupyter-execute::
-
-   Y = sm.eye(len(q))
-   Y
-
-.. jupyter-execute::
-
-   Ts
-
-Numerical Evaluation
-====================
-
-.. jupyter-execute::
-
-   p = [m, g, kt, kl, l]
-
-   eval_MF = sm.lambdify((q, u, p), [M, F])
-
-.. jupyter-execute::
-
-   import numpy as np
-
-   q_vals = [
-       np.deg2rad(5.0),  # rad
-       np.deg2rad(5.0),  # rad
-       0.1,  # m
-   ]
-
-   u_vals = [
-       0.1,  # rad/s
-       0.2,  # rad/s
-       0.3,  # m/s
-   ]
-
-   p_vals = [
-       1.0,  # kg
-       9.81,  # m/s**2
-       0.01,  # Nm/rad
-       2.0,  # N/m
-       0.6,  # m
-   ]
-
-   M_vals, F_vals = eval_MF(q_vals, u_vals, p_vals)
-   M_vals, F_vals
-
-.. jupyter-execute::
-
-
-   ud_vals = np.linalg.solve(M_vals, F_vals)
-   ud_vals
-
 Forward Simulation
 ==================
 
-.. jupyter-execute::
+Eq. :math:numref:`eq-state-form` is written in an *implicit form*, meaning that
+the derivatives are not explicitly solved for. The *explicit form* is found by
+inverting :math:`\mathbf{Y}`:
 
-   def eval_rhs(t, x, p):
-       """Return the right hand side of the explicit ordinary differential
-       equations.
+.. math::
+   :label: eq-state-form
 
-       Parameters
-       ==========
-       t : float
-          Time in seconds.
-       x : array_like, shape(6,)
-          State at time t: [q1, q2, q3, u1, u2, u3]
-       p : array_like, shape(5,)
-          Constant parameters: [m, g, kt, kl, l]
+   \dot{\bar{x}}
+   =
+   -\mathbf{Y}^{-1}
+   \bar{z}
 
-       Returns
-       =======
-       xd : ndarray, shape(6,)
-           Derivative of the state with respect to time.
+To determine how the state changes over time, these explicit differential
+equations can be solved:
 
-       """
+.. math::
+   :label: eq-eom-integral
 
-       q = x[:3]
-       u = x[3:]
+   \bar{x}(t) = \int^{t_f}_{t_0} -\mathbf{Y}^{-1} \bar{z} dt = \int^{t_f}_{t_0} \bar{f}_m(\bar{u}, \bar{q}, t) dt
 
-       qd = u
-       M, F = eval_MF(q, u, p)
-       ud = np.linalg.solve(M, np.squeeze(F))
+:math:`\bar{f}_m` is, in general, nonlinear in time, thus analytical solutions
+are impossible to find. To solve this integral we must numerically integrate
+:math:`\bar{f}_m`.
 
-       xd = np.empty_like(x)
-       xd[:3] = qd
-       xd[3:] = ud
-
-       return xd
-
-   x0 = np.empty(6)
-   x0[:3] = q_vals
-   x0[3:] = u_vals
-
-   eval_rhs(0.1, x0, p_vals)
-
+Our example problem has a simple definition of the kinematical differential
+equations:
 
 .. math::
 
-   \bar{x}_i =
+   \begin{bmatrix}
+   \dot{q}_1 \\
+   \dot{q}_2 \\
+   \dot{q}_3
+   \end{bmatrix}
+   =
+   \begin{bmatrix}
+   u_1 \\
+   u_2 \\
+   u_3
+   \end{bmatrix}
+
+so :math:`\mathbf{Y}_k` is the identity matrix and need not be formed. But we
+will need :math:`\mathbf{Y}_d` to solve explicitly for :math:`\dot{\bar{u}`.
 
 .. jupyter-execute::
 
-   def euler_integrate(rhs_func, tspan, initial_cond, p_vals):
-       delt = 0.01  # seconds/sample
-       num_samples = int((tspan[1] - tspan[0])/delt)
-       ts = np.linspace(tspan[0], tspan[1], num=num_samples + 1)
+   u = sm.Matrix([u1, u2, u3])
+   ud = u.diff(t)
 
-       x = np.empty((len(ts), len(initial_cond)))
-
-       # Set the initial conditions to the first element.
-       x[0, :] = initial_cond
-
-       # Use a for loop to sequentially calculate each new x.
-       for i, ti in enumerate(ts[:-1]):
-           x[i + 1, :] = x[i, :] + delt*rhs_func(ti, x[i, :], p_vals)
-
-       return ts, x
+   Yd = Frs.jacobian(ud)
+   Yd
 
 .. jupyter-execute::
 
-   ts, xs = euler_integrate(eval_rhs, (0.0, 2.0), x0, p_vals)
+   ud_zerod = {udr: 0 for udr in ud}
 
-.. jupyter-execute::
-
-   ts
-
-.. jupyter-execute::
-
-   type(ts), ts.shape
-
-.. jupyter-execute::
-
-   xs
-
-.. jupyter-execute::
-
-   type(xs), xs.shape
-
-.. jupyter-execute::
-
-   import matplotlib.pyplot as plt
-
-   plt.plot(ts, xs);
-
-.. jupyter-execute::
-
-   def plot_results(ts, xs):
-
-       fig, axes = plt.subplots(4, 1, sharex=True)
-
-       fig.set_size_inches((10.0, 6.0))
-
-       axes[0].plot(ts, np.rad2deg(xs[:, :2]))
-       axes[1].plot(ts, xs[:, 2])
-       axes[2].plot(ts, np.rad2deg(xs[:, 3:5]))
-       axes[3].plot(ts, xs[:, 5])
-
-       axes[0].legend([me.mlatex(q[0], mode='inline'),
-                       me.mlatex(q[1], mode='inline')])
-       axes[1].legend([me.mlatex(q[2], mode='inline')])
-       axes[2].legend([me.mlatex(u[0], mode='inline'),
-                       me.mlatex(u[1], mode='inline')])
-       axes[3].legend([me.mlatex(u[2], mode='inline')])
-
-       axes[0].set_ylabel('Angle [deg]')
-       axes[1].set_ylabel('Distance [m]')
-       axes[2].set_ylabel('Angular Rate [deg/s]')
-       axes[3].set_ylabel('Speed [m/s]')
-
-       axes[3].set_xlabel('Time [s]')
-
-       fig.tight_layout()
-
-       return axes
-
-   plot_results(ts, xs)
-
-.. jupyter-execute::
-
-   from scipy.integrate import solve_ivp
-
-   res = solve_ivp(eval_rhs, (0.0, 2.0), x0, args=(p_vals,))
-
-.. jupyter-execute::
-
-   plot_results(res.t, res.y.T)
-
-.. jupyter-execute::
-
-   plt.plot(ts, xs, 'k', res.t, res.y.T, 'b')
-
-How do we know that the equations of motion are correct?
-========================================================
+   zd = Frs.xreplace(ud_zerod) + Fr
+   zd
