@@ -33,6 +33,7 @@ Table of Contents
    loads
    generalized-forces
    eom
+   simulation
    notation
    glossary
    references
