@@ -18,7 +18,7 @@ In the previous chapter, we introduced the generalized active forces and the
 generalized inertia forces. Together, these two pieces give us the *dynamical
 differential equations*. The dynamical differential equations for a holonomic
 system are defined as and they are a function of the generalized coordinates,
-the generalized speeds, the time derivatives of the genaralized speeds, and
+the generalized speeds, the time derivatives of the generalized speeds, and
 time:
 
 .. math::
@@ -30,14 +30,14 @@ We also call these equations *Kane's Equations* as they were introduced in this
 form in [Kane1985]_. The dynamical differential equations can only be formed
 with respect to an `inertial reference frame`_. An inertial reference frame is
 one that is not accelerating, or can be assumed not to be with respect to the
-motion of the bodies of interest. An inertial referene frame is one, where
+motion of the bodies of interest. An inertial reference frame is one, where
 Newton's First Law holds, i.e. objects at rest stay at rest unless an external
 force acts on them.
 
 .. _inertial reference frame: https://en.wikipedia.org/wiki/Inertial_frame_of_reference
 
 :math:`\bar{F}^*_r` is always linear in the time derivatives of the generalized
-speeds and contains velocity dependent terms such as the centripal and Coriolis
+speeds and contains velocity dependent terms such as the centripetal and Coriolis
 forces and the rotational velocity coupling terms. Dynamics texts will often
 present it in this form, showing the linear nature:
 
@@ -150,7 +150,7 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
 
    Ao.vel(N), Bo.vel(N), A.ang_vel_in(N), B.ang_vel_in(N)
 
-We now have the partical at :math:`Q` so we need its velocity for its
+We now have the particle at :math:`Q` so we need its velocity for its
 contribution to  :math:`F_r` and :math:`F_r^*`. :math:`Q` is moving in
 :math:`B` so the one point velocity theorem can be used.
 
