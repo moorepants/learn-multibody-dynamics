@@ -14,193 +14,318 @@ Simulation
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
-.. jupyter-execute::
+Numerical Integration
+=====================
 
-   m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
-   q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
-   u1, u2, u3 = me.dynamicsymbols('u1, u2, u3')
+As mentioned at the end of the prior chapter, we will need to numerically
+integrate the equations of motion. If they are in explicit form, this integral
+describes how we can arrive at trajectories in time for the state variables by
+integrating with respect to time from an initial time :math:`t_0` to a final
+time :math:`t_f`.
 
-   N = me.ReferenceFrame('N')
-   A = me.ReferenceFrame('A')
-   B = me.ReferenceFrame('B')
+.. math::
+   :label: eq-eom-integral-2
 
-   A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.x)
+   \bar{x}(t) = \int^{t_f}_{t_0} \bar{f}_m(\bar{x}, t) dt
 
-   A.set_ang_vel(N, u1*N.z)
-   B.set_ang_vel(A, u2*A.x)
+Recall that :math:`\bar{f}_m` is:
 
-   O = me.Point('O')
-   Ao = me.Point('A_O')
-   Bo = me.Point('B_O')
-   Q = me.Point('Q')
+.. math::
+   :label: eq-state-form-explicit-2
 
-   Ao.set_pos(O, l/2*A.x)
-   Bo.set_pos(O, l*A.x)
-   Q.set_pos(Bo, q3*B.y)
+   \bar{f}_m(\bar{x}, t)
+   =
+   -\mathbf{Y}^{-1}
+   \bar{z}
 
-   O.set_vel(N, 0)
-   Ao.v2pt_theory(O, N, A)
-   Bo.v2pt_theory(O, N, A)
-   Q.set_vel(B, u3*B.y)
-   Q.v1pt_theory(Bo, N, B)
+It is possible to form :math:`-\mathbf{Y}^{-1}` symbolically and it may be
+suitable or preferrable for a given problem, but there are some possible
+drawbacks. For example, if the degrees of freedom are quite large, the
+resulting symbolic equations become exponetially more complex. Thus, we will
+now move from symbolics to numerics.
 
-   t = me.dynamicsymbols._t
+The NumPy_ library is the defacto base library for numeric computing with
+Python. NumPy allows us to do `array programming`_ with Python by providing
+floating point array data types and vectorized operators to enable repeat
+operations across arrays of values. In Sec.
+:ref:`sec-evaluating-symbolic-expressions` we introduced the SymPy function
+:external:py:func:`~sympy.utilities.lambdify.lambdify`. ``lambdify()`` will be
+our way to bridge the symbolic world of SymPy with the numeric world of NumPy.
 
-   qdot_repl = {q1.diff(t): u1,
-                q2.diff(t): u2,
-                q3.diff(t): u3}
+.. _NumPy: https://numpy.org
+.. _array programming: https://en.wikipedia.org/wiki/Array_programming
 
-   Q.set_acc(N, Q.acc(N).xreplace(qdot_repl))
-
-   R_Ao = m*g*N.x
-   R_Bo = m*g*N.x + kl*q3*B.y
-   R_Q = m/4*g*N.x - kl*q3*B.y
-   T_A = -kt*q1*N.z + kt*q2*A.x
-   T_B = -kt*q2*A.x
-
-   I = m*l**2/12
-   I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
-   I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
-
-   points = [Ao, Bo, Q]
-   forces = [R_Ao, R_Bo, R_Q]
-   masses = [m, m, m/4]
-
-   frames = [A, B]
-   torques = [T_A, T_B]
-   inertias = [I_A_Ao, I_B_Bo]
-
-   Fr = []
-   Frs = []
-
-   for ur in [u1, u2, u3]:
-
-      Fri = 0
-      Frsi = 0
-
-      for Pi, Ri, mi in zip(points, forces, masses):
-         vr = Pi.vel(N).diff(ur, N)
-         Fri += vr.dot(Ri)
-         Rs = -mi*Pi.acc(N)
-         Frsi += vr.dot(Rs)
-
-      for Bi, Ti, Ii in zip(frames, torques, inertias):
-         wr = Bi.ang_vel_in(N).diff(ur, N)
-         Fri += wr.dot(Ti)
-         Ts = -(Bi.ang_acc_in(N).dot(Ii) +
-                me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
-         Frsi += wr.dot(Ts)
-
-      Fr.append(Fri)
-      Frs.append(Frsi)
-
-   Fr = sm.Matrix(Fr)
-   Frs = sm.Matrix(Frs)
-
-   u = sm.Matrix([u1, u2, u3])
-   ud = u.diff(t)
-   ud_zerod = {udr: 0 for udr in ud}
-
-   Yd = Frs.jacobian(ud)
-   zd = Frs.xreplace(ud_zerod) + Fr
-
-Numerical Evaluation
-====================
-
-.. jupyter-execute::
-
-   q = sm.Matrix([q1, q2, q3])
-
-   p = [m, g, kt, kl, l]
-
-   eval_Yd_zd = sm.lambdify((q, u, p), [Yd, zd])
+We will import NumPy like so:
 
 .. jupyter-execute::
 
    import numpy as np
 
-   q_vals = [
-       np.deg2rad(5.0),  # rad
-       np.deg2rad(5.0),  # rad
-       0.1,  # m
-   ]
+.. warning::
 
-   u_vals = [
-       0.1,  # rad/s
-       0.2,  # rad/s
-       0.3,  # m/s
-   ]
+   Beware that mixing SymPy and NumPy datatypes will rarely, if at all, provide
+   you with functioning code. Be careful because sometimes it may look like the
+   two libraries mix. For example, you can do this:
 
-   p_vals = [
-       1.0,  # kg
-       9.81,  # m/s**2
-       0.01,  # Nm/rad
-       2.0,  # N/m
-       0.6,  # m
-   ]
+   .. jupyter-execute::
 
-   Yd_vals, zd_vals = eval_Yd_zd(q_vals, u_vals, p_vals)
-   Yd_vals, zd_vals
+      a, b, c, d = sm.symbols('a, b, c, d')
+
+      mat = np.array([[a, b], [c, d]])
+      mat
+
+   But that will almost certainly cause you problems as you move forward. The
+   process should always be:
+
+   .. jupyter-execute::
+
+      sym_mat = sm.Matrix([[a, b], [c, d]])
+      eval_sym_mat = sm.lambdify((a, b, c, d), sym_mat)
+      num_mat = eval_sym_mat(1.0, 2.0, 3.0, 4.0)
+      num_mat
+
+   Also, be careful because NumPy and SymPy have many functions that are named
+   the same and you don't want to mix them up:
+
+   .. jupyter-execute::
+
+      np.cos(5) + sm.cos(5)
+
+Numerical Evaluation
+====================
+
+Returning to the example of the two rods and the sliding mass from the previous
+chapter, we regenerate the symbolic equations of motion and stop when we have
+:math:`\bar{q}`, :math:`\bar{u}`, :math:`\mathbf{Y}_k`, :math:`\bar{z}_k`,
+:math:`\mathbf{Y}_d`, and :math:`\bar{z}_d`. The following dropdown has the
+SymPy code to generate these symbolic vectors and matrices.
+
+.. admonition:: Symbolic Setup Code
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
+      q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
+      u1, u2, u3 = me.dynamicsymbols('u1, u2, u3')
+
+      N = me.ReferenceFrame('N')
+      A = me.ReferenceFrame('A')
+      B = me.ReferenceFrame('B')
+
+      A.orient_axis(N, q1, N.z)
+      B.orient_axis(A, q2, A.x)
+
+      A.set_ang_vel(N, u1*N.z)
+      B.set_ang_vel(A, u2*A.x)
+
+      O = me.Point('O')
+      Ao = me.Point('A_O')
+      Bo = me.Point('B_O')
+      Q = me.Point('Q')
+
+      Ao.set_pos(O, l/2*A.x)
+      Bo.set_pos(O, l*A.x)
+      Q.set_pos(Bo, q3*B.y)
+
+      O.set_vel(N, 0)
+      Ao.v2pt_theory(O, N, A)
+      Bo.v2pt_theory(O, N, A)
+      Q.set_vel(B, u3*B.y)
+      Q.v1pt_theory(Bo, N, B)
+
+      t = me.dynamicsymbols._t
+
+      qdot_repl = {q1.diff(t): u1,
+                   q2.diff(t): u2,
+                   q3.diff(t): u3}
+
+      Q.set_acc(N, Q.acc(N).xreplace(qdot_repl))
+
+      R_Ao = m*g*N.x
+      R_Bo = m*g*N.x + kl*q3*B.y
+      R_Q = m/4*g*N.x - kl*q3*B.y
+      T_A = -kt*q1*N.z + kt*q2*A.x
+      T_B = -kt*q2*A.x
+
+      I = m*l**2/12
+      I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
+      I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
+
+      points = [Ao, Bo, Q]
+      forces = [R_Ao, R_Bo, R_Q]
+      masses = [m, m, m/4]
+
+      frames = [A, B]
+      torques = [T_A, T_B]
+      inertias = [I_A_Ao, I_B_Bo]
+
+      Fr = []
+      Frs = []
+
+      for ur in [u1, u2, u3]:
+
+         Fri = 0
+         Frsi = 0
+
+         for Pi, Ri, mi in zip(points, forces, masses):
+            vr = Pi.vel(N).diff(ur, N)
+            Fri += vr.dot(Ri)
+            Rs = -mi*Pi.acc(N)
+            Frsi += vr.dot(Rs)
+
+         for Bi, Ti, Ii in zip(frames, torques, inertias):
+            wr = Bi.ang_vel_in(N).diff(ur, N)
+            Fri += wr.dot(Ti)
+            Ts = -(Bi.ang_acc_in(N).dot(Ii) +
+                   me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
+            Frsi += wr.dot(Ts)
+
+         Fr.append(Fri)
+         Frs.append(Frsi)
+
+      Fr = sm.Matrix(Fr)
+      Frs = sm.Matrix(Frs)
+
+      q = sm.Matrix([q1, q2, q3])
+      u = sm.Matrix([u1, u2, u3])
+
+      qd = q.diff(t)
+      ud = u.diff(t)
+
+      ud_zerod = {udr: 0 for udr in ud}
+
+      Yk = -sm.eye(3)
+      zk = u
+
+      Yd = Frs.jacobian(ud)
+      zd = Frs.xreplace(ud_zerod) + Fr
 
 .. jupyter-execute::
 
-   ud_vals = np.linalg.solve(Yd_vals, zd_vals)
+   q, u, qd, ud
+
+.. jupyter-execute::
+
+   Yk, zk
+
+.. jupyter-execute::
+
+   Yd, zd
+
+Additionally, we will define a column vector :math:`\bar{p}` that contains all
+of the constant parameters in the equations of motion. We should know these
+from our problem definition but they can also be found with:
+
+.. jupyter-execute::
+
+   Yk.free_symbols | zk.free_symbols | Yd.free_symbols | zd.free_symbols
+
+The ``|`` operator does the union of Python sets, which is the date type that
+``free_symbols`` returns. :math:`t` is not a constant parameter, but the rest
+are. We can then define the symbolic :math:`p` as:
+
+.. jupyter-execute::
+
+   p = sm.Matrix([g, kl, kt, l, m])
+   p
+
+Now we will create a function to evaluate :math:`\mathbf{Y}_k`,
+:math:`\bar{z}_k`, :math:`\mathbf{Y}_d`, and :math:`\bar{z}_d`. given
+:math:`\bar{q}`, :math:`\bar{u}` and :math:`\bar{p}`.
+
+.. jupyter-execute::
+
+   eval_eom = sm.lambdify((q, u, p), [Yk, zk, Yd, zd])
+
+To test out the function ``eval_eom()`` we need some NumPy 1D arrays for
+:math:`\bar{q}`, :math:`\bar{u}` and :math:`\bar{p}`.
+
+.. warning:: Make sure to use consistent units when you introduce numbers! I
+   recommend always using :math:`N=kg \cdot m \cdot s^{-2}` and :math:`N \cdot
+   m = kg \cdot m^2 \cdot rad \cdot s^{-1}`.
+
+The :external:py:func:`~numpy.deg2rad` and :external:py:func:`~numpy.rad2deg`
+are helpful for angle conversions.
+
+.. jupyter-execute::
+
+   q_vals = np.array([
+       np.deg2rad(5.0),  # q1, rad
+       np.deg2rad(5.0),  # q2, rad
+       0.1,  # q3, m
+   ])
+   q_vals, type(q_vals), q_vals.shape
+
+.. jupyter-execute::
+
+   u_vals = np.array([
+       0.1,  # u1, rad/s
+       0.2,  # u2, rad/s
+       0.3,  # u3, m/s
+   ])
+   u_vals, type(u_vals), u_vals.shape
+
+.. jupyter-execute::
+
+   p_vals = np.array([
+       9.81,  # g, m/s**2
+       2.0,  # kl, N/m
+       0.01,  # kt, Nm/rad
+       0.6,  # l, m
+       1.0,  # m, kg
+   ])
+   p_vals, type(p_vals), p_vals.shape
+
+.. jupyter-execute::
+
+   Yk_vals, zk_vals, Yd_vals, zd_vals = eval_eom(q_vals, u_vals, p_vals)
+   Yk_vals, zk_vals, Yd_vals, zd_vals
+
+Now that :external:py:func:`~numpy.linalg.solve` can be used to solve the
+system of linear equations (:math:`\mathbf{A}\bar{x}=\bar{b}` type systems).
+
+.. note:: Note the use of :external:py:func:`~numpy.squeeze`. This forces
+   ``zk_vals`` and ``zd_vals`` to be a 1D array with shape(3,) instead of a 2D
+   array of shape(3, 1). This then causes ``qd_vals`` and ``ud_vals`` to be 1D
+   arrays.
+
+.. jupyter-execute::
+
+   qd_vals = np.linalg.solve(-Yk_vals, np.squeeze(zk_vals))
+   qd_vals
+
+.. jupyter-execute::
+
+   ud_vals = np.linalg.solve(-Yd_vals, np.squeeze(zd_vals))
    ud_vals
 
-Forward Simulation
-==================
+Simulate
+========
 
-.. jupyter-execute::
+To simulate the system forward in time, we solve the `initial value problem`_
+of the ordinary differential equations.
 
-   def eval_rhs(t, x, p):
-       """Return the right hand side of the explicit ordinary differential
-       equations.
+.. _initial value problem: https://en.wikipedia.org/wiki/Initial_value_problem
 
-       Parameters
-       ==========
-       t : float
-          Time in seconds.
-       x : array_like, shape(6,)
-          State at time t: [q1, q2, q3, u1, u2, u3]
-       p : array_like, shape(5,)
-          Constant parameters: [m, g, kt, kl, l]
+A simple way to do so, is to use `Euler's Method`_.
 
-       Returns
-       =======
-       xd : ndarray, shape(6,)
-           Derivative of the state with respect to time.
-
-       """
-
-       q = x[:3]
-       u = x[3:]
-
-       qd = u
-       M, F = eval_Yd_zd(q, u, p)
-       ud = np.linalg.solve(M, np.squeeze(F))
-
-       xd = np.empty_like(x)
-       xd[:3] = qd
-       xd[3:] = ud
-
-       return xd
-
-   x0 = np.empty(6)
-   x0[:3] = q_vals
-   x0[3:] = u_vals
-
-   eval_rhs(0.1, x0, p_vals)
-
+.. _Euler's Method: https://en.wikipedia.org/wiki/Euler_method
 
 .. math::
 
-   \bar{x}_i =
+   \bar{x}_{i + 1} = \bar{x}_i + \Delta t \bar{f}_m(t_i, \bar{x}_i, \bar{p})
 
 .. jupyter-execute::
 
-   def euler_integrate(rhs_func, tspan, initial_cond, p_vals):
+   def euler_integrate(rhs_func, tspan, initial_cond, p_vals, delt=0.01):
+       """Returns state trajectory and corresponding values of time resulting
+       from integrating the ordinary differential equations with Euler's
+       Method.
+
        delt = 0.01  # seconds/sample
+
+       """
        num_samples = int((tspan[1] - tspan[0])/delt)
        ts = np.linspace(tspan[0], tspan[1], num=num_samples + 1)
 
@@ -215,9 +340,82 @@ Forward Simulation
 
        return ts, x
 
+Now we need a Python function that represents :math:`\bar{f}_m(t_i, \bar{x}_i,
+\bar{p})`. This function evaluates the right hand side of the explicity
+ordinary differential equations and calculated the time derivatives of the
+state.
+
 .. jupyter-execute::
 
-   ts, xs = euler_integrate(eval_rhs, (0.0, 2.0), x0, p_vals)
+   def eval_rhs(t, x, p):
+       """Return the right hand side of the explicit ordinary differential
+       equations which evaluates the time derivative of the state ``x`` at time
+       ``t``.
+
+       Parameters
+       ==========
+       t : float
+          Time in seconds.
+       x : array_like, shape(6,)
+          State at time t: [q1, q2, q3, u1, u2, u3]
+       p : array_like, shape(5,)
+          Constant parameters: [g, kl, kt, l, m]
+
+       Returns
+       =======
+       xd : ndarray, shape(6,)
+           Derivative of the state with respect to time.
+
+       """
+
+       # unpack the q and u vectors from x
+       q = x[:3]
+       u = x[3:]
+
+       # evaluate the equations of motion matrices with the values of q, u, p
+       Yk, zk, Yd, zd = eval_eom(q, u, p)
+
+       # solve for q' and u'
+       qd = np.linalg.solve(-Yk, zk.squeeze())
+       ud = np.linalg.solve(-Yd, zd.squeeze())
+
+       # pack q' and u' into a new state time derivative vector x'
+       xd = np.empty_like(x)
+       xd[:3] = qd
+       xd[3:] = ud
+
+       return xd
+
+With the function evaluated and numerical values already defined above we can
+check to see if it works. First combine :math:`\bar{q}` and :math:`\bar{u}`
+into a single column vector ``x_0`` and pick an arbitrary of time.
+
+.. jupyter-execute::
+
+   x0 = np.empty(6)
+   x0[:3] = q_vals
+   x0[3:] = u_vals
+
+   t0 = 0.1
+
+Now execute the function:
+
+.. jupyter-execute::
+
+   eval_rhs(t0, x0, p_vals)
+
+It seems to work, giving a result for the time derivative of the state vector.
+Now we can try out the the ``euler_integrate`` function to integration from
+``t0`` to ``tf``:
+
+.. jupyter-execute::
+
+   tf = 4.0
+
+   ts, xs = euler_integrate(eval_rhs, (t0, tf), x0, p_vals)
+
+Our ``euler_integrate()`` function returns the state trajectory and the
+corresponding time. They look like:
 
 .. jupyter-execute::
 
@@ -235,15 +433,62 @@ Forward Simulation
 
    type(xs), xs.shape
 
+Plotting Simulation Trajectories
+================================
+
+Matplotlib_ is the most widely used library for making plots. Browse `their
+example gallery`_ to get an idea of the library's capabilities. We will import
+matplotlib like so:
+
 .. jupyter-execute::
 
    import matplotlib.pyplot as plt
 
+.. _Matplotlib: https://matplotlib.org
+.. _their example gallery: https://matplotlib.org/stable/gallery/index.html
+
+The :external:py:func:`~matplotlib.pyplot.plot` function offers the simplest
+way to plot a chart of :math:`x` values versus :math:`y` values. I designed the
+output of ``euler_integrate()`` to work well with this plotting function. To
+make a basic plot use:
+
+.. jupyter-execute::
+
    plt.plot(ts, xs);
+
+.. note:: The closing semicolon at the end of the statement supressesses the
+   display of the returned objects from the function. See the difference here:
+
+   .. jupyter-execute::
+
+      plt.plot(ts, xs)
+
+This plot shows that the state trajectory changes with respect to time, but
+without any more information it is hard to interpret. The following function
+uses :external:py:func:`~matplotlib.pyplot.subplots` to make a figure with
+panels for the different state variables. I use
+:external:py:func:`~sympy.physics.vector.printing.mlatex` to include the
+symbolic symbol names in the legends.
 
 .. jupyter-execute::
 
    def plot_results(ts, xs):
+       """Returns the array of axes of a 4 panel plot of the state trajectory
+       versus time.
+
+       Parameters
+       ==========
+       ts : array_like, shape(n,)
+          Values of time.
+       xs : array_like, shape(n, 6)
+          Values of the state trajectories corresponding to ``ts``.
+
+       Returns
+       =======
+       axes : ndarray, shape(4,)
+          Matplotlib axes for each panel.
+
+       """
 
        fig, axes = plt.subplots(4, 1, sharex=True)
 
@@ -272,21 +517,67 @@ Forward Simulation
 
        return axes
 
-   plot_results(ts, xs)
+Our function now gives an interpretable view of the results:
+
+.. jupyter-execute::
+
+   plot_results(ts, xs);
+
+Integrating with SciPy
+======================
+
+:external:py:func:`~scipy.integrate.solve_ivp`
 
 .. jupyter-execute::
 
    from scipy.integrate import solve_ivp
 
-   res = solve_ivp(eval_rhs, (0.0, 2.0), x0, args=(p_vals,))
+   res = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,))
 
 .. jupyter-execute::
 
-   plot_results(res.t, res.y.T)
+   plot_results(res.t, res.y.T);
 
 .. jupyter-execute::
 
    plt.plot(ts, xs, 'k', res.t, res.y.T, 'b');
 
-How do we know that the equations of motion are correct?
-========================================================
+2D Animation
+============
+
+.. jupyter-execute::
+
+   By1 = me.Point('By1')
+   By2 = me.Point('By2')
+   By1.set_pos(Bo, l/2*B.y)
+   By2.set_pos(Bo, -l/2*B.y)
+
+   O_coord = O.pos_from(O).to_matrix(N)
+   Bo_coord = Bo.pos_from(O).to_matrix(N)
+   Q_coord = Q.pos_from(O).to_matrix(N)
+   By1_coord = By1.pos_from(O).to_matrix(N)
+   By2_coord = By2.pos_from(O).to_matrix(N)
+
+   eval_point_coords = sm.lambdify((q, p), O_coord.row_join(Bo_coord).row_join(Q_coord).row_join(By1_coord).row_join(By2_coord))
+   eval_point_coords(q_vals, p_vals)
+
+.. jupyter-execute::
+
+   import matplotlib.animation as animation
+
+   fig, ax = plt.subplots()
+   ax.set_aspect('equal')
+   ax.set_xlim((-0.5, 0.5))
+   ax.set_ylim((-0.7, 0.0))
+
+   x, y, z = eval_point_coords(q_vals, p_vals)
+
+   col = ax.scatter(y, -x)
+
+   def animate(i):
+      x, y, z = eval_point_coords(xs[i, :3], p_vals)
+      col.set_offsets(np.c_[y, -x])
+
+   ani = animation.FuncAnimation(fig, animate, len(ts))
+   from IPython.display import HTML
+   HTML(ani.to_jshtml())

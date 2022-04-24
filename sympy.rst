@@ -379,6 +379,8 @@ Lastly, a typical type of derivative you may encounter:
 
    expr5.diff(t)
 
+.. _sec-evaluating-symbolic-expressions:
+
 Evaluating symbolic expressions
 ===============================
 
