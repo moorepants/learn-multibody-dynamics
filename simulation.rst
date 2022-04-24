@@ -33,16 +33,15 @@ Simulation
    O = me.Point('O')
    Ao = me.Point('A_O')
    Bo = me.Point('B_O')
+   Q = me.Point('Q')
 
    Ao.set_pos(O, l/2*A.x)
    Bo.set_pos(O, l*A.x)
+   Q.set_pos(Bo, q3*B.y)
 
    O.set_vel(N, 0)
    Ao.v2pt_theory(O, N, A)
    Bo.v2pt_theory(O, N, A)
-
-   Q = me.Point('Q')
-   Q.set_pos(Bo, q3*B.y)
    Q.set_vel(B, u3*B.y)
    Q.v1pt_theory(Bo, N, B)
 
@@ -56,7 +55,7 @@ Simulation
 
    R_Ao = m*g*N.x
    R_Bo = m*g*N.x + kl*q3*B.y
-   R_Q = m*g*N.x - kl*q3*B.y
+   R_Q = m/4*g*N.x - kl*q3*B.y
    T_A = -kt*q1*N.z + kt*q2*A.x
    T_B = -kt*q2*A.x
 
