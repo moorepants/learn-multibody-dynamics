@@ -563,6 +563,7 @@ to a vector (or sequence) of variables.
 .. _Jacobian: https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant
 
 .. _sec-solving-linear-systems:
+
 Solving Linear Systems
 ======================
 
