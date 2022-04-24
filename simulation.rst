@@ -251,7 +251,7 @@ are helpful for angle conversions.
 .. jupyter-execute::
 
    q_vals = np.array([
-       np.deg2rad(5.0),  # q1, rad
+       np.deg2rad(25.0),  # q1, rad
        np.deg2rad(5.0),  # q2, rad
        0.1,  # q3, m
    ])
@@ -410,7 +410,7 @@ Now we can try out the the ``euler_integrate`` function to integration from
 
 .. jupyter-execute::
 
-   tf = 4.0
+   tf = 2.0
 
    ts, xs = euler_integrate(eval_rhs, (t0, tf), x0, p_vals)
 
@@ -565,18 +565,25 @@ Integrating with SciPy
 
    import matplotlib.animation as animation
 
-   fig, ax = plt.subplots()
-   ax.set_aspect('equal')
-   ax.set_xlim((-0.5, 0.5))
-   ax.set_ylim((-0.7, 0.0))
+   fig, axes = plt.subplots(2, 1)
+
+   axes[0].set_aspect('equal')
+   axes[0].set_xlim((-0.5, 0.5))
+   axes[0].set_ylim((-0.5, 0.5))
+
+   axes[1].set_aspect('equal')
+   axes[1].set_xlim((-0.5, 0.5))
+   axes[1].set_ylim((-0.7, 0.0))
 
    x, y, z = eval_point_coords(q_vals, p_vals)
 
-   col = ax.scatter(y, -x)
+   col_top = axes[0].scatter(y, z)
+   col_front = axes[1].scatter(y, -x)
 
    def animate(i):
       x, y, z = eval_point_coords(xs[i, :3], p_vals)
-      col.set_offsets(np.c_[y, -x])
+      col_top.set_offsets(np.c_[y, z])
+      col_front.set_offsets(np.c_[y, -x])
 
    ani = animation.FuncAnimation(fig, animate, len(ts))
    from IPython.display import HTML
