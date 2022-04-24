@@ -14,6 +14,9 @@ Unconstrained Equations of Motion
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
+Dynamical Differential Equations
+================================
+
 In the previous chapter, we introduced the generalized active forces and the
 generalized inertia forces. Together, these two pieces give us the *dynamical
 differential equations*. The dynamical differential equations for a holonomic
@@ -26,14 +29,16 @@ time:
 
    \bar{F}_r + \bar{F}^*_r = \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)  = 0
 
-We also call these equations *Kane's Equations* as they were introduced in this
-form in [Kane1985]_. The dynamical differential equations can only be formed
-with respect to an `inertial reference frame`_. An inertial reference frame is
-one that is not accelerating, or can be assumed not to be with respect to the
-motion of the bodies of interest. An inertial reference frame is one, where
-Newton's First Law holds, i.e. objects at rest stay at rest unless an external
-force acts on them.
+These are the `Newton-Euler equations`_ for a multibody system in the form
+presented in [Kane1985]_, thus we also call these equations *Kane's Equations*.
+The dynamical differential equations can only be formed with respect to an
+`inertial reference frame`_. An inertial reference frame is one that is not
+accelerating, or can be assumed not to be with respect to the motion of the
+bodies of interest. An inertial reference frame is one, where Newton's First
+Law holds, i.e. objects at rest stay at rest unless an external force acts on
+them.
 
+.. _Newton-Euler equations: https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations
 .. _inertial reference frame: https://en.wikipedia.org/wiki/Inertial_frame_of_reference
 
 :math:`\bar{F}^*_r` is always linear in the time derivatives of the generalized
@@ -43,14 +48,19 @@ present it in this form, showing the linear nature:
 
 .. math::
    :label: eq-canonical-eom-form
-   \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t) &= \bar{F}(\bar{u}, \bar{q}, t) \\
-   -\bar{F}^*_r &= \bar{F}_r
 
-where :math:`\mathbf{M}` is called the *mass matrix* and :math:`\bar{C}` is are
-the forces due to the various velocity effects.
+   -\bar{F}^*_r &= \bar{F}_r \rightarrow
+   \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t) &= \bar{F}(\bar{u}, \bar{q}, t) \\
+
+where :math:`\mathbf{M}` is called the *mass matrix*,  :math:`\bar{C}` is are
+the forces due to the various velocity effects, and :math:`\bar{F}` are the
+externally applied forces.
 
 .. todo:: Same something about how M is always invertible and positive definite
    (I think).
+
+Equations of Motion
+===================
 
 The kinematical and dynamical differential equations constitute the *equations
 of motion* for an unconstrained holonomic multibody system. These equations are
@@ -102,8 +112,11 @@ which we write as:
 where :math:`\bar{x}=[\bar{q} \quad \bar{u}]^T` is called the *state* of the
 system and is comprised of the generalized coordinates and generalized speeds.
 
-Returning to the example from the previous chapter, I will add a additional
-particle of mass :math:`m/4` at point :math:`Q` that can slides along the rod
+Example of Kane's Equations
+===========================
+
+Returning to the example from the previous chapter, I will add an additional
+particle of mass :math:`m/4` at point :math:`Q` that can slide along the rod
 :math:`B` and is attached to point :math:`B_o` via a linear translational
 spring with stiffness :math:`k_l` and located by generalized coordinate
 :math:`q_3`. See :numref:`fig-eom-double-rod-pendulum` for a visual
@@ -197,9 +210,13 @@ frame:
 
    R_Ao = m*g*N.x
    R_Bo = m*g*N.x + kl*q3*B.y
-   R_Q = m*g*N.x - kl*q3*B.y
+   R_Q = m/4*g*N.x - kl*q3*B.y
    T_A = -kt*q1*N.z + kt*q2*A.x
    T_B = -kt*q2*A.x
+
+Note the equal and opposite spring forces that act on the pairs of points and
+pairs of reference frames. We ignored the reaction torque on :math:`N` from
+:math:`A` because :math:`N` is our inertial reference frame.
 
 The inertia dyadics of the two rods are:
 
@@ -261,37 +278,52 @@ The generalized inertia forces are:
    Frs = sm.Matrix(Frs)
    Frs
 
-Forward Simulation
-==================
+Notice that the dynamical differential equations are only functions of the time
+varying variables :math:`\dot{\bar{u}},\bar{u},\bar{q}`:
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(Fr)
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(Frs)
+
+Implicit and Explicit Form
+==========================
 
 Eq. :math:numref:`eq-state-form` is written in an *implicit form*, meaning that
 the derivatives are not explicitly solved for. The *explicit form* is found by
 inverting :math:`\mathbf{Y}`:
 
 .. math::
-   :label: eq-state-form
+   :label: eq-state-form-explicit
 
    \dot{\bar{x}}
    =
    -\mathbf{Y}^{-1}
    \bar{z}
+   =\bar{f}_m(\bar{x}, t)
 
 To determine how the state changes over time, these explicit differential
-equations can be solved:
+equations can be solved by integrating them with respect to time:
 
 .. math::
    :label: eq-eom-integral
 
-   \bar{x}(t) = \int^{t_f}_{t_0} -\mathbf{Y}^{-1} \bar{z} dt = \int^{t_f}_{t_0} \bar{f}_m(\bar{u}, \bar{q}, t) dt
+   \bar{x}(t) = \int^{t_f}_{t_0} \bar{f}_m(\bar{x}, t) dt
 
 :math:`\bar{f}_m` is, in general, nonlinear in time, thus analytical solutions
 are impossible to find. To solve this integral we must numerically integrate
-:math:`\bar{f}_m`.
+:math:`\bar{f}_m`. To do so, it will be useful to extract the symbolic forms of
+:math:`\mathbf{Y}_k`, :math:`\bar{z}_k`, :math:`\mathbf{Y}_d`, and
+:math:`\bar{z}_d`.
 
 Our example problem has a simple definition of the kinematical differential
 equations:
 
 .. math::
+   :label: eq-qdot-equals-u
 
    \begin{bmatrix}
    \dot{q}_1 \\
@@ -305,20 +337,72 @@ equations:
    u_3
    \end{bmatrix}
 
-so :math:`\mathbf{Y}_k` is the identity matrix and need not be formed. But we
-will need :math:`\mathbf{Y}_d` to solve explicitly for :math:`\dot{\bar{u}`.
+so :math:`\mathbf{Y}_k` is the identity matrix and need not be formed:
+
+.. math::
+   :label: eq-yk-identity
+
+   \mathbf{Y}_k \dot{\bar{q}} = \bar{u}
+   \rightarrow
+   \begin{bmatrix}
+   1 & 0 & 0 \\
+   0 & 1 & 0 \\
+   0 & 0 & 1 \\
+   \end{bmatrix}
+   \begin{bmatrix}
+   \dot{q}_1 \\
+   \dot{q}_2 \\
+   \dot{q}_3
+   \end{bmatrix}
+   =
+   \begin{bmatrix}
+   u_1 \\
+   u_2 \\
+   u_3
+   \end{bmatrix}
+
+But we will need :math:`\mathbf{Y}_d` to solve explicitly for
+:math:`\dot{\bar{u}}`. Recall that we can use the Jacobian to extract the
+linear coefficients of :math:`\dot{\bar{u}}` and then find the terms that
+aren't functions of :math:`\dot{\bar{u}}` by substitution (See Sec.
+:ref:`sec-solving-linear-systems`).
+
+Form the column vector :math:`\dot{\bar{u}}`:
 
 .. jupyter-execute::
 
    u = sm.Matrix([u1, u2, u3])
    ud = u.diff(t)
+   ud
+
+Extract the coefficients of :math:`\dot{\bar{u}}`:
+
+.. jupyter-execute::
 
    Yd = Frs.jacobian(ud)
    Yd
 
+Make a substitution dictionary to set :math:`\dot{\bar{u}}=\bar{0}`:
+
 .. jupyter-execute::
 
    ud_zerod = {udr: 0 for udr in ud}
+   ud_zerod
+
+Find :math:`\bar{z}_d` with :math:`\bar{z}_d =
+\bar{F}_r^* |_{\dot{\bar{u}}=\bar{0}} + \bar{F}_r`:
+
+.. jupyter-execute::
 
    zd = Frs.xreplace(ud_zerod) + Fr
    zd
+
+Check that neither are functions of :math:`\dot{\bar{u}}`:
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(Yd)
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(zd)
