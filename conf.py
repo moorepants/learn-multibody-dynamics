@@ -67,6 +67,9 @@ mathjax2_config = {
 # Setup intersphinx so that we can reference the SymPy documentation.
 # :external:py:func:`~sympy.physics.vector.functions.dot` for example.
 intersphinx_mapping = {
+    'matplotlib': ('https://matplotlib.org/stable/', None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/', None),
     'sympy': ('https://docs.sympy.org/latest/', None),
 }
 
@@ -85,15 +88,17 @@ html_theme_options = {
     'base_url': 'https://moorepants.github.io/learn-multibody-dynamics/',
     'color_primary': 'teal',
     'color_accent': 'deep-orange',  # hover color of hyperlinks
-    # could do this if it is a GH pages build, takes too long for autobuild
-    #'css_minify': True,
-    #'html_minify': True,
     'repo_name': 'Learn Multibody Dynamics',
     'repo_url': 'https://github.com/moorepants/learn-multibody-dynamics/',
     "logo_icon": "&#xe52f",
     'master_doc': False,  # Doesn't show duplicate title
     'nav_links': [{"href": "index", "internal": True, "title": "Home"}],
 }
+if "ONGITHUB" in os.environ:
+    # Takes too long to build locally for autobuild, so only do it in
+    # production.
+    html_theme_options['css_minify'] = True
+    html_theme_options['html_minify'] = True
 html_css_files = ['css/custom.css']  # seems to load after the material css
 
 # Add any paths that contain custom static files (such as style sheets) here,
