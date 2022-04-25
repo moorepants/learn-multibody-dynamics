@@ -290,6 +290,10 @@ system of linear equations (:math:`\mathbf{A}\bar{x}=\bar{b}` type systems).
    array of shape(3, 1). This then causes ``qd_vals`` and ``ud_vals`` to be 1D
    arrays.
 
+   .. jupyter-execute::
+
+      np.linalg.solve(-Yk_vals, zk_vals)
+
 .. jupyter-execute::
 
    qd_vals = np.linalg.solve(-Yk_vals, np.squeeze(zk_vals))
@@ -523,68 +527,214 @@ Our function now gives an interpretable view of the results:
 
    plot_results(ts, xs);
 
+.. todo:: Describe the results.
+
 Integrating with SciPy
 ======================
 
-:external:py:func:`~scipy.integrate.solve_ivp`
+Our ``euler_integrate()`` function seems to do the trick, but it all numerical
+integrators suffer from numerical errors. Careful attention to `truncation
+error`_ is needed for to keep the error trajectories within some acceptable
+tolerance for your purposes. Euler's Method has poor error properties and there
+is a large number of other numerical integration methods that provide better
+results, at the cost of more complexity in their calculations.
+
+.. _truncation error: https://en.wikipedia.org/wiki/Truncation_error_(numerical_integration)
+
+SciPy is built on top of NumPy and provides a large assortment of battletested
+numerical methods, including numerical methods for integration. We are solving
+the initial problem of oridinary differential equations and SciPy includes the
+function :external:py:func:`~scipy.integrate.solve_ivp` as an alternative to
+our ``euler_integrate()`` function. ``solve_ivp()`` provides access to a
+several different integration methods that are sutiable for different problems.
+The default method is a `Runga-Kutta method` that works well for many types of
+problems.
+
+.. _Runga-Kutta method: https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+
+We will only be using this function from SciPy so we can import it direclty
+with:
 
 .. jupyter-execute::
 
    from scipy.integrate import solve_ivp
 
-   res = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,))
+We can use ``solve_ivp()`` in much the same way as our ``euler_integrate()``
+function. The difference is that ``solve_ivp()`` takes a function that
+evaluates the right hand side of the ordinary differential equations that is of
+the form ``f(t, x)``. Our parameter vector ``p`` must be passed to the
+``args=`` optional keyword argument. If we only have one extra argument, as we
+do ``f(t, x, p)``, then we must make a single element tuple ``(p_vals,)``.
+Other than that, the inputs are the same as ``euler_integrate()``.
+``solve_ivp()`` returns a solution object that contains quite a bit of
+information (other than the trajectories). See the documentation for
+``solve_ivp()`` for all the details.
+
+Here is how we use the integrator with our previously defined system:
 
 .. jupyter-execute::
 
-   plot_results(res.t, res.y.T);
+   result = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,))
+
+The time values are in the ``result.t`` attribute:
 
 .. jupyter-execute::
 
-   plt.plot(ts, xs, 'k', res.t, res.y.T, 'b');
+   result.t
 
-2D Animation
-============
+and the state trajectory is in the ``result.y`` attribute:
 
 .. jupyter-execute::
+
+   result.y
+
+Note the shape of the trajectory array:
+
+.. jupyter-execute::
+
+   np.shape(result.y)
+
+It is the transpose of our ``xs`` above. Knowing that we can use our
+``plot_results()`` function to view the results. I use
+:external:py:func:`~numpy.transpose` to transpose the array before passing it
+into the plot function.
+
+.. jupyter-execute::
+
+   plot_results(result.t, np.transpose(result.y));
+
+The default result is very coarse in time. This is because the underlying
+integration algorthim adaptively selects the necessary time steps to stay
+within the desired maximum truncation error. If you want to specify which time
+values you'd like the result presented at you can do so by interpolating the
+results by providing the time values with the keyword argumetn ``t_eval=``.
+
+.. jupyter-execute::
+
+   result = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)
+
+.. jupyter-execute::
+
+   plot_results(result.t, np.transpose(result.y));
+
+Now let's compare the results from ``euler_inegrate()`` with ``solve_ivp()``,
+the later of which uses a Runga-Kutta method that has lower truncation error.
+We'll plot only :math:`q_1`.
+
+.. jupyter-execute::
+
+   fig, ax = plt.subplots()
+   fig.set_size_inches((10.0, 6.0))
+
+   ax.plot(ts, np.rad2deg(xs[:, 0]), 'k',
+           result.t, np.rad2deg(result.y.T[:, 0]), 'b');
+   ax.legend(['euler_integrate', 'solve_ivp'])
+   ax.set_xlabel('Time [s]')
+   ax.set_ylabel('Angle [deg]')
+
+You can clearly see that the Euler Method deviates from the more accurate
+Runga-Kutta method. You'll need to learn more about truncation error and the
+various integration methods to ensure you are getting the results you desire,
+but that is all I'll go over for the purposes of this chapter.
+
+Now set ``xs`` equal to the ``solve_ivp()`` result for use in the next
+sectionn:
+
+.. jupyter-execute::
+
+   xs = result.y.T
+
+Animation with Matplotlib
+=========================
+
+.. todo:: Sample time for 30 fps
+
+Matplotlib provides tools to make animations by iterating over data and
+updating the plot. I'll create a very simple set of plots that give 4 views of
+points on the two bodies moving in space.
+
+First create a function that calculates the :math:`xyz` coordinates relative to
+point :math:`O`.
+
+.. jupyter-execute::
+
+   M = me.ReferenceFrame('M')
+   M.orient_axis(N, sm.pi, N.y)
 
    By1 = me.Point('By1')
    By2 = me.Point('By2')
    By1.set_pos(Bo, l/2*B.y)
    By2.set_pos(Bo, -l/2*B.y)
 
-   O_coord = O.pos_from(O).to_matrix(N)
-   Bo_coord = Bo.pos_from(O).to_matrix(N)
-   Q_coord = Q.pos_from(O).to_matrix(N)
-   By1_coord = By1.pos_from(O).to_matrix(N)
-   By2_coord = By2.pos_from(O).to_matrix(N)
+   coordinates = O.pos_from(O).to_matrix(M)
+   for point in [Bo, Q, By1, By2]:
+      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(M))
 
-   eval_point_coords = sm.lambdify((q, p), O_coord.row_join(Bo_coord).row_join(Q_coord).row_join(By1_coord).row_join(By2_coord))
+   eval_point_coords = sm.lambdify((q, p), coordinates)
    eval_point_coords(q_vals, p_vals)
+
+Now create the desired figure with the initial conditions shown:
+
+.. jupyter-execute::
+
+   fig = plt.figure()
+   fig.set_size_inches((8.0, 8.0))
+
+   axes = []
+   axes.append(fig.add_subplot(2, 2, 1))
+   axes.append(fig.add_subplot(2, 2, 2, projection='3d'))
+   axes.append(fig.add_subplot(2, 2, 3))
+   axes.append(fig.add_subplot(2, 2, 4))
+
+   x, y, z = eval_point_coords(q_vals, p_vals)
+
+   # top
+   #axes[0].set_aspect('equal')
+   axes[0].set_xlim((-0.6, 0.6))
+   axes[0].set_ylim((-0.5, 0.5))
+   axes[0].set_title('Top View')
+   col_top = axes[0].scatter(y, z)
+
+   # 3d
+   col_3d = axes[1].scatter(y, z, x, color='blue')
+   axes[1].set_xlim((-0.6, 0.6))
+   axes[1].set_ylim((-0.5, 0.5))
+   axes[1].set_zlim((-0.7, 0.0))
+
+   # front
+   col_front = axes[2].scatter(y, x)
+   #axes[2].set_aspect('equal')
+   axes[2].set_xlim((-0.6, 0.6))
+   axes[2].set_ylim((-0.7, 0.0))
+   axes[2].set_title('Front View')
+
+   # right
+   col_right = axes[3].scatter(z, x)
+   #axes[3].set_aspect('equal')
+   axes[3].set_xlim((-0.5, 0.5))
+   axes[3].set_ylim((-0.7, 0.0))
+   axes[3].set_title('Right View')
+
+   fig.tight_layout()
+
+Create the animation update function.
 
 .. jupyter-execute::
 
    import matplotlib.animation as animation
 
-   fig, axes = plt.subplots(2, 1)
-
-   axes[0].set_aspect('equal')
-   axes[0].set_xlim((-0.5, 0.5))
-   axes[0].set_ylim((-0.5, 0.5))
-
-   axes[1].set_aspect('equal')
-   axes[1].set_xlim((-0.5, 0.5))
-   axes[1].set_ylim((-0.7, 0.0))
-
-   x, y, z = eval_point_coords(q_vals, p_vals)
-
-   col_top = axes[0].scatter(y, z)
-   col_front = axes[1].scatter(y, -x)
-
    def animate(i):
       x, y, z = eval_point_coords(xs[i, :3], p_vals)
       col_top.set_offsets(np.c_[y, z])
-      col_front.set_offsets(np.c_[y, -x])
+      col_3d._offsets3d = (y, z, x)
+      col_front.set_offsets(np.c_[y, x])
+      col_right.set_offsets(np.c_[z, x])
 
    ani = animation.FuncAnimation(fig, animate, len(ts))
+
+Display the resuls:
+
+.. jupyter-execute::
+
    from IPython.display import HTML
    HTML(ani.to_jshtml())
