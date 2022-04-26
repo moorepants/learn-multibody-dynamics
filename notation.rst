@@ -127,3 +127,5 @@ then an example of a variable name that we use in the code.
    generalized speed :math:`u_r`.
 :math:`\bar{F}^*_r`
    Column vector of all generalized active forces (holonomic or nonholonomic).
+
+He
