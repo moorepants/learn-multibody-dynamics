@@ -53,11 +53,160 @@ present it in this form, showing the linear nature:
    \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t) &= \bar{F}(\bar{u}, \bar{q}, t) \\
 
 where :math:`\mathbf{M}` is called the *mass matrix*,  :math:`\bar{C}` is are
-the forces due to the various velocity effects, and :math:`\bar{F}` are the
-externally applied forces.
+the forces due to the various velocity effects (also call the fictitious
+forces), and :math:`\bar{F}` are the externally applied forces.
 
 .. todo:: Same something about how M is always invertible and positive definite
    (I think).
+
+Body Fixed Newton-Euler Equations
+==================================
+
+To show that Kane's Equations are equivalent to the Newton-Euler equations you
+may have seen before, we can find the dynamical differential equations for a
+single rigid body using Kane's method and then show the results in the
+canonical form. For a rigid body :math:`B` moving in an inertial reference
+frame :math:`A` with its velocity and angular velocity expressed in body fixed
+coordinates and acted upon by a resultant force at the mass center and a moment
+about the mass center.
+
+.. jupyter-execute::
+
+   m, Ixx, Iyy, Izz = sm.symbols('m, I_{xx}, I_{yy}, I_{zz}')
+   Ixy, Iyz, Ixz = sm.symbols('I_{xy}, I_{yz}, I_{xz}')
+   Fx, Fy, Fz, Mx, My, Mz = me.dynamicsymbols('F_x, F_y, F_z, M_x, M_y, M_z')
+   u1, u2, u3, u4, u5, u6 = me.dynamicsymbols('u1, u2, u3, u4, u5, u6')
+
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+
+   Bo = me.Point('Bo')
+
+Define the angular velocity of the body and the velocity of the mass center,
+but express them simply in the body fixed coordinates.
+
+.. jupyter-execute::
+
+   A_w_B = u4*B.x + u5*B.y + u6*B.z
+   B.set_ang_vel(A, A_w_B)
+
+   A_v_Bo = u1*B.x + u2*B.y + u3*B.z
+   Bo.set_vel(A, A_v_Bo)
+
+Now find the six partial velocities and partial angular velocities. Note that
+we use the ``var_in_dcm=False`` keyword argument. We do this because the
+generalized speeds are not present in the unspecified direction cosine matrix
+relating :math:`A` and :math:`B`. This allows the derivative in :math:`A` to be
+formed without use of a direction cosine matrix. Generalized speeds will never
+be present in a direction cosine matrix.
+
+.. jupyter-execute::
+
+   v_Bo_1 = A_v_Bo.diff(u1, A, var_in_dcm=False)
+   v_Bo_2 = A_v_Bo.diff(u2, A, var_in_dcm=False)
+   v_Bo_3 = A_v_Bo.diff(u3, A, var_in_dcm=False)
+   v_Bo_4 = A_v_Bo.diff(u4, A, var_in_dcm=False)
+   v_Bo_5 = A_v_Bo.diff(u5, A, var_in_dcm=False)
+   v_Bo_6 = A_v_Bo.diff(u6, A, var_in_dcm=False)
+
+   v_Bo_1, v_Bo_2, v_Bo_3, v_Bo_4, v_Bo_5, v_Bo_6
+
+.. jupyter-execute::
+
+   w_B_1 = A_w_B.diff(u1, A, var_in_dcm=False)
+   w_B_2 = A_w_B.diff(u2, A, var_in_dcm=False)
+   w_B_3 = A_w_B.diff(u3, A, var_in_dcm=False)
+   w_B_4 = A_w_B.diff(u4, A, var_in_dcm=False)
+   w_B_5 = A_w_B.diff(u5, A, var_in_dcm=False)
+   w_B_6 = A_w_B.diff(u6, A, var_in_dcm=False)
+
+   w_B_1, w_B_2, w_B_3, w_B_4, w_B_5, w_B_6
+
+The ``partial_velocity()`` function does this same thing. Notice that due to
+our velocity definitions, we get a very simple set of partial velocities.
+
+.. jupyter-execute::
+
+   par_vels = me.partial_velocity([A_v_Bo, A_w_B], [u1, u2, u3, u4, u5, u6], A)
+
+   par_vels
+
+Now form the generalized active forces:
+
+.. jupyter-execute::
+
+   T_B = Mx*B.x + My*B.y + Mz*B.z
+   R_Bo = Fx*B.x + Fy*B.y + Fz*B.z
+
+   F1 = v_Bo_1.dot(R_Bo) + w_B_1.dot(T_B)
+   F2 = v_Bo_2.dot(R_Bo) + w_B_2.dot(T_B)
+   F3 = v_Bo_3.dot(R_Bo) + w_B_3.dot(T_B)
+   F4 = v_Bo_4.dot(R_Bo) + w_B_4.dot(T_B)
+   F5 = v_Bo_5.dot(R_Bo) + w_B_5.dot(T_B)
+   F6 = v_Bo_6.dot(R_Bo) + w_B_6.dot(T_B)
+
+   Fr = sm.Matrix([F1, F2, F3, F4, F4, F6])
+   Fr
+
+and the generalized inertia forces:
+
+.. jupyter-execute::
+
+   I = me.inertia(B, Ixx, Iyy, Izz, Ixy, Iyz, Ixz)
+
+   Rs = -m*Bo.acc(A)
+   Ts = -(B.ang_acc_in(A).dot(I) + me.cross(A_w_B, I).dot(A_w_B))
+
+   F1s = v_Bo_1.dot(Rs) + w_B_1.dot(Ts)
+   F2s = v_Bo_2.dot(Rs) + w_B_2.dot(Ts)
+   F3s = v_Bo_3.dot(Rs) + w_B_3.dot(Ts)
+   F4s = v_Bo_4.dot(Rs) + w_B_4.dot(Ts)
+   F5s = v_Bo_5.dot(Rs) + w_B_5.dot(Ts)
+   F6s = v_Bo_6.dot(Rs) + w_B_6.dot(Ts)
+
+   Frs = sm.Matrix([F1s, F2s, F3s, F4s, F5s, F6s])
+   Frs
+
+and finally Kane's Equations:
+
+.. jupyter-execute::
+
+   Fr + Frs
+
+We can put this in canonical form (Eq. :math:numref:`eq-canonical-eom-form`)by
+extracting the mass matrix, which is the linear coefficient matrix of
+:math:`\bar{u}`:
+
+.. jupyter-execute::
+
+   u = sm.Matrix([u1, u2, u3, u4, u5, u6])
+   t = me.dynamicsymbols._t
+   ud = u.diff(t)
+
+The mass matrix is:
+
+.. jupyter-execute::
+
+   M = -Frs.jacobian(ud)
+   M
+
+The fictitious forces vector is:
+
+.. jupyter-execute::
+
+   C = -Frs.xreplace({udi: 0 for udi in ud})
+   C
+
+And the forcing vector is:
+
+.. jupyter-execute::
+
+   F = Fr
+   F
+
+This example may seem overly complicated when using Kane's method, but it is a
+systematic method that works for any number of rigid bodies and particles in a
+system.
 
 Equations of Motion
 ===================
