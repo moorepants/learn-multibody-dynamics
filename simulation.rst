@@ -5,7 +5,7 @@ Simulation
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`simuluation` or Jupyter Notebook:
+   :jupyter-download:script:`simulation` or Jupyter Notebook:
    :jupyter-download:notebook:`simulation`.
 
 .. jupyter-execute::
@@ -35,10 +35,10 @@ Recall that :math:`\bar{f}_m` is:
 
    \bar{f}_m(\bar{x}, t)
    =
-   -\mathbf{Y}^{-1}
-   \bar{z}
+   -\mathbf{M}_m^{-1}
+   \bar{g}_m
 
-It is possible to form :math:`-\mathbf{Y}^{-1}` symbolically and it may be
+It is possible to form :math:`-\mathbf{M}_m^{-1}` symbolically and it may be
 suitable or preferrable for a given problem, but there are some possible
 drawbacks. For example, if the degrees of freedom are quite large, the
 resulting symbolic equations become exponetially more complex. Thus, we will
@@ -96,8 +96,8 @@ Numerical Evaluation
 
 Returning to the example of the two rods and the sliding mass from the previous
 chapter, we regenerate the symbolic equations of motion and stop when we have
-:math:`\bar{q}`, :math:`\bar{u}`, :math:`\mathbf{Y}_k`, :math:`\bar{z}_k`,
-:math:`\mathbf{Y}_d`, and :math:`\bar{z}_d`. The following dropdown has the
+:math:`\bar{q}`, :math:`\bar{u}`, :math:`\mathbf{M}_k`, :math:`\bar{g}_k`,
+:math:`\mathbf{M}_d`, and :math:`\bar{g}_d`. The following dropdown has the
 SymPy code to generate these symbolic vectors and matrices.
 
 .. admonition:: Symbolic Setup Code
@@ -195,11 +195,11 @@ SymPy code to generate these symbolic vectors and matrices.
 
       ud_zerod = {udr: 0 for udr in ud}
 
-      Yk = -sm.eye(3)
-      zk = u
+      Mk = -sm.eye(3)
+      gk = u
 
-      Yd = Frs.jacobian(ud)
-      zd = Frs.xreplace(ud_zerod) + Fr
+      Md = Frs.jacobian(ud)
+      gd = Frs.xreplace(ud_zerod) + Fr
 
 .. jupyter-execute::
 
@@ -207,11 +207,11 @@ SymPy code to generate these symbolic vectors and matrices.
 
 .. jupyter-execute::
 
-   Yk, zk
+   Mk, gk
 
 .. jupyter-execute::
 
-   Yd, zd
+   Md, gd
 
 Additionally, we will define a column vector :math:`\bar{p}` that contains all
 of the constant parameters in the equations of motion. We should know these
@@ -219,7 +219,7 @@ from our problem definition but they can also be found with:
 
 .. jupyter-execute::
 
-   Yk.free_symbols | zk.free_symbols | Yd.free_symbols | zd.free_symbols
+   Mk.free_symbols | gk.free_symbols | Md.free_symbols | gd.free_symbols
 
 The ``|`` operator does the union of Python sets, which is the date type that
 ``free_symbols`` returns. :math:`t` is not a constant parameter, but the rest
@@ -230,13 +230,13 @@ are. We can then define the symbolic :math:`p` as:
    p = sm.Matrix([g, kl, kt, l, m])
    p
 
-Now we will create a function to evaluate :math:`\mathbf{Y}_k`,
-:math:`\bar{z}_k`, :math:`\mathbf{Y}_d`, and :math:`\bar{z}_d`. given
+Now we will create a function to evaluate :math:`\mathbf{M}_k`,
+:math:`\bar{g}_k`, :math:`\mathbf{M}_d`, and :math:`\bar{g}_d`. given
 :math:`\bar{q}`, :math:`\bar{u}` and :math:`\bar{p}`.
 
 .. jupyter-execute::
 
-   eval_eom = sm.lambdify((q, u, p), [Yk, zk, Yd, zd])
+   eval_eom = sm.lambdify((q, u, p), [Mk, gk, Md, gd])
 
 To test out the function ``eval_eom()`` we need some NumPy 1D arrays for
 :math:`\bar{q}`, :math:`\bar{u}` and :math:`\bar{p}`.
@@ -286,29 +286,29 @@ computation pipeline.
 
 .. jupyter-execute::
 
-   Yk_vals, zk_vals, Yd_vals, zd_vals = eval_eom(q_vals, u_vals, p_vals)
-   Yk_vals, zk_vals, Yd_vals, zd_vals
+   Mk_vals, gk_vals, Md_vals, gd_vals = eval_eom(q_vals, u_vals, p_vals)
+   Mk_vals, gk_vals, Md_vals, gd_vals
 
 Now that :external:py:func:`~numpy.linalg.solve` can be used to solve the
 system of linear equations (:math:`\mathbf{A}\bar{x}=\bar{b}` type systems).
 
 .. note:: Note the use of :external:py:func:`~numpy.squeeze`. This forces
-   ``zk_vals`` and ``zd_vals`` to be a 1D array with shape(3,) instead of a 2D
+   ``gk_vals`` and ``gd_vals`` to be a 1D array with shape(3,) instead of a 2D
    array of shape(3, 1). This then causes ``qd_vals`` and ``ud_vals`` to be 1D
    arrays.
 
    .. jupyter-execute::
 
-      np.linalg.solve(-Yk_vals, zk_vals)
+      np.linalg.solve(-Mk_vals, gk_vals)
 
 .. jupyter-execute::
 
-   qd_vals = np.linalg.solve(-Yk_vals, np.squeeze(zk_vals))
+   qd_vals = np.linalg.solve(-Mk_vals, np.squeeze(gk_vals))
    qd_vals
 
 .. jupyter-execute::
 
-   ud_vals = np.linalg.solve(-Yd_vals, np.squeeze(zd_vals))
+   ud_vals = np.linalg.solve(-Md_vals, np.squeeze(gd_vals))
    ud_vals
 
 Simulate
@@ -384,11 +384,11 @@ state.
        u = x[3:]
 
        # evaluate the equations of motion matrices with the values of q, u, p
-       Yk, zk, Yd, zd = eval_eom(q, u, p)
+       Mk, gk, Md, gd = eval_eom(q, u, p)
 
        # solve for q' and u'
-       qd = np.linalg.solve(-Yk, zk.squeeze())
-       ud = np.linalg.solve(-Yd, zd.squeeze())
+       qd = np.linalg.solve(-Mk, gk.squeeze())
+       ud = np.linalg.solve(-Md, gd.squeeze())
 
        # pack q' and u' into a new state time derivative vector x'
        xd = np.empty_like(x)
