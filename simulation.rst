@@ -688,32 +688,39 @@ Now create the desired figure with the initial conditions shown:
 
    x, y, z = eval_point_coords(q_vals, p_vals)
 
+   line_prop = {
+       'color': 'black',
+       'marker': 'o',
+       'markerfacecolor': 'blue',
+       'markersize': 10,
+   }
+
    # top
-   #axes[0].set_aspect('equal')
-   axes[0].set_xlim((-0.6, 0.6))
+   top_lines, = axes[0].plot(y, z, **line_prop)
+   axes[0].set_xlim((-0.5, 0.5))
    axes[0].set_ylim((-0.5, 0.5))
    axes[0].set_title('Top View')
-   col_top = axes[0].scatter(y, z)
+   axes[0].set_aspect('equal')
 
    # 3d
-   col_3d = axes[1].scatter(y, z, x, color='blue')
-   axes[1].set_xlim((-0.6, 0.6))
+   lines_3d, = axes[1].plot(y, z, x, **line_prop)
+   axes[1].set_xlim((-0.5, 0.5))
    axes[1].set_ylim((-0.5, 0.5))
-   axes[1].set_zlim((-0.7, 0.0))
+   axes[1].set_zlim((-0.8, 0.2))
 
    # front
-   col_front = axes[2].scatter(y, x)
-   #axes[2].set_aspect('equal')
-   axes[2].set_xlim((-0.6, 0.6))
-   axes[2].set_ylim((-0.7, 0.0))
+   front_lines, = axes[2].plot(y, x, **line_prop)
+   axes[2].set_xlim((-0.5, 0.5))
+   axes[2].set_ylim((-0.8, 0.2))
    axes[2].set_title('Front View')
+   axes[2].set_aspect('equal')
 
    # right
-   col_right = axes[3].scatter(z, x)
-   #axes[3].set_aspect('equal')
+   right_lines, = axes[3].plot(z, x, **line_prop)
    axes[3].set_xlim((-0.5, 0.5))
-   axes[3].set_ylim((-0.7, 0.0))
+   axes[3].set_ylim((-0.8, 0.2))
    axes[3].set_title('Right View')
+   axes[3].set_aspect('equal')
 
    fig.tight_layout()
 
@@ -725,10 +732,10 @@ Create the animation update function.
 
    def animate(i):
       x, y, z = eval_point_coords(xs[i, :3], p_vals)
-      col_top.set_offsets(np.c_[y, z])
-      col_3d._offsets3d = (y, z, x)
-      col_front.set_offsets(np.c_[y, x])
-      col_right.set_offsets(np.c_[z, x])
+      top_lines.set_data(y, z)
+      lines_3d.set_data_3d(y, z, x)
+      front_lines.set_data(y, x)
+      right_lines.set_data(z, x)
 
    ani = animation.FuncAnimation(fig, animate, len(ts))
 
@@ -737,4 +744,4 @@ Display the resuls:
 .. jupyter-execute::
 
    from IPython.display import HTML
-   HTML(ani.to_jshtml())
+   HTML(ani.to_jshtml(fps=30))
