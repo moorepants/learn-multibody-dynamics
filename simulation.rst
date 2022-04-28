@@ -268,7 +268,7 @@ computation pipeline.
 
    u_vals = np.array([
        0.1,  # u1, rad/s
-       0.2,  # u2, rad/s
+       2.2,  # u2, rad/s
        0.3,  # u3, m/s
    ])
    u_vals, type(u_vals), u_vals.shape
