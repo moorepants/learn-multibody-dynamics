@@ -66,8 +66,9 @@ computational materials closely.
 
 In 2006, I took the course and naively decided to derive and analyze the
 non-linear and linear Carvallo-Whipple bicycle model (see [Meijaard2007]_ for
-an explanation of this model) as my course project. Fortunately, another
-student visiting from Aachen university also choose the same model and his
+an explanation of this model) as my course project (shared in
+https://github.com/moorepants/MAE-223). Fortunately, another student visiting
+from Aachen University, Thomas Engelhardt, also choose the same model and his
 success finally helped me squash the bugs in my model. Luke Peterson, Gilbert
 Gede, and Angadh Nanjangud subsequently joined Hubbard and Eke's labs and with
 Luke's lead we began being sucked into the world of open source scientific
