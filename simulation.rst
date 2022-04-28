@@ -242,11 +242,18 @@ To test out the function ``eval_eom()`` we need some NumPy 1D arrays for
 :math:`\bar{q}`, :math:`\bar{u}` and :math:`\bar{p}`.
 
 .. warning:: Make sure to use consistent units when you introduce numbers! I
-   recommend always using :math:`N=kg \cdot m \cdot s^{-2}` and :math:`N \cdot
-   m = kg \cdot m^2 \cdot rad \cdot s^{-1}`.
+   recommend always using
+   :math:`\textrm{force}=\textrm{mass}\cdot\textrm{acceleration}\rightarrow
+   N=kg \cdot m s^{-2}` and :math:`\textrm{torque}=\textrm{inertia} \times
+   \textrm{angular acceleration}\rightarrow N \cdot m = kg \cdot m^2 \cdot rad
+   \cdot s^{-2}`.
 
 The :external:py:func:`~numpy.deg2rad` and :external:py:func:`~numpy.rad2deg`
-are helpful for angle conversions.
+are helpful for angle conversions. All SymPy and NumPy trigonometric functions
+operate on radians, so you'll have to convert if you prefer thinking in
+degrees. My recommendation is to only use degrees when displaying the outputs,
+so keep any calls to these two functions at the input and output of your whole
+computation pipeline.
 
 .. jupyter-execute::
 
@@ -552,7 +559,7 @@ problems.
 
 .. _Runga-Kutta method: https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
 
-We will only be using this function from SciPy so we can import it direclty
+We will only be using this function from SciPy so we can import it directly
 with:
 
 .. jupyter-execute::
