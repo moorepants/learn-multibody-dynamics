@@ -560,7 +560,7 @@ Make a substitution dictionary to set :math:`\dot{\bar{u}}=\bar{0}`:
    ud_zerod = {udr: 0 for udr in ud}
    ud_zerod
 
-Find :math:`\bar{z}_d` with :math:`\bar{z}_d =
+Find :math:`\bar{g}_d` with :math:`\bar{g}_d =
 \bar{F}_r^* |_{\dot{\bar{u}}=\bar{0}} + \bar{F}_r`:
 
 .. jupyter-execute::
