@@ -32,6 +32,7 @@ Table of Contents
    mass
    loads
    generalized-forces
+   eom
    notation
    glossary
    references
