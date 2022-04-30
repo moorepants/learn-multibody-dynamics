@@ -360,6 +360,69 @@ so we need to eliminate those with the kinematical differential equations:
    Q.set_acc(N, Q.acc(N).xreplace(qdot_repl))
    Q.acc(N)
 
+.. warning::
+   :class: dropdown
+
+   Be careful when making substitutions when expressions contain derivatives
+   and double derivatives. The order in which you make the substitutions matter
+   and the printer that SymPy is using may not show you what you think you are
+   looking at. Take this expression:
+
+   .. jupyter-execute::
+
+      expr = m*q1.diff(t, 2) + kt*q1.diff(t) + kl*q1
+      expr
+
+   Let's say you need to make these substitutions:
+   :math:`q_1=\frac{q_2}{q_1},\dot{q}_1=u_1,\ddot{q}_1=\dot{u}_1`. It may seem
+   obvious that the :math:`\ddot{q}_1` substitution should be done before
+   :math:`q_1`, but care may be needed to help the computer realize this. If
+   the highest derivatives are substituted first with successive calls to
+   ``.xreplace()`` then you get:
+
+   .. jupyter-execute::
+
+      expr1 = expr.xreplace({q1.diff(t, 2): u1.diff(t)}).xreplace({q1.diff(t): u1}).xreplace({q1: q2/q1})
+      expr1
+
+   But if you substitute in the opposite order you get:
+
+   .. jupyter-execute::
+
+      expr2 = expr.xreplace({q1: q2/q1}).xreplace({q1.diff(t): u1}).xreplace({q1.diff(t, 2): u1.diff(t)})
+      expr2
+
+   which is a very different answer.
+
+   Checking the ``str()`` or ``srepr()`` versions of the expressions can help
+   diagnose what is going on. The string representation of the first expression
+   is as expected:
+
+   .. jupyter-execute::
+
+      print(expr1)
+
+   The string representation of the second expression shows that the
+   :math:`q_1` symbol was substituted into each derivative term.
+
+   .. jupyter-execute::
+
+      print(expr2)
+
+   ``expr2`` shows different results depending on how you print it! The typeset
+   math evaluates the derivatives and the string representation does not.
+
+   If you put all of the substitutions in the same dictionary, SymPy should
+   substitute the terms in the expected order:
+
+   .. jupyter-execute::
+
+      expr.xreplace({q1: q2/q1, q1.diff(t): u1, q1.diff(t, 2): u1.diff(t)})
+
+   .. jupyter-execute::
+
+      expr.xreplace({q1.diff(t, 2): u1.diff(t), q1.diff(t): u1, q1: q2/q1})
+
 Now we formulate the resultant forces and torques on each relevant point and
 frame:
 
