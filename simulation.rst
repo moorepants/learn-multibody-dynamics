@@ -39,12 +39,12 @@ Recall that :math:`\bar{f}_m` is:
    \bar{g}_m
 
 It is possible to form :math:`-\mathbf{M}_m^{-1}` symbolically and it may be
-suitable or preferrable for a given problem, but there are some possible
+suitable or preferable for a given problem, but there are some possible
 drawbacks. For example, if the degrees of freedom are quite large, the
-resulting symbolic equations become exponetially more complex. Thus, we will
+resulting symbolic equations become exponentially more complex. Thus, we will
 now move from symbolics to numerics.
 
-The NumPy_ library is the defacto base library for numeric computing with
+The NumPy_ library is the de facto base library for numeric computing with
 Python. NumPy allows us to do `array programming`_ with Python by providing
 floating point array data types and vectorized operators to enable repeat
 operations across arrays of values. In Sec.
@@ -97,7 +97,7 @@ Numerical Evaluation
 Returning to the example of the two rods and the sliding mass from the previous
 chapter, we regenerate the symbolic equations of motion and stop when we have
 :math:`\bar{q}`, :math:`\bar{u}`, :math:`\mathbf{M}_k`, :math:`\bar{g}_k`,
-:math:`\mathbf{M}_d`, and :math:`\bar{g}_d`. The following dropdown has the
+:math:`\mathbf{M}_d`, and :math:`\bar{g}_d`. The following drop down has the
 SymPy code to generate these symbolic vectors and matrices.
 
 .. admonition:: Symbolic Setup Code
@@ -243,10 +243,10 @@ To test out the function ``eval_eom()`` we need some NumPy 1D arrays for
 
 .. warning:: Make sure to use consistent units when you introduce numbers! I
    recommend always using
-   :math:`\textrm{force}=\textrm{mass}\cdot\textrm{acceleration}\rightarrow
-   N=kg \cdot m s^{-2}` and :math:`\textrm{torque}=\textrm{inertia} \times
-   \textrm{angular acceleration}\rightarrow N \cdot m = kg \cdot m^2 \cdot rad
-   \cdot s^{-2}`.
+   :math:`\textrm{force}=\textrm{mass}\times\textrm{acceleration}\rightarrow
+   N=kg \quad m s^{-2}` and :math:`\textrm{torque}=\textrm{inertia} \times
+   \textrm{angular acceleration}\rightarrow N \quad m = kg \quad m^2 \cdot rad
+   \quad s^{-2}`.
 
 The :external:py:func:`~numpy.deg2rad` and :external:py:func:`~numpy.rad2deg`
 are helpful for angle conversions. All SymPy and NumPy trigonometric functions
@@ -289,22 +289,30 @@ computation pipeline.
    Mk_vals, gk_vals, Md_vals, gd_vals = eval_eom(q_vals, u_vals, p_vals)
    Mk_vals, gk_vals, Md_vals, gd_vals
 
-Now that :external:py:func:`~numpy.linalg.solve` can be used to solve the
-system of linear equations (:math:`\mathbf{A}\bar{x}=\bar{b}` type systems).
+Now that :external:py:func:`~numpy.linalg.solve` (not the same as SymPy's
+``solve()``!) can be used to solve the system of linear equations
+(:math:`\mathbf{A}\bar{x}=\bar{b}` type systems).
 
 .. note:: Note the use of :external:py:func:`~numpy.squeeze`. This forces
    ``gk_vals`` and ``gd_vals`` to be a 1D array with shape(3,) instead of a 2D
    array of shape(3, 1). This then causes ``qd_vals`` and ``ud_vals`` to be 1D
-   arrays.
+   arrays instead of 2D.
 
    .. jupyter-execute::
 
       np.linalg.solve(-Mk_vals, gk_vals)
 
+So we numerically solve the kinematical differential equations for
+:math:`\dot{\bar{q}}`:
+
 .. jupyter-execute::
 
    qd_vals = np.linalg.solve(-Mk_vals, np.squeeze(gk_vals))
    qd_vals
+
+In this case, :math:`\dot{\bar{q}}=\bar{u}` but for nontrivial generalized
+speed definitions that will not be so. This next linear system solve gives the
+accelerations :math:`\dot{\bar{u}}`:
 
 .. jupyter-execute::
 
@@ -315,17 +323,17 @@ Simulate
 ========
 
 To simulate the system forward in time, we solve the `initial value problem`_
-of the ordinary differential equations.
+of the ordinary differential equations. A simple way to do so, is to use
+`Euler's Method`_.
 
 .. _initial value problem: https://en.wikipedia.org/wiki/Initial_value_problem
-
-A simple way to do so, is to use `Euler's Method`_.
-
 .. _Euler's Method: https://en.wikipedia.org/wiki/Euler_method
 
 .. math::
 
    \bar{x}_{i + 1} = \bar{x}_i + \Delta t \bar{f}_m(t_i, \bar{x}_i, \bar{p})
+
+:external:py:func:`~numpy.linspace`
 
 .. jupyter-execute::
 
@@ -334,12 +342,32 @@ A simple way to do so, is to use `Euler's Method`_.
        from integrating the ordinary differential equations with Euler's
        Method.
 
-       delt = 0.01  # seconds/sample
+       Parameters
+       ==========
+       rhs_func : function
+          Python function that evaluates the derivatice of the state: dxdt =
+          f(t, x).
+       tspan : 2-tuple
+         The initial time and final time: (t0, tf).
+       initial_cond : array_like, shape(2*n,)
+         Values of x at t0.
+       p_vals : array_like, shape(m,)
+         Values of constant parameters.
+       delt : float
+         Integration time step in seconds/step.
+
+       Returns
+       =======
+       ts : ndarray(n, )
+          Monotonically increasing values of time.
+       xs : ndarray(n, 2*n)
+          State values at each time in ts.
 
        """
        num_samples = int((tspan[1] - tspan[0])/delt)
        ts = np.linspace(tspan[0], tspan[1], num=num_samples + 1)
 
+       # Create an empty array to hold the state values.
        x = np.empty((len(ts), len(initial_cond)))
 
        # Set the initial conditions to the first element.
@@ -352,7 +380,7 @@ A simple way to do so, is to use `Euler's Method`_.
        return ts, x
 
 Now we need a Python function that represents :math:`\bar{f}_m(t_i, \bar{x}_i,
-\bar{p})`. This function evaluates the right hand side of the explicity
+\bar{p})`. This function evaluates the right hand side of the explicitly
 ordinary differential equations and calculated the time derivatives of the
 state.
 
@@ -399,7 +427,7 @@ state.
 
 With the function evaluated and numerical values already defined above we can
 check to see if it works. First combine :math:`\bar{q}` and :math:`\bar{u}`
-into a single column vector ``x_0`` and pick an arbitrary of time.
+into a single column vector ``x_0`` and pick an arbitrary amount of time.
 
 .. jupyter-execute::
 
@@ -416,8 +444,8 @@ Now execute the function:
    eval_rhs(t0, x0, p_vals)
 
 It seems to work, giving a result for the time derivative of the state vector.
-Now we can try out the the ``euler_integrate`` function to integration from
-``t0`` to ``tf``:
+Now we can try out the ``euler_integrate`` function to integration from ``t0``
+to ``tf``:
 
 .. jupyter-execute::
 
@@ -447,9 +475,9 @@ corresponding time. They look like:
 Plotting Simulation Trajectories
 ================================
 
-Matplotlib_ is the most widely used library for making plots. Browse `their
-example gallery`_ to get an idea of the library's capabilities. We will import
-matplotlib like so:
+Matplotlib_ is the most widely used Python library for making plots. Browse
+`their example gallery`_ to get an idea of the library's capabilities. We will
+import matplotlib like so:
 
 .. jupyter-execute::
 
@@ -536,10 +564,10 @@ Our function now gives an interpretable view of the results:
 
 .. todo:: Describe the results.
 
-Integrating with SciPy
+Integration with SciPy
 ======================
 
-Our ``euler_integrate()`` function seems to do the trick, but it all numerical
+Our ``euler_integrate()`` function seems to do the trick, but all numerical
 integrators suffer from numerical errors. Careful attention to `truncation
 error`_ is needed for to keep the error trajectories within some acceptable
 tolerance for your purposes. Euler's Method has poor error properties and there
@@ -548,16 +576,16 @@ results, at the cost of more complexity in their calculations.
 
 .. _truncation error: https://en.wikipedia.org/wiki/Truncation_error_(numerical_integration)
 
-SciPy is built on top of NumPy and provides a large assortment of battletested
+SciPy is built on top of NumPy and provides a large assortment of battle tested
 numerical methods, including numerical methods for integration. We are solving
-the initial problem of oridinary differential equations and SciPy includes the
+the initial problem of ordinary differential equations and SciPy includes the
 function :external:py:func:`~scipy.integrate.solve_ivp` as an alternative to
 our ``euler_integrate()`` function. ``solve_ivp()`` provides access to a
-several different integration methods that are sutiable for different problems.
-The default method is a `Runga-Kutta method` that works well for many types of
+several different integration methods that are suitable for different problems.
+The default method is a `Runge-Kutta method` that works well for many types of
 problems.
 
-.. _Runga-Kutta method: https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+.. _Runge-Kutta method: https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
 
 We will only be using this function from SciPy so we can import it directly
 with:
@@ -611,10 +639,10 @@ into the plot function.
    plot_results(result.t, np.transpose(result.y));
 
 The default result is very coarse in time. This is because the underlying
-integration algorthim adaptively selects the necessary time steps to stay
+integration algorithm adaptively selects the necessary time steps to stay
 within the desired maximum truncation error. If you want to specify which time
 values you'd like the result presented at you can do so by interpolating the
-results by providing the time values with the keyword argumetn ``t_eval=``.
+results by providing the time values with the keyword argument ``t_eval=``.
 
 .. jupyter-execute::
 
@@ -625,7 +653,7 @@ results by providing the time values with the keyword argumetn ``t_eval=``.
    plot_results(result.t, np.transpose(result.y));
 
 Now let's compare the results from ``euler_inegrate()`` with ``solve_ivp()``,
-the later of which uses a Runga-Kutta method that has lower truncation error.
+the later of which uses a Runge-Kutta method that has lower truncation error.
 We'll plot only :math:`q_1`.
 
 .. jupyter-execute::
@@ -640,12 +668,12 @@ We'll plot only :math:`q_1`.
    ax.set_ylabel('Angle [deg]')
 
 You can clearly see that the Euler Method deviates from the more accurate
-Runga-Kutta method. You'll need to learn more about truncation error and the
+Runge-Kutta method. You'll need to learn more about truncation error and the
 various integration methods to ensure you are getting the results you desire,
 but that is all I'll go over for the purposes of this chapter.
 
 Now set ``xs`` equal to the ``solve_ivp()`` result for use in the next
-sectionn:
+section:
 
 .. jupyter-execute::
 
