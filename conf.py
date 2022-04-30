@@ -97,8 +97,8 @@ html_theme_options = {
 if "ONGITHUB" in os.environ:
     # Takes too long to build locally for autobuild, so only do it in
     # production.
-    html_theme_options['css_minify'] = True
-    html_theme_options['html_minify'] = True
+    html_theme_options['css_minify'] = False
+    html_theme_options['html_minify'] = False
 html_css_files = ['css/custom.css']  # seems to load after the material css
 
 # Add any paths that contain custom static files (such as style sheets) here,
