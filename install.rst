@@ -80,3 +80,43 @@ To check that everything works, type the command to open Jupyter:
 
 Jupyter should open in your web browser and you should be able to run the
 scripts and notebooks found on the other pages.
+
+Software Versions
+=================
+
+This website was built with the following software versions:
+
+.. jupyter-execute::
+
+   import sympy
+   sympy.__version__
+
+.. jupyter-execute::
+
+   import numpy
+   numpy.__version__
+
+.. jupyter-execute::
+
+   import scipy
+   scipy.__version__
+
+.. jupyter-execute::
+
+   import matplotlib
+   matplotlib.__version__
+
+.. jupyter-execute::
+
+   import IPython
+   IPython.__version__
+
+.. jupyter-execute::
+
+   import notebook
+   notebook.__version__
+
+.. jupyter-execute::
+
+   import sphinx
+   sphinx.__version__
