@@ -1,6 +1,6 @@
-==========
-Simulation
-==========
+============================
+Simulation and Visualization
+============================
 
 .. note::
 
@@ -21,28 +21,30 @@ As mentioned at the end of the prior chapter, we will need to numerically
 integrate the equations of motion. If they are in explicit form, this integral
 describes how we can arrive at trajectories in time for the state variables by
 integrating with respect to time from an initial time :math:`t_0` to a final
-time :math:`t_f`.
+time :math:`t_f`. Recall that the time derivative of the state :math:`\bar{x}`
+is:
+
+.. math::
+   :label: eq-state-form-explicit-2
+
+   \dot{\bar{x}}(t) = \bar{f}_m(\bar{x}, t) = -\mathbf{M}_m^{-1}\bar{g}_m
+
+We can then find :math:`\bar{x}` by integration with respect to time:
 
 .. math::
    :label: eq-eom-integral-2
 
    \bar{x}(t) = \int^{t_f}_{t_0} \bar{f}_m(\bar{x}, t) dt
 
-Recall that :math:`\bar{f}_m` is:
-
-.. math::
-   :label: eq-state-form-explicit-2
-
-   \bar{f}_m(\bar{x}, t)
-   =
-   -\mathbf{M}_m^{-1}
-   \bar{g}_m
-
-It is possible to form :math:`-\mathbf{M}_m^{-1}` symbolically and it may be
-suitable or preferable for a given problem, but there are some possible
+It is possible to form :math:`-\mathbf{M}_m^{-1}\bar{g}_m` symbolically and it
+may be suitable or preferable for a given problem, but there are some possible
 drawbacks. For example, if the degrees of freedom are quite large, the
-resulting symbolic equations become exponentially more complex. Thus, we will
-now move from symbolics to numerics.
+resulting symbolic equations become exponentially more complex. Thus, it is
+generally best to move from symbolics to numerics before formulating the
+explicit ordinary differential equations.
+
+Numerical Evaluation
+====================
 
 The NumPy_ library is the de facto base library for numeric computing with
 Python. NumPy allows us to do `array programming`_ with Python by providing
@@ -55,7 +57,7 @@ our way to bridge the symbolic world of SymPy with the numeric world of NumPy.
 .. _NumPy: https://numpy.org
 .. _array programming: https://en.wikipedia.org/wiki/Array_programming
 
-We will import NumPy like so:
+We will import NumPy like so, by convention:
 
 .. jupyter-execute::
 
@@ -63,9 +65,9 @@ We will import NumPy like so:
 
 .. warning::
 
-   Beware that mixing SymPy and NumPy datatypes will rarely, if at all, provide
-   you with functioning code. Be careful because sometimes it may look like the
-   two libraries mix. For example, you can do this:
+   Beware that mixing SymPy and NumPy data types will rarely, if at all,
+   provide you with functioning code. Be careful because sometimes it may look
+   like the two libraries mix. For example, you can do this:
 
    .. jupyter-execute::
 
@@ -74,8 +76,9 @@ We will import NumPy like so:
       mat = np.array([[a, b], [c, d]])
       mat
 
-   But that will almost certainly cause you problems as you move forward. The
-   process should always be:
+   which gives a NumPy array containing SymPy symbols. But this will almost
+   certainly cause you problems as you move forward. The process you should
+   always follow for the purposes of this text is:
 
    .. jupyter-execute::
 
@@ -85,20 +88,21 @@ We will import NumPy like so:
       num_mat
 
    Also, be careful because NumPy and SymPy have many functions that are named
-   the same and you don't want to mix them up:
+   the same and you likley don't want to mix them up:
 
    .. jupyter-execute::
 
       np.cos(5) + sm.cos(5)
 
-Numerical Evaluation
-====================
+   We import NumPy as ``np`` and SymPy as ``sm`` to ensure functions with the
+   same names can coexist.
 
 Returning to the example of the two rods and the sliding mass from the previous
 chapter, we regenerate the symbolic equations of motion and stop when we have
 :math:`\bar{q}`, :math:`\bar{u}`, :math:`\mathbf{M}_k`, :math:`\bar{g}_k`,
 :math:`\mathbf{M}_d`, and :math:`\bar{g}_d`. The following drop down has the
-SymPy code to generate these symbolic vectors and matrices.
+SymPy code to generate these symbolic vectors and matrices take from the prior
+chapter.
 
 .. admonition:: Symbolic Setup Code
    :class: dropdown
@@ -160,32 +164,32 @@ SymPy code to generate these symbolic vectors and matrices.
       torques = [T_A, T_B]
       inertias = [I_A_Ao, I_B_Bo]
 
-      Fr = []
-      Frs = []
+      Fr_bar = []
+      Frs_bar = []
 
       for ur in [u1, u2, u3]:
 
-         Fri = 0
-         Frsi = 0
+         Fr = 0
+         Frs = 0
 
          for Pi, Ri, mi in zip(points, forces, masses):
             vr = Pi.vel(N).diff(ur, N)
-            Fri += vr.dot(Ri)
+            Fr += vr.dot(Ri)
             Rs = -mi*Pi.acc(N)
-            Frsi += vr.dot(Rs)
+            Frs += vr.dot(Rs)
 
          for Bi, Ti, Ii in zip(frames, torques, inertias):
             wr = Bi.ang_vel_in(N).diff(ur, N)
-            Fri += wr.dot(Ti)
+            Fr += wr.dot(Ti)
             Ts = -(Bi.ang_acc_in(N).dot(Ii) +
                    me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
-            Frsi += wr.dot(Ts)
+            Frs += wr.dot(Ts)
 
-         Fr.append(Fri)
-         Frs.append(Frsi)
+         Fr_bar.append(Fr)
+         Frs_bar.append(Frs)
 
-      Fr = sm.Matrix(Fr)
-      Frs = sm.Matrix(Frs)
+      Fr = sm.Matrix(Fr_bar)
+      Frs = sm.Matrix(Frs_bar)
 
       q = sm.Matrix([q1, q2, q3])
       u = sm.Matrix([u1, u2, u3])
@@ -215,7 +219,8 @@ SymPy code to generate these symbolic vectors and matrices.
 
 Additionally, we will define a column vector :math:`\bar{p}` that contains all
 of the constant parameters in the equations of motion. We should know these
-from our problem definition but they can also be found with:
+from our problem definition but they can also be found using
+``free_symbols()``:
 
 .. jupyter-execute::
 
@@ -244,9 +249,9 @@ To test out the function ``eval_eom()`` we need some NumPy 1D arrays for
 .. warning:: Make sure to use consistent units when you introduce numbers! I
    recommend always using
    :math:`\textrm{force}=\textrm{mass}\times\textrm{acceleration}\rightarrow
-   N=kg \quad m s^{-2}` and :math:`\textrm{torque}=\textrm{inertia} \times
-   \textrm{angular acceleration}\rightarrow N \quad m = kg \quad m^2 \cdot rad
-   \quad s^{-2}`.
+   N=kg \ m \cdot s^{-2}` and :math:`\textrm{torque}=\textrm{inertia} \times
+   \textrm{angular acceleration}\rightarrow N \ m = kg \ m^2 \cdot rad
+   \ s^{-2}`.
 
 The :external:py:func:`~numpy.deg2rad` and :external:py:func:`~numpy.rad2deg`
 are helpful for angle conversions. All SymPy and NumPy trigonometric functions
@@ -254,6 +259,10 @@ operate on radians, so you'll have to convert if you prefer thinking in
 degrees. My recommendation is to only use degrees when displaying the outputs,
 so keep any calls to these two functions at the input and output of your whole
 computation pipeline.
+
+Here I introduce ``q_vals``, ``u_vals``, and ``p_vals``, each a 1D NumPy array.
+Make sure to use a different variable name than your symbols so you can
+distinguish the symbolic and numeric matrices and arrays.
 
 .. jupyter-execute::
 
@@ -284,25 +293,21 @@ computation pipeline.
    ])
    p_vals, type(p_vals), p_vals.shape
 
+Now we can call ``eval_eom`` with the numeric inputs to get the numerical
+values of all of the equation of motion matrices and vectors:
+
 .. jupyter-execute::
 
    Mk_vals, gk_vals, Md_vals, gd_vals = eval_eom(q_vals, u_vals, p_vals)
    Mk_vals, gk_vals, Md_vals, gd_vals
 
-Now that :external:py:func:`~numpy.linalg.solve` (not the same as SymPy's
-``solve()``!) can be used to solve the system of linear equations
+Now we can solve for the state derivatives, :math:`\dot{\bar{q}}` and
+:math:`\dot{\bar{u}}`, numerically using NumPy's
+:external:py:func:`~numpy.linalg.solve` function (not the same as SymPy's
+``solve()``!) for linear systems of equations
 (:math:`\mathbf{A}\bar{x}=\bar{b}` type systems).
 
-.. note:: Note the use of :external:py:func:`~numpy.squeeze`. This forces
-   ``gk_vals`` and ``gd_vals`` to be a 1D array with shape(3,) instead of a 2D
-   array of shape(3, 1). This then causes ``qd_vals`` and ``ud_vals`` to be 1D
-   arrays instead of 2D.
-
-   .. jupyter-execute::
-
-      np.linalg.solve(-Mk_vals, gk_vals)
-
-So we numerically solve the kinematical differential equations for
+We first numerically solve the kinematical differential equations for
 :math:`\dot{\bar{q}}`:
 
 .. jupyter-execute::
@@ -319,25 +324,41 @@ accelerations :math:`\dot{\bar{u}}`:
    ud_vals = np.linalg.solve(-Md_vals, np.squeeze(gd_vals))
    ud_vals
 
-Simulate
-========
+.. note:: Note the use of :external:py:func:`~numpy.squeeze`. This forces
+   ``gk_vals`` and ``gd_vals`` to be a 1D array with shape(3,) instead of a 2D
+   array of shape(3, 1). This then causes ``qd_vals`` and ``ud_vals`` to be 1D
+   arrays instead of 2D.
+
+   .. jupyter-execute::
+
+      np.linalg.solve(-Mk_vals, gk_vals)
+
+Simulation
+==========
 
 To simulate the system forward in time, we solve the `initial value problem`_
-of the ordinary differential equations. A simple way to do so, is to use
-`Euler's Method`_.
+of the ordinary differential equations by numerically integrating
+:math:`\bar{f}_m(t, \bar{x}, \bar{p})`. A simple way to do so, is to use
+`Euler's Method`_:
+
+.. math::
+   :label: eq-eulers-method
+
+   \bar{x}_{i + 1} = \bar{x}_i + \Delta t \bar{f}_m(t_i, \bar{x}_i, \bar{p})
+
+Starting with :math:`t_i=t_0` and some initial values of the states
+:math:`\bar{x}_i=\bar{x}_0`, the state at :math:`\Delta t` in the future is
+computed. We repeat this until :math:`t_i=t_f` to find the trajectories of
+:math:`\bar{x}` with respect to time.
 
 .. _initial value problem: https://en.wikipedia.org/wiki/Initial_value_problem
 .. _Euler's Method: https://en.wikipedia.org/wiki/Euler_method
 
-.. math::
-
-   \bar{x}_{i + 1} = \bar{x}_i + \Delta t \bar{f}_m(t_i, \bar{x}_i, \bar{p})
-
-:external:py:func:`~numpy.linspace`
+The following function implements Euler's Method:
 
 .. jupyter-execute::
 
-   def euler_integrate(rhs_func, tspan, initial_cond, p_vals, delt=0.01):
+   def euler_integrate(rhs_func, tspan, x0_vals, p_vals, delt=0.03):
        """Returns state trajectory and corresponding values of time resulting
        from integrating the ordinary differential equations with Euler's
        Method.
@@ -345,44 +366,46 @@ of the ordinary differential equations. A simple way to do so, is to use
        Parameters
        ==========
        rhs_func : function
-          Python function that evaluates the derivatice of the state: dxdt =
-          f(t, x).
-       tspan : 2-tuple
-         The initial time and final time: (t0, tf).
-       initial_cond : array_like, shape(2*n,)
-         Values of x at t0.
-       p_vals : array_like, shape(m,)
+          Python function that evaluates the derivative of the state and takes
+          this form ``dxdt = f(t, x, p)``.
+       tspan : 2-tuple of floats
+         The initial time and final time values: (t0, tf).
+       x0_vals : array_like, shape(2*n,)
+         Values of the state x at t0.
+       p_vals : array_like, shape(o,)
          Values of constant parameters.
        delt : float
          Integration time step in seconds/step.
 
        Returns
        =======
-       ts : ndarray(n, )
+       ts : ndarray(m, )
           Monotonically increasing values of time.
-       xs : ndarray(n, 2*n)
+       xs : ndarray(m, 2*n)
           State values at each time in ts.
 
        """
+       # generate monotonically increasing values of time.
        num_samples = int((tspan[1] - tspan[0])/delt)
        ts = np.linspace(tspan[0], tspan[1], num=num_samples + 1)
 
-       # Create an empty array to hold the state values.
-       x = np.empty((len(ts), len(initial_cond)))
+       # create an empty array to hold the state values.
+       x = np.empty((len(ts), len(x0_vals)))
 
-       # Set the initial conditions to the first element.
-       x[0, :] = initial_cond
+       # set the initial conditions to the first element.
+       x[0, :] = x0_vals
 
-       # Use a for loop to sequentially calculate each new x.
+       # use a for loop to sequentially calculate each new x.
        for i, ti in enumerate(ts[:-1]):
            x[i + 1, :] = x[i, :] + delt*rhs_func(ti, x[i, :], p_vals)
 
        return ts, x
 
-Now we need a Python function that represents :math:`\bar{f}_m(t_i, \bar{x}_i,
-\bar{p})`. This function evaluates the right hand side of the explicitly
-ordinary differential equations and calculated the time derivatives of the
-state.
+I used :external:py:func:`~numpy.linspace` to generate equally spaced values
+between :math:`t_0` and :math:`t_f`. Now we need a Python function that
+represents :math:`\bar{f}_m(t_i, \bar{x}_i, \bar{p})`. This function evaluates
+the right hand side of the explicitly ordinary differential equations which
+calculates the time derivatives of the state.
 
 .. jupyter-execute::
 
@@ -403,7 +426,7 @@ state.
        Returns
        =======
        xd : ndarray, shape(6,)
-           Derivative of the state with respect to time.
+           Derivative of the state with respect to time at time ``t``.
 
        """
 
@@ -415,10 +438,10 @@ state.
        Mk, gk, Md, gd = eval_eom(q, u, p)
 
        # solve for q' and u'
-       qd = np.linalg.solve(-Mk, gk.squeeze())
-       ud = np.linalg.solve(-Md, gd.squeeze())
+       qd = np.linalg.solve(-Mk, np.squeeze(gk))
+       ud = np.linalg.solve(-Md, np.squeeze(gd))
 
-       # pack q' and u' into a new state time derivative vector x'
+       # pack dq/dt and du/dt into a new state time derivative vector dx/dt
        xd = np.empty_like(x)
        xd[:3] = qd
        xd[3:] = ud
@@ -427,7 +450,8 @@ state.
 
 With the function evaluated and numerical values already defined above we can
 check to see if it works. First combine :math:`\bar{q}` and :math:`\bar{u}`
-into a single column vector ``x_0`` and pick an arbitrary amount of time.
+into a single column vector of the initial conditions ``x0`` and pick an
+arbitrary value for time.
 
 .. jupyter-execute::
 
@@ -443,9 +467,9 @@ Now execute the function:
 
    eval_rhs(t0, x0, p_vals)
 
-It seems to work, giving a result for the time derivative of the state vector.
-Now we can try out the ``euler_integrate`` function to integration from ``t0``
-to ``tf``:
+It seems to work, giving a result for the time derivative of the state vector,
+matching the results we had above. Now we can try out the ``euler_integrate()``
+function to integration from ``t0`` to ``tf``:
 
 .. jupyter-execute::
 
@@ -477,7 +501,8 @@ Plotting Simulation Trajectories
 
 Matplotlib_ is the most widely used Python library for making plots. Browse
 `their example gallery`_ to get an idea of the library's capabilities. We will
-import matplotlib like so:
+use matplotlib to visualize the state trajectories and animate our system. The
+convention for importing the main functionality of matplotlib is:
 
 .. jupyter-execute::
 
@@ -495,19 +520,33 @@ make a basic plot use:
 
    plt.plot(ts, xs);
 
-.. note:: The closing semicolon at the end of the statement supressesses the
-   display of the returned objects from the function. See the difference here:
+.. note:: The closing semicolon at the end of the statement suppresses the
+   display of the returned objects in Jupyter. See the difference here:
 
    .. jupyter-execute::
 
       plt.plot(ts, xs)
 
 This plot shows that the state trajectory changes with respect to time, but
-without any more information it is hard to interpret. The following function
+without some more information it is hard to interpret. The following function
 uses :external:py:func:`~matplotlib.pyplot.subplots` to make a figure with
 panels for the different state variables. I use
-:external:py:func:`~sympy.physics.vector.printing.mlatex` to include the
-symbolic symbol names in the legends.
+:external:py:func:`~sympy.physics.vector.printing.vlatex` to include the
+symbolic symbol names in the legends. The other matplotlib functions and
+methods I use are:
+
+- :external:py:meth:`~matplotlib.figure.Figure.set_size_inches`
+- :external:py:meth:`~matplotlib.axes.Axes.plot`
+- :external:py:meth:`~matplotlib.axes.Axes.legend`
+- :external:py:meth:`~matplotlib.axes.Axes.set_ylabel`
+- :external:py:meth:`~matplotlib.axes.Axes.set_xlabel`
+- :external:py:meth:`~matplotlib.figure.Figure.tight_layout`
+
+I also make use of array slicing notation to select which rows and columns I
+want from each array. See the NumPy documentation `Indexing on ndarrays`_ for
+information on how this works.
+
+.. _Indexing on ndarrays: https://numpy.org/doc/stable/user/basics.indexing.html
 
 .. jupyter-execute::
 
@@ -517,10 +556,11 @@ symbolic symbol names in the legends.
 
        Parameters
        ==========
-       ts : array_like, shape(n,)
+       ts : array_like, shape(m,)
           Values of time.
-       xs : array_like, shape(n, 6)
-          Values of the state trajectories corresponding to ``ts``.
+       xs : array_like, shape(m, 6)
+          Values of the state trajectories corresponding to ``ts`` in order
+          [q1, q2, q3, u1, u2, u3].
 
        Returns
        =======
@@ -538,12 +578,12 @@ symbolic symbol names in the legends.
        axes[2].plot(ts, np.rad2deg(xs[:, 3:5]))
        axes[3].plot(ts, xs[:, 5])
 
-       axes[0].legend([me.mlatex(q[0], mode='inline'),
-                       me.mlatex(q[1], mode='inline')])
-       axes[1].legend([me.mlatex(q[2], mode='inline')])
-       axes[2].legend([me.mlatex(u[0], mode='inline'),
-                       me.mlatex(u[1], mode='inline')])
-       axes[3].legend([me.mlatex(u[2], mode='inline')])
+       axes[0].legend([me.vlatex(q[0], mode='inline'),
+                       me.vlatex(q[1], mode='inline')])
+       axes[1].legend([me.vlatex(q[2], mode='inline')])
+       axes[2].legend([me.vlatex(u[0], mode='inline'),
+                       me.vlatex(u[1], mode='inline')])
+       axes[3].legend([me.vlatex(u[2], mode='inline')])
 
        axes[0].set_ylabel('Angle [deg]')
        axes[1].set_ylabel('Distance [m]')
@@ -562,32 +602,38 @@ Our function now gives an interpretable view of the results:
 
    plot_results(ts, xs);
 
-.. todo:: Describe the results.
+We now see that :math:`q_1` oscillates between :math:`\pm 40 \textrm{deg}` with
+a single period. :math:`q_2` grows to around :math:`\pm 100 \textrm{deg}`, and
+:math:`q_3` has half an oscillation between -0.2 and 0.2 meters. For the
+initial conditions and constants we choose, this seems physically feasible.
 
 Integration with SciPy
 ======================
 
 Our ``euler_integrate()`` function seems to do the trick, but all numerical
 integrators suffer from numerical errors. Careful attention to `truncation
-error`_ is needed for to keep the error trajectories within some acceptable
-tolerance for your purposes. Euler's Method has poor error properties and there
-is a large number of other numerical integration methods that provide better
-results, at the cost of more complexity in their calculations.
+error`_ is needed to keep the error in the resulting trajectories within some
+acceptable tolerance for your problem's needs. Euler's Method has poor
+truncation error unless very small time steps are chosen. But more time steps
+results in longer computation time. There are a large number of other numerical
+integration methods that provide better results with fewer time steps, but at
+the cost of more complexity in the integration algorithm.
 
 .. _truncation error: https://en.wikipedia.org/wiki/Truncation_error_(numerical_integration)
 
-SciPy is built on top of NumPy and provides a large assortment of battle tested
-numerical methods, including numerical methods for integration. We are solving
-the initial problem of ordinary differential equations and SciPy includes the
-function :external:py:func:`~scipy.integrate.solve_ivp` as an alternative to
-our ``euler_integrate()`` function. ``solve_ivp()`` provides access to a
-several different integration methods that are suitable for different problems.
-The default method is a `Runge-Kutta method` that works well for many types of
-problems.
+SciPy_ is built on top of NumPy and provides a large assortment of battle
+tested numerical methods for NumPy arrays, including numerical methods for
+integration. We are solving the initial value problem of ordinary differential
+equations and SciPy includes the function
+:external:py:func:`~scipy.integrate.solve_ivp` for this purpose.
+``solve_ivp()`` provides access to a several different integration methods that
+are suitable for different problems. The default method used is a `Runge-Kutta
+method`_ that works well for non-stiff problems.
 
+.. _SciPy: https://www.scipy.org
 .. _Runge-Kutta method: https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
 
-We will only be using this function from SciPy so we can import it directly
+We will only be using ``solve_ivp()`` from SciPy so we can import it directly
 with:
 
 .. jupyter-execute::
@@ -595,15 +641,17 @@ with:
    from scipy.integrate import solve_ivp
 
 We can use ``solve_ivp()`` in much the same way as our ``euler_integrate()``
-function. The difference is that ``solve_ivp()`` takes a function that
-evaluates the right hand side of the ordinary differential equations that is of
-the form ``f(t, x)``. Our parameter vector ``p`` must be passed to the
-``args=`` optional keyword argument. If we only have one extra argument, as we
-do ``f(t, x, p)``, then we must make a single element tuple ``(p_vals,)``.
-Other than that, the inputs are the same as ``euler_integrate()``.
-``solve_ivp()`` returns a solution object that contains quite a bit of
-information (other than the trajectories). See the documentation for
-``solve_ivp()`` for all the details.
+function (in fact I designed ``euler_integrate()`` to mimic ``solve_ivp()``).
+The difference is that ``solve_ivp()`` takes a function that evaluates the
+right hand side of the ordinary differential equations that is of the form
+``f(t, x)`` (no ``p``!). Our parameter vector ``p`` must be passed to the
+``args=`` optional keyword argument in ``solve_ivp()`` to get things to work.
+If we only have one extra argument, as we do ``f(t, x, p)``, then we must make
+a 1-tuple ``(p_vals,)``.  Other than that, the inputs are the same as
+``euler_integrate()``.  ``solve_ivp()`` returns a solution object that contains
+quite a bit of information (other than the trajectories). See the documentation
+for :external:py:func:`~scipy.integrate.solve_ivp` for all the details and more
+examples.
 
 Here is how we use the integrator with our previously defined system:
 
@@ -629,7 +677,7 @@ Note the shape of the trajectory array:
 
    np.shape(result.y)
 
-It is the transpose of our ``xs`` above. Knowing that we can use our
+It is the transpose of our ``xs`` computed above. Knowing that we can use our
 ``plot_results()`` function to view the results. I use
 :external:py:func:`~numpy.transpose` to transpose the array before passing it
 into the plot function.
@@ -638,11 +686,14 @@ into the plot function.
 
    plot_results(result.t, np.transpose(result.y));
 
-The default result is very coarse in time. This is because the underlying
-integration algorithm adaptively selects the necessary time steps to stay
-within the desired maximum truncation error. If you want to specify which time
-values you'd like the result presented at you can do so by interpolating the
-results by providing the time values with the keyword argument ``t_eval=``.
+The default result is very coarse in time (only 10 steps!). This is because the
+underlying integration algorithm adaptively selects the necessary time steps to
+stay within the desired maximum truncation error. The Runge-Kutta method gives
+good accuracy with fewer integration steps in this case.
+
+If you want to specify which time values you'd like the result presented at you
+can do so by interpolating the results by providing the time values with the
+keyword argument ``t_eval=``.
 
 .. jupyter-execute::
 
@@ -652,9 +703,9 @@ results by providing the time values with the keyword argument ``t_eval=``.
 
    plot_results(result.t, np.transpose(result.y));
 
-Now let's compare the results from ``euler_inegrate()`` with ``solve_ivp()``,
-the later of which uses a Runge-Kutta method that has lower truncation error.
-We'll plot only :math:`q_1`.
+Lastly, let's compare the results from ``euler_inegrate()`` with
+``solve_ivp()``, the later of which uses a Runge-Kutta method that has lower
+truncation error.  We'll plot only :math:`q_1` for this comparison.
 
 .. jupyter-execute::
 
@@ -662,67 +713,98 @@ We'll plot only :math:`q_1`.
    fig.set_size_inches((10.0, 6.0))
 
    ax.plot(ts, np.rad2deg(xs[:, 0]), 'k',
-           result.t, np.rad2deg(result.y.T[:, 0]), 'b');
+           result.t, np.rad2deg(np.transpose(result.y)[:, 0]), 'b');
    ax.legend(['euler_integrate', 'solve_ivp'])
    ax.set_xlabel('Time [s]')
-   ax.set_ylabel('Angle [deg]')
+   ax.set_ylabel('Angle [deg]');
 
 You can clearly see that the Euler Method deviates from the more accurate
 Runge-Kutta method. You'll need to learn more about truncation error and the
-various integration methods to ensure you are getting the results you desire,
-but that is all I'll go over for the purposes of this chapter.
+various integration methods to ensure you are getting the results you desire.
+For now, be aware that truncation error and `floating point arithmetic
+error`_ can give you inaccurate results.
 
-Now set ``xs`` equal to the ``solve_ivp()`` result for use in the next
-section:
+.. _floating point arthmetic error: https://en.wikipedia.org/wiki/Floating-point_arithmetic
+
+Now set ``xs`` equal to the ``solve_ivp()`` result for use in the next section:
 
 .. jupyter-execute::
 
-   xs = result.y.T
+   xs = np.transpose(result.y)
 
 Animation with Matplotlib
 =========================
 
-.. todo:: Sample time for 30 fps
-
-Matplotlib provides tools to make animations by iterating over data and
+Matplotlib also provides tools to make animations by iterating over data and
 updating the plot. I'll create a very simple set of plots that give 4 views of
-points on the two bodies moving in space.
+interesting points in our system.
 
-First create a function that calculates the :math:`xyz` coordinates relative to
-point :math:`O`.
+Matplotlib's plot axes default to displaying the abscissa (:math:`x`)
+horizontal and positive towards the right and the ordinate (:math:`y`) vertical
+and positive upwards. The coordinate system in
+:numref:`fig-eom-double-rod-pendulum` has :math:`\hat{n}_x` positive downwards
+and :math:`\hat{n}_y` positive to the right. We can create a viewing reference
+frame :math:`M` that matches matplotlib's axes like so:
 
 .. jupyter-execute::
 
    M = me.ReferenceFrame('M')
-   M.orient_axis(N, sm.pi, N.y)
+   M.orient_axis(N, sm.pi/2, N.z)
 
-   By1 = me.Point('By1')
-   By2 = me.Point('By2')
-   By1.set_pos(Bo, l/2*B.y)
-   By2.set_pos(Bo, -l/2*B.y)
+Now :math:`\hat{m}_x` is positive to the right, :math:`\hat{m}_y` is positive
+upwards, and :math:`\hat{m}_z` points out of the screen.
+
+I'll also introduce a couple of points on each end of the rod :math:`B`, just
+for visualization purposes:
+
+.. jupyter-execute::
+
+   Bl = me.Point('B_l')
+   Br = me.Point('B_r')
+   Bl.set_pos(Bo, -l/2*B.y)
+   Br.set_pos(Bo, l/2*B.y)
+
+Now, we can project the four points :math:`B_o,Q,B_l,B_r` onto the unit vectors
+of :math:`M` using ``lambdify()`` to get the Cartesian coordinates of each
+point relative to point :math:`O`. I use
+:external:py:meth:`~sympy.matrices.Matrix.row_join` to stack the matrices together
+to build a single matrix with all points' coordinates.
+
+.. jupyter-execute::
 
    coordinates = O.pos_from(O).to_matrix(M)
-   for point in [Bo, Q, By1, By2]:
+   for point in [Bo, Q, Bl, Br]:
       coordinates = coordinates.row_join(point.pos_from(O).to_matrix(M))
 
    eval_point_coords = sm.lambdify((q, p), coordinates)
    eval_point_coords(q_vals, p_vals)
 
-Now create the desired figure with the initial conditions shown:
+The first row are the :math:`x` coordinates of each point, the second row has
+the :math:`y` coordinates, and the last the :math:`z` coordinates.
+
+Now create the desired 4 panel figure with three 2D views of the system and one
+with a 3D view using the initial conditions and constant parameters shown. I
+make use of :external:py:meth:`~matplotlib.figure.Figure.add_subplot` to
+control if the panel is 2D or 3D.
+:external:py:meth:`~matplotlib.axes.Axes.set_aspect` ensures that the abscissa
+and ordinate dimensions display in a 1:1 ratio.
 
 .. jupyter-execute::
 
-   fig = plt.figure()
-   fig.set_size_inches((8.0, 8.0))
-
-   axes = []
-   axes.append(fig.add_subplot(2, 2, 1))
-   axes.append(fig.add_subplot(2, 2, 2, projection='3d'))
-   axes.append(fig.add_subplot(2, 2, 3))
-   axes.append(fig.add_subplot(2, 2, 4))
-
+   # initial configuration of the points
    x, y, z = eval_point_coords(q_vals, p_vals)
 
+   # create a figure
+   fig = plt.figure()
+   fig.set_size_inches((10.0, 10.0))
+
+   # setup the subplots
+   ax_top = fig.add_subplot(2, 2, 1)
+   ax_3d = fig.add_subplot(2, 2, 2, projection='3d')
+   ax_front = fig.add_subplot(2, 2, 3)
+   ax_right = fig.add_subplot(2, 2, 4)
+
+   # common line and marker properties for each panel
    line_prop = {
        'color': 'black',
        'marker': 'o',
@@ -730,53 +812,90 @@ Now create the desired figure with the initial conditions shown:
        'markersize': 10,
    }
 
-   # top
-   top_lines, = axes[0].plot(y, z, **line_prop)
-   axes[0].set_xlim((-0.5, 0.5))
-   axes[0].set_ylim((-0.5, 0.5))
-   axes[0].set_title('Top View')
-   axes[0].set_aspect('equal')
+   # top view
+   lines_top, = ax_top.plot(x, z, **line_prop)
+   ax_top.set_xlim((-0.5, 0.5))
+   ax_top.set_ylim((0.5, -0.5))
+   ax_top.set_title('Top View')
+   ax_top.set_xlabel('x')
+   ax_top.set_ylabel('z')
+   ax_top.set_aspect('equal')
 
-   # 3d
-   lines_3d, = axes[1].plot(y, z, x, **line_prop)
-   axes[1].set_xlim((-0.5, 0.5))
-   axes[1].set_ylim((-0.5, 0.5))
-   axes[1].set_zlim((-0.8, 0.2))
+   # 3d view
+   lines_3d, = ax_3d.plot(x, z, y, **line_prop)
+   ax_3d.set_xlim((-0.5, 0.5))
+   ax_3d.set_ylim((0.5, -0.5))
+   ax_3d.set_zlim((-0.8, 0.2))
+   ax_3d.set_xlabel('x')
+   ax_3d.set_ylabel('z')
+   ax_3d.set_zlabel('y')
 
-   # front
-   front_lines, = axes[2].plot(y, x, **line_prop)
-   axes[2].set_xlim((-0.5, 0.5))
-   axes[2].set_ylim((-0.8, 0.2))
-   axes[2].set_title('Front View')
-   axes[2].set_aspect('equal')
+   # front view
+   lines_front, = ax_front.plot(x, y, **line_prop)
+   ax_front.set_xlim((-0.5, 0.5))
+   ax_front.set_ylim((-0.8, 0.2))
+   ax_front.set_title('Front View')
+   ax_front.set_xlabel('x')
+   ax_front.set_ylabel('y')
+   ax_front.set_aspect('equal')
 
-   # right
-   right_lines, = axes[3].plot(z, x, **line_prop)
-   axes[3].set_xlim((-0.5, 0.5))
-   axes[3].set_ylim((-0.8, 0.2))
-   axes[3].set_title('Right View')
-   axes[3].set_aspect('equal')
+   # right view
+   lines_right, = ax_right.plot(z, y, **line_prop)
+   ax_right.set_xlim((0.5, -0.5))
+   ax_right.set_ylim((-0.8, 0.2))
+   ax_right.set_title('Right View')
+   ax_right.set_xlabel('z')
+   ax_right.set_ylabel('y')
+   ax_right.set_aspect('equal')
 
    fig.tight_layout()
 
-Create the animation update function.
+Now we will use :external:py:class:`~matplotlib.animation.FuncAnimation` to
+generate an animation. See the `animation examples`_ for more information on
+creating animations with matplotib.
+
+.. _animation examples: https://matplotlib.org/3.5.1/gallery/index.html#animation
+
+First import ``FuncAnimation()``:
 
 .. jupyter-execute::
 
-   import matplotlib.animation as animation
+   from matplotlib.animation import FuncAnimation
+
+Now create a function that takes an frame index ``i``, calculates the
+configuration of the points for the i\ :sup:`th` state in ``xs``, and updates
+the data for the lines we have already plotted with
+:external:py:meth:`~matplotlib.lines.Line2D.set_data` and
+:external:py:meth:`~mpl_toolkits.mplot3d.art3d.Line3D.set_data_3d`.
+
+.. jupyter-execute::
 
    def animate(i):
       x, y, z = eval_point_coords(xs[i, :3], p_vals)
-      top_lines.set_data(y, z)
-      lines_3d.set_data_3d(y, z, x)
-      front_lines.set_data(y, x)
-      right_lines.set_data(z, x)
+      lines_top.set_data(x, z)
+      lines_3d.set_data_3d(x, z, y)
+      lines_front.set_data(x, y)
+      lines_right.set_data(z, y)
 
-   ani = animation.FuncAnimation(fig, animate, len(ts))
+Now provide the figure, the animation update function, and the number of frames
+to ``FuncAnimation``:
 
-Display the resuls:
+.. jupyter-execute::
+
+   ani = FuncAnimation(fig, animate, len(ts))
+
+``FuncAnimation`` can create an interactive animation, movie files, and other
+types of outputs. Here I take advantage of IPython's HTML display function and
+the :external:py:meth:`~matplotlib.animation.Animation.to_jshtml` method to
+create a web browser friendly visualization of the animation.
 
 .. jupyter-execute::
 
    from IPython.display import HTML
+
    HTML(ani.to_jshtml(fps=30))
+
+If we've setup our animation correctly and our equations of motion are correct,
+we should see physically believable motion of our system. In this case, it
+looks like we've successfully simulated and visualized our first multibody
+system!
