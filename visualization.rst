@@ -20,20 +20,25 @@ dimensional graphics to visualize the motion of your multibody system. There
 are many software tools for generating interactive three dimensional graphics
 from classic lower level tools like OpenGL_ to graphic user interfaces for
 drawing and animating 3D models like Blender_ (birthed in the Netherlands!) We
-will use PyThreeJS which is a Python wrapper to the ThreeJS_ Javascript library
-that is built on WebGL_ (similar to OpenGL but made to execute through your
-browser). Check out the demos_ on ThreeJS's website to get an idea of how
-powerful the tool is for 3D visualizations in the web browser.
+will use PyThreeJS_ which is a Python wrapper to the ThreeJS_ Javascript
+library that is built on WebGL_ (similar to OpenGL but made to execute through
+your web browser). Check out the demos_ on ThreeJS's website to get an idea of
+how powerful the tool is for 3D visualizations in the web browser.
 
 .. _OpenGL: https://en.wikipedia.org/wiki/OpenGL
 .. _Blender: https://en.wikipedia.org/wiki/Blender_(software)
+.. _PyThreeJS: https://pythreejs.readthedocs.io/en/stable/
 .. _ThreeJS: https://threejs.org/
 .. _WebGL: https://en.wikipedia.org/wiki/WebGL
 .. _demos: https://threejs.org/examples/#webgl_animation_keyframes
 
-We'll use the example in :numref:`fig-eom-double-rod-pendulum` again. The
-following dropdown executes all of the code to construct the model and simulate
-it.
+We'll use the example in :numref:`fig-eom-double-rod-pendulum` again. Here is
+the figure again:
+
+.. figure:: figures/eom-double-rod-pendulum
+
+The following dropdown executes all of the code to construct the model and
+simulate it.
 
 .. admonition:: Modeling and Simulation Code
    :class: dropdown
@@ -215,12 +220,10 @@ it.
 PyThreeJS
 =========
 
-PyThreeJS allows you to use ThreeJS in Python. The functions and objects that
+PyThreeJS allows you to use ThreeJS via Python. The functions and objects that
 PyThreeJS makes available are found in its documentation, but since these have
 a 1:1 mapping to the ThreeJS code, you'll also find more information in the
-ThreeJS documentation.
-
-We will import PyThreeJS like so:
+ThreeJS documentation. We will import PyThreeJS like so:
 
 .. jupyter-execute::
 
@@ -254,6 +257,9 @@ color the above cylinder like so:
 Creating a Scene
 ================
 
+Create a new cylinder that is displaced from the origin of the scene and that
+has its own coordinate axes.
+
 .. jupyter-execute::
 
    cyl_geom = p3js.CylinderGeometry(radiusTop=0.1, radiusBottom=0.5, height=2.0)
@@ -263,7 +269,8 @@ Creating a Scene
    cyl_mesh.add(axes)
    cyl_mesh.position = (1.0, 1.0, 1.0)
 
-The X axis is red. The Y axis is green. The Z axis is blue.
+This is the boiler plate code for creating a static scene with the single
+cylinder:
 
 .. jupyter-execute::
 
@@ -284,10 +291,13 @@ The X axis is red. The Y axis is green. The Z axis is blue.
                             width=view_width,
                             height=view_height)
 
+Now display the scene by calling the rendered:
 
 .. jupyter-execute::
 
    renderer
+
+The axes lines are: X axis is red, Y axis is green, Z axis is blue.
 
 Transformation Matrices
 =======================
@@ -309,7 +319,7 @@ position takes this form:
 .. _transformation matrix: https://en.wikipedia.org/wiki/Transformation_matrix
 
 The direction cosine matrix is stored in the first three rows and columns, the
-position vector to a point in the mesh is stored in teh first three columns of
+position vector to a point in the mesh is stored in the first three columns of
 the bottom row. If there is no rotation or translation the transformation
 matrix becomes the identity matrix. This matrix is stored in the ``.matrix``
 attribute of the mesh:
@@ -333,12 +343,12 @@ Notice that the 4x4 matrix is stored "flattened" in a single list of 16 values.
    np.array(cyl_mesh.matrix).reshape(4, 4).flatten()
 
 Each geometry has its own local coordinate system and an origin. For the
-cyclinder, the origin is at the geometric center and the axis of the cyclinder
-is aligned with its local Y axis. For body :math:`A` we need the cylinder's
-axis to align with our :math:`\hat{a}_x` vector. To solve this, we need to
-create a new reference frame in which it's Y vector is aligned with the
-cylinder's axis so that we match the geometry. Introduce reference frame
-:math:`A_c` for this purpose:
+cylinder, the origin is at the geometric center and the axis of the cylinder is
+aligned with its local Y axis. For body :math:`A` we need the cylinder's axis
+to align with our :math:`\hat{a}_x` vector. To solve this, we need to create a
+new reference frame in which it's Y vector is aligned with the cylinder's axis
+so that we match the geometry. Introduce reference frame :math:`A_c` for this
+purpose:
 
 .. jupyter-execute::
 
@@ -391,7 +401,7 @@ convert to lists to be in the form that ThreeJS needs:
 
    TA
 
-Now create a function to numerically evaluate the trasformation matrices:
+Now create a function to numerically evaluate the transformation matrices:
 
 .. jupyter-execute::
 
@@ -408,10 +418,13 @@ Finally, create a list of lists for the transformation matrices at each time:
 
    for xi in xs:
       qi = xi[:3]
-      one, two, three = eval_transform(qi, p_vals)
-      TAs.append(one.squeeze().tolist())
-      TBs.append(two.squeeze().tolist())
-      TQs.append(three.squeeze().tolist())
+      TAi, TBi, TQi = eval_transform(qi, p_vals)
+      TAs.append(TAi.squeeze().tolist())
+      TBs.append(TBi.squeeze().tolist())
+      TQs.append(TQi.squeeze().tolist())
+
+Here are the first three numerical transformation matrices to see what we have
+created:
 
 .. jupyter-execute::
 
@@ -420,61 +433,69 @@ Finally, create a list of lists for the transformation matrices at each time:
 Geometry and Mesh Definitions
 =============================
 
+Create two cylinders for rods :math:`A` and :math:`B` and a sphere for particle
+:math:`Q`.
+
 .. jupyter-execute::
 
-   cylA_geom = p3js.CylinderBufferGeometry(
-       radiusTop=p_vals[3]/20,
-       radiusBottom=p_vals[3]/20,
+   rod_diameter = p_vals[3]/20
+
+   geom_A = p3js.CylinderGeometry(
+       radiusTop=rod_diameter,
+       radiusBottom=rod_diameter,
        height=p_vals[3],  # l
-       #radialSegments=20,
-       )
+   )
 
-   cylB_geom = p3js.CylinderBufferGeometry(
-       radiusTop=p_vals[3]/20,
-       radiusBottom=p_vals[3]/20,
+   geom_B = p3js.CylinderGeometry(
+       radiusTop=rod_diameter,
+       radiusBottom=rod_diameter,
        height=p_vals[3],  # l
-       #radialSegments=20,
-       )
+   )
+
+   geom_Q = p3js.SphereGeometry(radius=p_vals[3]/16)
+
+Now create meshes for each object and add a material of a different color for
+each mesh. Each mesh will need a unique name so that we can associate the
+animation information with the correct object. After the create of the mesh set
+``matrixAutoUpdate`` to false so that we can manually specify the
+transformation matrix during the animation, add a local coordinate set of axes
+to each mesh, and set the transformation matrix to the initial configuration.
 
 .. jupyter-execute::
 
-   sphQ_geom = p3js.SphereBufferGeometry(
-        radius=p_vals[3]/16)
+   arrow_length = 0.2
 
-.. jupyter-execute::
-
-   arrow_length = 0.3
-
-   rodA = p3js.Mesh(
-       geometry=cylA_geom,
+   mesh_A = p3js.Mesh(
+       geometry=geom_A,
        material=p3js.MeshStandardMaterial(color='red'),
-       name='rodA',
+       name='mesh_A',
    )
-   rodA.matrixAutoUpdate = False
-   rodA.add(p3js.AxesHelper(arrow_length))
-   rodA.matrix = TAs[0]
+   mesh_A.matrixAutoUpdate = False
+   mesh_A.add(p3js.AxesHelper(arrow_length))
+   mesh_A.matrix = TAs[0]
 
-   rodB = p3js.Mesh(
-       geometry=cylB_geom,
+   mesh_B = p3js.Mesh(
+       geometry=geom_B,
        material=p3js.MeshStandardMaterial(color='blue'),
-       name='rodB',
+       name='mesh_B',
    )
-   rodB.matrixAutoUpdate = False
-   rodB.add(p3js.AxesHelper(arrow_length))
-   rodB.matrix = TBs[0]
+   mesh_B.matrixAutoUpdate = False
+   mesh_B.add(p3js.AxesHelper(arrow_length))
+   mesh_B.matrix = TBs[0]
 
-   pointQ = p3js.Mesh(
-       geometry=sphQ_geom,
+   mesh_Q = p3js.Mesh(
+       geometry=geom_Q,
        material=p3js.MeshStandardMaterial(color='green'),
-       name='pointQ',
+       name='mesh_Q',
    )
-   pointQ.matrixAutoUpdate = False
-   pointQ.add(p3js.AxesHelper(arrow_length))
-   pointQ.matrix = TQs[0]
+   mesh_Q.matrixAutoUpdate = False
+   mesh_Q.add(p3js.AxesHelper(arrow_length))
+   mesh_Q.matrix = TQs[0]
 
 Scene Setup
 ===========
 
+Create a scene with a camera, lighting, coordinate axes, and all of the meshes.
 
 .. jupyter-execute::
 
@@ -482,52 +503,76 @@ Scene Setup
    view_height = 400
 
    camera = p3js.PerspectiveCamera(position=[1.5, 0.6, 1],
-                                  aspect=view_width/view_height)
-   camera.up = (-1, 0, 0)
+                                   up=[-1.0, 0.0, 0.0],
+                                   aspect=view_width/view_height)
+
    key_light = p3js.DirectionalLight(position=[0, 10, 10])
    ambient_light = p3js.AmbientLight()
 
    axes = p3js.AxesHelper()
-   scene = p3js.Scene(children=[rodA, rodB, pointQ, axes, camera, key_light, ambient_light])
+
+   children = [mesh_A, mesh_B, mesh_Q, axes, camera, key_light, ambient_light]
+
+   scene = p3js.Scene(children=children)
+
+Create a renderer for the scene that includes orbit controls so that
+mouse/trackpad zoom, rotation, and pan function.
+
+.. jupyter-execute::
+
    controller = p3js.OrbitControls(controlling=camera)
    renderer = p3js.Renderer(camera=camera, scene=scene, controls=[controller],
-                       width=view_width, height=view_height)
+                            width=view_width, height=view_height)
 
 Animation Setup
 ===============
 
+``VectorKeyframeTrack`` are used to associate time varying transformations with
+a specific mesh. Create a track for each mesh. Make sure that the name in
+``scene/<mesh name>.matrix`` matches the name of the meshes provided above. The
+``times`` and ``values`` are the simulation time values and the list of
+transformation matrices at each time.
+
 .. jupyter-execute::
 
-   transform_track_rodA = p3js.VectorKeyframeTrack(
-       name="scene/rodA.matrix",
+   track_A = p3js.VectorKeyframeTrack(
+       name="scene/mesh_A.matrix",
        times=ts,
        values=TAs
    )
 
-   transform_track_rodB = p3js.VectorKeyframeTrack(
-       name="scene/rodB.matrix",
+   track_B = p3js.VectorKeyframeTrack(
+       name="scene/mesh_B.matrix",
        times=ts,
        values=TBs
    )
 
-   transform_track_pointQ = p3js.VectorKeyframeTrack(
-       name="scene/pointQ.matrix",
+   track_Q = p3js.VectorKeyframeTrack(
+       name="scene/mesh_Q.matrix",
        times=ts,
        values=TQs
    )
 
+Now create an "action" that links the tracks to a play/pause control associates
+this with the scene.
+
 .. jupyter-execute::
 
-   camera_clip = p3js.AnimationClip(tracks=[transform_track_rodB,
-   transform_track_rodA, transform_track_pointQ], duration=ts[-1] - ts[0])
-   camera_action = p3js.AnimationAction(p3js.AnimationMixer(scene), camera_clip, scene)
+   tracks = [track_B, track_A, track_Q]
+   duration = ts[-1] - ts[0]
+   clip = p3js.AnimationClip(tracks=tracks, duration=duration)
+   action = p3js.AnimationAction(p3js.AnimationMixer(scene), clip, scene)
+
+You can find more about setting up animations with PyThreeJS in their
+documentation:
 
 https://pythreejs.readthedocs.io/en/stable/examples/Animation.html
 
-The X axis is red. The Y axis is green. The Z axis is blue.
-
 Animated Interactive 3D Visualization
 =====================================
+
+With the scene and animation now defined the renderer and the animation
+controls can be displayed:
 
 .. jupyter-execute::
 
@@ -535,8 +580,21 @@ Animated Interactive 3D Visualization
 
 .. jupyter-execute::
 
-   camera_action
+   action
 
-https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Suzanne/glTF/Suzanne.gltf
-https://upload.wikimedia.org/wikipedia/commons/e/e3/Suzanne.stl
-https://commons.wikimedia.org/wiki/File:Suzanne.stl
+The axes attached to the inertial reference frame and each mesh are the local
+coordinate system for that object. The X axis is red, the Y axis is green, the
+Z axis is blue.
+
+The animation can be used to confirm realistic motion of the multibody system
+and to visually explore the various motions that can occur.
+
+.. todo:: Create a function that takes the simulation parameters and outputs
+   the animation to show how to quickly iterate on the
+
+.. todo::
+
+   Show how to import more complex shapes.
+   https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Suzanne/glTF/Suzanne.gltf
+   https://upload.wikimedia.org/wikipedia/commons/e/e3/Suzanne.stl
+   https://commons.wikimedia.org/wiki/File:Suzanne.stl
