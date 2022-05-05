@@ -5,6 +5,7 @@ dependencies:
   - jupyter-sphinx
   - matplotlib
   - numpy
+  - pythreejs
   - scipy
   - sphinx
   - sphinx-autobuild  # dev
