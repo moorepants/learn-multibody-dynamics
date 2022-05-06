@@ -34,6 +34,7 @@ Table of Contents
    generalized-forces
    eom
    simulation
+   visualization
    notation
    glossary
    references

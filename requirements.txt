@@ -2,6 +2,7 @@ ghp-import
 jupyter-sphinx
 matplotlib
 numpy
+pythreejs
 scipy
 sphinx
 sphinx-material
