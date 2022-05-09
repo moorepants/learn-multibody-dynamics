@@ -200,7 +200,7 @@ output.
 
       p_vals = np.array([
           9.81,  # g, m/s**2
-          2.0,  # kl, N/m
+          3.0,  # kl, N/m
           0.01,  # kt, Nm/rad
           0.6,  # l, m
           1.0,  # m, kg
