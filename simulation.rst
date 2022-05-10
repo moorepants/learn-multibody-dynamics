@@ -386,8 +386,9 @@ The following function implements Euler's Method:
 
        """
        # generate monotonically increasing values of time.
-       num_samples = int((tspan[1] - tspan[0])/delt)
-       ts = np.linspace(tspan[0], tspan[1], num=num_samples + 1)
+       duration = tspan[1] - tspan[0]
+       num_samples = round(duration/delt) + 1
+       ts = np.arange(tspan[0], tspan[0] + delt*num_samples, delt)
 
        # create an empty array to hold the state values.
        x = np.empty((len(ts), len(x0_vals)))
