@@ -35,6 +35,7 @@ Table of Contents
    eom
    simulation
    visualization
+   constrained-eom
    notation
    glossary
    references
