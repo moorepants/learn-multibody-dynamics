@@ -200,7 +200,7 @@ output.
 
       p_vals = np.array([
           9.81,  # g, m/s**2
-          2.0,  # kl, N/m
+          3.0,  # kl, N/m
           0.01,  # kt, Nm/rad
           0.6,  # l, m
           1.0,  # m, kg
@@ -578,8 +578,8 @@ of transformation matrices at each time, respectively.
        values=TQs
    )
 
-Now create an :external:py:`~pythreejs.AnimationAction` that links the tracks
-to a play/pause button and associates this with the scene.
+Now create an :external:py:class:`~pythreejs.AnimationAction` that links the
+tracks to a play/pause button and associates this with the scene.
 
 .. jupyter-execute::
 
@@ -615,7 +615,8 @@ The animation can be used to confirm realistic motion of the multibody system
 and to visually explore the various motions that can occur.
 
 .. todo:: Create a function that takes the simulation parameters and outputs
-   the animation to show how to quickly iterate on the
+   the animation to show how to quickly iterate on changes to initial
+   conditions and parameters.
 
 .. todo::
 
