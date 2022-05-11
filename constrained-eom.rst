@@ -10,9 +10,14 @@ Constrained Equations of Motion
 
 .. jupyter-execute::
 
+   import numpy as np
    import sympy as sm
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
+
+We introduced two types of constraints holonomic (configuration) constraints
+and nonholonomic (motion) constraints in prior chapters. In general, holonomic
+constraints are nonlinear constraints in the coordinates.
 
 Nonholomic Constraints
 ======================
@@ -33,6 +38,15 @@ speeds and their time derivatives.
    \bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t) = \mathbf{M}_k\dot{\bar{q}} + \bar{g}_k  = 0 \\
    \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = \mathbf{M}_n\bar{u}_r + \bar{g}_n = 0 \\
    \dot{\bar{f}}_n(\dot{\bar{u}}_s, \dot{\bar{u}}_r, \bar{u}_s, \bar{u}_r, \bar{q}, t) = \mathbf{M}_{nd}\dot{\bar{u}}_r + \bar{g}_{nd}= 0
+
+.. math::
+   :label: eq-nonholonomic-steps
+
+   \bar{u} = [\bar{u}_s \ \bar{u}_r] \\
+   \bar{u}_r = -\mathbf{M}_n^{-1}(\bar{q}, t)\bar{g}_n(\bar{u}_s, \bar{q}, t) \\
+   \dot{\bar{q}} = -\mathbf{M}_k^{-1}(\bar{q}, t)\bar{g}_k(\bar{u}, \bar{q}, t) \\
+   \dot{\bar{u}}_s = -\mathbf{M}_d(\bar{q}, t) \bar{g}_d(\bar{u}, \bar{q}, t) \\
+   \dot{\bar{u}}_r = -\mathbf{M}_{nd}^{-1}(\dot{\bar{u}}_s, \bar{q}, t) \bar{g}_{nd}(\bar{u}, \bar{q}, t)
 
 The following psuedo code shows how the derivatives of the generalized speeds
 and generalized coordinates can be calculated from the above equations.
@@ -75,7 +89,30 @@ moments of inertia of the three bodies are the same.
 .. jupyter-execute::
 
    q1, q2, q3, q4, q5 = me.dynamicsymbols('q1, q2, q3, q4, q5')
-   l = sm.symbols('l')
+   u1, u2, u3, u4, u5 = me.dynamicsymbols('u1, u2, u3, u4, u5')
+   l, I, m = sm.symbols('l, I, m')
+   t = me.dynamicsymbols._t
+
+   p = sm.Matrix([l, I, m])
+   q = sm.Matrix([q1, q2, q3, q4, q5])  # coordinates
+   us = sm.Matrix([u3, u4, u5])  # independent
+   ur = sm.Matrix([u1, u2])  # dependent
+   u = us.col_join(ur)
+
+   p, q, us, ur, u
+
+.. jupyter-execute::
+
+   qd = q.diff()
+   ud = u.diff(t)
+   usd = us.diff(t)
+   urd = ur.diff(t)
+
+   qd_zero = {qdi: 0 for qdi in qd}
+   ur_zero = {ui: 0 for ui in ur}
+   us_zero = {ui: 0 for ui in us}
+   usd_zero = {udi: 0 for udi in usd}
+   urd_zero = {udi: 0 for udi in urd}
 
 The reference frames are all simple rotations about the axis normal to the
 plane:
@@ -91,14 +128,9 @@ plane:
    B.orient_axis(A, q4, A.z)
    C.orient_axis(A, q5, A.z)
 
-.. jupyter-execute::
-
    A.ang_vel_in(N)
    B.ang_vel_in(N)
    C.ang_vel_in(N)
-
-
-.. jupyter-execute::
 
    O = me.Point('O')
    Ao = me.Point('A_o')
@@ -109,122 +141,268 @@ plane:
    Bo.set_pos(Ao, l/2*A.x)
    Co.set_pos(Ao, -l/2*A.x)
 
-.. jupyter-execute::
-
    O.set_vel(N, 0)
    Ao.vel(N)
-
-.. jupyter-execute::
-
    Bo.v2pt_theory(Ao, N, A)
+   Co.v2pt_theory(Ao, N, A)
+
+The coordinates (independent and dependent) may be present in all of the
+equations.
 
 .. jupyter-execute::
 
-   Co.v2pt_theory(Ao, N, A)
+   # n=5 kinematical differential equations
+   fk = sm.Matrix([
+      u1 - q1.diff(t),
+      u2 - q2.diff(t),
+      u3 - l*q3.diff(t)/2,
+      u4 - q4.diff(t),
+      u5 - q5.diff(t),
+   ])
+   # kinematical differential equation linear coefficients
+   Mk = fk.jacobian(qd)
+   gk = fk.xreplace(qd_zero)
+   eval_k = sm.lambdify((q, u, p), (Mk, gk))
+
+.. jupyter-execute::
+
+   # solve the kinematical differential equations symbollically for substitution
+   qd_sol = Mk.LUsolve(-gk)
+   qd_repl = dict(zip(qd, qd_sol))
+   qd_repl
 
 .. jupyter-execute::
 
    fn = sm.Matrix([Bo.vel(N).dot(B.y),
                    Co.vel(N).dot(C.y)])
-   fn = sm.trigsimp(fn)
    fn
 
 .. jupyter-execute::
 
-   u1, u2, u3, u4, u5 = me.dynamicsymbols('u1, u2, u3, u4, u5')
-
-   u_repl = {
-       q1.diff(): u1,
-       q2.diff(): u2,
-       l*q3.diff()/2: u3,
-       q4.diff(): u4,
-       q5.diff(): u5
-   }
-
-   fn = fn.subs(u_repl)
+   fn = fn.xreplace(qd_repl)
    fn
 
 .. jupyter-execute::
 
-   q = sm.Matrix([q1, q2, q3, q4, q5])
-   qd = q.diff()
-   qd_zero = {qdi: 0 for qdi in qd}
-
-   fk = sm.Matrix([rhs - lhs for lhs, rhs in u_repl.items()])
-   Mk = fk.jacobian(qd)
-   gk = fk.xreplace(qd_zero)
-   Mk, gk
-
-.. jupyter-execute::
-
-   solk = Mk.LUsolve(-gk)
-   solk
-
-.. jupyter-execute::
-
-   qd_repl = {qdi: solki for qdi, solki in zip(qd, solk)}
-   qd_repl
-
-.. jupyter-execute::
-
-   us = sm.Matrix([u3, u4, u5])
-   ur = sm.Matrix([u1, u2])
-
-   u = us.col_join(ur)
-
-   ur_zero = {ui: 0 for ui in ur}
-   us_zero = {ui: 0 for ui in us}
-   u_zero = {ui: 0 for ui in u}
-
-.. jupyter-execute::
-
+   # nonholonomic constraints linear coefficients
    Mn = fn.jacobian(ur)
    gn = fn.xreplace(ur_zero)
    Mn, gn
 
 .. jupyter-execute::
 
-   soln = Mn.LUsolve(-gn)
-   soln
+   eval_n = sm.lambdify((us, q, p), (Mn, gn))
 
 .. jupyter-execute::
 
-   t = me.dynamicsymbols._t
-   u1_dep = sm.Function('u1')(u3, u4, u5, t)
-   u2_dep = sm.Function('u2')(u3, u4, u5, t)
-   u1_dep = soln[0]
-   u2_dep = soln[1]
-   u1_dep.diff(t)
+   # solve the nonholonomic constraints for the dependent generalized speeds ur
+   ur_sol = Mn.LUsolve(-gn)
+   ur_repl = dict(zip(ur, ur_sol))
 
 .. jupyter-execute::
 
-   N_w_A = A.ang_vel_in(N).xreplace(qd_repl).xreplace({u1: u1_dep, u2: u2_dep})
-
-.. jupyter-execute::
-
-   N_w_B = B.ang_vel_in(N).xreplace(qd_repl).xreplace({u1: u1_dep, u2: u2_dep})
-
-.. jupyter-execute::
-
-   N_w_C = C.ang_vel_in(N).xreplace(qd_repl).xreplace({u1: u1_dep, u2: u2_dep})
-
-.. jupyter-execute::
-
-   N_v_Ao = Ao.vel(N).xreplace(qd_repl).xreplace({u1: u1_dep, u2: u2_dep})
-
-.. jupyter-execute::
-
-   N_v_Bo = Bo.vel(N).xreplace(qd_repl).xreplace({u1: u1_dep, u2: u2_dep})
-
-.. jupyter-execute::
-
-   N_v_Co = Co.vel(N).xreplace(qd_repl).xreplace({u1: u1_dep, u2: u2_dep})
+   N_w_A = A.ang_vel_in(N).xreplace(qd_repl).xreplace(ur_repl)
+   N_w_B = B.ang_vel_in(N).xreplace(qd_repl).xreplace(ur_repl)
+   N_w_C = C.ang_vel_in(N).xreplace(qd_repl).xreplace(ur_repl)
+   N_v_Ao = Ao.vel(N).xreplace(qd_repl).xreplace(ur_repl)
+   N_v_Bo = Bo.vel(N).xreplace(qd_repl).xreplace(ur_repl)
+   N_v_Co = Co.vel(N).xreplace(qd_repl).xreplace(ur_repl)
 
 .. jupyter-execute::
 
    vels = (N_w_A, N_w_B, N_w_C, N_v_Ao, N_v_Bo, N_v_Co)
+   w_A, w_B, w_C, v_Ao, v_Bo, v_Co = me.partial_velocity(vels, us, N)
 
-   me.partial_velocity(vels, (u3, u4, u5), N)
+.. jupyter-execute::
+
+   fnd = fn.diff(t).xreplace(qd_repl)
+   Mnd = fnd.jacobian(urd)
+   gnd = fnd.xreplace(urd_zero).xreplace(ur_repl)
+   usd_dummy = sm.Matrix([sm.Dummy('u3d'), sm.Dummy('u4d'), sm.Dummy('u5d')])
+   usd_dummy_repl = dict(zip(usd, usd_dummy))
+   eval_nd = sm.lambdify((usd_dummy, u, q, p), (Mnd, gnd.xreplace(usd_dummy_repl)))
+   urd_sol = Mnd.LUsolve(-gnd)
+   urd_repl = dict(zip(urd, urd_sol))
+
+   qdd_repl = {k.diff(t): v.diff(t) for k, v in qd_repl.items()}
+   qdd_repl
+
+.. jupyter-execute::
+
+   Rs_Ao = -m*Ao.acc(N).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
+   Rs_Bo = -m*Bo.acc(N).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
+   Rs_Co = -m*Co.acc(N).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
+
+   me.find_dynamicsymbols(Rs_Bo, reference_frame=N)
+
+.. jupyter-execute::
+
+   I_A_Ao = me.inertia(A, 0, 0, I)
+   I_B_Bo = me.inertia(B, 0, 0, I)
+   I_C_Co = me.inertia(C, 0, 0, I)
+
+.. jupyter-execute::
+
+   Ts_A = -A.ang_acc_in(N).dot(I_A_Ao).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
+   Ts_B = -B.ang_acc_in(N).dot(I_B_Bo).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
+   Ts_C = -C.ang_acc_in(N).dot(I_C_Co).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
+
+.. jupyter-execute::
+
+   F3s = (v_Ao[0].dot(Rs_Ao) + v_Bo[0].dot(Rs_Bo) + v_Co[0].dot(Rs_Co) +
+          w_A[0].dot(Ts_A) + w_B[0].dot(Ts_B) + w_C[0].dot(Ts_C))
+   F4s = (v_Ao[1].dot(Rs_Ao) + v_Bo[1].dot(Rs_Bo) + v_Co[1].dot(Rs_Co) +
+          w_A[1].dot(Ts_A) + w_B[1].dot(Ts_B) + w_C[1].dot(Ts_C))
+   F5s = (v_Ao[2].dot(Rs_Ao) + v_Bo[2].dot(Rs_Bo) + v_Co[2].dot(Rs_Co) +
+          w_A[2].dot(Ts_A) + w_B[2].dot(Ts_B) + w_C[2].dot(Ts_C))
+
+.. jupyter-execute::
+
+   Frs = sm.Matrix([F3s, F4s, F5s])
+   Md = Frs.jacobian(usd)
+   gd = Frs.xreplace(usd_zero)
+
+   me.find_dynamicsymbols(Frs)
+
+.. jupyter-execute::
+
+   Md
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(Md)
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(gd)
+
+.. jupyter-execute::
+
+   eval_d = sm.lambdify((q, us, p), (Md, gd))
+
+.. jupyter-execute::
+
+   def eval_rhs(t, x, p):
+      # x = [q1, q2, q3, q4, q5, u3, u4, u5, u1, u2]
+      q = x[:5]
+      us = x[5:8]
+
+      Mn, gn = eval_n(us, q, p)
+      ur = np.linalg.solve(Mn, -gn.squeeze())
+
+      u = np.hstack((us, ur))
+
+      Mk, gk = eval_k(q, u, p)
+      qd = np.linalg.solve(Mk, -gk.squeeze())
+
+      Md, gd = eval_d(q, us, p)
+      usd = np.linalg.solve(Md, -gd.squeeze())
+
+      Mnd, gnd = eval_nd(usd, u, q, p)
+      urd = np.linalg.solve(Mnd, -gnd.squeeze())
+
+      return np.hstack((qd, usd, urd))
+
+   print(eval_rhs(1.0, np.random.random(10), np.random.random(3)))
+
+.. jupyter-execute::
+
+   p_vals = np.array([
+       0.3,  # l [m]
+       0.1,  # I [kg*m^2]
+       1.0,  # m [kg]
+   ])
+
+   q0 = np.array([
+       0.0,  # q1 [m]
+       0.0,  # q2 [m]
+       0.0,  # q3 [rad]
+       np.deg2rad(5.0),  # q4 [rad]
+       -np.deg2rad(5.0),  # q5 [rad]
+   ])
+
+   us0 = np.array([
+       0.01,  # u3 [m/s]
+       0.01,  # u4 [rad/s]
+       -0.01,  # u5 [rad/s]
+   ])
+
+   Mn_vals, gn_vals = eval_n(us0, q0, p_vals)
+   ur0 = np.linalg.solve(Mn_vals, -gn_vals.squeeze())
+
+   x0 = np.hstack((q0, us0, ur0))
+
+   from scipy.integrate import solve_ivp
+
+   t0, tf = 0.0, 50.0
+
+   ts = np.linspace(t0, tf, num=1001)
+
+   sol = solve_ivp(eval_rhs, (ts[0], ts[-1]), x0, args=(p_vals,), t_eval=ts)
+
+.. jupyter-execute::
+
+   import matplotlib.pyplot as plt
+
+   fig, axes = plt.subplots(2, 1, sharex=True)
+
+   axes[0].plot(sol.t, np.rad2deg(sol.y[:3]).T)
+   axes[1].plot(sol.t, sol.y[3:5].T)
+
+.. jupyter-execute::
+
+   eval_fn = sm.lambdify((q, u, p), fn)
+
+   con_violations = eval_fn(sol.y[:5], sol.y[5:], p_vals).squeeze()
+
+   fig, ax = plt.subplots()
+   ax.plot(sol.t, con_violations.T)
+
+.. jupyter-execute::
+
+   Cl, Cr, Bl, Br = sm.symbols('C_l, C_r, B_l, B_r', cls=me.Point)
+   Cl.set_pos(Co, -l/4*C.y)
+   Cr.set_pos(Co, l/4*C.y)
+   Bl.set_pos(Bo, -l/4*B.y)
+   Br.set_pos(Bo, l/4*B.y)
+
+   coordinates = Cl.pos_from(O).to_matrix(N)
+   for point in [Co, Cr, Co, Ao, Bo, Bl, Br]:
+      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
+
+   eval_point_coords = sm.lambdify((q, p), coordinates)
+   eval_point_coords(q0, p_vals)
+
+.. jupyter-execute::
+
+   x, y, z = eval_point_coords(q0, p_vals)
+
+   fig, ax = plt.subplots()
+
+   line_prop = {
+      'color': 'black',
+      'marker': 'o',
+      'markerfacecolor': 'blue',
+      'markersize': 10,
+   }
+
+   lines, = ax.plot(x, y, **line_prop)
+   ax.set_xlim((np.min(sol.y[0]) - 0.5, np.max(sol.y[0]) + 0.5))
+   ax.set_ylim((np.min(sol.y[1]) - 0.5, np.max(sol.y[1]) + 0.5))
+
+.. jupyter-execute::
+
+   from matplotlib.animation import FuncAnimation
+
+   def animate(i):
+       x, y, z = eval_point_coords(sol.y.T[i, :5], p_vals)
+       lines.set_data(x, y)
+
+   ani = FuncAnimation(fig, animate, len(sol.t))
+
+   from IPython.display import HTML
+
+   HTML(ani.to_jshtml(fps=30))
 
 Holonomic Constraints
 =====================
