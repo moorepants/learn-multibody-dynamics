@@ -16,8 +16,15 @@ Constrained Equations of Motion
    me.init_vprinting(use_latex='mathjax')
 
 We introduced two types of constraints holonomic (configuration) constraints
-and nonholonomic (motion) constraints in prior chapters. In general, holonomic
-constraints are nonlinear constraints in the coordinates.
+and nonholonomic (motion) constraints in :ref:`Holonomic Constraints` and
+:ref:`Nonholonomic Constraints`, respecitvely. Holonomic constraints are
+nonlinear constraints in the coordinates [*]_. Nonholonomic constraints are
+linear in the generalized speeds, by definition.
+
+
+
+.. [*] They can be linear in the coordinates, but then there is little reason
+   not to solve for the depedendent coordinates and eliminate them.
 
 Nonholomic Constraints
 ======================
@@ -338,7 +345,8 @@ equations.
 
    ts = np.linspace(t0, tf, num=1001)
 
-   sol = solve_ivp(eval_rhs, (ts[0], ts[-1]), x0, args=(p_vals,), t_eval=ts)
+   sol = solve_ivp(eval_rhs, (ts[0], ts[-1]), x0, args=(p_vals,), t_eval=ts,
+   rtol=1e-13)
 
 .. jupyter-execute::
 
