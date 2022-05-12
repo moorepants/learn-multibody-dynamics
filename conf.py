@@ -37,6 +37,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.todo',
+    'sphinx.ext.autosectionlabel',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -73,6 +74,12 @@ intersphinx_mapping = {
     'sympy': ('https://docs.sympy.org/latest/', None),
     'py3js': ('https://pythreejs.readthedocs.io/en/stable', None),
 }
+
+# Options for Math
+# These options influence Math notations.
+# Set this option to True if you want all displayed math to be numbered. The default is False.
+
+math_number_all = True
 
 # -- Options for HTML output -------------------------------------------------
 

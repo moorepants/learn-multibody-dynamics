@@ -599,7 +599,7 @@ But we will need :math:`\mathbf{M}_d` to solve explicitly for
 :math:`\dot{\bar{u}}`. Recall that we can use the Jacobian to extract the
 linear coefficients of :math:`\dot{\bar{u}}` and then find the terms that
 aren't functions of :math:`\dot{\bar{u}}` by substitution (See Sec.
-:ref:`sec-solving-linear-systems`).
+:ref:`Solving Linear Systems`).
 
 Form the column vector :math:`\dot{\bar{u}}`:
 

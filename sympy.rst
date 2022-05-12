@@ -20,7 +20,7 @@ introduces SymPy and the primary core SymPy features needed we will be using.
 
 .. _SymPy: https://www.sympy.org
 
-Import and setup
+Import and Setup
 ================
 
 We will consistently import SymPy as follows:
@@ -76,7 +76,7 @@ are recognized too.
    pivot_angle, w2 = sm.symbols('alpha1, omega2')
    pivot_angle, w2
 
-Undefined functions
+Undefined Functions
 ===================
 
 We will also work with undefined mathematical functions in addition to symbols.
@@ -117,7 +117,7 @@ The same ``UndefinedFunction`` can be used to create multivariate functions:
 
    f(a, b, omega, t)
 
-Symbolic expressions
+Symbolic Expressions
 ====================
 
 Now that we have mathematical variables and functions available, they can be
@@ -379,9 +379,8 @@ Lastly, a typical type of derivative you may encounter:
 
    expr5.diff(t)
 
-.. _sec-evaluating-symbolic-expressions:
 
-Evaluating symbolic expressions
+Evaluating Symbolic Expressions
 ===============================
 
 SymPy expressions can be evaluated numerically in several ways. The
@@ -564,7 +563,6 @@ to a vector (or sequence) of variables.
 
 .. _Jacobian: https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant
 
-.. _sec-solving-linear-systems:
 
 Solving Linear Systems
 ======================

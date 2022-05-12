@@ -50,7 +50,7 @@ The NumPy_ library is the de facto base library for numeric computing with
 Python. NumPy allows us to do `array programming`_ with Python by providing
 floating point array data types and vectorized operators to enable repeat
 operations across arrays of values. In Sec.
-:ref:`sec-evaluating-symbolic-expressions` we introduced the SymPy function
+:ref:`Evaluating Symbolic Expressions` we introduced the SymPy function
 :external:py:func:`~sympy.utilities.lambdify.lambdify`. ``lambdify()`` will be
 our way to bridge the symbolic world of SymPy with the numeric world of NumPy.
 
