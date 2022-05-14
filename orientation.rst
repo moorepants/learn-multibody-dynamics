@@ -1,5 +1,3 @@
-.. _orientation:
-
 ===============================
 Orientation of Reference Frames
 ===============================
@@ -194,7 +192,6 @@ between reference frames. Following the notation convention, this holds:
 
    {}^N\mathbf{C}^A = \left({}^A\mathbf{C}^N\right)^{-1} = \left({}^A\mathbf{C}^N\right)^T
 
-.. _direction-cosine-matrix:
 
 Direction Cosine Matrix
 =======================
@@ -275,7 +272,6 @@ found in the prior section for a simple orientation is a specific case of this
 more general definition. The direction cosine matrix is also referred to as a
 rotation matrix in some texts.
 
-.. _successive-orientations:
 
 Successive Orientations
 =======================
