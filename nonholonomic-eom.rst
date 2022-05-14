@@ -5,8 +5,8 @@ Nonholonomic Equations of Motion
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`constrained-eom` or Jupyter Notebook:
-   :jupyter-download:notebook:`constrained-eom`.
+   :jupyter-download:script:`nonholonomic-eom` or Jupyter Notebook:
+   :jupyter-download:notebook:`nonholonomic-eom`.
 
 .. jupyter-execute::
 
@@ -623,7 +623,7 @@ And, finally, animate the motion:
 
    ani = FuncAnimation(fig, animate, len(sol.t))
 
-   HTML(ani.to_jshtml(fps=30))
+   HTML(ani.to_jshtml(fps=fps))
 
 Calculating Dependent Speeds
 ============================
@@ -634,7 +634,7 @@ Since we have eliminated the dependent generalized speeds (:math:`u_1` and
 the constraint equations. I use :external:py:func:`~numpy.tile`,
 :external:py:func:`~numpy.transpose`, and :external:py:func:`~numpy.squeeze`
 here to use ``eval_ur`` as a vectorized function so that no loop is needed to
-calculate :math:``\bar{u}_r`` at each time step.
+calculate :math:`\bar{u}_r` at each time step.
 
 .. jupyter-execute::
 
@@ -647,5 +647,5 @@ calculate :math:``\bar{u}_r`` at each time step.
    fig.set_figwidth(10.0)
    ax.plot(ts, ur_vals.T)
    ax.set_ylabel('Speed [m/s]')
-   ax.set_xlabel('Tims [s]')
+   ax.set_xlabel('Time [s]')
    ax.legend(['$u_1$', '$u_2$'])
