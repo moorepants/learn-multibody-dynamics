@@ -81,6 +81,11 @@ nonholonomic constraints and we selected :math:`u_1` and :math:`u_2` as the
 dependent speeds. For simplicity, we will assume that the mass and moments of
 inertia of the three bodies are the same.
 
+.. figure:: figures/motion-snakeboard.svg
+   :align: center
+
+   Configuration diagram of a planar Snakeboard model.
+
 First introduce the necessary variables; adding :math:`I` for the central
 moment of inertia of each body and :math:`m` as the mass of each body. Then
 create column matrices for the the various sets of variables.
@@ -152,7 +157,6 @@ as done in the original example. All of the velocities are in terms of
    Co.set_pos(Ao, -l/2*A.x)
 
    O.set_vel(N, 0)
-   Ao.vel(N)
    Bo.v2pt_theory(Ao, N, A)
    Co.v2pt_theory(Ao, N, A);
 
@@ -223,6 +227,11 @@ independent generalized speed, :math:`u_3`.
 .. jupyter-execute::
 
    me.find_dynamicsymbols(ur_sol)
+
+.. admonition:: Exercise
+
+   Why does :math:`u_1` and :math:`u_2` not depend on :math:`q_1,q_2,u_4` and
+   :math:`u_5`?
 
 Our kinematical differential equations can now be rewritten in terms of the
 independent generalized speeds. We only need to rewrite :math:`\bar{g}_k` for
@@ -648,4 +657,4 @@ calculate :math:`\bar{u}_r` at each time step.
    ax.plot(ts, ur_vals.T)
    ax.set_ylabel('Speed [m/s]')
    ax.set_xlabel('Time [s]')
-   ax.legend(['$u_1$', '$u_2$'])
+   ax.legend(['$u_1$', '$u_2$']);
