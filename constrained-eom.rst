@@ -1,6 +1,6 @@
-===============================
-Constrained Equations of Motion
-===============================
+================================
+Nonholonomic Equations of Motion
+================================
 
 .. note::
 
@@ -10,88 +10,80 @@ Constrained Equations of Motion
 
 .. jupyter-execute::
 
+   from IPython.display import HTML
+   from matplotlib.animation import FuncAnimation
+   from scipy.integrate import solve_ivp
+   import matplotlib.pyplot as plt
    import numpy as np
    import sympy as sm
    import sympy.physics.mechanics as me
+
    me.init_vprinting(use_latex='mathjax')
 
-We introduced two types of constraints holonomic (configuration) constraints
-and nonholonomic (motion) constraints in :ref:`Holonomic Constraints` and
-:ref:`Nonholonomic Constraints`, respecitvely. Holonomic constraints are
+In chapters, :ref:`Holonomic Constraints` and :ref:`Nonholonomic Constraints`,
+I introduced two types of constraints: holonomic (configuration) constraints
+and nonholonomic (motion) constraints, respectively. Holonomic constraints are
 nonlinear constraints in the coordinates [*]_. Nonholonomic constraints are
-linear in the generalized speeds, by definition.
-
-
+linear in the generalized speeds, by definition. We will address the
+nonholonomic equations of motion first, as they are slightly easier to deal
+with.
 
 .. [*] They can be linear in the coordinates, but then there is little reason
    not to solve for the depedendent coordinates and eliminate them.
 
-Nonholomic Constraints
-======================
+Nonholonomic Equations of Motion
+================================
 
-Nonholonomic constraint equations are linear in the independent and dependent
-generalized speeds, by definition. We have shown that you can explicitly solve
-for the independent generalized speeds :math:`\bar{u}_s` as a function of the
-dependent generalized speeds :math:`\bar{u}_r`. This means that number of
-dynamical differential equations can be reduced to :math:`p` from :math:`n`.
-The nonholonomic constraints :math:`\bar{f}_n` and its time derivative
-:math:`\dot{\bar{f}}_n` can be used to solve for the dependent generalized
-speeds and their time derivatives.
+Nonholonomic constraint equations are linear in both the independent and
+dependent generalized speeds. We have shown that you can explicitly solve for
+the dependent generalized speeds :math:`\bar{u}_r` as a function of the
+independent generalized speeds :math:`\bar{u}_s`. This means that number of
+dynamical differential equations can be reduced to :math:`p` from :math:`n`
+with :math:`m` nonholonomic constraints. Recall that the nonholonomic
+constraints take this form:
+
+.. math::
+   :label: eq-nonholonomic-constraints
+
+   \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = \mathbf{M}_n\bar{u}_r + \bar{g}_n = 0 \in \mathbb{R}^m
+
+and :math:`u_r` can be solved for as so:
+
+.. math::
+   :label: eq-dep-speeds-solve
+
+   \bar{u}_r = -\mathbf{M}_n(\bar{q}, t)^{-1}\bar{g}_n(\bar{u}_s, \bar{q}, t) \\
+
+Using Eq. :math:numref:`eq-dep-speeds-solve` equation we can now write our
+equations of motion as :math:`n` kinematical differential equations and
+:math:`p` dynamical differential equations.
 
 .. math::
    :label: eq-nonholonomic-eom
 
-   \bar{f}_d(\dot{\bar{u}}_s, \bar{u}, \bar{q}, t) = \mathbf{M}_d\dot{\bar{u}}_s + \bar{g}_d = 0 \\
-   \bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t) = \mathbf{M}_k\dot{\bar{q}} + \bar{g}_k  = 0 \\
-   \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = \mathbf{M}_n\bar{u}_r + \bar{g}_n = 0 \\
-   \dot{\bar{f}}_n(\dot{\bar{u}}_s, \dot{\bar{u}}_r, \bar{u}_s, \bar{u}_r, \bar{q}, t) = \mathbf{M}_{nd}\dot{\bar{u}}_r + \bar{g}_{nd}= 0
+   \bar{f}_k(\bar{u}_s, \dot{\bar{q}}, \bar{q}, t) = \mathbf{M}_k\dot{\bar{q}} + \bar{g}_k  = 0 \in \mathbb{R}^n \\
+   \bar{f}_d(\dot{\bar{u}}_s, \bar{u}_s, \bar{q}, t) = \mathbf{M}_d\dot{\bar{u}}_s + \bar{g}_d = 0 \in \mathbb{R}^p
+
+and these can be written in explicit form:
 
 .. math::
    :label: eq-nonholonomic-steps
 
-   \bar{u} = [\bar{u}_s \ \bar{u}_r] \\
-   \bar{u}_r = -\mathbf{M}_n^{-1}(\bar{q}, t)\bar{g}_n(\bar{u}_s, \bar{q}, t) \\
-   \dot{\bar{q}} = -\mathbf{M}_k^{-1}(\bar{q}, t)\bar{g}_k(\bar{u}, \bar{q}, t) \\
-   \dot{\bar{u}}_s = -\mathbf{M}_d(\bar{q}, t) \bar{g}_d(\bar{u}, \bar{q}, t) \\
-   \dot{\bar{u}}_r = -\mathbf{M}_{nd}^{-1}(\dot{\bar{u}}_s, \bar{q}, t) \bar{g}_{nd}(\bar{u}, \bar{q}, t)
+   \dot{\bar{q}} = -\mathbf{M}_k(\bar{q}, t)^{-1} \bar{g}_k(\bar{u}_s, \bar{q}, t) \\
+   \dot{\bar{u}}_s = -\mathbf{M}_d(\bar{q}, t)^{-1} \bar{g}_d(\bar{u}_s, \bar{q}, t) \\
 
-The following psuedo code shows how the derivatives of the generalized speeds
-and generalized coordinates can be calculated from the above equations.
+Snakeboard Equations of Motion
+==============================
 
-.. code:: python
+Let's revisit the snakeboard example (see Sec. :ref:`Snakeboard`) and develop
+the equations of motion for that nonholomoic system. This system only has
+nonholonomic constraints and we selected :math:`u_1` and :math:`u_2` as the
+dependent speeds. For simplicity, we will assume that the mass and moments of
+inertia of the three bodies are the same.
 
-   def eval_rhs(t, x, p):
-      """
-      t : float
-      x : array_like, shape(2*n,)
-      p : array_like
-      """
-
-      q = x[:n]  # n generalized coordinates
-      us = x[n:n+p]  # p independent generalized speeds
-      ur = x[n+p:]  # m dependent generalized speeds
-
-      # solve fn for the dependent generalized speeds using the constraints
-      Mn, gn = eval_n(q, us, p)
-      ur = solve(Mn, -gn)
-
-      # solve for the n qdots
-      Mk, gk = eval_k(q, us, ur)
-      qd = solve(Mk, -gk)
-
-      # solve for the p us_dots
-      Md, gd = eval_d(q, us, ur)
-      usd = solve(Md, -gd)
-
-      # solve for the m ur_dots
-      Mnd, gnd = eval_nd(q, us, ur, usd)
-      urd = solve(Mnd, -gnd)
-
-      return np.hstack((qd, usd, urd))
-
-Let's revisit the snakeboard example and develop the equations of motion for
-that nonholomoic system. For simplicity we will assume that the mass and
-moments of inertia of the three bodies are the same.
+First introduce the necessary variables; adding :math:`I` for the central
+moment of inertia of each body and :math:`m` as the mass of each body. Then
+create column matrices for the the various sets of variables.
 
 .. jupyter-execute::
 
@@ -101,28 +93,39 @@ moments of inertia of the three bodies are the same.
    t = me.dynamicsymbols._t
 
    p = sm.Matrix([l, I, m])
-   q = sm.Matrix([q1, q2, q3, q4, q5])  # coordinates
-   us = sm.Matrix([u3, u4, u5])  # independent
-   ur = sm.Matrix([u1, u2])  # dependent
-   u = us.col_join(ur)
+   q = sm.Matrix([q1, q2, q3, q4, q5])
+   us = sm.Matrix([u3, u4, u5])
+   ur = sm.Matrix([u1, u2])
+   u = ur.col_join(us)
 
-   p, q, us, ur, u
+   q, ur, us, u, p
+
+We will also need column matrices for the time derivatives of each set of
+variables and some dictionaries to zero out any of these variables in various
+expressions we create.
 
 .. jupyter-execute::
 
    qd = q.diff()
-   ud = u.diff(t)
-   usd = us.diff(t)
    urd = ur.diff(t)
+   usd = us.diff(t)
+   ud = u.diff(t)
+
+   qd, urd, usd, ud
+
+.. jupyter-execute::
 
    qd_zero = {qdi: 0 for qdi in qd}
    ur_zero = {ui: 0 for ui in ur}
    us_zero = {ui: 0 for ui in us}
-   usd_zero = {udi: 0 for udi in usd}
    urd_zero = {udi: 0 for udi in urd}
+   usd_zero = {udi: 0 for udi in usd}
 
-The reference frames are all simple rotations about the axis normal to the
-plane:
+   qd_zero, ur_zero, us_zero, urd_zero, usd_zero
+
+The following code sets up the orientations, positions, and velocities exactly
+as done in the original example. All of the velocities are in terms of
+:math:`\bar{q}` and :math:`\dot{\bar{q}}`.
 
 .. jupyter-execute::
 
@@ -151,14 +154,13 @@ plane:
    O.set_vel(N, 0)
    Ao.vel(N)
    Bo.v2pt_theory(Ao, N, A)
-   Co.v2pt_theory(Ao, N, A)
+   Co.v2pt_theory(Ao, N, A);
 
-The coordinates (independent and dependent) may be present in all of the
-equations.
+Now create the :math:`n=5` kinematical differential equations
+:math:`\bar{f}_k`:
 
 .. jupyter-execute::
 
-   # n=5 kinematical differential equations
    fk = sm.Matrix([
       u1 - q1.diff(t),
       u2 - q2.diff(t),
@@ -166,23 +168,35 @@ equations.
       u4 - q4.diff(t),
       u5 - q5.diff(t),
    ])
-   # kinematical differential equation linear coefficients
-   Mk = fk.jacobian(qd)
-   gk = fk.xreplace(qd_zero)
-   eval_k = sm.lambdify((q, u, p), (Mk, gk))
+
+It is a good idea to use
+:external:py:func:`~sympy.physics.mechanics.find_dynamicsymbols` to check which
+functions of time are present in the various equations. This function is
+invaluable when the equations begin to become very large.
 
 .. jupyter-execute::
 
-   # solve the kinematical differential equations symbollically for substitution
-   qd_sol = Mk.LUsolve(-gk)
+   me.find_dynamicsymbols(fk)
+
+Symbolically solve these equations for :math:`\dot{\bar{q}}` and setup a
+dictionary we can use for substitutions:
+
+.. jupyter-execute::
+
+   Mk = fk.jacobian(qd)
+   gk = fk.xreplace(qd_zero)
+   qd_sol = -Mk.LUsolve(gk)
    qd_repl = dict(zip(qd, qd_sol))
    qd_repl
 
+Create the :math:`m=2` nonholonomic constraints:
+
 .. jupyter-execute::
 
-   fn = sm.Matrix([Bo.vel(N).dot(B.y),
-                   Co.vel(N).dot(C.y)])
+   fn = sm.Matrix([Bo.vel(N).dot(B.y), Co.vel(N).dot(C.y)])
    fn
+
+and rewrite them in terms of the generalized speeds:
 
 .. jupyter-execute::
 
@@ -191,20 +205,40 @@ equations.
 
 .. jupyter-execute::
 
-   # nonholonomic constraints linear coefficients
+   me.find_dynamicsymbols(fn)
+
+With the nonholonmic constraint equations we choose :math:`\bar{u}_r=[u_1 \
+u_2]^T` and symbolically for these dependent speeds.
+
+.. jupyter-execute::
+
    Mn = fn.jacobian(ur)
    gn = fn.xreplace(ur_zero)
-   Mn, gn
-
-.. jupyter-execute::
-
-   eval_n = sm.lambdify((us, q, p), (Mn, gn))
-
-.. jupyter-execute::
-
-   # solve the nonholonomic constraints for the dependent generalized speeds ur
    ur_sol = Mn.LUsolve(-gn)
    ur_repl = dict(zip(ur, ur_sol))
+
+In our case, the dependent generalized speeds are only a function of one
+independent generalized speed, :math:`u_3`.
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(ur_sol)
+
+Our kinematical differential equations can now be rewritten in terms of the
+independent generalized speeds. We only need to rewrite :math:`\bar{g}_k` for
+later use in our numerical functions.
+
+.. jupyter-execute::
+
+   gk = gk.xreplace(ur_repl)
+
+   me.find_dynamicsymbols(gk)
+
+The snakeboard model, as described, has no generalized active forces because
+there are no contributing external forces acting on the system, so we only need
+to generate the generalized inertia forces :math:`\bar{F}_r^*`. We now then
+calculate the velocities we will need to form :math:`\bar{F}_r^*` and make sure
+they are written only in terms of the independent generalized speeds.
 
 .. jupyter-execute::
 
@@ -215,65 +249,164 @@ equations.
    N_v_Bo = Bo.vel(N).xreplace(qd_repl).xreplace(ur_repl)
    N_v_Co = Co.vel(N).xreplace(qd_repl).xreplace(ur_repl)
 
+   vels = (N_w_A, N_w_B, N_w_C, N_v_Ao, N_v_Bo, N_v_Co)
+
+   for vel in vels:
+       print(me.find_dynamicsymbols(vel, reference_frame=N))
+
+With the velocities only in terms of the independent generalized speeds, we can
+calculate the :math:`p` nonholonomic partial velocities:
+
 .. jupyter-execute::
 
-   vels = (N_w_A, N_w_B, N_w_C, N_v_Ao, N_v_Bo, N_v_Co)
    w_A, w_B, w_C, v_Ao, v_Bo, v_Co = me.partial_velocity(vels, us, N)
+
+We can also write the accelerations in terms of only the independent
+generalized speeds, their time derivatives, and the generalized coordinates. To
+do so, we need to differentiate the nonholonomic constraints so that we can
+eliminate the dependent *generalized accelerations*, :math:`\dot{\bar{u}}_r`.
+Differentiating the constraints with respect to time and then substituting for
+the dependent generalized speeds gives us equations for the dependent
+generalized accelerations.
+
+.. math::
+
+   \dot{\bar{f}}_n(\dot{\bar{u}}_r, \dot{\bar{u}}_s, \bar{u}_s, \bar{u}_r, \bar{q}, t) =
+     \mathbf{M}_{nd}\dot{\bar{u}}_r + \bar{g}_{nd}= 0 \in \mathbb{R}^m\\
+   \dot{\bar{u}}_r = -\mathbf{M}_{nd}(\bar{q}, t)^{-1}
+     \bar{g}_{nd}(\dot{\bar{u}}_s, \bar{u}_s, \bar{q}, t)
+
+First, time differentiate the nonholonomic constraints and eliminate the time
+derivatives of the generalized coordinates.
 
 .. jupyter-execute::
 
    fnd = fn.diff(t).xreplace(qd_repl)
+
+   me.find_dynamicsymbols(fnd)
+
+Now solve for the dependent generalized accelerations. Note that I replace the
+dependent generalized speeds in :math:`\bar{g}_{nd}` instead of
+:math:`\dot{\bar{f}}_n` earlier. This is to avoid replacing the ``u_1`` and
+``u_2`` terms in the ``Derivative(u1, t)`` and ``Derivative(u2, t)`` terms.
+
+.. jupyter-execute::
+
    Mnd = fnd.jacobian(urd)
    gnd = fnd.xreplace(urd_zero).xreplace(ur_repl)
-   usd_dummy = sm.Matrix([sm.Dummy('u3d'), sm.Dummy('u4d'), sm.Dummy('u5d')])
-   usd_dummy_repl = dict(zip(usd, usd_dummy))
-   eval_nd = sm.lambdify((usd_dummy, u, q, p), (Mnd, gnd.xreplace(usd_dummy_repl)))
    urd_sol = Mnd.LUsolve(-gnd)
    urd_repl = dict(zip(urd, urd_sol))
 
-   qdd_repl = {k.diff(t): v.diff(t) for k, v in qd_repl.items()}
-   qdd_repl
+   me.find_dynamicsymbols(urd_sol)
+
+Now we can form the inertia forces and inertia torques. First check what
+derivatives appear in the accelerations.
 
 .. jupyter-execute::
 
-   Rs_Ao = -m*Ao.acc(N).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
-   Rs_Bo = -m*Bo.acc(N).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
-   Rs_Co = -m*Co.acc(N).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
+   Rs_Ao = -m*Ao.acc(N)
+   Rs_Bo = -m*Bo.acc(N)
+   Rs_Co = -m*Co.acc(N)
 
-   me.find_dynamicsymbols(Rs_Bo, reference_frame=N)
+   (me.find_dynamicsymbols(Rs_Ao, reference_frame=N) |
+    me.find_dynamicsymbols(Rs_Bo, reference_frame=N) |
+    me.find_dynamicsymbols(Rs_Co, reference_frame=N))
 
-.. jupyter-execute::
+.. todo:: Open and issue about find_dynamicsymbols not supporting an iterable
+   of inputs.
 
-   I_A_Ao = me.inertia(A, 0, 0, I)
-   I_B_Bo = me.inertia(B, 0, 0, I)
-   I_C_Co = me.inertia(C, 0, 0, I)
+We'll need to replace the :math:`\ddot{\bar{q}}` first and then the
+:math:`\dot{\bar{q}}`. Create the first replacement by differentiating the
+expressions for :math:`\dot{\bar{q}}`.
 
-.. jupyter-execute::
+.. warning::
 
-   Ts_A = -A.ang_acc_in(N).dot(I_A_Ao).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
-   Ts_B = -B.ang_acc_in(N).dot(I_B_Bo).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
-   Ts_C = -C.ang_acc_in(N).dot(I_C_Co).xreplace(qdd_repl).xreplace(qd_repl).xreplace(urd_repl)
-
-.. jupyter-execute::
-
-   F3s = (v_Ao[0].dot(Rs_Ao) + v_Bo[0].dot(Rs_Bo) + v_Co[0].dot(Rs_Co) +
-          w_A[0].dot(Ts_A) + w_B[0].dot(Ts_B) + w_C[0].dot(Ts_C))
-   F4s = (v_Ao[1].dot(Rs_Ao) + v_Bo[1].dot(Rs_Bo) + v_Co[1].dot(Rs_Co) +
-          w_A[1].dot(Ts_A) + w_B[1].dot(Ts_B) + w_C[1].dot(Ts_C))
-   F5s = (v_Ao[2].dot(Rs_Ao) + v_Bo[2].dot(Rs_Bo) + v_Co[2].dot(Rs_Co) +
-          w_A[2].dot(Ts_A) + w_B[2].dot(Ts_B) + w_C[2].dot(Ts_C))
+   If you use chained replacements, e.g. ``.xreplace().xreplace().xreplace()``
+   you have to be careful about the order of replacements so that you don't
+   substitute symbols inside a derivative, e.g. ``Derivative(u, t)``. If you
+   have ``expr = Derivative(u, t) + u`` then you need to replace the entire
+   derivative first: ``expr.xreplace({u.diff(): 1}).xreplace({u: 2})``.
 
 .. jupyter-execute::
 
-   Frs = sm.Matrix([F3s, F4s, F5s])
-   Md = Frs.jacobian(usd)
-   gd = Frs.xreplace(usd_zero)
+   qdd_repl = {k.diff(t): v.diff(t).xreplace(urd_repl) for k, v in qd_repl.items()}
+
+.. jupyter-execute::
+
+   Rs_Ao = -m*Ao.acc(N).xreplace(qdd_repl).xreplace(qd_repl)
+   Rs_Bo = -m*Bo.acc(N).xreplace(qdd_repl).xreplace(qd_repl)
+   Rs_Co = -m*Co.acc(N).xreplace(qdd_repl).xreplace(qd_repl)
+
+   (me.find_dynamicsymbols(Rs_Ao, reference_frame=N) |
+    me.find_dynamicsymbols(Rs_Bo, reference_frame=N) |
+    me.find_dynamicsymbols(Rs_Co, reference_frame=N))
+
+The motion is planar so the generalized inertia torques are simply angular
+accelerations dotted with the central inertia dyadics.
+
+.. jupyter-execute::
+
+   I_A_Ao = I*me.outer(A.z, A.z)
+   I_B_Bo = I*me.outer(B.z, B.z)
+   I_C_Co = I*me.outer(C.z, C.z)
+
+Now have a look at which functions are present in the inertia torques:
+
+.. jupyter-execute::
+
+   Ts_A = -A.ang_acc_in(N).dot(I_A_Ao)
+   Ts_B = -B.ang_acc_in(N).dot(I_B_Bo)
+   Ts_C = -C.ang_acc_in(N).dot(I_C_Co)
+
+   (me.find_dynamicsymbols(Ts_A, reference_frame=N) |
+    me.find_dynamicsymbols(Ts_B, reference_frame=N) |
+    me.find_dynamicsymbols(Ts_C, reference_frame=N))
+
+and eliminate the dependent generalized accelerations:
+
+.. jupyter-execute::
+
+   Ts_A = -A.ang_acc_in(N).dot(I_A_Ao).xreplace(qdd_repl)
+   Ts_B = -B.ang_acc_in(N).dot(I_B_Bo).xreplace(qdd_repl)
+   Ts_C = -C.ang_acc_in(N).dot(I_C_Co).xreplace(qdd_repl)
+
+   (me.find_dynamicsymbols(Ts_A, reference_frame=N) |
+    me.find_dynamicsymbols(Ts_B, reference_frame=N) |
+    me.find_dynamicsymbols(Ts_C, reference_frame=N))
+
+All of the components are present to formulate the nonholonomic generalized
+inertia forces. After we form them, make sure they are only a function of the
+independent generalized speeds, their time derivatives, and the generalized
+coordinates.
+
+.. jupyter-execute::
+
+   Frs = []
+   for i in range(len(us)):
+       Frs.append(v_Ao[i].dot(Rs_Ao) + v_Bo[i].dot(Rs_Bo) + v_Co[i].dot(Rs_Co) +
+                  w_A[i].dot(Ts_A) + w_B[i].dot(Ts_B) + w_C[i].dot(Ts_C))
+   Frs = sm.Matrix(Frs)
 
    me.find_dynamicsymbols(Frs)
 
+At this point you may have noticed that :math:`q_1` and :math:`q_2` have not
+appeared in any equations. This means that the dynamics do not depend on the
+planar location of the snakeboard. :math:`q_1` and :math:`q_2` are called
+*ignorable coordinates* if they do not appear in the equations of motion. It is
+only coincidence that the time derivatives of these ignorable coordinates are
+equal to the to dependent generalized speeds.
+
+Lastly, extract the linear coefficients and the remainder for the dynamical
+differential equations.
+
 .. jupyter-execute::
 
-   Md
+   Md = Frs.jacobian(usd)
+   gd = Frs.xreplace(usd_zero)
+
+And one last time, check that :math:`\mathbf{M}_d` and :math:`\mathbf{g}_d` are
+only functions of the independent generalized speeds and the generalized
+coordinates.
 
 .. jupyter-execute::
 
@@ -283,39 +416,62 @@ equations.
 
    me.find_dynamicsymbols(gd)
 
+We now have :math:`\mathbf{M}_k, \bar{g}_k, \mathbf{M}_d` and :math:`\bar{g}_d`
+and can proceed to numerical evaluation.
+
+Simulate the Snakeboard
+=======================
+
+We now move to numerical evaluation for the simulation. First, create a
+function that evaluates the matrices of the equations of motion.
+
+.. todo:: lambdify(cse=True) fail for this. Open an issue on SymPy.
+
+.. todo:: sm.Matrix.count_ops() doesn't seem like it exists. Open an issue.
+
 .. jupyter-execute::
 
-   eval_d = sm.lambdify((q, us, p), (Md, gd))
+   eval_kd = sm.lambdify((q, us, p), (Mk, gk, Md, gd))
+
+Now create a function that evaluates the right hand side of the explicit
+ordinary differential equations for use with ``solve_ivp()``.
 
 .. jupyter-execute::
 
    def eval_rhs(t, x, p):
-      # x = [q1, q2, q3, q4, q5, u3, u4, u5, u1, u2]
-      q = x[:5]
-      us = x[5:8]
+      """Returns the time derivative of the states.
 
-      Mn, gn = eval_n(us, q, p)
-      ur = np.linalg.solve(Mn, -gn.squeeze())
+      Parameters
+      ==========
+      t : float
+      x : array_like, shape(8,)
+         x = [q1, q2, q3, q4, q5, u3, u4, u5]
+      p : array_like, shape(3,)
+         p = [l, I, m]
 
-      u = np.hstack((us, ur))
+      Returns
+      =======
+      xd : ndarray, shape(8,)
+         xd = [q1d, q2d, q3d, q4d, q5d, u3d, u4d, u5d]
 
-      Mk, gk = eval_k(q, u, p)
+      """
+      q, us = x[:5], x[5:]
+
+      Mk, gk, Md, gd = eval_kd(q, us, p)
+
       qd = np.linalg.solve(Mk, -gk.squeeze())
-
-      Md, gd = eval_d(q, us, p)
       usd = np.linalg.solve(Md, -gd.squeeze())
 
-      Mnd, gnd = eval_nd(usd, u, q, p)
-      urd = np.linalg.solve(Mnd, -gnd.squeeze())
+      return np.hstack((qd, usd))
 
-      return np.hstack((qd, usd, urd))
-
-   print(eval_rhs(1.0, np.random.random(10), np.random.random(3)))
+Now introduce some numeric values for the constant parameters and the initial
+condition of the state. I've selected some values here that will put the
+snakeboard in an initial state of motion.
 
 .. jupyter-execute::
 
    p_vals = np.array([
-       0.3,  # l [m]
+       0.7,  # l [m]
        0.1,  # I [kg*m^2]
        1.0,  # m [kg]
    ])
@@ -329,50 +485,92 @@ equations.
    ])
 
    us0 = np.array([
-       0.01,  # u3 [m/s]
+       0.1,  # u3 [m/s]
        0.01,  # u4 [rad/s]
        -0.01,  # u5 [rad/s]
    ])
 
-   Mn_vals, gn_vals = eval_n(us0, q0, p_vals)
-   ur0 = np.linalg.solve(Mn_vals, -gn_vals.squeeze())
+   x0 = np.hstack((q0, us0))
 
-   x0 = np.hstack((q0, us0, ur0))
-
-   from scipy.integrate import solve_ivp
-
-   t0, tf = 0.0, 50.0
-
-   ts = np.linspace(t0, tf, num=1001)
-
-   sol = solve_ivp(eval_rhs, (ts[0], ts[-1]), x0, args=(p_vals,), t_eval=ts,
-   rtol=1e-13)
+Check whether ``eval_rhs()`` works with these arrays:
 
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
+   eval_rhs(1.0, x0, p_vals)
+
+We can now integrate the equations of motion to find the state trajectories. I
+setup the time array for the solution to correspond to 30 frames per second for
+later use in the animation of the motion.
+
+.. jupyter-execute::
+
+   t0, tf = 0.0, 10.0
+   fps = 30
+   ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
+
+   sol = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)
+
+   xs = np.transpose(sol.y)
+
+Now we can plot the state trajectories to see if there is realistic motion.
+
+.. jupyter-execute::
 
    fig, axes = plt.subplots(2, 1, sharex=True)
+   fig.set_figwidth(10.0)
 
-   axes[0].plot(sol.t, np.rad2deg(sol.y[:3]).T)
-   axes[1].plot(sol.t, sol.y[3:5].T)
+   axes[0].plot(ts, xs[:, :2])
+   axes[0].legend(('$q_1$', '$q_2$'))
+   axes[0].set_ylabel('Distance [m]')
+
+   axes[1].plot(ts, np.rad2deg(xs[:, 2:5]))
+   axes[1].legend(('$q_3$', '$q_4$', '$q_5$'))
+   axes[1].set_ylabel('Angle [deg]')
+   axes[1].set_xlabel('Time [s]');
+
+We see that the :math:`x` and :math:`y` positions vary over several meters and
+that there is a sharp transition around about 7 seconds. :math:`q_3(t)` shows
+that the primary angle of the snakeboard grows with time and does almost a full
+rotation. Plotting the path on the ground plane of :math:`A_o` gives a bit more
+insight to the motion.
 
 .. jupyter-execute::
-
-   eval_fn = sm.lambdify((q, u, p), fn)
-
-   con_violations = eval_fn(sol.y[:5], sol.y[5:], p_vals).squeeze()
 
    fig, ax = plt.subplots()
-   ax.plot(sol.t, con_violations.T)
+   fig.set_figwidth(10.0)
+
+   ax.plot(xs[:, 0], xs[:, 1])
+   ax.set_aspect('equal')
+   ax.set_xlabel('$q_1$ [m]')
+   ax.set_ylabel('$q_2$ [m]');
+
+We see that the snakeboard curves to the left but eventually makes a very sharp
+trajectory change. An animation will provide an even more clear idea of the
+motion of this nonholonomic system.
+
+Animate the Snakeboard
+======================
+
+We will animate the snakeboard as a collection of lines and points and animate
+the 2D motion with matplotlib. First, create some new points that represent the
+location of the left and right wheels on bodies :math:`B` and :math:`C`.
 
 .. jupyter-execute::
 
-   Cl, Cr, Bl, Br = sm.symbols('C_l, C_r, B_l, B_r', cls=me.Point)
-   Cl.set_pos(Co, -l/4*C.y)
-   Cr.set_pos(Co, l/4*C.y)
+   Bl = me.Point('B_l')
+   Br = me.Point('B_r')
+   Cr = me.Point('C_r')
+   Cl = me.Point('C_l')
+
    Bl.set_pos(Bo, -l/4*B.y)
    Br.set_pos(Bo, l/4*B.y)
+   Cl.set_pos(Co, -l/4*C.y)
+   Cr.set_pos(Co, l/4*C.y)
+
+Create a function that numerically evaluates the Cartesian coordinates of all
+the points we want to plot given the generalized coordinates.
+
+.. jupyter-execute::
 
    coordinates = Cl.pos_from(O).to_matrix(N)
    for point in [Co, Cr, Co, Ao, Bo, Bl, Br]:
@@ -381,254 +579,73 @@ equations.
    eval_point_coords = sm.lambdify((q, p), coordinates)
    eval_point_coords(q0, p_vals)
 
+Now create a plot of the initial configuration:
+
 .. jupyter-execute::
 
    x, y, z = eval_point_coords(q0, p_vals)
 
    fig, ax = plt.subplots()
+   fig.set_size_inches((10.0, 10.0))
+   ax.set_aspect('equal')
 
-   line_prop = {
-      'color': 'black',
-      'marker': 'o',
-      'markerfacecolor': 'blue',
-      'markersize': 10,
-   }
+   lines, = ax.plot(x, y, color='black',
+                    marker='o', markerfacecolor='blue', markersize=10)
+   # some empty lines to use for the wheel paths
+   bl_path, = ax.plot([], [])
+   br_path, = ax.plot([], [])
+   cl_path, = ax.plot([], [])
+   cr_path, = ax.plot([], [])
 
-   lines, = ax.plot(x, y, **line_prop)
-   ax.set_xlim((np.min(sol.y[0]) - 0.5, np.max(sol.y[0]) + 0.5))
-   ax.set_ylim((np.min(sol.y[1]) - 0.5, np.max(sol.y[1]) + 0.5))
+   title_template = 'Time = {:1.2f} s'
+   title_text = ax.set_title(title_template.format(t0))
+   ax.set_xlim((np.min(xs[:, 0]) - 0.5, np.max(xs[:, 0]) + 0.5))
+   ax.set_ylim((np.min(xs[:, 1]) - 0.5, np.max(xs[:, 1]) + 0.5))
+   ax.set_xlabel('$x$ [m]')
+   ax.set_ylabel('$y$ [m]');
+
+And, finally, animate the motion:
 
 .. jupyter-execute::
 
-   from matplotlib.animation import FuncAnimation
+   coords = []
+   for xi in xs:
+        coords.append(eval_point_coords(xi[:5], p_vals))
+   coords = np.array(coords)  # shape(600, 3, 8)
 
    def animate(i):
-       x, y, z = eval_point_coords(sol.y.T[i, :5], p_vals)
-       lines.set_data(x, y)
+       title_text.set_text(title_template.format(sol.t[i]))
+       lines.set_data(coords[i, 0, :], coords[i, 1, :])
+       cl_path.set_data(coords[:i, 0, 0], coords[:i, 1, 0])
+       cr_path.set_data(coords[:i, 0, 2], coords[:i, 1, 2])
+       bl_path.set_data(coords[:i, 0, 6], coords[:i, 1, 6])
+       br_path.set_data(coords[:i, 0, 7], coords[:i, 1, 7])
 
    ani = FuncAnimation(fig, animate, len(sol.t))
 
-   from IPython.display import HTML
-
    HTML(ani.to_jshtml(fps=30))
 
-Holonomic Constraints
-=====================
+Calculating Dependent Speeds
+============================
 
-When there are holonomic constraints present the equations of motion are
-comprised of the kinematical differential equations, dynamical differential
-equations, and the holonomic constraint equations. This set of equations are
-differential algebraic equations, instead of ordinary differential equations.
-
-N : number of coordinates
-n : number of genereralized coordinates
-M : number of configuratoin constraints
-p : number of independent generalized speeds
-
-Given $N$ coordinates where $n$ of those are independent generalized
-coordinates, we cannot, in general, explicitly solve for the independent
-coordinates. So we must formulate the kinematical and dynamical equations of
-motion with $N$ coordinates.
-
-q_s n indepdentdent generalized coordinates
-q_r M dependent coordinates
-
-q = [q_s, q_r]
-
-.. math::
-
-   \bar{q}, \bar{u} \in \mathbb{R}^N
-
-.. math::
-   :label: eq-holonomic-constrained-eom
-
-   \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)  = 0 \\
-   \bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t)  = 0 \\
-   \bar{f}_h(\bar{q}, t) = 0
-
+Since we have eliminated the dependent generalized speeds (:math:`u_1` and
+:math:`u_2`) from the equations of motion, these are not computed from
+``solve_ivp()``. If these are needed, it is possible to calculate them using
+the constraint equations. I use :external:py:func:`~numpy.tile`,
+:external:py:func:`~numpy.transpose`, and :external:py:func:`~numpy.squeeze`
+here to use ``eval_ur`` as a vectorized function so that no loop is needed to
+calculate :math:``\bar{u}_r`` at each time step.
 
 .. jupyter-execute::
 
-   q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
-   u1, u2, u3 = me.dynamicsymbols('u1, u2, u3')
-   la, lb, lc, ln = sm.symbols('l_a, l_b, l_c, l_n')
-   m, g = sm.symbols('m, g')
-
-   N = me.ReferenceFrame('N')
-   A = me.ReferenceFrame('A')
-   B = me.ReferenceFrame('B')
-   C = me.ReferenceFrame('C')
-
-   A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.z)
-   C.orient_axis(B, q3, B.z)
-
-   P1 = me.Point('P1')
-   P2 = me.Point('P2')
-   P3 = me.Point('P3')
-   P4 = me.Point('P4')
-
-   P2.set_pos(P1, la*A.x)
-   P3.set_pos(P2, lb*B.x)
-   P4.set_pos(P3, lc*C.x)
-
-   P4.pos_from(P1)
-   r_P1_P4 = ln*N.x
-   loop = P4.pos_from(P1) - r_P1_P4
-   fh = sm.Matrix([loop.dot(N.x), loop.dot(N.y)])
-
-.. jupyter-execute::
-
-   t = me.dynamicsymbols._t
-   qd_repl = {q1.diff(t): u1, q2.diff(t): u2, q3.diff(t): u3}
-   fhd = fh.diff(t).xreplace(qd_repl)
-   me.find_dynamicsymbols(fhd)
-
-.. jupyter-execute::
-
-   res = sm.solve(fhd, u2, u3)
-   #{k: sm.trigsimp(v) for k, v in res.items()}
-
-.. jupyter-execute::
-
-   fhdd = fhd.diff(t).xreplace(qd_repl)
-   me.find_dynamicsymbols(fhdd)
-
-.. jupyter-execute::
-
-   A.set_ang_vel(N, u1*N.z)
-   B.set_ang_vel(A, res[u2]*A.z)
-   C.set_ang_vel(B, res[u3]*B.z)
-
-   P1.set_vel(N, 0)
-   P2.v2pt_theory(P1, N, A)
-   P3.v2pt_theory(P2, N, B)
-   P4.v2pt_theory(P3, N, C)
-
-   R_P2 = -m*g*N.y
-   R_P3 = -m*g*N.y
-   R_P4 = -m*g*N.y
-
-   Fr = sm.Matrix([
-       P2.vel(N).diff(u1, N).dot(R_P2) +
-       P3.vel(N).diff(u1, N).dot(R_P3) +
-       P4.vel(N).diff(u1, N).dot(R_P4),
-   ])
-
-   me.find_dynamicsymbols(Fr)
-
-.. jupyter-execute::
-
-   me.find_dynamicsymbols(P2.acc(N).to_matrix(N))
-
-.. jupyter-execute::
-
-   me.find_dynamicsymbols(P3.acc(N).to_matrix(N))
-
-.. jupyter-execute::
-
-   me.find_dynamicsymbols(P4.acc(N).to_matrix(N))
-
-.. jupyter-execute::
-
-   Rs_P2 = -m*P2.acc(N)
-   Rs_P3 = -m*P3.acc(N).xreplace(qd_repl).xreplace(res)
-   Rs_P4 = -m*P4.acc(N).xreplace(qd_repl).xreplace(res)
-
-   Frs = sm.Matrix([
-       P2.vel(N).diff(u1, N).dot(Rs_P2) +
-       P3.vel(N).diff(u1, N).dot(Rs_P3) +
-       P4.vel(N).diff(u1, N).dot(Rs_P4),
-   ])
-   me.find_dynamicsymbols(Frs)
-
-.. jupyter-execute::
-
-   q = sm.Matrix([q1, q2, q3])
-   u = sm.Matrix([u1])
-   p = sm.Matrix([la, lb, lc, ln, m, g])
-
-.. jupyter-execute::
-
-   Md = Frs.jacobian([u1.diff()])
-   gd = Frs.xreplace({u1.diff(): 0}) + Fr
-
-.. jupyter-execute::
-
-   eval_Mdgd = sm.lambdify((q, u, p), (Md, gd))
-   eval_fh = sm.lambdify((q, p), fh)
-
-.. jupyter-execute::
-
-   import numpy as np
-
-   p_vals = np.array([
-       0.8,
-       2.0,
-       1.0,
-       2.0,
-       1.0,
-       9.81,
-   ])
-
-   q1_val = np.deg2rad(10.0)
-
-   from scipy.optimize import fsolve
-
-   eval_fh_fsolve = lambda x, q1, p: np.squeeze(eval_fh(np.hstack((q1, x)), p))
-
-   q2_val, q3_val = fsolve(eval_fh_fsolve, np.deg2rad([-6.0, 150]), args=(q1_val, p_vals))
-
-   q_vals = np.array([q1_val, q2_val, q3_val])
-   np.rad2deg(q_vals)
-
-.. jupyter-execute::
-
-   eval_u2u3 = sm.lambdify((q, u, p), (res[u2], res[u3]))
-   eval_u2u3(q_vals, [1.0], p_vals)
-
-.. jupyter-execute::
-
-
-   def eval_rhs(t, x, p):
-
-       q1, q2, q3, u1 = x
-
-       q1d = u1
-
-       u2, u3 = eval_u2u3([q1, q2, q3], [u1], p)
-
-       q2d = u2
-       q3d = u3
-
-       Md, gd = eval_Mdgd([q1, q2, q3], [u1], p)
-
-       u1d = -Md[0]/gd[0]
-
-       return np.array([q1d, q2d, q3d, u1d[0]])
-
-.. jupyter-execute::
-
-   x0 = np.hstack((q_vals, 0.1))
-
-   eval_rhs(0.0, x0, p_vals)
-
-.. jupyter-execute::
-
-   from scipy.integrate import solve_ivp
-
-   sol = solve_ivp(eval_rhs, (0.0, 5.0), x0, args=(p_vals,))
-
-   q1_traj, q2_traj, q3_traj, u1_traj = sol.y
-
-   constraint_violation = eval_fh((q1_traj, q2_traj, q3_traj), p_vals)
-
-.. jupyter-execute::
-
-   import matplotlib.pyplot as plt
-   plt.plot(sol.t, sol.y.T)
-   plt.legend(['q1', 'q2', 'q3', 'u1'])
-
-.. jupyter-execute::
-
-   plt.plot(sol.t, np.squeeze(constraint_violation).T)
+   x = sm.Matrix([q1, q2, q3, q4, q5, u3, u4, u5])
+   eval_ur = sm.lambdify((x, p), ur_sol)
+
+   ur_vals = eval_ur(np.transpose(xs), np.transpose(np.tile(p_vals, (600, 1)))).squeeze()
+
+   fig, ax = plt.subplots()
+   fig.set_figwidth(10.0)
+   ax.plot(ts, ur_vals.T)
+   ax.set_ylabel('Speed [m/s]')
+   ax.set_xlabel('Tims [s]')
+   ax.legend(['$u_1$', '$u_2$'])
