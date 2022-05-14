@@ -245,9 +245,10 @@ later use in our numerical functions.
 
 The snakeboard model, as described, has no generalized active forces because
 there are no contributing external forces acting on the system, so we only need
-to generate the generalized inertia forces :math:`\bar{F}_r^*`. We now then
-calculate the velocities we will need to form :math:`\bar{F}_r^*` and make sure
-they are written only in terms of the independent generalized speeds.
+to generate the nonholonomic generalized inertia forces :math:`\tilde{F}_r^*`.
+We now then calculate the velocities we will need to form :math:`\tilde{F}_r^*`
+and make sure they are written only in terms of the independent generalized
+speeds.
 
 .. jupyter-execute::
 
