@@ -11,7 +11,7 @@ Angular Kinematics
 Angular Velocity
 ================
 
-In Ch. :ref:`orientation` we learned that reference frames can be oriented
+In Ch. :ref:`Orientation of Reference Frames` we learned that reference frames can be oriented
 relative to each other. If the relative orientation of two reference frames
 change with respect to time, then we can calculate the angular velocity
 :math:`{}^A\bar{\omega}^B` of reference frame :math:`B` when observed from
@@ -30,7 +30,7 @@ velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
 If :math:`B` is oriented with respect to :math:`A` and mutually perpendicular
 unit vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` are fixed in :math:`A` then
 there are these general relationships among the unit vectors of each frame (see
-:ref:`direction-cosine-matrix`):
+:ref:`Direction Cosine Matrix`):
 
 .. math::
    :label: unit-vector-general-relation
@@ -286,7 +286,7 @@ making the time derivative equal to the cross product of the angular velocity
 of :math:`B` in :math:`A` with the vector.
 
 Now, if :math:`\bar{u}` is a vector that is **not fixed in** :math:`B` we
-return to the product rule in Section :ref:`product-rule`. First expressed
+return to the product rule in Section :ref:`Product Rule`. First expressed
 :math:`\bar{u}` in :math:`B`:
 
 .. math::
@@ -364,13 +364,12 @@ simplifying:
 
    u.express(A).dt(A).express(B).simplify()
 
-.. _addition-of-angular-velocity:
 
 Addition of Angular Velocity
 ============================
 
 Similar to the relationship in direction cosine matrices of successive
-orientations (Sec. :ref:`successive-orientations`), there is a relationship
+orientations (Sec. :ref:`Successive Orientations`), there is a relationship
 among the angular velocities of successively oriented reference frames
 ([Kane1985]_, pg. 24) but it is tied to the addition of vectors instead of
 multiplication of matrices.
@@ -524,7 +523,7 @@ Addition of Angular Acceleration
 ================================
 
 The calculation of angular acceleration is relatively simple, but the addition
-of angular velocities explained in Sec. :ref:`addition-of-angular-velocity`
+of angular velocities explained in Sec. :ref:`Addition of Angular Velocity`
 does not extend to angular accelerations.
 
 .. math::

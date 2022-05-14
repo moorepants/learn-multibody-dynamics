@@ -11,7 +11,7 @@ Nonholonomic Constraints
 Motion Constraints
 ==================
 
-In :ref:`chp-holonomic-constraints`, we discussed constraints on the
+In :ref:`Holonomic Constraints`, we discussed constraints on the
 configuration of a system. Configuration only concerns where points are and how
 reference frames are oriented. In this chapter, we will consider constraints on
 the motion of a system. Motion concerns how points and reference frames move.
@@ -296,7 +296,7 @@ angular velocity takes this form:
    Yk_plus_zk = qdot
    Yk_plus_zk
 
-Recall from :ref:`sec-solving-linear-systems` that the Jacobian is a simple way
+Recall from :ref:`Solving Linear Systems` that the Jacobian is a simple way
 to extract the coefficients of linear terms into a coefficient matrix for a
 system of linear equations. In this case, we see that this results in the
 identity matrix.

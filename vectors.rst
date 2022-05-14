@@ -76,8 +76,6 @@ the vector :math:`\bar{u}`.
 
 .. _Euclidean norm: https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm
 
-.. _vector-functions:
-
 Vector Functions
 ================
 
@@ -581,7 +579,7 @@ of the vector is at :math:`P_1` and the tip is at :math:`P_2`.
 
 .. admonition:: Exercise
 
-   Reread the :ref:`vector-function` section and answer the following
+   Reread the :ref:`Vector Functions` section and answer the following
    questions:
 
    1. Is :math:`\bar{r}^{P_2/P_1}` vector function of :math:`q_1` and :math:`q_2` in N?

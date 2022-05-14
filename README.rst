@@ -100,13 +100,13 @@ followed for this text:
    Title
    =====
 
-   H1
+   Chapter
    ==
 
-   H2
+   Section
    --
 
-   H3
+   Subsection
    ^^
 
 Reference styles:
@@ -116,11 +116,9 @@ Reference styles:
    :label:`eq-my-equation-name`
    :math:numref:`eq-my-equation-name`
 
-   .. _sec-my-section-name:
-   :ref:`sec-my-section-name`
+   :ref:`Chapter Name`
 
-   .. _chp-my-chapter-name:
-   :ref:`chp-my-chapter-name`
+   :ref:`Section Name`
 
    .. _fig-my-figure-name:
    :numref:`fig-my-figure-name`

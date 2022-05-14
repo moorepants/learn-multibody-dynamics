@@ -50,7 +50,7 @@ The NumPy_ library is the de facto base library for numeric computing with
 Python. NumPy allows us to do `array programming`_ with Python by providing
 floating point array data types and vectorized operators to enable repeat
 operations across arrays of values. In Sec.
-:ref:`sec-evaluating-symbolic-expressions` we introduced the SymPy function
+:ref:`Evaluating Symbolic Expressions` we introduced the SymPy function
 :external:py:func:`~sympy.utilities.lambdify.lambdify`. ``lambdify()`` will be
 our way to bridge the symbolic world of SymPy with the numeric world of NumPy.
 
@@ -386,8 +386,9 @@ The following function implements Euler's Method:
 
        """
        # generate monotonically increasing values of time.
-       num_samples = int((tspan[1] - tspan[0])/delt)
-       ts = np.linspace(tspan[0], tspan[1], num=num_samples + 1)
+       duration = tspan[1] - tspan[0]
+       num_samples = round(duration/delt) + 1
+       ts = np.arange(tspan[0], tspan[0] + delt*num_samples, delt)
 
        # create an empty array to hold the state values.
        x = np.empty((len(ts), len(x0_vals)))
