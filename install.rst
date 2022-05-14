@@ -120,8 +120,3 @@ This website was built with the following software versions:
 
    import sphinx
    sphinx.__version__
-
-.. jupyter-execute::
-
-   import pkg_resources
-   pkg_resources.get_distribution("scikits.odes").version
