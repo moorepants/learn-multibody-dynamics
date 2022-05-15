@@ -61,6 +61,7 @@ jobs:
           Preview this pull request here https://moorepants.github.io/htmlpreview/?https://github.com/moorepants/learn-multibody-dynamics/blob/preview-pr-${{ github.event.pull_request.number }}/index.html
 
     - name: Deploy the website
+      shell: bash -l {0}
       if: ${{ github.event_name == 'push' }}
       run: |
         git config --global user.name "Github Actions"
