@@ -473,7 +473,57 @@ https://github.com/bmcage/odes/blob/1e3b3324748f4665ee5a52ed1a6e0b7e6c05be7d/sci
                 #compute_initcond_t0=60,
                 old_api=False)
    solution = solver.solve(ts, x0, xd0)
-   print('\n   t        Solution')
-   print('----------------------')
-   for ti, ui in zip(solution.values.t, solution.values.y):
-       print('{0:>4.0f} {1:15.6g} '.format(ti, ui[0]))
+
+.. jupyter-execute::
+
+   ts_dae = solution.values.t
+   xs_dae = solution.values.y
+
+   plt.plot(ts_dae, xs_dae)
+   plt.legend(['q1', 'q2', 'q3', 'u1'])
+
+.. jupyter-execute::
+
+   q1_traj, q2_traj, q3_traj, u1_traj = xs_dae.T
+
+   constraint_violations = []
+   for i in range(len(sol.t)):
+       constraint_violations.append(
+           eval_fh((q2_traj[i], q3_traj[i]), [q1_traj[i]], p_vals)
+       )
+
+   plt.plot(sol.t, np.squeeze(constraint_violations))
+
+.. jupyter-execute::
+
+   x, y, z = eval_point_coords(qN_vals, p_vals)
+
+   fig, ax = plt.subplots()
+   fig.set_size_inches((10.0, 10.0))
+   ax.set_aspect('equal')
+   ax.grid()
+
+   lines, = ax.plot(x, y, color='black',
+                    marker='o', markerfacecolor='blue', markersize=10)
+
+   title_template = 'Time = {:1.2f} s'
+   title_text = ax.set_title(title_template.format(t0))
+   ax.set_xlim((-1.0, 3.0))
+   ax.set_ylim((-1.0, 1.0))
+   ax.set_xlabel('$x$ [m]')
+   ax.set_ylabel('$y$ [m]');
+
+.. jupyter-execute::
+
+   coords = []
+   for xi in xs_dae:
+        coords.append(eval_point_coords(xi[:3], p_vals))
+   coords = np.array(coords)
+
+   def animate(i):
+       title_text.set_text(title_template.format(ts_dae[i]))
+       lines.set_data(coords[i, 0, :], coords[i, 1, :])
+
+   ani = FuncAnimation(fig, animate, len(sol.t))
+
+   HTML(ani.to_jshtml(fps=fps))
