@@ -11,7 +11,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -19,13 +18,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-     - name: Install Conda environment with Micromamba
-       uses: mamba-org/provision-with-micromamba@main
-       with:
-         cache-downloads: true
-         cache-env: true
-         environment-file: multibody-book-env.yml
-         environment-name: multibody-book
+    - name: Install Conda environment with Micromamba
+      uses: mamba-org/provision-with-micromamba@main
+      with:
+        cache-downloads: true
+        cache-env: true
+        environment-file: multibody-book-env.yml
+        environment-name: multibody-book
 
     - name: Install apt dependencies
       run: |
