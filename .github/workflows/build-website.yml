@@ -69,6 +69,7 @@ jobs:
         ghp-import -o -r deploy -b gh-pages -m "Updated via Github Actions [skip ci]" -p _build/html --no-jekyll
 
     - name: Deploy the PR
+      shell: bash -l {0}
       if: ${{ github.event_name == 'pull_request' }}
       run: |
         git config --global user.name "Github Actions"
