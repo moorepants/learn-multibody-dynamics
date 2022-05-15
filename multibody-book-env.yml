@@ -7,6 +7,7 @@ dependencies:
   - numpy
   - python ==3.9.*
   - pythreejs
+  - scikits.odes
   - scipy
   - sphinx
   - sphinx-autobuild  # dev
