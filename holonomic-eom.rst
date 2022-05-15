@@ -270,9 +270,9 @@ Four-bar Linkage Equations of Motion
 
 .. jupyter-execute::
 
-   u10 = 0.01
+   u10 = 0.0
    x0 = np.hstack((qN_vals, u10))
-   t0, tf = 0.0, 30.0
+   t0, tf = 0.0, 10.0
    fps = 30
    ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
@@ -420,28 +420,60 @@ Four-bar Linkage Equations of Motion
 
 https://github.com/bmcage/odes/blob/master/ipython_examples/Planar%20Pendulum%20as%20DAE.ipynb
 
+Simulate using a DAE Solver
+===========================
+
+.. math::
+
+   \bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^n \\
+   \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^n \\
+   \bar{f}_h(\bar{q}, \bar{q}_r, t) = 0 \in \mathbb{R}^M
+
+.. jupyter-execute::
+
+   from scikits.odes import dae
+
 .. jupyter-execute::
 
    def eval_eom(t, x, xd, residual, p):
 
        q1, q2, q3, u1 = x
+       q1d, q2d, q3d, u1d = xd
 
        Md, gd = eval_d([q1, q2, q3], [u1], p)
 
        residual[0] = q1d - u1  # 1 equation
-       residula[1] = Md[0] * u1d + gd[0]  # 1 equation
-       residual[2:] = eval_fh([q2, q3], [q1], p)  # 2 equation
+       residual[1] = Md[0]*u1d + gd[0]  # 1 equation
+       residual[2:] = eval_fh([q2, q3], [q1], p).squeeze()  # 2 equation
 
+   residual = np.empty(4)
+   Md_vals, gd_vals = eval_d(qN_vals, [0.0], p_vals)
+   xd0 = np.array([
+      0.0,
+      0.0,
+      0.0,
+      -np.linalg.solve(Md_vals, gd_vals)[0],
+   ])
+   eval_eom(t0, x0, xd0, residual, p_vals)
+   residual
 
-.. code::
+Options:
+
+https://github.com/bmcage/odes/blob/1e3b3324748f4665ee5a52ed1a6e0b7e6c05be7d/scikits/odes/sundials/ida.pyx#L848
+
+.. jupyter-execute::
 
    solver = dae('ida',
                 lambda t, x, xd, res: eval_eom(t, x, xd, res, p_vals),
-                compute_initcond='yp0',
+                #compute_initcond='yp0',
                 first_step_size=1e-18,
                 atol=1e-6,
                 rtol=1e-6,
-                algebraic_vars_idx=[4],
-                compute_initcond_t0 = 60,
+                algebraic_vars_idx=[2, 3],
+                #compute_initcond_t0=60,
                 old_api=False)
-   solution = solver.solve([0., 1., 2.], z0, zp0)
+   solution = solver.solve(ts, x0, xd0)
+   print('\n   t        Solution')
+   print('----------------------')
+   for ti, ui in zip(solution.values.t, solution.values.y):
+       print('{0:>4.0f} {1:15.6g} '.format(ti, ui[0]))
