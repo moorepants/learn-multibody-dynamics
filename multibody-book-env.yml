@@ -5,6 +5,7 @@ dependencies:
   - jupyter-sphinx
   - matplotlib
   - numpy
+  - python ==3.9.*
   - pythreejs
   - scipy
   - sphinx
