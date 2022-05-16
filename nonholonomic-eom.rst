@@ -1,6 +1,6 @@
-================================
-Nonholonomic Equations of Motion
-================================
+=================================================
+Equations of Motion with Nonholonomic Constraints
+=================================================
 
 .. note::
 
@@ -22,11 +22,10 @@ Nonholonomic Equations of Motion
 
 In chapters, :ref:`Holonomic Constraints` and :ref:`Nonholonomic Constraints`,
 I introduced two types of constraints: holonomic (configuration) constraints
-and nonholonomic (motion) constraints, respectively. Holonomic constraints are
-nonlinear constraints in the coordinates [*]_. Nonholonomic constraints are
-linear in the generalized speeds, by definition. We will address the
-nonholonomic equations of motion first, as they are slightly easier to deal
-with.
+and nonholonomic (motion) constraints. Holonomic constraints are nonlinear
+constraints in the coordinates [*]_. Nonholonomic constraints are linear in the
+generalized speeds, by definition. We will address the nonholonomic equations
+of motion first, as they are slightly easier to deal with.
 
 .. [*] They can be linear in the coordinates, but then there is little reason
    not to solve for the depedendent coordinates and eliminate them.
@@ -35,12 +34,12 @@ Nonholonomic Equations of Motion
 ================================
 
 Nonholonomic constraint equations are linear in both the independent and
-dependent generalized speeds. We have shown that you can explicitly solve for
-the dependent generalized speeds :math:`\bar{u}_r` as a function of the
-independent generalized speeds :math:`\bar{u}_s`. This means that number of
-dynamical differential equations can be reduced to :math:`p` from :math:`n`
-with :math:`m` nonholonomic constraints. Recall that the nonholonomic
-constraints take this form:
+dependent generalized speeds (see Sec. :ref:`Snakeboard`). We have shown that
+you can explicitly solve for the dependent generalized speeds :math:`\bar{u}_r`
+as a function of the independent generalized speeds :math:`\bar{u}_s`. This
+means that number of dynamical differential equations can be reduced to
+:math:`p` from :math:`n` with :math:`m` nonholonomic constraints. Recall that
+the nonholonomic constraints take this form:
 
 .. math::
    :label: eq-nonholonomic-constraints
@@ -76,7 +75,7 @@ Snakeboard Equations of Motion
 ==============================
 
 Let's revisit the snakeboard example (see Sec. :ref:`Snakeboard`) and develop
-the equations of motion for that nonholomoic system. This system only has
+the equations of motion for that nonholonomic system. This system only has
 nonholonomic constraints and we selected :math:`u_1` and :math:`u_2` as the
 dependent speeds. For simplicity, we will assume that the mass and moments of
 inertia of the three bodies are the same.
@@ -86,9 +85,12 @@ inertia of the three bodies are the same.
 
    Configuration diagram of a planar Snakeboard model.
 
+1. Declare all the variables
+----------------------------
+
 First introduce the necessary variables; adding :math:`I` for the central
 moment of inertia of each body and :math:`m` as the mass of each body. Then
-create column matrices for the the various sets of variables.
+create column matrices for the various sets of variables.
 
 .. jupyter-execute::
 
@@ -128,6 +130,9 @@ expressions we create.
 
    qd_zero, ur_zero, us_zero, urd_zero, usd_zero
 
+2. Establish the kinematics
+---------------------------
+
 The following code sets up the orientations, positions, and velocities exactly
 as done in the original example. All of the velocities are in terms of
 :math:`\bar{q}` and :math:`\dot{\bar{q}}`.
@@ -159,6 +164,9 @@ as done in the original example. All of the velocities are in terms of
    O.set_vel(N, 0)
    Bo.v2pt_theory(Ao, N, A)
    Co.v2pt_theory(Ao, N, A);
+
+3. Specify the kinematical differential equations
+-------------------------------------------------
 
 Now create the :math:`n=5` kinematical differential equations
 :math:`\bar{f}_k`:
@@ -193,6 +201,9 @@ dictionary we can use for substitutions:
    qd_repl = dict(zip(qd, qd_sol))
    qd_repl
 
+4. Establish the nonholonomic constraints
+-----------------------------------------
+
 Create the :math:`m=2` nonholonomic constraints:
 
 .. jupyter-execute::
@@ -211,7 +222,7 @@ and rewrite them in terms of the generalized speeds:
 
    me.find_dynamicsymbols(fn)
 
-With the nonholonmic constraint equations we choose :math:`\bar{u}_r=[u_1 \
+With the nonholonomic constraint equations we choose :math:`\bar{u}_r=[u_1 \
 u_2]^T` and symbolically for these dependent speeds.
 
 .. jupyter-execute::
@@ -243,6 +254,9 @@ later use in our numerical functions.
 
    me.find_dynamicsymbols(gk)
 
+5. Rewrite velocities in terms of independent speeds
+----------------------------------------------------
+
 The snakeboard model, as described, has no generalized active forces because
 there are no contributing external forces acting on the system, so we only need
 to generate the nonholonomic generalized inertia forces :math:`\tilde{F}_r^*`.
@@ -264,12 +278,18 @@ speeds.
    for vel in vels:
        print(me.find_dynamicsymbols(vel, reference_frame=N))
 
+6. Compute the partial velocities
+---------------------------------
+
 With the velocities only in terms of the independent generalized speeds, we can
 calculate the :math:`p` nonholonomic partial velocities:
 
 .. jupyter-execute::
 
    w_A, w_B, w_C, v_Ao, v_Bo, v_Co = me.partial_velocity(vels, us, N)
+
+7. Rewrite the accelerations in terms of the independent generalized speeds
+---------------------------------------------------------------------------
 
 We can also write the accelerations in terms of only the independent
 generalized speeds, their time derivatives, and the generalized coordinates. To
@@ -308,6 +328,9 @@ dependent generalized speeds in :math:`\bar{g}_{nd}` instead of
    urd_repl = dict(zip(urd, urd_sol))
 
    me.find_dynamicsymbols(urd_sol)
+
+8. Create the generalized forces
+--------------------------------
 
 Now we can form the inertia forces and inertia torques. First check what
 derivatives appear in the accelerations.
@@ -383,6 +406,9 @@ and eliminate the dependent generalized accelerations:
    (me.find_dynamicsymbols(Ts_A, reference_frame=N) |
     me.find_dynamicsymbols(Ts_B, reference_frame=N) |
     me.find_dynamicsymbols(Ts_C, reference_frame=N))
+
+9. Formulate the dynamical differential equations
+-------------------------------------------------
 
 All of the components are present to formulate the nonholonomic generalized
 inertia forces. After we form them, make sure they are only a function of the
@@ -469,8 +495,8 @@ ordinary differential equations for use with ``solve_ivp()``.
 
       Mk, gk, Md, gd = eval_kd(q, us, p)
 
-      qd = np.linalg.solve(Mk, -gk.squeeze())
-      usd = np.linalg.solve(Md, -gd.squeeze())
+      qd = -np.linalg.solve(Mk, gk.squeeze())
+      usd = -np.linalg.solve(Md, gd.squeeze())
 
       return np.hstack((qd, usd))
 
@@ -501,6 +527,7 @@ snakeboard in an initial state of motion.
    ])
 
    x0 = np.hstack((q0, us0))
+   p_vals, x0
 
 Check whether ``eval_rhs()`` works with these arrays:
 
@@ -651,11 +678,14 @@ calculate :math:`\bar{u}_r` at each time step.
    x = sm.Matrix([q1, q2, q3, q4, q5, u3, u4, u5])
    eval_ur = sm.lambdify((x, p), ur_sol)
 
-   ur_vals = eval_ur(np.transpose(xs), np.transpose(np.tile(p_vals, (600, 1)))).squeeze()
+   ur_vals = []
+   for xi in xs:
+       ur_vals.append(eval_ur(xi, p_vals))
+   ur_vals = np.array(ur_vals).squeeze()
 
    fig, ax = plt.subplots()
    fig.set_figwidth(10.0)
-   ax.plot(ts, ur_vals.T)
+   ax.plot(ts, ur_vals)
    ax.set_ylabel('Speed [m/s]')
    ax.set_xlabel('Time [s]')
    ax.legend(['$u_1$', '$u_2$']);
