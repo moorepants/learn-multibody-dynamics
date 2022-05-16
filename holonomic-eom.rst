@@ -327,22 +327,6 @@ Four-bar Linkage Equations of Motion
 
 .. jupyter-execute::
 
-   con_violations = []
-   for xi in xs:  # xs is shape(n, 4)
-      con_violations.append(eval_fh(xi[1:3], xi[0:1], p_vals).squeeze())
-   con_violations = np.array(con_violations)
-
-.. jupyter-execute::
-
-   q1_traj, q2_traj, q3_traj, u1_traj = sol.y
-   constraint_violations = []
-   for i in range(len(ts)):
-       constraint_violations.append(
-           eval_fh((q2_traj[i], q3_traj[i]), [q1_traj[i]], p_vals)
-       )
-
-.. jupyter-execute::
-
    def plot_results(ts, xs, con):
        """Returns the array of axes of a 4 panel plot of the state trajectory
        versus time.
@@ -384,16 +368,7 @@ Four-bar Linkage Equations of Motion
 
        return axes
 
-   plot_results(ts, xs, con_violations);
-
-.. jupyter-execute::
-
-   coordinates = P2.pos_from(P1).to_matrix(N)
-   for point in [P3, P4, P1, P2]:
-      coordinates = coordinates.row_join(point.pos_from(P1).to_matrix(N))
-
-   eval_point_coords = sm.lambdify((qN, p), coordinates)
-   eval_point_coords(qN_vals, p_vals)
+   plot_results(ts, xs, con);
 
 Animate the Motion
 ==================
@@ -403,7 +378,14 @@ some functions to for the repated use. First, we create a function that plots
 the initial configuration of the linkage and returns any objects we may need in
 the animation code.
 
-.. todo:: Complete the docstring.
+.. jupyter-execute::
+
+   coordinates = P2.pos_from(P1).to_matrix(N)
+   for point in [P3, P4, P1, P2]:
+      coordinates = coordinates.row_join(point.pos_from(P1).to_matrix(N))
+
+   eval_point_coords = sm.lambdify((qN, p), coordinates)
+   eval_point_coords(qN_vals, p_vals)
 
 .. jupyter-execute::
 
@@ -465,6 +447,7 @@ displays the results in Jupyter.
            lines.set_data(coords[i, 0, :], coords[i, 1, :])
 
        plt.close()
+
        # create the animation
        return FuncAnimation(fig, update, len(ts))
 
@@ -472,7 +455,7 @@ displays the results in Jupyter.
 
 .. jupyter-execute::
 
-   def eval_rhs(t, x, p):
+   def eval_rhs_fsolve(t, x, p):
 
        qN = x[:3]
        u = x[3:]
@@ -490,37 +473,67 @@ displays the results in Jupyter.
 
        return np.hstack((qNd, ud))
 
+   ts_fsolve, xs_fsolve, con_fsolve = simulate(
+       eval_rhs_fsolve,
+       t0=0.0,
+       tf=5.0,
+       fps=30,
+       q1_0=np.deg2rad(10.0),
+       u1_0=0.0,
+       q2_0g=np.deg2rad(20.0),
+       q3_0g=np.deg2rad(-150.0),
+       p=p_vals,
+   )
+
 .. jupyter-execute::
 
-   sol = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)
-   xs_fsolve = sol.y.T
-
-   q1_traj, q2_traj, q3_traj, u1_traj = sol.y
-
-   con_violations = []
-   for i in range(len(sol.t)):
-       con_violations.append(
-           eval_fh((q2_traj[i], q3_traj[i]), [q1_traj[i]], p_vals)
-       )
-
-.. jupyter-execute::
-
-   plot_results(ts, xs_fsolve, con_violations)
+   plot_results(ts_fsolve, xs_fsolve, con_fsolve)
 
 .. jupyter-execute::
 
    HTML(animate_linkage(ts, xs, p_vals).to_jshtml(fps=fps))
+
+.. todo:: Integrate with tighter tolerances.
 
 https://github.com/bmcage/odes/blob/master/ipython_examples/Planar%20Pendulum%20as%20DAE.ipynb
 
 Simulate using a DAE Solver
 ===========================
 
+In the prior simulation, we we numerically solved for :math:`q_2` and
+:math:`q_3` at each time step to provide a correction to those two variables.
+This is effective, to some degree, but is a naive approach. There are more
+robust and efficient numerical methods for correcting the state variables at
+each time step. For example, the Sundials library include IDA_ for solving the
+initial value problem of a set of differential algebriac equations.
+scikits.odes provides a Python interface to many Sundials routines, including
+IDA.
+
+.. _IDA: https://sundials.readthedocs.io/en/latest/ida/
+
+In general, we can write the equations of motion of a holonomic system with
+:math:`M` holonomic constraints and :math:`n` degrees of freedom as this
+minimal set of equations:
+
 .. math::
+   :label: eq-dae-system
 
    \bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^n \\
    \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^n \\
    \bar{f}_h(\bar{q}, \bar{q}_r, t) = 0 \in \mathbb{R}^M
+
+This gives :math:`2n+M` equations in :math:`2n+M` state variables
+:math:`\bar{u},\bar{q},\bar{q}_r`.
+
+sckits.odes ``dae()`` serves a similar function to ``solve_ivp()``, except it
+solves the differential alebraic system. ``dae()`` works with the explicit form
+of the equations, exactly as shown in Eq. :math:numref:`eq-dae-system`. We need
+to build a function that returns the left hand side of the equations and we
+will call the output of those equations the "residual", which should equate to
+zero all times.
+
+We will import the ``dae`` function directly, as that is all we need from
+scikits.odes.
 
 .. jupyter-execute::
 
@@ -558,12 +571,10 @@ https://github.com/bmcage/odes/blob/1e3b3324748f4665ee5a52ed1a6e0b7e6c05be7d/sci
 
    solver = dae('ida',
                 lambda t, x, xd, res: eval_eom(t, x, xd, res, p_vals),
-                #compute_initcond='yp0',
                 first_step_size=1e-18,
                 atol=1e-10,
                 rtol=1e-10,
                 algebraic_vars_idx=[2, 3],
-                #compute_initcond_t0=60,
                 old_api=False)
    solution = solver.solve(ts, x0, xd0)
 
