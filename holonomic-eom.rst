@@ -239,11 +239,13 @@ Four-bar Linkage Equations of Motion
 
 .. jupyter-execute::
 
+   from scipy.optimize import fsolve
+
+.. jupyter-execute::
+
    q1_val = np.deg2rad(10.0)
 
    eval_fh = sm.lambdify((qr, q, p), fh)
-
-   from scipy.optimize import fsolve
 
    q2_val, q3_val = fsolve(lambda qr, q, p: np.squeeze(eval_fh(qr, [q], p)),
                            np.deg2rad([20.0, -150]),
@@ -272,7 +274,7 @@ Four-bar Linkage Equations of Motion
 
    u10 = 0.0
    x0 = np.hstack((qN_vals, u10))
-   t0, tf = 0.0, 10.0
+   t0, tf = 0.0, 5.0
    fps = 30
    ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
@@ -280,26 +282,109 @@ Four-bar Linkage Equations of Motion
 
 .. jupyter-execute::
 
+   %time sol = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)
+
+.. jupyter-execute::
+
    sol = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)
+   xs = np.transpose(sol.y)
+   ts = sol.t
+
+.. jupyter-execute::
+
+   def simulate(eval_rhs, t0, tf, fps, q1_0, u1_0, q2_0g, q3_0g, p):
+
+       ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
+
+       q2_val, q3_val = fsolve(lambda qr, q, p: np.squeeze(eval_fh(qr, [q], p)),
+                               [q2_0g, q3_0g],
+                               args=(q1_0, p))
+       x0 = np.array([q1_val, q2_val, q3_val, u1_0])
+
+       sol = solve_ivp(eval_rhs, (ts[0], ts[-1]), x0, args=(p_vals,), t_eval=ts)
+
+       xs = np.transpose(sol.y)
+       ts = sol.t
+
+       con = []
+       for xi in xs:  # xs is shape(n, 4)
+          con.append(eval_fh(xi[1:3], xi[0:1], p_vals).squeeze())
+       con = np.array(con)
+
+       return ts, xs, con
+
+   ts, xs, con = simulate(
+       eval_rhs,
+       t0=0.0,
+       tf=5.0,
+       fps=30,
+       q1_0=np.deg2rad(10.0),
+       u1_0=0.0,
+       q2_0g=np.deg2rad(20.0),
+       q3_0g=np.deg2rad(-150.0),
+       p=p_vals,
+   )
+
+.. jupyter-execute::
+
+   con_violations = []
+   for xi in xs:  # xs is shape(n, 4)
+      con_violations.append(eval_fh(xi[1:3], xi[0:1], p_vals).squeeze())
+   con_violations = np.array(con_violations)
 
 .. jupyter-execute::
 
    q1_traj, q2_traj, q3_traj, u1_traj = sol.y
-
    constraint_violations = []
-   for i in range(len(sol.t)):
+   for i in range(len(ts)):
        constraint_violations.append(
            eval_fh((q2_traj[i], q3_traj[i]), [q1_traj[i]], p_vals)
        )
 
 .. jupyter-execute::
 
-   plt.plot(sol.t, sol.y.T)
-   plt.legend(['q1', 'q2', 'q3', 'u1'])
+   def plot_results(ts, xs, con):
+       """Returns the array of axes of a 4 panel plot of the state trajectory
+       versus time.
 
-.. jupyter-execute::
+       Parameters
+       ==========
+       ts : array_like, shape(n,)
+          Values of time.
+       xs : array_like, shape(n, 4)
+          Values of the state trajectories corresponding to ``ts`` in order
+          [q1, q2, q3, u1].
+       con : array_like, shape(n, 2)
+          x and y constraint violations of P4 at each time in ``ts``.
 
-   plt.plot(sol.t, np.squeeze(constraint_violations))
+       Returns
+       =======
+       axes : ndarray, shape(3,)
+          Matplotlib axes for each panel.
+
+       """
+       fig, axes = plt.subplots(3, 1, sharex=True)
+
+       fig.set_size_inches((10.0, 6.0))
+
+       axes[0].plot(ts, np.rad2deg(xs[:, :3]))  # q1, q2, q3
+       axes[1].plot(ts, np.rad2deg(xs[:, 3]))  # u1
+       axes[2].plot(ts, np.squeeze(con))
+
+       axes[0].legend(['$q_1$', '$q_2$', '$q_3$'])
+       axes[1].legend(['$u_1$'])
+       axes[2].legend([r'$\cdot\hat{n}_x$', r'$\cdot\hat{n}_y$'])
+
+       axes[0].set_ylabel('Angle [deg]')
+       axes[1].set_ylabel('Angular Rate [deg/s]')
+       axes[2].set_ylabel('Distance [m]')
+       axes[2].set_xlabel('Time [s]')
+
+       fig.tight_layout()
+
+       return axes
+
+   plot_results(ts, xs, con_violations);
 
 .. jupyter-execute::
 
@@ -310,42 +395,80 @@ Four-bar Linkage Equations of Motion
    eval_point_coords = sm.lambdify((qN, p), coordinates)
    eval_point_coords(qN_vals, p_vals)
 
+Animate the Motion
+==================
+
+We'll animate the four bar linkage multiple times so it is useful to create
+some functions to for the repated use. First, we create a function that plots
+the initial configuration of the linkage and returns any objects we may need in
+the animation code.
+
+.. todo:: Complete the docstring.
+
 .. jupyter-execute::
-
-   x, y, z = eval_point_coords(qN_vals, p_vals)
-
-   fig, ax = plt.subplots()
-   fig.set_size_inches((10.0, 10.0))
-   ax.set_aspect('equal')
-   ax.grid()
-
-   lines, = ax.plot(x, y, color='black',
-                    marker='o', markerfacecolor='blue', markersize=10)
 
    title_template = 'Time = {:1.2f} s'
-   title_text = ax.set_title(title_template.format(t0))
-   ax.set_xlim((-1.0, 3.0))
-   ax.set_ylim((-1.0, 1.0))
-   ax.set_xlabel('$x$ [m]')
-   ax.set_ylabel('$y$ [m]');
+
+   def setup_animation_plot(ts, xs, p):
+       """
+
+       Parameters
+       ==========
+       ts : array_like, shape(n,)
+          Values of time.
+       xs : array_like, shape(n, 4)
+          Values of the state trajectories corresponding to ``ts`` in order
+          [q1, q2, q3, u1].
+       p : array_like, shape(6,)
+
+       """
+
+       x, y, z = eval_point_coords(xs[0, :3], p)
+
+       fig, ax = plt.subplots()
+       fig.set_size_inches((10.0, 10.0))
+       ax.set_aspect('equal')
+       ax.grid()
+
+       lines, = ax.plot(x, y, color='black',
+                        marker='o', markerfacecolor='blue', markersize=10)
+
+       title_text = ax.set_title(title_template.format(ts[0]))
+       ax.set_xlim((-1.0, 3.0))
+       ax.set_ylim((-1.0, 1.0))
+       ax.set_xlabel('$x$ [m]')
+       ax.set_ylabel('$y$ [m]')
+
+       return fig, ax, title_text, lines
+
+   setup_animation_plot(ts, xs, p_vals);
+
+Now we can create a function that initializes the plot, runs the animation and
+displays the results in Jupyter.
 
 .. jupyter-execute::
 
-   xs = sol.y.T
-   fps = 30
+   def animate_linkage(ts, xs, p_vals):
 
-   coords = []
-   for xi in xs:
-        coords.append(eval_point_coords(xi[:3], p_vals))
-   coords = np.array(coords)
+       # setup the initial figure and axes
+       fig, ax, title_text, lines = setup_animation_plot(ts, xs, p_vals)
 
-   def animate(i):
-       title_text.set_text(title_template.format(sol.t[i]))
-       lines.set_data(coords[i, 0, :], coords[i, 1, :])
+       # precalculate all of the point coordinates
+       coords = []
+       for xi in xs:
+           coords.append(eval_point_coords(xi[:3], p_vals))
+       coords = np.array(coords)
 
-   ani = FuncAnimation(fig, animate, len(sol.t))
+       # define the animation update function
+       def update(i):
+           title_text.set_text(title_template.format(ts[i]))
+           lines.set_data(coords[i, 0, :], coords[i, 1, :])
 
-   HTML(ani.to_jshtml(fps=fps))
+       plt.close()
+       # create the animation
+       return FuncAnimation(fig, update, len(ts))
+
+   HTML(animate_linkage(ts, xs, p_vals).to_jshtml(fps=fps))
 
 .. jupyter-execute::
 
@@ -370,53 +493,23 @@ Four-bar Linkage Equations of Motion
 .. jupyter-execute::
 
    sol = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)
+   xs_fsolve = sol.y.T
 
    q1_traj, q2_traj, q3_traj, u1_traj = sol.y
 
-   constraint_violations = []
+   con_violations = []
    for i in range(len(sol.t)):
-       constraint_violations.append(
+       con_violations.append(
            eval_fh((q2_traj[i], q3_traj[i]), [q1_traj[i]], p_vals)
        )
 
-   plt.plot(sol.t, np.squeeze(constraint_violations))
+.. jupyter-execute::
+
+   plot_results(ts, xs_fsolve, con_violations)
 
 .. jupyter-execute::
 
-   x, y, z = eval_point_coords(qN_vals, p_vals)
-
-   fig, ax = plt.subplots()
-   fig.set_size_inches((10.0, 10.0))
-   ax.set_aspect('equal')
-   ax.grid()
-
-   lines, = ax.plot(x, y, color='black',
-                    marker='o', markerfacecolor='blue', markersize=10)
-
-   title_template = 'Time = {:1.2f} s'
-   title_text = ax.set_title(title_template.format(t0))
-   ax.set_xlim((-1.0, 3.0))
-   ax.set_ylim((-1.0, 1.0))
-   ax.set_xlabel('$x$ [m]')
-   ax.set_ylabel('$y$ [m]');
-
-.. jupyter-execute::
-
-   xs = sol.y.T
-   fps = 30
-
-   coords = []
-   for xi in xs:
-        coords.append(eval_point_coords(xi[:3], p_vals))
-   coords = np.array(coords)
-
-   def animate(i):
-       title_text.set_text(title_template.format(sol.t[i]))
-       lines.set_data(coords[i, 0, :], coords[i, 1, :])
-
-   ani = FuncAnimation(fig, animate, len(sol.t))
-
-   HTML(ani.to_jshtml(fps=fps))
+   HTML(animate_linkage(ts, xs, p_vals).to_jshtml(fps=fps))
 
 https://github.com/bmcage/odes/blob/master/ipython_examples/Planar%20Pendulum%20as%20DAE.ipynb
 
@@ -467,8 +560,8 @@ https://github.com/bmcage/odes/blob/1e3b3324748f4665ee5a52ed1a6e0b7e6c05be7d/sci
                 lambda t, x, xd, res: eval_eom(t, x, xd, res, p_vals),
                 #compute_initcond='yp0',
                 first_step_size=1e-18,
-                atol=1e-6,
-                rtol=1e-6,
+                atol=1e-10,
+                rtol=1e-10,
                 algebraic_vars_idx=[2, 3],
                 #compute_initcond_t0=60,
                 old_api=False)
