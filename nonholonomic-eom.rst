@@ -668,10 +668,8 @@ Calculating Dependent Speeds
 Since we have eliminated the dependent generalized speeds (:math:`u_1` and
 :math:`u_2`) from the equations of motion, these are not computed from
 ``solve_ivp()``. If these are needed, it is possible to calculate them using
-the constraint equations. I use :external:py:func:`~numpy.tile`,
-:external:py:func:`~numpy.transpose`, and :external:py:func:`~numpy.squeeze`
-here to use ``eval_ur`` as a vectorized function so that no loop is needed to
-calculate :math:`\bar{u}_r` at each time step.
+the constraint equations. Here I loop through time to calculate
+:math:`\bar{u}_r` at each time step and then plot the results.
 
 .. jupyter-execute::
 
