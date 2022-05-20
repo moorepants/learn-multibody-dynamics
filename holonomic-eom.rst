@@ -23,18 +23,30 @@ Equations of Motion with Holonomic Constraints
 When there are holonomic constraints present the equations of motion are
 comprised of the kinematical differential equations :math:`\bar{f}_k`,
 dynamical differential equations :math:`\bar{f}_d`, and the holonomic
-constraint equations :math:`\bar{f}_h`. This set of equations is an example of
-differential algebraic equations.
+constraint equations :math:`\bar{f}_h`. This set of equations are called
+`differential algebraic equations`_ and the algebraic equations cannot be
+solved for explicitly, as we did with the nonholonomic algebraic constraint
+equations.
 
-If we have :math:`M` holonomic constraint equations we will have :math:`M`
-dependent coordinates :math:`\bar{q}_r`. The holonomic constraints are then a
-function of the :math:`n` generalized coordinates :math:`\bar{q}` and the
-additional dependent coordinates.
+.. _differential algebraic equations: https://en.wikipedia.org/wiki/Differential-algebraic_system_of_equations
+
+In a system such as this, there are :math:`N=n+M` total coordinates, with
+:math:`n` generalized coordinates :math:`\bar{q}` and :math:`M` additional
+dependent coordinates :math:`\bar{q}_r`. The holonomic constraints take this
+form:
 
 .. math::
    :label: eq-holonomic-constraints
 
    \bar{f}_h(\bar{q}, \bar{q}_r, t) = 0 \in \mathbb{R}^M
+
+:math:`n` generalized speeds :math:`\bar{u}` and :math:`M` dependent speeds
+:math:`\bar{u}_r` can be introduced along with :math:`N` kinematical
+differential equations.
+
+.. math::
+
+   \bar{f}_k(\dot{\bar{q}}, \dot{\bar{q}}_r, \bar{u}, \bar{u}_r, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^N \\
 
 We can formulate the kinematical and dynamical equations of motion by
 transforming the holonomic constraints into a function of generalized speeds.
@@ -44,7 +56,7 @@ in the previous chapter.
 .. math::
    :label: eq-holonomic-constraints-dot
 
-   \dot{\bar{f}}_h(\bar{u}, \bar{u}_r \bar{q}, \bar{q}_r, t) =
+   \dot{\bar{f}}_h(\bar{u}, \bar{u}_r, \bar{q}, \bar{q}_r, t) =
    \mathbf{M}_{hd}\bar{u}_r + \bar{g}_{hd} = 0 \in \mathbb{R}^M
 
 We can solve for :math:`M` dependent generalized speeds:
@@ -60,8 +72,11 @@ and the dependent coordinates.
 .. math::
    :label: eq-holonomic-constrained-eom
 
-   \bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^N \\
+   \bar{f}_k(\dot{\bar{q}}, \dot{\bar{q}}_r, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^N \\
    \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^n \\
+
+This final set of equations has :math:`N+n` state variables and can be
+integrated as a set of ordinary differential equations.
 
 Four-bar Linkage Equations of Motion
 ====================================
@@ -126,6 +141,10 @@ Similarly for the generalized speeds also.
 2. Setup the open loop kinematics and holonomic constraints
 -----------------------------------------------------------
 
+Start by defining the orientation of the reference frames and positions of the
+points in terms of the :math:`N=3` coordinates, leaving :math:`P_4`
+unconstrained.
+
 .. jupyter-execute::
 
    N = me.ReferenceFrame('N')
@@ -146,13 +165,10 @@ Similarly for the generalized speeds also.
    P3.set_pos(P2, lb*B.x)
    P4.set_pos(P3, lc*C.x)
 
-Here we create the :math:`M=2` holonomic constraints that close the loop.
+3. Create the holonomic constraints
+-----------------------------------
 
-.. warning::
-
-   Be careful about using :external:py:func:`~sympy.trigsimp` on larger
-   problems, as it can really slow down the calculations. It is not necessary
-   to use, but I do so here so that the resulting equations are human readable.
+Now :math:`M=2` holonomic constraints can be found by closing the loop.
 
 .. jupyter-execute::
 
@@ -162,16 +178,25 @@ Here we create the :math:`M=2` holonomic constraints that close the loop.
    fh = sm.trigsimp(fh)
    fh
 
-Note that these are only a function of the coordinates.
+.. warning::
+
+   Be careful about using :external:py:func:`~sympy.trigsimp` on larger
+   problems, as it can really slow down the calculations. It is not necessary
+   to use, but I do so here so that the resulting equations are human readable
+   in this context.
+
+Note that these constraints are only a function of the :math:`N` coordinates.
 
 .. jupyter-execute::
 
    me.find_dynamicsymbols(fh)
 
-3. Define the kinematical differential equations
-------------------------------------------------
+4. Specify the kinematical differential equations
+-------------------------------------------------
 
-Here I choose the simple definition of the generalized speeds.
+Use simple definitions for the generalized speed :math:`u_1` and the dependent
+speeds :math:`u_2` and :math:`u_3`. We create :math:`N=3` generalized speeds
+even though the degrees of freedom are :math:`n=1`.
 
 .. jupyter-execute::
 
@@ -186,8 +211,8 @@ Here I choose the simple definition of the generalized speeds.
    qd_repl = dict(zip(qdN, qdN_sol))
    qd_repl
 
-4. Solve for dependent generalized speeds
------------------------------------------
+6. Solve for the dependent speed
+--------------------------------
 
 .. jupyter-execute::
 
@@ -207,12 +232,17 @@ Here I choose the simple definition of the generalized speeds.
    ur_repl = dict(zip(ur, ur_sol))
    ur_repl
 
-5. Calculate the velocities
----------------------------
+7. Write velocities in terms of the generalized speeds
+------------------------------------------------------
 
 We have three simple rotations and we can write the three angular velocities
 only in terms of :math:`u_1` by using the expressions for the independent
 speeds from the previous step.
+
+.. jupyter-execute::
+
+   gk = gk.xreplace(ur_repl)
+
 
 .. jupyter-execute::
 
@@ -259,8 +289,8 @@ generalized speed and :math:`\bar{F}_r` is:
 
    me.find_dynamicsymbols(Fr)
 
-7. Generalized inertia forces
------------------------------
+9. Form the generalized inertia forces
+--------------------------------------
 
 To calculate the generalized inertia forces we need the acceleration of each
 particle. These should be only functions of :math:`\dot{u}_1,u_1`, and the
@@ -393,15 +423,17 @@ Now we have values of the coordinates that satisfy the constraints.
 
    eval_fh(qN_vals[1:], qN_vals[:1], p_vals)
 
-With consistent coordinates the initial conditions can be set and
-``eval_rhs()`` tested.
-
 .. jupyter-execute::
 
    u1_val = 0.0
    x0 = np.hstack((qN_vals, u1_val))
+   t0, tf, fps = 0.0, 30.0, 20
+   ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
-   t0 = 0.0
+With consistent coordinates the initial conditions can be set and
+``eval_rhs()`` tested.
+
+.. jupyter-execute::
 
    eval_rhs(t0, x0, p_vals)
 
@@ -516,8 +548,6 @@ The dependent initial conditions need to be solved before each simulation
        return axes
 
 .. jupyter-execute::
-
-   t0, tf, fps = 0.0, 20.0, 30
 
    ts, xs, con = simulate(
        eval_rhs,
@@ -739,32 +769,94 @@ scikits.odes.
    from scikits.odes import dae
 
 We first need to create a residual function.
+We first need to design a function that evaulates the left hand side of Eq.
+:math:numref:`eq-dae-system` and it needs to have a specific function
+signature. In addition to the arguments in ``eval_rhs()`` above, this function
+needs the time derivative of the states and a vector to store the result in.
+
+.. note::
+
+   ``eval_eom()`` does not return a value. It only sets the individual values
+   in the ``residual`` array. So if you run ``eval_eom()`` and check
+   ``residual`` you will see it has changed.
 
 .. jupyter-execute::
 
    def eval_eom(t, x, xd, residual, p):
+       """Returns the residual vector of the equations of motion.
+
+       Parameters
+       ==========
+       t : float
+          Time at evaluation.
+       x : ndarray, shape(4,)
+          State vector at time t: x = [q1, q2, q3, u1].
+       xd : ndarray, shape(4,)
+          Time derivative of the state vector at time t: xd = [q1d, q2d, q3d, u1d].
+       residual : ndarray, shape(4,)
+          Vector to store the residuals in: residuals = [fk, fd, fh1, fh2].
+       p : ndarray, shape(6,)
+          Constant parameters: p = [la, lb, lc, ln, m, g]
+
+       """
 
        q1, q2, q3, u1 = x
-       q1d, q2d, q3d, u1d = xd
+       q1d, _, _, u1d = xd
 
        Md, gd = eval_d([q1, q2, q3], [u1], p)
 
-       residual[0] = q1d - u1  # 1 equation
-       residual[1] = Md[0]*u1d + gd[0]  # 1 equation
-       residual[2:] = eval_fh([q2, q3], [q1], p).squeeze()  # 2 equation
+       residual[0] = -q1d + u1  # fk, float
+       residual[1] = Md[0]*u1d + gd[0]  # fd, float
+       residual[2:] = eval_fh([q2, q3], [q1], p).squeeze()  # fh, shape(2,)
+
+We already have the initial state defined ``x0``, but we need to initialize the
+time derivatives of the states. These must be consistent with the equations of
+motion, including the constraints. In our case, :math:`u_1=0` so
+:math:`\dot{q}_1,\dot{q}_2` and :math:`\dot{q}_3` will also be zero. But we do
+need to solve :math:`\bar{f}_d` for the initial :math:`\dot{u}_1`.
+
+.. jupyter-execute::
+
+   Md_vals, gd_vals = eval_d(x0[:3], x0[3:], p_vals)
 
 .. jupyter-execute::
 
    residual = np.empty(4)
    Md_vals, gd_vals = eval_d(qN_vals, [0.0], p_vals)
    xd0 = np.array([
-      0.0,
-      0.0,
-      0.0,
-      -np.linalg.solve(Md_vals, gd_vals)[0],
+      0.0,  # q1d [rad/s]
+      0.0,  # q2d [rad/s]
+      0.0,  # q3d [rad/s]
+      -np.linalg.solve(Md_vals, gd_vals)[0],  # u1d [rad/s^2]
    ])
+   xd0
+
+Now I'll create an empty array to store the residual results in using
+:external:py:func:`~numpy.empty`.
+
+.. jupyter-execute::
+
+   residual = np.empty(4)
+   residual
+
+With all of the arguments for ``eval_eom()`` prepared, we can see if it updates
+the residual properly. We should get a residual of zero if we've set consistent
+initial conditions.
+
+.. jupyter-execute::
+
    eval_eom(t0, x0, xd0, residual, p_vals)
    residual
+
+It looks like our functions works! Now we can integrate the differential
+algebraic equations with the IDA integrator. We first intialize a solver with
+the desired integrator parameters. I've set ``atol`` and ``rtol`` to be fairly
+small here to see how well the integrator manages to enforce the constraints.
+The ``first_step_size`` is set to ``1e-18`` as recommended from the
+scikits.odes documentation, as DAE solvers often need very small first
+integration steps. The ``algebraic_vars_idx`` argument is used to indicate
+which indexes of ``residual`` correspond to the holonomic constraints. Lastly,
+``old_api`` is set to false to use the newest solution outputs.
 
 .. jupyter-execute::
 
@@ -775,62 +867,43 @@ We first need to create a residual function.
                 atol=1e-6,
                 algebraic_vars_idx=[2, 3],
                 old_api=False)
-   solution = solver.solve(ts, x0, xd0)
+
+.. todo:: Here are were the options are listed https://github.com/bmcage/odes/blob/1e3b3324748f4665ee5a52ed1a6e0b7e6c05be7d/scikits/odes/sundials/ida.pyx#L848
+
+To find a solution, the desired time array and the initial conditions are
+provided to ``solve()``. The time and state values are stored in ``.values.t``
+and ``.values.y``.
 
 .. jupyter-execute::
 
+   solution = solver.solve(ts, x0, xd0)
    ts_dae = solution.values.t
    xs_dae = solution.values.y
 
-   plt.plot(ts_dae, xs_dae)
-   plt.legend(['q1', 'q2', 'q3', 'u1'])
+Now we can have a look at the results. The constraints are held to the order we
+specified in the integrator options.
 
 .. jupyter-execute::
 
-   q1_traj, q2_traj, q3_traj, u1_traj = xs_dae.T
-
-   constraint_violations = []
-   for i in range(len(ts_dae)):
-       constraint_violations.append(
-           eval_fh((q2_traj[i], q3_traj[i]), [q1_traj[i]], p_vals)
-       )
-
-   plt.plot(ts_dae, np.squeeze(constraint_violations))
+   con_dae = []
+   for xi in xs_dae:  # xs is shape(n, 4)
+      con_dae.append(eval_fh(xi[1:3], xi[0:1], p_vals).squeeze())
+   con_dae = np.array(con_dae)
 
 .. jupyter-execute::
 
-   plot_results(ts_dae, xs_dae, constraint_violations)
+   plot_results(ts_dae, xs_dae, con_dae);
 
 .. jupyter-execute::
 
-   x, y, z = eval_point_coords(qN_vals, p_vals)
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+
+.. jupyter-execute::
 
    fig, ax = plt.subplots()
-   fig.set_size_inches((10.0, 10.0))
-   ax.set_aspect('equal')
-   ax.grid()
+   fig.set_size_inches((10.0, 6.0))
 
-   lines, = ax.plot(x, y, color='black',
-                    marker='o', markerfacecolor='blue', markersize=10)
-
-   title_template = 'Time = {:1.2f} s'
-   title_text = ax.set_title(title_template.format(t0))
-   ax.set_xlim((-1.0, 3.0))
-   ax.set_ylim((-1.0, 1.0))
-   ax.set_xlabel('$x$ [m]')
-   ax.set_ylabel('$y$ [m]');
-
-.. jupyter-execute::
-
-   coords = []
-   for xi in xs_dae:
-        coords.append(eval_point_coords(xi[:3], p_vals))
-   coords = np.array(coords)
-
-   def animate(i):
-       title_text.set_text(title_template.format(ts_dae[i]))
-       lines.set_data(coords[i, 0, :], coords[i, 1, :])
-
-   ani = FuncAnimation(fig, animate, len(ts_dae))
-
-   HTML(ani.to_jshtml(fps=fps))
+   ax.plot(ts, xs[:, -1], 'C0',
+           ts_fsolve, xs_fsolve[:, -1], 'C1',
+           ts_dae, xs_dae[:, -1], 'C2')
+   ax.legend(['solve_ivp', 'solve_ivp + fsolve', 'IDA'])
