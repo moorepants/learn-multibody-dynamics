@@ -41,8 +41,8 @@ form:
    \bar{f}_h(\bar{q}, \bar{q}_r, t) = 0 \in \mathbb{R}^M
 
 :math:`n` generalized speeds :math:`\bar{u}` and :math:`M` dependent speeds
-:math:`\bar{u}_r` can be introduced along with :math:`N` kinematical
-differential equations.
+:math:`\bar{u}_r` can be introduced using :math:`N` kinematical differential
+equations.
 
 .. math::
 
@@ -51,7 +51,7 @@ differential equations.
 We can formulate the kinematical and dynamical equations of motion by
 transforming the holonomic constraints into a function of generalized speeds.
 These equations are then treated just like nonholonomic constraints described
-in the previous chapter.
+in the previous Chp. :ref:`Equations of Motion with Nonholonomic Constraints`.
 
 .. math::
    :label: eq-holonomic-constraints-dot
@@ -76,7 +76,9 @@ and the dependent coordinates.
    \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^n \\
 
 This final set of equations has :math:`N+n` state variables and can be
-integrated as a set of ordinary differential equations.
+integrated as a set of ordinary differential equations or the :math:`N+n+M`
+equations can be integrated as a set of differential algebraic equations. We
+will demonstrate the differences in the results if one or the other is done.
 
 Four-bar Linkage Equations of Motion
 ====================================
@@ -105,8 +107,8 @@ constraints that close the loop.
 
 We have three coordinates, only one of which is a generalized coordinate. I use
 ``q`` to hold the single generalized coordinate, ``qr`` for the two dependent
-coordinates, and ``qN`` as a column vector to hold all the coordinates.
-Similarly for the generalized speeds also.
+coordinates, and ``qN`` as a column vector to hold all the coordinates;
+similarly for the generalized speeds.
 
 .. jupyter-execute::
 
@@ -211,8 +213,11 @@ even though the degrees of freedom are :math:`n=1`.
    qd_repl = dict(zip(qdN, qdN_sol))
    qd_repl
 
-6. Solve for the dependent speed
---------------------------------
+5. Solve for the dependent speeds
+---------------------------------
+
+Differentiate the holonomic constraints with respect to time to arrive at a
+motion constraint. This is equivalent to setting :math:`^{N}\bar{v}^{A_o}=0`.
 
 .. jupyter-execute::
 
@@ -220,9 +225,14 @@ even though the degrees of freedom are :math:`n=1`.
    fhd = sm.trigsimp(fhd)
    fhd
 
+These holonomic motion constraints are functions of the coordinates and speeds.
+
 .. jupyter-execute::
 
    me.find_dynamicsymbols(fhd)
+
+Choose :math:`u_2` and :math:`u_3` as the dependent speeds and solve the linear
+equations for these depdendent speeds.
 
 .. jupyter-execute::
 
@@ -232,17 +242,12 @@ even though the degrees of freedom are :math:`n=1`.
    ur_repl = dict(zip(ur, ur_sol))
    ur_repl
 
-7. Write velocities in terms of the generalized speeds
+6. Write velocities in terms of the generalized speeds
 ------------------------------------------------------
 
 We have three simple rotations and we can write the three angular velocities
 only in terms of :math:`u_1` by using the expressions for the independent
 speeds from the previous step.
-
-.. jupyter-execute::
-
-   gk = gk.xreplace(ur_repl)
-
 
 .. jupyter-execute::
 
@@ -262,8 +267,15 @@ also only be in terms of :math:`u_1`.
 
    me.find_dynamicsymbols(P4.vel(N), reference_frame=N)
 
-6. Generalized active forces
-----------------------------
+We'll also need the kinematical differential equations only in terms of the one
+generalized speed, so replace the dependent speeds in :math:`\bar{g}_k`.
+
+.. jupyter-execute::
+
+   gk = gk.xreplace(ur_repl)
+
+7. Form the generalized active forces
+-------------------------------------
 
 We have a holonomic system so the number of degrees of freedom is :math:`n=1`.
 There are two particles that move and gravity acts on each of them, as a
@@ -285,11 +297,13 @@ generalized speed and :math:`\bar{F}_r` is:
    ])
    Fr
 
+Check to make sure our generalized active forces do not contain dependent speeds.
+
 .. jupyter-execute::
 
    me.find_dynamicsymbols(Fr)
 
-9. Form the generalized inertia forces
+8. Form the generalized inertia forces
 --------------------------------------
 
 To calculate the generalized inertia forces we need the acceleration of each
@@ -306,35 +320,42 @@ but for :math:`P_3` we need to make some substitutions:
 
    me.find_dynamicsymbols(P3.acc(N), reference_frame=N)
 
-Knowing that the inertia resultants can be written:
+Knowing that, the inertia resultants can be written as:
 
 .. jupyter-execute::
 
    Rs_P2 = -m*P2.acc(N)
    Rs_P3 = -m*P3.acc(N).xreplace(qd_repl).xreplace(ur_repl)
 
+and the generalized inertia forces can be formed and we can make sure they are
+not functions of the dependent speeds.
+
 .. jupyter-execute::
 
    Frs = sm.Matrix([
-       P2.vel(N).diff(u1, N).dot(Rs_P2) +
-       P3.vel(N).diff(u1, N).dot(Rs_P3)
+       P2.vel(N).diff(u1, N).dot(Rs_P2) + P3.vel(N).diff(u1, N).dot(Rs_P3)
    ])
    me.find_dynamicsymbols(Frs)
 
 8. Equations of motion
 ----------------------
 
-The matrix form of dynamical differential equations is found as before.
-
-.. jupyter-execute::
-
-   gk = gk.xreplace(ur_repl)
-   me.find_dynamicsymbols(Mk), me.find_dynamicsymbols(gk)
+Finally, the matrix form of dynamical differential equations is found as we
+have done before.
 
 .. jupyter-execute::
 
    Md = Frs.jacobian(ud)
    gd = Frs.xreplace(ud_zero) + Fr
+
+And we can check to make sure the dependent speeds have been elminated.
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(Mk), me.find_dynamicsymbols(gk)
+
+.. jupyter-execute::
+
    me.find_dynamicsymbols(Md), me.find_dynamicsymbols(gd)
 
 Simulate without constraint enforcement
