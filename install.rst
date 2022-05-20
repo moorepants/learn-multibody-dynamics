@@ -123,6 +123,11 @@ This website was built with the following software versions:
 
 .. jupyter-execute::
 
+   import pkg_resources
+   pkg_resources.get_distribution("scikits.odes").version
+
+.. jupyter-execute::
+
    import scipy
    scipy.__version__
 
