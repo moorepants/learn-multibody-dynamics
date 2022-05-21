@@ -467,29 +467,29 @@ to help explain the loop.
    # loop over the three generalized speeds
    for ur in [u1, u2, u3]:
 
-      # initialize the rth GAF and GIF
-      Fr = 0
-      Frs = 0
+       # initialize the rth GAF and GIF
+       Fr = 0
+       Frs = 0
 
-      # for the rth generalized speed, loop though each point to find it's
-      # contribution to the generalized forces
-      for Pi, Ri, mi in zip(points, forces, masses):
-         vr = Pi.vel(N).diff(ur, N)  # rth partial velocity
-         Fr += vr.dot(Ri)  # sum in Pi's contribution to GAF
-         Rs = -mi*Pi.acc(N)  # rth inertia force
-         Frs += vr.dot(Rs)  # sum in Pi's contribution to GIF
+       # for the rth generalized speed, loop though each point to find it's
+       # contribution to the generalized forces
+       for Pi, Ri, mi in zip(points, forces, masses):
+           vr = Pi.vel(N).diff(ur, N)  # rth partial velocity
+           Fr += vr.dot(Ri)  # sum in Pi's contribution to GAF
+           Rs = -mi*Pi.acc(N)  # rth inertia force
+           Frs += vr.dot(Rs)  # sum in Pi's contribution to GIF
 
-      # for the rth generalized speed, loop though each reference frame to find
-      # it's contribution to the generalized forces
-      for Bi, Ti, Ii in zip(frames, torques, inertias):
-         wr = Bi.ang_vel_in(N).diff(ur, N)  # rth partial velocity
-         Fr += wr.dot(Ti)  # sum in Bi's contribution to the GIF
-         Ts = -(Bi.ang_acc_in(N).dot(Ii) +  # rth inertia torque
-                me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
-         Frs += wr.dot(Ts)  # sum in Bi's contribution to the GAF
+       # for the rth generalized speed, loop though each reference frame to find
+       # it's contribution to the generalized forces
+       for Bi, Ti, Ii in zip(frames, torques, inertias):
+           wr = Bi.ang_vel_in(N).diff(ur, N)  # rth partial velocity
+           Fr += wr.dot(Ti)  # sum in Bi's contribution to the GIF
+           Ts = -(Bi.ang_acc_in(N).dot(Ii) +  # rth inertia torque
+                  me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
+           Frs += wr.dot(Ts)  # sum in Bi's contribution to the GAF
 
-      Fr_bar.append(Fr)
-      Frs_bar.append(Frs)
+       Fr_bar.append(Fr)
+       Frs_bar.append(Frs)
 
 The generalized forces :math:`\bar{F}_r` are:
 

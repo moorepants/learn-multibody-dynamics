@@ -174,11 +174,11 @@ Now create the :math:`n=5` kinematical differential equations
 .. jupyter-execute::
 
    fk = sm.Matrix([
-      u1 - q1.diff(t),
-      u2 - q2.diff(t),
-      u3 - l*q3.diff(t)/2,
-      u4 - q4.diff(t),
-      u5 - q5.diff(t),
+       u1 - q1.diff(t),
+       u2 - q2.diff(t),
+       u3 - l*q3.diff(t)/2,
+       u4 - q4.diff(t),
+       u5 - q5.diff(t),
    ])
 
 It is a good idea to use
@@ -475,30 +475,30 @@ ordinary differential equations for use with ``solve_ivp()``.
 .. jupyter-execute::
 
    def eval_rhs(t, x, p):
-      """Returns the time derivative of the states.
+       """Returns the time derivative of the states.
 
-      Parameters
-      ==========
-      t : float
-      x : array_like, shape(8,)
-         x = [q1, q2, q3, q4, q5, u3, u4, u5]
-      p : array_like, shape(3,)
-         p = [l, I, m]
+       Parameters
+       ==========
+       t : float
+       x : array_like, shape(8,)
+          x = [q1, q2, q3, q4, q5, u3, u4, u5]
+       p : array_like, shape(3,)
+          p = [l, I, m]
 
-      Returns
-      =======
-      xd : ndarray, shape(8,)
-         xd = [q1d, q2d, q3d, q4d, q5d, u3d, u4d, u5d]
+       Returns
+       =======
+       xd : ndarray, shape(8,)
+          xd = [q1d, q2d, q3d, q4d, q5d, u3d, u4d, u5d]
 
-      """
-      q, us = x[:5], x[5:]
+       """
+       q, us = x[:5], x[5:]
 
-      Mk, gk, Md, gd = eval_kd(q, us, p)
+       Mk, gk, Md, gd = eval_kd(q, us, p)
 
-      qd = -np.linalg.solve(Mk, gk.squeeze())
-      usd = -np.linalg.solve(Md, gd.squeeze())
+       qd = -np.linalg.solve(Mk, gk.squeeze())
+       usd = -np.linalg.solve(Md, gd.squeeze())
 
-      return np.hstack((qd, usd))
+       return np.hstack((qd, usd))
 
 Now introduce some numeric values for the constant parameters and the initial
 condition of the state. I've selected some values here that will put the
@@ -611,7 +611,7 @@ the points we want to plot given the generalized coordinates.
 
    coordinates = Cl.pos_from(O).to_matrix(N)
    for point in [Co, Cr, Co, Ao, Bo, Bl, Br]:
-      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
+       coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
 
    eval_point_coords = sm.lambdify((q, p), coordinates)
    eval_point_coords(q0, p_vals)

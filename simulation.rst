@@ -169,24 +169,24 @@ chapter.
 
       for ur in [u1, u2, u3]:
 
-         Fr = 0
-         Frs = 0
+          Fr = 0
+          Frs = 0
 
-         for Pi, Ri, mi in zip(points, forces, masses):
-            vr = Pi.vel(N).diff(ur, N)
-            Fr += vr.dot(Ri)
-            Rs = -mi*Pi.acc(N)
-            Frs += vr.dot(Rs)
+          for Pi, Ri, mi in zip(points, forces, masses):
+              vr = Pi.vel(N).diff(ur, N)
+              Fr += vr.dot(Ri)
+              Rs = -mi*Pi.acc(N)
+              Frs += vr.dot(Rs)
 
-         for Bi, Ti, Ii in zip(frames, torques, inertias):
-            wr = Bi.ang_vel_in(N).diff(ur, N)
-            Fr += wr.dot(Ti)
-            Ts = -(Bi.ang_acc_in(N).dot(Ii) +
-                   me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
-            Frs += wr.dot(Ts)
+          for Bi, Ti, Ii in zip(frames, torques, inertias):
+              wr = Bi.ang_vel_in(N).diff(ur, N)
+              Fr += wr.dot(Ti)
+              Ts = -(Bi.ang_acc_in(N).dot(Ii) +
+                     me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
+              Frs += wr.dot(Ts)
 
-         Fr_bar.append(Fr)
-         Frs_bar.append(Frs)
+          Fr_bar.append(Fr)
+          Frs_bar.append(Frs)
 
       Fr = sm.Matrix(Fr_bar)
       Frs = sm.Matrix(Frs_bar)
@@ -369,13 +369,13 @@ The following function implements Euler's Method:
           Python function that evaluates the derivative of the state and takes
           this form ``dxdt = f(t, x, p)``.
        tspan : 2-tuple of floats
-         The initial time and final time values: (t0, tf).
+          The initial time and final time values: (t0, tf).
        x0_vals : array_like, shape(2*n,)
-         Values of the state x at t0.
+          Values of the state x at t0.
        p_vals : array_like, shape(o,)
-         Values of constant parameters.
+          Values of constant parameters.
        delt : float
-         Integration time step in seconds/step.
+          Integration time step in seconds/step.
 
        Returns
        =======
@@ -775,7 +775,7 @@ to build a single matrix with all points' coordinates.
 
    coordinates = O.pos_from(O).to_matrix(M)
    for point in [Bo, Q, Bl, Br]:
-      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(M))
+       coordinates = coordinates.row_join(point.pos_from(O).to_matrix(M))
 
    eval_point_coords = sm.lambdify((q, p), coordinates)
    eval_point_coords(q_vals, p_vals)
@@ -872,11 +872,11 @@ the data for the lines we have already plotted with
 .. jupyter-execute::
 
    def animate(i):
-      x, y, z = eval_point_coords(xs[i, :3], p_vals)
-      lines_top.set_data(x, z)
-      lines_3d.set_data_3d(x, z, y)
-      lines_front.set_data(x, y)
-      lines_right.set_data(z, y)
+       x, y, z = eval_point_coords(xs[i, :3], p_vals)
+       lines_top.set_data(x, z)
+       lines_3d.set_data_3d(x, z, y)
+       lines_front.set_data(x, y)
+       lines_right.set_data(z, y)
 
 Now provide the figure, the animation update function, and the number of frames
 to ``FuncAnimation``:

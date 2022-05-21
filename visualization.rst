@@ -108,24 +108,24 @@ output.
 
       for ur in [u1, u2, u3]:
 
-         Fr = 0
-         Frs = 0
+          Fr = 0
+          Frs = 0
 
-         for Pi, Ri, mi in zip(points, forces, masses):
-            vr = Pi.vel(N).diff(ur, N)
-            Fr += vr.dot(Ri)
-            Rs = -mi*Pi.acc(N)
-            Frs += vr.dot(Rs)
+          for Pi, Ri, mi in zip(points, forces, masses):
+              vr = Pi.vel(N).diff(ur, N)
+              Fr += vr.dot(Ri)
+              Rs = -mi*Pi.acc(N)
+              Frs += vr.dot(Rs)
 
-         for Bi, Ti, Ii in zip(frames, torques, inertias):
-            wr = Bi.ang_vel_in(N).diff(ur, N)
-            Fr += wr.dot(Ti)
-            Ts = -(Bi.ang_acc_in(N).dot(Ii) +
-                   me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
-            Frs += wr.dot(Ts)
+          for Bi, Ti, Ii in zip(frames, torques, inertias):
+              wr = Bi.ang_vel_in(N).diff(ur, N)
+              Fr += wr.dot(Ti)
+              Ts = -(Bi.ang_acc_in(N).dot(Ii) +
+                     me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
+              Frs += wr.dot(Ts)
 
-         Fr_bar.append(Fr)
-         Frs_bar.append(Frs)
+          Fr_bar.append(Fr)
+          Frs_bar.append(Frs)
 
       Fr = sm.Matrix(Fr_bar)
       Frs = sm.Matrix(Frs_bar)
@@ -443,10 +443,10 @@ Finally, create a list of lists for the transformation matrices at each time in
    TQs = []
 
    for xi in xs:
-      TAi, TBi, TQi = eval_transform(xi[:3], p_vals)
-      TAs.append(TAi.squeeze().tolist())
-      TBs.append(TBi.squeeze().tolist())
-      TQs.append(TQi.squeeze().tolist())
+       TAi, TBi, TQi = eval_transform(xi[:3], p_vals)
+       TAs.append(TAi.squeeze().tolist())
+       TBs.append(TBi.squeeze().tolist())
+       TQs.append(TQi.squeeze().tolist())
 
 Here are the first two numerical transformation matrices to see what we have
 created:
