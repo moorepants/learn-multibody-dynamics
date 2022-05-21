@@ -50,7 +50,7 @@ Here I use the approach presented by `Thomas R. Kane`_ and David Levinson in
 their 1985 book "Dynamics, Theory and Application" [Kane1985]_. The notation
 offers a precise way to track all of the nuances in multibody dynamics
 bookkeeping and a realization of the equations of motion that obviates having
-to to introduce virtual motion concepts that handles kinematic constraints
+to introduce virtual motion concepts that handles kinematic constraints
 without the need of Lagrange multipliers.
 
 .. _Newton and Euler: https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations
@@ -105,7 +105,7 @@ began to rapidly climb and we fortunately jumped on the bandwagon. We became
 quite frustrated with the black box approach of the commercial software tools
 most engineers used at that time, this included the tool Autolev that was
 developed by Kane's collaborators for the automation of multibody dynamics
-modeling. To remedy this frustation, Luke wrote the `first version of PyDy`_ as
+modeling. To remedy this frustration, Luke wrote the `first version of PyDy`_ as
 a `Google Summer of Code`_ participant in 2009. Gilbert followed him by
 implementing a new version as SymPy Mechanics in 2011 also as a Google Summer
 of Code participant. We use Gilbert's implementation in this text. Combined
