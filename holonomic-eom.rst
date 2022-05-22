@@ -187,7 +187,8 @@ Now :math:`M=2` holonomic constraints can be found by closing the loop.
    to use, but I do so here so that the resulting equations are human readable
    in this context.
 
-Note that these constraints are only a function of the :math:`N` coordinates.
+Note that these constraints are only a function of the :math:`N` coordinates,
+not their time dervivatives.
 
 .. jupyter-execute::
 
@@ -217,7 +218,7 @@ even though the degrees of freedom are :math:`n=1`.
 ---------------------------------
 
 Differentiate the holonomic constraints with respect to time to arrive at a
-motion constraint. This is equivalent to setting :math:`^{N}\bar{v}^{A_o}=0`.
+motion constraint. This is equivalent to setting :math:`^{N}\bar{v}^{P_4}=0`.
 
 .. jupyter-execute::
 
@@ -426,7 +427,7 @@ condition`_ to learn more about selecting lengths in four-bar linkages.
    ])
 
 Now we need to generate coordinates that are consistent with the constraints.
-math:`\bar{f}_h` is nonlinear in all of the coordinates. We can solve these
+:math:`\bar{f}_h` is nonlinear in all of the coordinates. We can solve these
 equations for the dependent coordinates using numerical `root finding
 methods`_. SciPy's :external:py:func:`~scipy.optimize.fsolve` function is
 capable of finding the roots for sets of nonlinear equations, given a good
@@ -441,8 +442,11 @@ We'll import ``fsolve`` directly like so:
    from scipy.optimize import fsolve
 
 ``fsolve()`` requires a function that evaluates expressions that equal to zero
-and a guess for the roots of that function, at a minimum. Our function should
-evaluate the holonomic constraints given the dependent coordinates. We can use
+and a guess for the roots of that function, at a minimum. Nonlinear functions
+will most certianly have multiple solutions for its roots and ``fsolve()`` will
+converge to one of the solutions. The better the provided the guess the more
+likely it will converge on the desired solution. Our function should evaluate
+the holonomic constraints given the dependent coordinates. We can use
 ``lambdify()`` to create this function. I make the first argument
 :math:`\bar{q}_r` because these are the values we want to solve for using
 ``fsolve()``.
