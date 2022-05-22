@@ -751,15 +751,25 @@ displays the results in Jupyter.
 
 .. jupyter-execute::
 
-   def animate_linkage(ts, xs, p_vals):
+   def animate_linkage(ts, xs, p):
+       """Returns an animation object.
 
+       Parameters
+       ==========
+       ts : array_like, shape(n,)
+       xs : array_like, shape(n, 4)
+          x = [q1, q2, q3, u1]
+       p : array_like, shape(6,)
+          p = [la, lb, lc, ln, m, g]
+
+       """
        # setup the initial figure and axes
-       fig, ax, title_text, lines = setup_animation_plot(ts, xs, p_vals)
+       fig, ax, title_text, lines = setup_animation_plot(ts, xs, p)
 
        # precalculate all of the point coordinates
        coords = []
        for xi in xs:
-           coords.append(eval_point_coords(xi[:3], p_vals))
+           coords.append(eval_point_coords(xi[:3], p))
        coords = np.array(coords)
 
        # define the animation update function
