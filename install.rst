@@ -67,7 +67,7 @@ this command:
 
 .. code-block:: bash
 
-   conda install ipympl ipython ipywidgets jupyter matplotlib notebook numpy pythreejs scipy "sympy>=1.9"
+   conda install ipympl ipython jupyter matplotlib notebook numpy pythreejs "scikits.odes" scipy "sympy>=1.9"
 
 4) Open Jupyter Notebook
 ========================
