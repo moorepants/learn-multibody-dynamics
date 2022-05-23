@@ -21,9 +21,9 @@ Equations of Motion with Holonomic Constraints
    me.init_vprinting(use_latex='mathjax')
 
 When there are holonomic constraints present the equations of motion are
-comprised of the kinematical differential equations :math:`\bar{f}_k`,
-dynamical differential equations :math:`\bar{f}_d`, and the holonomic
-constraint equations :math:`\bar{f}_h`. This set of equations are called
+comprised of the kinematical differential equations :math:`\bar{f}_k=0`,
+dynamical differential equations :math:`\bar{f}_d=0`, and the holonomic
+constraint equations :math:`\bar{f}_h=0`. This set of equations are called
 `differential algebraic equations`_ and the algebraic equations cannot be
 solved for explicitly, as we did with the nonholonomic algebraic constraint
 equations.
@@ -48,10 +48,10 @@ equations.
 
    \bar{f}_k(\dot{\bar{q}}, \dot{\bar{q}}_r, \bar{u}, \bar{u}_r, \bar{q}, \bar{q}_r, t)  = 0 \in \mathbb{R}^N \\
 
-We can formulate the kinematical and dynamical equations of motion by
-transforming the holonomic constraints into a function of generalized speeds.
-These equations are then treated just like nonholonomic constraints described
-in the previous Chp. :ref:`Equations of Motion with Nonholonomic Constraints`.
+We can formulate the equations of motion by transforming the holonomic
+constraints into a function of generalized speeds.  These equations are then
+treated just like nonholonomic constraints described in the previous Chp.
+:ref:`Equations of Motion with Nonholonomic Constraints`.
 
 .. math::
    :label: eq-holonomic-constraints-dot
@@ -78,15 +78,16 @@ and the dependent coordinates.
 This final set of equations has :math:`N+n` state variables and can be
 integrated as a set of ordinary differential equations or the :math:`N+n+M`
 equations can be integrated as a set of differential algebraic equations. We
-will demonstrate the differences in the results if one or the other is done.
+will demonstrate the differences in the results for the two approaches.
 
 Four-bar Linkage Equations of Motion
 ====================================
 
 To demonstrate the formulation of the equations of motion of a system with an
-explicit holonomic constraints, let's revisit the four-bar linkage. We will now
-make :math:`P_2` and :math:`P_3` particles, each with mass :math:`m` and
-include the effects of gravity in the :math:`-\hat{n}_y` direction.
+explicit holonomic constraints, let's revisit the four-bar linkage from Sec.
+:ref:`Four-bar Linkage`. We will now make :math:`P_2` and :math:`P_3`
+particles, each with mass :math:`m` and include the effects of gravity in the
+:math:`-\hat{n}_y` direction.
 
 .. figure:: figures/configuration-four-bar.svg
    :align: center
@@ -107,8 +108,8 @@ constraints that close the loop.
 
 We have three coordinates, only one of which is a generalized coordinate. I use
 ``q`` to hold the single generalized coordinate, ``qr`` for the two dependent
-coordinates, and ``qN`` as a column vector to hold all the coordinates;
-similarly for the generalized speeds.
+coordinates, and ``qN`` to hold all the coordinates; similarly for the
+generalized speeds.
 
 .. jupyter-execute::
 
@@ -188,7 +189,7 @@ Now :math:`M=2` holonomic constraints can be found by closing the loop.
    in this context.
 
 Note that these constraints are only a function of the :math:`N` coordinates,
-not their time dervivatives.
+not their time derivatives.
 
 .. jupyter-execute::
 
@@ -241,7 +242,11 @@ equations for these dependent speeds.
    ghd = fhd.xreplace(ur_zero)
    ur_sol = sm.trigsimp(-Mhd.LUsolve(ghd))
    ur_repl = dict(zip(ur, ur_sol))
-   ur_repl
+   ur_repl[u2]
+
+.. jupyter-execute::
+
+   ur_repl[u3]
 
 6. Write velocities in terms of the generalized speeds
 ------------------------------------------------------
@@ -266,10 +271,13 @@ also only be in terms of :math:`u_1`.
    P3.v2pt_theory(P2, N, B)
    P4.v2pt_theory(P3, N, C)
 
-   me.find_dynamicsymbols(P4.vel(N), reference_frame=N)
+   (me.find_dynamicsymbols(P2.vel(N), reference_frame=N) |
+    me.find_dynamicsymbols(P3.vel(N), reference_frame=N) |
+    me.find_dynamicsymbols(P4.vel(N), reference_frame=N))
 
 We'll also need the kinematical differential equations only in terms of the one
-generalized speed, so replace the dependent speeds in :math:`\bar{g}_k`.
+generalized speed :math:`u_1`, so replace the dependent speeds in
+:math:`\bar{g}_k`.
 
 .. jupyter-execute::
 
@@ -281,7 +289,7 @@ generalized speed, so replace the dependent speeds in :math:`\bar{g}_k`.
 We have a holonomic system so the number of degrees of freedom is :math:`n=1`.
 There are two particles that move and gravity acts on each of them, as a
 contributing force. The resultant contributing forces on each of the particles
-is:
+are:
 
 .. jupyter-execute::
 
@@ -363,13 +371,13 @@ Simulate without constraint enforcement
 =======================================
 
 The equations of motion are functions of all three coordinates, yet two of them
-are dependent on the other, thus for the evaluation of the right hand side of
-the equations to be valid, the coordinates that satisfy the holonomic
-constraints. As presented, Eqs. :math:numref:`eq-holonomic-constrained-eom`
-only contain the constraints that the velocity and acceleration of point
-:math:`P_4` must be zero, but the position constraint is not explicitly
-present. Neglecting the position constraint will cause issues in the
-integration, as we will see.
+are dependent on the other. For the evaluation of the right hand side of the
+equations to be valid, the coordinates must satisfy the holonomic constraints.
+As presented, Eqs. :math:numref:`eq-holonomic-constrained-eom` only contain the
+constraints that the velocity and acceleration of point :math:`P_4` must be
+zero, but the position constraint is not explicitly present. Neglecting the
+position constraint will cause numerical issues during integration, as we will
+see.
 
 Create an ``eval_rhs(t, x, p)`` as we have done before, noting that
 :math:`\bar{f}_d \in \mathbb{R}^1`.
@@ -688,7 +696,8 @@ simulation but that the residuals grow over time. This accumulation of error
 grows as large as 8 cm near the end of the simulation. The drifting constraint
 residuals are the cause of the variations of motion among the oscillation
 periods. Tighter integration tolerances can reduce the drifting constraint
-residuals, but that may come at an unnecessary computational cost.
+residuals, but that will come at an unnecessary computational cost and not
+fully solve the issue.
 
 The effect of the constraints not staying satisfied throughout the simulation
 can also be seen if the system is animated.
@@ -736,7 +745,7 @@ returns any objects we may need in the animation code.
        lines, = ax.plot(x, y, color='black',
                         marker='o', markerfacecolor='blue', markersize=10)
 
-       title_text = ax.set_title('Time = {:1.2f} s'.format(ts[0]))
+       title_text = ax.set_title('Time = {:1.1f} s'.format(ts[0]))
        ax.set_xlim((-1.0, 3.0))
        ax.set_ylim((-1.0, 1.0))
        ax.set_xlabel('$x$ [m]')
@@ -774,7 +783,7 @@ displays the results in Jupyter.
 
        # define the animation update function
        def update(i):
-           title_text.set_text('Time = {:1.2f} s'.format(ts[i]))
+           title_text.set_text('Time = {:1.1f} s'.format(ts[i]))
            lines.set_data(coords[i, 0, :], coords[i, 1, :])
 
        # close figure to prevent premature display
@@ -796,7 +805,7 @@ Above we are relying on the integration of the differential equations to
 generate the coordinates. Because there is accumulated integration error in
 each state and nothing is enforcing the constraint among the coordinates, the
 constraint residuals grow with time and the point :math:`P_4` drifts from its
-actual location. One way to address this is to correct the dependent
+actual location. One possible way to address this is to correct the dependent
 coordinates at each evaluation of the state derivatives. We can use
 ``fsolve()`` to do so, in the same way we solved for the initial conditions.
 Below, I force the dependent coordinates to satisfy the constraints to the
@@ -897,8 +906,8 @@ solvers, including IDA.
 .. _scikits.odes: https://scikits-odes.readthedocs.io/en/stable/
 
 To use scikits.odes's differential algebraic solver, we need to write the
-equations of motion in implicit form. In general, we can write the equations of
-motion of a holonomic system with :math:`M` holonomic constraints and :math:`n`
+equations of motion in implicit form. We now can write the equations of motion
+of a holonomic system with :math:`M` holonomic constraints and :math:`n`
 degrees of freedom as this minimal set of equations:
 
 .. math::
@@ -909,15 +918,16 @@ degrees of freedom as this minimal set of equations:
    \bar{f}_h(\bar{q}, \bar{q}_r, t) = 0 \in \mathbb{R}^M
 
 Note the reduced kinematical differential equation from our prior
-implementations. This gives :math:`2n+M` equations in :math:`2n+M` state
-variables :math:`\bar{u},\bar{q},\bar{q}_r`.
+implementations, i.e. we will not find :math:`\bar{q}_r` from integration
+alone. This gives :math:`2n+M` equations in :math:`2n+M` state variables
+:math:`\bar{u},\bar{q},\bar{q}_r`.
 
 The sckits.odes ``dae()`` function is similar to ``solve_ivp()`` but has
 various other options and a different solution output. ``dae()`` works with the
 explicit form of the equations, exactly as shown in Eq.
 :math:numref:`eq-dae-system`. We need to build a function that returns the left
 hand side of the equations and we will call the output of those equations the
-"residual", which should equate to zero all times.
+"residual", which should equate to zero at all times.
 
 We will import the ``dae`` function directly, as that is all we need from
 scikits.odes.
@@ -974,15 +984,13 @@ need to solve :math:`\bar{f}_d` for the initial :math:`\dot{u}_1`.
 
 .. jupyter-execute::
 
-   residual = np.empty(4)
-
    Md_vals, gd_vals = eval_d(x0[:3], x0[3:], p_vals)
 
    xd0 = np.array([
       0.0,  # q1d [rad/s]
       0.0,  # q2d [rad/s]
       0.0,  # q3d [rad/s]
-      -np.linalg.solve(Md_vals, gd_vals)[0],  # u1d [rad/s^2]
+      -np.linalg.solve(Md_vals, gd_vals)[0][0],  # u1d [rad/s^2]
    ])
    xd0
 
@@ -1052,8 +1060,8 @@ simulation. This is an order of magnitude better than our prior approach.
 
 Knowing that the IDA solution is better than the prior two solutions, we can
 compare them directly. Below I plot the trajectory of :math:`u_1` from each of
-the integration methods. This clearly shows the relative error in the
-solutions.
+the integration methods. This clearly shows the relative error in the solutions
+which both become quite large over time.
 
 .. jupyter-execute::
 
@@ -1072,7 +1080,8 @@ solutions.
 
 The constraints and integration error can be enforced to tighter tolerances.
 With ``rtol`` and ``atol`` set to ``1e-10`` the constraint residuals stay below
-``5e-10`` meters for this simulation.
+``5e-10`` meters for this simulation and a consistent periodic solution is
+realized.
 
 .. jupyter-execute::
 
