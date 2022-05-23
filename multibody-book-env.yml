@@ -2,11 +2,14 @@ name: multibody-book
 channels:
   - conda-forge
 dependencies:
+  - ghp-import
+  - graphviz
   - jupyter-sphinx
   - matplotlib
   - numpy
   - python ==3.9.*
   - pythreejs
+  - scikits.odes
   - scipy
   - sphinx
   - sphinx-autobuild  # dev

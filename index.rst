@@ -36,6 +36,7 @@ Table of Contents
    simulation
    visualization
    nonholonomic-eom
+   holonomic-eom
    notation
    glossary
    references

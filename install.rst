@@ -67,7 +67,7 @@ this command:
 
 .. code-block:: bash
 
-   conda install ipympl ipython ipywidgets jupyter matplotlib notebook numpy pythreejs scipy "sympy>=1.9"
+   conda install ipympl ipython jupyter matplotlib notebook numpy pythreejs "scikits.odes" scipy "sympy>=1.9"
 
 4) Open Jupyter Notebook
 ========================
@@ -120,6 +120,11 @@ This website was built with the following software versions:
 
    import pythreejs._version
    pythreejs._version.__version__
+
+.. jupyter-execute::
+
+   import pkg_resources
+   pkg_resources.get_distribution("scikits.odes").version
 
 .. jupyter-execute::
 

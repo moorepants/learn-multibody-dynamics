@@ -11,28 +11,27 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
-      matrix:
-        python-version: [3.9]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    - name: Install Conda environment with Micromamba
+      uses: mamba-org/provision-with-micromamba@main
       with:
-        python-version: ${{ matrix.python-version }}
+        cache-downloads: true
+        cache-env: true
+        environment-file: multibody-book-env.yml
+        environment-name: multibody-book
 
-    - name: Install dependencies
+    - name: Install apt dependencies
       run: |
         sudo apt install graphviz
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements.txt
 
     - name: Build the website
+      shell: bash -l {0}
       run: |
         make html
 
@@ -62,6 +61,7 @@ jobs:
           Preview this pull request here https://moorepants.github.io/htmlpreview/?https://github.com/moorepants/learn-multibody-dynamics/blob/preview-pr-${{ github.event.pull_request.number }}/index.html
 
     - name: Deploy the website
+      shell: bash -l {0}
       if: ${{ github.event_name == 'push' }}
       run: |
         git config --global user.name "Github Actions"
@@ -70,6 +70,7 @@ jobs:
         ghp-import -o -r deploy -b gh-pages -m "Updated via Github Actions [skip ci]" -p _build/html --no-jekyll
 
     - name: Deploy the PR
+      shell: bash -l {0}
       if: ${{ github.event_name == 'pull_request' }}
       run: |
         git config --global user.name "Github Actions"
