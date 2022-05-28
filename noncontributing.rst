@@ -1,6 +1,6 @@
-=============================================
-Bringing Noncontributing Forces into Evidence
-=============================================
+===============================
+Exposing Noncontributing Forces
+===============================
 
 .. note::
 
@@ -8,27 +8,55 @@ Bringing Noncontributing Forces into Evidence
    :jupyter-download:script:`noncontributing` or Jupyter Notebook:
    :jupyter-download:notebook:`noncontributing`.
 
-This is a simple double pendulum with two masses and each pendulum
-section has the same length.
-
 .. jupyter-execute::
 
+   import numpy as np
    import sympy as sm
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
+Kane's formulation relieves us from having to consider noncontributing forces,
+but often we are interested in one or more of these noncontributing forces. In
+this chapter I will show how you can generate the equation for a
+noncontributing force by introducing *auxiliary generalized speeds*. But first,
+let's solve the equations of motion for a system by directly applying Newton's
+Second Law of motion, which requires us to explicitly define all contributing
+and noncontributing forces.
+
+Double Pendulum Example
+=======================
+
+Fig. X shows a schematic of a simple planar `double pendulum`_ described by two
+generalized coordinates :math:`q_1` and :math:`q_2`. The particles :math:`P_1`
+and :math:`P_2` have masses :math:`m_1` and :math:`m_2`, respectively. The
+lengths of the first and second pendulum arms are :math:`l_1` and :math:`l_2`
+respectively. On the right, the `free body diagrams`_ depict the two tension
+forces :math:`T_1` and :math:`T_2` that act on each particle to keep them at
+their respective radial locations.
+
+.. _double pendulum: https://en.wikipedia.org/wiki/Double_pendulum
+.. _free body diagrams: https://en.wikipedia.org/wiki/Free_body_diagram
+
+Create all of the necessary variables:
+
 .. jupyter-execute::
 
    m1, m2, l1, l2, g = sm.symbols('m1, m2, l1, l2, g')
-   q1, q2, u1, u2 = me.dynamicsymbols('q1, q2, u1, u2')
-   TP1, TP2 = me.dynamicsymbols('T_{P_1}, T_{P_2}')
-   T1, T2 = me.dynamicsymbols('T1, T2')
+   q1, q2, u1, u2, T1, T2 = me.dynamicsymbols('q1, q2, u1, u2, T1, T2')
    t = me.dynamicsymbols._t
 
+   p = sm.Matrix([m1, m2, l1, l2, g])
    q = sm.Matrix([q1, q2])
    u = sm.Matrix([u1, u2])
-   r = sm.Matrix([TP1, TP2])
+   r = sm.Matrix([T1, T2])
+
    ud = u.diff(t)
+
+   p, q, u, r, ud
+
+Both pendulum's configuration are described by angles relative to the vertical
+direction. Choose the generalized speeds to be :math:`\bar{u} = \dot{\bar{q}}`
+and set the angular velocities to be in terms of them.
 
 .. jupyter-execute::
 
@@ -36,10 +64,10 @@ section has the same length.
    A = N.orientnew('A', 'Axis', (q1, N.z))
    B = N.orientnew('B', 'Axis', (q2, N.z))
 
-.. jupyter-execute::
-
    A.set_ang_vel(N, u1*N.z)
    B.set_ang_vel(N, u2*N.z)
+
+Now the velocities and accelerations of each particle can be formed.
 
 .. jupyter-execute::
 
@@ -47,86 +75,12 @@ section has the same length.
    P1 = O.locatenew('P1', -l1*A.y)
    P2 = P1.locatenew('P2', -l2*B.y)
 
-.. jupyter-execute::
-
    O.set_vel(N, 0)
    P1.v2pt_theory(O, N, A)
-   P2.v2pt_theory(P1, N, B)
-
-Verify answer using Newton-Euler equations
-==========================================
-
-.. jupyter-execute::
-
-   R_P1 = (TP2*sm.sin(q2) - TP1*sm.sin(q1))*N.x + (TP1*sm.cos(q1)-TP2*sm.cos(q2) - m1*g)*N.y
-   R_P2 = (-TP2*sm.sin(q2)*N.x + (TP2*sm.cos(q2)-m2*g)*N.y)
-
-   R_P1
-
-.. jupyter-execute::
-
-   R_P1 = -T1*A.y + T2*B.y - m1*g*N.y
-   R_P1.express(N).simplify()
-
-.. jupyter-execute::
-
-   R_P2 = -T2*B.y - m2*g*N.y
-   R_P2.express(N).simplify()
-
-.. jupyter-execute::
-
-   veq1 = -m1*P1.acc(N) + R_P1
-   veq2 = -m2*P2.acc(N) + R_P2
-
-.. jupyter-execute::
-
-   scalar_eqs = sm.Matrix([
-       veq1.dot(N.x),
-       veq1.dot(N.y),
-       veq2.dot(N.x),
-       veq2.dot(N.y),
-   ])
-
-.. jupyter-execute::
-
-   newton = [u1.diff(), u2.diff(), TP1, TP2]
-   newton_zero = {v: 0 for v in newton}
-
-   M = scalar_eqs.jacobian(newton)
-   g = scalar_eqs.xreplace(newton_zero)
-
-.. jupyter-execute::
-
-   newton_sol = M.LUsolve(g)
-   newton_sol = sm.trigsimp(newton_sol)
-   newton_sol
-
-Introduce fictitious generalized speeds that correspond to components of desired forces and torques
-===================================================================================================
-
-Here I introduce the fictitious generalized speed u3 that lets the
-particle P1 have a “separation velocity” relative to its fixed location
-on the pendulum arm. This is aligned with the desired non-contributing
-tension force we want to bring into evidence.
-
-.. jupyter-execute::
-
-   u3, u4 = me.dynamicsymbols('u3, u4')
-
-   P1.set_vel(N, P1.vel(N) + u3*A.y)
-   P1.vel(N)
 
 .. jupyter-execute::
 
    P2.v2pt_theory(P1, N, B)
-
-Add a similar fictitious generalized speed u4 for the second tension
-force.
-
-.. jupyter-execute::
-
-   P2.set_vel(N, P2.vel(N) + u4*B.y)
-   P2.vel(N)
 
 .. jupyter-execute::
 
@@ -136,243 +90,305 @@ force.
 
    P2.acc(N)
 
-Introduce unknown force and torques into the resultants
-=======================================================
+All of the kinematics are strictly in terms of the generalized coordinates and
+the generalized speeds.
 
-These are the two time varying tension forces we want to bring into
-evidence:
+Apply Newton's Second Law Directly
+==================================
 
-For u1 and u2, we use the resultant with only the original contributing
-forces.
+Direction application of Newton's Second Law can be done if *all* of the forces
+(noncontributing and contributing) are described for each of the two particles.
+A vector equation representing the law for each particle is:
 
-.. jupyter-execute::
+.. math::
 
-   RP1 = -m1*g*N.y
-   RP2 = -m2*g*N.y
+   \sum\bar{F}^{P_1} = m_1 {}^N\bar{a}^{P_1} \\
+   \sum\bar{F}^{P_2} = m_2 {}^N\bar{a}^{P_2}
 
-For the particle we need to add the non-contributing forces that
-correspond to u3 and u4
-
-.. jupyter-execute::
-
-   RP1_aux = RP1 + TP1*A.y
-   RP2_aux = RP1 + TP2*B.y
-
-We also need equal and opposite tension forces acting back on the
-pendulum arm (but not the force due to gravity):
+From the free body diagram we see that all of the forces acting on :math:`P_1`
+are:
 
 .. jupyter-execute::
 
-   RP1_aux_neg = -TP1*A.y
-   RP2_aux_neg = -TP2*B.y
+   F_P1 = -T1*A.y + T2*B.y - m1*g*N.y
+   F_P1.express(N)
 
-GAF
-===
-
-Calculate the two GAFs for the the real genearlized speeds as normal:
+and all of the forces acting on :math:`P_2` are:
 
 .. jupyter-execute::
 
-   F1 = P1.vel(N).diff(u1, N).dot(RP1) + P2.vel(N).diff(u1, N).dot(RP2)
-   F2 = P1.vel(N).diff(u2, N).dot(RP1) + P2.vel(N).diff(u2, N).dot(RP2)
+   F_P2 = -T2*B.y - m2*g*N.y
+   F_P2.express(N)
 
-For F3 and F4 you need to use the resultaants that include the tension
-forces and they need to be associated with the appropriate velocities
-for the equal and opposite forces.
+Now we can form the two vector expressions of Newton's Second Law for each
+particle. Moving everything to the right hand side gives:
+
+.. math::
+
+   \bar{0} = \sum\bar{F}^{P_1} - m_1 {}^N\bar{a}^{P_1} \\
+   \bar{0} = \sum\bar{F}^{P_2} - m_2 {}^N\bar{a}^{P_2}
 
 .. jupyter-execute::
 
-   F3 = (P1.vel(N).diff(u3, N).dot(RP1 + TP1*A.y) +  # velocity of the particle which includes u3 
-         (P1.vel(N) - u3*A.y).diff(u3, N).dot(-TP1*A.y) +  # velocity of the tip of the pendulum arm (does not include u3)
-         P2.vel(N).diff(u3, N).dot(RP2 + TP2*B.y) +  # velocity of the second particle which includes u3 and u4
-         (P2.vel(N) - u4*B.y).diff(u3, N).dot(-TP2*B.y))  # velocity of the tip of the second pendulum arm (includes u3 but not u4)
+   zero_P1 = F_P1 - m1*P1.acc(N)
+   zero_P2 = F_P2 - m2*P2.acc(N)
+
+These two planar vector equations can then be written as four scalar equations
+by extracting the :math:`\hat{n}_x` and :math:`\hat{n}_y` measure numbers.
+
+.. jupyter-execute::
+
+   fd = sm.Matrix([
+       zero_P1.dot(N.x),
+       zero_P1.dot(N.y),
+       zero_P2.dot(N.x),
+       zero_P2.dot(N.y),
+   ])
+   fd
+
+It is important to note that these scalar equations are linear in both the time
+derivatives of the generalized speeds :math:`\dot{u}_1,\dot{u}_2` as well as
+the two noncontributing force magnitudes :math:`T_1,T_2` and that all for
+equations are coupled in these four variables.
+
+.. jupyter-execute::
+
+   (me.find_dynamicsymbols(fd[0]), me.find_dynamicsymbols(fd[1]),
+    me.find_dynamicsymbols(fd[2]), me.find_dynamicsymbols(fd[3]))
+
+That means we can write the equations as:
+
+.. math::
+
+   \bar{f}_d(\dot{\bar{u}}, \bar{q}, \bar{r}, t) =
+   \mathbf{M}_d
+   \begin{bmatrix}
+   \dot{\bar{u}} \\
+   \bar{r}
+   \end{bmatrix}
+   + \bar{g}_d
+
+where :math:`\bar{r} = \left[T_1 \ T_2 \right]^T`. The linear coefficient
+matrix and the remainder can be extracted as usual:
+
+.. jupyter-execute::
+
+   udr = ud.col_join(r)
+   udr_zero = {v: 0 for v in udr}
+
+   Md = fd.jacobian(udr)
+   gd = fd.xreplace(udr_zero)
+
+   Md, udr, gd
+
+The four equations are fully coupled, so we must solve for the four variables
+simultaneously.
+
+Auxiliary Generalized Speeds
+============================
+
+When we form Kane's equations, noncontributing forces will not be present in
+the equations of motion as they are above in the classical Newton formulation,
+but it is possible to expose select noncontributing forces by taking advantage
+of the role of the partial velocities. Forces that are in the direction of a
+partial velocity will contribute to the equations of motion. It is then
+possible to introduce a fictitious motion, an auxiliary generalized speed,
+along with a force or torque that acts in the same direction of the fictitious
+motion to generate extra equations for the noncontributing forces.
+
+Here I introduce the fictitious generalized speed :math:`u_3` that lets the
+particle :math:`P_1` have a "separation velocity" relative to its fixed
+location on the pendulum arm. This is aligned with the desired noncontributing
+tension force we want to bring into evidence.
+
+.. todo:: Add figure.
+
+.. jupyter-execute::
+
+   u3, u4 = me.dynamicsymbols('u3, u4')
+
+.. jupyter-execute::
+
+   N_v_P1a = P1.vel(N) + u3*A.y
+   N_v_P1a
+
+Add a similar fictitious generalized speed :math:`u_4` for the second tension
+force.
+
+.. jupyter-execute::
+
+   N_v_P2a = N_v_P1a + me.cross(B.ang_vel_in(N), P2.pos_from(P1)) + u4*B.y
+   N_v_P2a
+
+These two velocities will be used to generate the partial velocities for two
+additional generalized active forces and generalized inertia forces, one for
+each of the auxiliary generalized speeds.
+
+Generalized Active Forces
+=========================
+
+We now have four generalized speeds, two of which are auxiliary generalized
+speeds. With these speeds we will formulate four generalized active forces. The
+generalized active forces associated with :math:`u_1` and :math:`u_2` are no
+different than if we were not exposing the noncontributing forces.
+
+.. jupyter-execute::
+
+   R_P1 = -m1*g*N.y
+   R_P2 = -m2*g*N.y
+
+.. jupyter-execute::
+
+   F1 = P1.vel(N).diff(u1, N).dot(R_P1) + P2.vel(N).diff(u1, N).dot(R_P2)
+   F1
+
+.. jupyter-execute::
+
+   F2 = P1.vel(N).diff(u2, N).dot(R_P1) + P2.vel(N).diff(u2, N).dot(R_P2)
+   F2
+
+For :math:`F_3` and :math:`F_4`, the contributing forces we wish to know that
+are associated with the auxiliary generalized speeds are added to the resultant
+acting on the two particles.
+
+.. jupyter-execute::
+
+   R_P1_aux = R_P1 - T1*A.y + T2*B.y
+   R_P2_aux = R_P2 - T2*B.y
+
+Now the velocities of the particles that include the auxiliary generalized
+speeds are used to calculate the partial velocities and the auxiliary
+generalized active forces are formed.
+
+.. jupyter-execute::
+
+   F3 = N_v_P1a.diff(u3, N).dot(R_P1_aux) + N_v_P2a.diff(u3, N).dot(R_P2_aux)
    F3
 
 .. jupyter-execute::
 
-   F4 = (P1.vel(N).diff(u4, N).dot(RP1 + TP1*A.y) +
-         (P1.vel(N) - u3*A.y).diff(u4, N).dot(-TP1*A.y) +
-         P2.vel(N).diff(u4, N).dot(RP2 + TP2*B.y) +
-         (P2.vel(N) - u4*B.y).diff(u4, N).dot(-TP2*B.y))
+   F4 = N_v_P1a.diff(u4, N).dot(R_P1_aux) + N_v_P2a.diff(u4, N).dot(R_P2_aux)
    F4
 
-GIF
-===
+.. jupyter-execute::
 
-Calculate all GIFs with u1, u2, u3, and u4 present in the velocities and
-accelerations.
+   Fr = sm.Matrix([F1, F2, F3, F4])
+   Fr
+
+Generalized Inertia Forces
+==========================
+
+Similarly the generalized inertia forces for :math:`u_1` and :math:`u_2` are
+computed as usual.
 
 .. jupyter-execute::
 
-   F1s = P1.vel(N).diff(u1, N).dot(-m1*P1.acc(N)) + P2.vel(N).diff(u1, N).dot(-m2*P2.acc(N))
-   F2s = P1.vel(N).diff(u2, N).dot(-m1*P1.acc(N)) + P2.vel(N).diff(u2, N).dot(-m2*P2.acc(N))
-   F3s = P1.vel(N).diff(u3, N).dot(-m1*P1.acc(N)) + P2.vel(N).diff(u3, N).dot(-m2*P2.acc(N))
-   F4s = P1.vel(N).diff(u4, N).dot(-m1*P1.acc(N)) + P2.vel(N).diff(u4, N).dot(-m2*P2.acc(N))
-
-   F1s
+   Rs_P1 = -m1*P1.acc(N)
+   Rs_P2 = -m2*P2.acc(N)
 
 .. jupyter-execute::
 
-   F2s
+   F1s = P1.vel(N).diff(u1, N).dot(Rs_P1) + P2.vel(N).diff(u1, N).dot(Rs_P2)
+   F2s = P1.vel(N).diff(u2, N).dot(Rs_P1) + P2.vel(N).diff(u2, N).dot(Rs_P2)
+
+The auxiliary generalized inertia forces are found using the partial
+velocities where :math:`u_3` and :math:`u_4` are present. The acceleration of
+the particles need not include :math:`u_3` and :math:`u_4`, because they are
+equal to zero.
 
 .. jupyter-execute::
 
-   F3s
+   F3s = N_v_P1a.diff(u3, N).dot(Rs_P1) + N_v_P2a.diff(u3, N).dot(Rs_P2)
+   F4s = N_v_P1a.diff(u4, N).dot(Rs_P1) + N_v_P2a.diff(u4, N).dot(Rs_P2)
+
+   Frs = sm.Matrix([F1s, F2s, F3s, F4s])
+   Frs = sm.trigsimp(Frs)
+   Frs
+
+We can now form Kane's Equations. These equations are linear in
+:math:`\dot{u}_1,\dot{u}_2,T_1` and :math:`T_2`.
 
 .. jupyter-execute::
 
-   F4s
+   fa = Frs + Fr
+   me.find_dynamicsymbols(fa)
 
-Kane’s Equations
-================
-
-.. jupyter-execute::
-
-   k1 = F1 + F1s
-   k2 = F2 + F2s
-   k3 = F3 + F3s
-   k4 = F4 + F4s
-
-Substitute zero for all fictitious quantities
-=============================================
+Now when we extract the linear coefficients, we see that the dynamical
+differential equations (the first two rows) are independent of the unknown
+force magnitudes, allowing us to use them independently.
 
 .. jupyter-execute::
 
-   k1_ = k1.subs({u3.diff(): 0, u4.diff(): 0, u3: 0, u4: 0})
-   k2_ = k2.subs({u3.diff(): 0, u4.diff(): 0, u3: 0, u4: 0})
-   k3_ = k3.subs({u3.diff(): 0, u4.diff(): 0, u3: 0, u4: 0})
-   k4_ = k4.subs({u3.diff(): 0, u4.diff(): 0, u3: 0, u4: 0})
+   Ma = fa.jacobian(udr)
+   ga = fa.xreplace(udr_zero)
+
+   Ma, udr, ga
+
+We can solve the system to find functions for :math:`T_1` and :math:`T_2`, if
+desired.
 
 .. jupyter-execute::
 
-   kanes = [k1_, k2_, k3_, k4_]
+   udr_sol = -Ma.LUsolve(ga)
 
 .. jupyter-execute::
 
-   me.find_dynamicsymbols(k1_)
+   T1_sol = sm.trigsimp(udr_sol[2])
+   T1_sol
 
 .. jupyter-execute::
 
-   me.find_dynamicsymbols(k2_)
+   T2_sol = sm.trigsimp(udr_sol[3])
+   T2_sol
+
+Compare Newton and Kane Results
+===============================
+
+To ensure that the Newton approach and the Kane approach do produce equivalent
+results, we can numerically evaluate the equations with the same inputs and see
+if the results are the same. Here are some numerical values for the states and
+constants.
 
 .. jupyter-execute::
 
-   me.find_dynamicsymbols(k3_)
+   q0 = np.array([
+       np.deg2rad(15.0),  # q1 [rad]
+       np.deg2rad(25.0),  # q2 [rad]
+   ])
+
+   u0 = np.array([
+       np.deg2rad(123.0),  # u1 [rad/s]
+       np.deg2rad(-41.0),  # u2 [rad/s]
+   ])
+
+   p_vals = np.array([
+       1.2,  # m1 [kg]
+       5.6,  # m2 [kg]
+       1.34,  # l1 [m]
+       6.7,  # l2 [m]
+       9.81,  # g [m/2^2]
+   ])
+
+Create numeric functions to evaluate the two sets of matrices and execute both
+functions with the same numerical inputs from above.
 
 .. jupyter-execute::
 
-   me.find_dynamicsymbols(k4_)
+   eval_d = sm.lambdify((q, u, p), (Md, gd))
+   eval_a = sm.lambdify((q, u, p), (Ma, ga))
+
+   Md_vals, gd_vals = eval_d(q0, u0, p_vals)
+   Ma_vals, ga_vals = eval_a(q0, u0, p_vals)
+
+Now compare the solutions for :math:`\left[ \dot{\bar{u}} \ \bar{r} \right]^T`.
 
 .. jupyter-execute::
 
-   k1_
+   -np.linalg.solve(Md_vals, np.squeeze(gd_vals))
 
 .. jupyter-execute::
 
-   k2_
+   -np.linalg.solve(Ma_vals, np.squeeze(ga_vals))
 
-.. jupyter-execute::
-
-   k3_
-
-.. jupyter-execute::
-
-   k4_
-
-Solve for all unknowns
-======================
-
-.. jupyter-execute::
-
-   sol = sm.solve(kanes, u1.diff(), u2.diff(), TP1, TP2)
-
-.. jupyter-execute::
-
-   sol[u1.diff()].simplify()
-
-.. jupyter-execute::
-
-   sol[u2.diff()].simplify()
-
-.. jupyter-execute::
-
-   sol[TP1].simplify()
-
-.. jupyter-execute::
-
-   sol[TP2].simplify()
-
-.. jupyter-execute::
-
-   TP1_sol = sol[TP1].simplify()
-
-.. jupyter-execute::
-
-   me.find_dynamicsymbols(TP1_sol)
-
-.. jupyter-execute::
-
-   TP1_sol.free_symbols
-
-Evaluate the force expressions with arrays
-==========================================
-
-And compare their results numerically.
-
-.. jupyter-execute::
-
-   eval_TP1 = sm.lambdify((q1, q2, u1, u2, m1, m2, g, l), TP1_sol)
-
-.. jupyter-execute::
-
-   import numpy as np
-
-.. jupyter-execute::
-
-   times = np.linspace(0, 10)
-   omega = 0.2
-
-.. jupyter-execute::
-
-   q1_vals = np.sin(omega*times)
-
-.. jupyter-execute::
-
-   u1_vals = omega*np.cos(omega*times)
-
-.. jupyter-execute::
-
-   vals = eval_TP1(q1_vals, q1_vals, u1_vals, u1_vals, 1.0, 1.0, 9.81, 2.0)
-
-.. jupyter-execute::
-
-   me.find_dynamicsymbols(newton_sol[TP1])
-
-.. jupyter-execute::
-
-   eval_TP1_newton = sm.lambdify((q1, q2, u1, u2, m1, m2, g, l), newton_sol[TP1])
-   vals_newton = eval_TP1_newton(q1_vals, q1_vals, u1_vals, u1_vals, 1.0, 1.0, 9.81, 2.0)
-
-.. jupyter-execute::
-
-   import matplotlib.pyplot as plt
-
-.. jupyter-execute::
-
-   plt.plot(times, vals, times, vals_newton, '.')
-
-.. jupyter-execute::
-
-   func = lambda x, y: x + y
-
-.. jupyter-execute::
-
-   func(1, 2)
-
-.. jupyter-execute::
-
-   generate_numeric_func = sm.lambdify
-
-.. jupyter-execute::
-
-   eval_TP1 = generate_numeric_func((q1, u1, m1, g, l), TP1_sol)
+For this set of inputs, the outputs are the same showing that using the
+auxiliary speeds gives the same results.
