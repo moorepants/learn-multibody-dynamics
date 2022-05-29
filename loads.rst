@@ -336,8 +336,8 @@ with equal and opposite torques applied to each body.
    B)` and power in. The key thing is that you know what your convention is so
    that you can interpret numerical results and signs correctly.
 
-Contributing and Non-contributing Forces
-========================================
+Contributing and Noncontributing Forces
+=======================================
 
 *Contributing forces* are those that do work on the multibody system. Work_ of
 a force :math:`\bar{F}` acting over path :math:`S` is defined as:
@@ -357,9 +357,9 @@ unidirectional constant gravitational field (i.e. where the gravitational force
 is equal in magnitude, doesn't change, and always the same direction) does work
 on the system.
 
-*Non-contributing forces* do no work on the system. For example, when a force
+*Noncontributing forces* do no work on the system. For example, when a force
 acts between two points that have no relative motion, no work is done. Examples
-of non-contributing forces:
+of noncontributing forces:
 
 1. contact forces on particles across smooth (frictionless) surfaces of rigid
    bodies
@@ -369,7 +369,7 @@ of non-contributing forces:
    is a special case of 1.
 
 In the next chapter, we will see how the use of generalized coordinates relieve
-us from having to specify any non-contributing forces.
+us from having to specify any noncontributing forces.
 
 Gravity
 =======
