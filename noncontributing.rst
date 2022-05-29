@@ -15,13 +15,14 @@ Exposing Noncontributing Forces
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
-Kane's formulation relieves us from having to consider noncontributing forces,
-but often we are interested in one or more of these noncontributing forces. In
-this chapter I will show how you can generate the equation for a
-noncontributing force by introducing *auxiliary generalized speeds*. But first,
-let's solve the equations of motion for a system by directly applying Newton's
-Second Law of motion, which requires us to explicitly define all contributing
-and noncontributing forces.
+Kane's formulation relieves us from having to consider noncontributing forces
+(See Sec. :ref:`Contributing and Non-contributing Forces`, but often we are
+interested in one or more of these noncontributing forces. In this chapter, I
+will show how you can find the equation for a noncontributing force by
+introducing *auxiliary generalized speeds*. But first, let's solve the
+equations of motion for a system by directly applying Newton's Second Law of
+motion, which requires us to explicitly define all contributing and
+noncontributing forces.
 
 Double Pendulum Example
 =======================
@@ -30,9 +31,9 @@ Double Pendulum Example
 `double pendulum`_ described by two generalized coordinates :math:`q_1` and
 :math:`q_2`. The particles :math:`P_1` and :math:`P_2` have masses :math:`m_1`
 and :math:`m_2`, respectively. The lengths of the first and second pendulum
-arms are :math:`l_1` and :math:`l_2` respectively. On the right, the `free body
-diagrams`_ depict the two tension forces :math:`T_1` and :math:`T_2` that act
-on each particle to keep them at their respective radial locations.
+arms are :math:`l_1` and :math:`l_2`, respectively. On the right, the `free
+body diagrams`_ depict the two tension forces :math:`T_1` and :math:`T_2` that
+act on each particle to keep them at their respective radial locations.
 
 .. _double pendulum: https://en.wikipedia.org/wiki/Double_pendulum
 .. _free body diagrams: https://en.wikipedia.org/wiki/Free_body_diagram
@@ -48,7 +49,8 @@ on each particle to keep them at their respective radial locations.
    contributing and noncontributing forces acting on them. Gravity acts in the
    :math:`-\hat{n}_y` direction.
 
-Start by creating all of the necessary variables:
+Start by creating all of the necessary variables. The tension forces are time
+varying quantities.
 
 .. jupyter-execute::
 
@@ -65,20 +67,24 @@ Start by creating all of the necessary variables:
 
    p, q, u, r, ud
 
-Both pendulum's configuration are described by angles relative to the vertical
-direction. Choose the generalized speeds to be :math:`\bar{u} = \dot{\bar{q}}`
-and set the angular velocities to be in terms of them.
+Both pendulums' configuration are described by angles relative to the vertical
+direction. We will choose the generalized speeds to be :math:`\bar{u} =
+\dot{\bar{q}}` and set the angular velocities to be in terms of them.
 
 .. jupyter-execute::
 
    N = me.ReferenceFrame('N')
-   A = N.orientnew('A', 'Axis', (q1, N.z))
-   B = N.orientnew('B', 'Axis', (q2, N.z))
+   A = me.ReferenceFrame('A')
+   B = me.ReferenceFrame('B')
+
+   A.orient_axis(N, q1, N.z)
+   B.orient_axis(N, q2, N.z)
 
    A.set_ang_vel(N, u1*N.z)
    B.set_ang_vel(N, u2*N.z)
 
-Now the velocities and accelerations of each particle can be formed.
+Now the positions, velocities, and accelerations of each particle can be
+formed.
 
 .. jupyter-execute::
 
@@ -109,15 +115,15 @@ Apply Newton's Second Law Directly
 
 Direction application of Newton's Second Law can be done if *all* of the forces
 (noncontributing and contributing) are described for each of the two particles.
-A vector equation representing the law for each particle is:
+Vector equations representing the law for each particle are:
 
 .. math::
 
    \sum\bar{F}^{P_1} = m_1 {}^N\bar{a}^{P_1} \\
    \sum\bar{F}^{P_2} = m_2 {}^N\bar{a}^{P_2}
 
-From the free body diagram we see that all of the forces acting on :math:`P_1`
-are:
+From the free body diagram (:numref:`fig-noncontributing-pendulum-fbd`) we see
+that all of the forces acting on :math:`P_1` are:
 
 .. jupyter-execute::
 
@@ -159,7 +165,7 @@ by extracting the :math:`\hat{n}_x` and :math:`\hat{n}_y` measure numbers.
 
 It is important to note that these scalar equations are linear in both the time
 derivatives of the generalized speeds :math:`\dot{u}_1,\dot{u}_2` as well as
-the two noncontributing force magnitudes :math:`T_1,T_2` and that all for
+the two noncontributing force magnitudes :math:`T_1,T_2` and that all four
 equations are coupled in these four variables.
 
 .. jupyter-execute::
@@ -193,7 +199,12 @@ matrix and the remainder can be extracted as usual:
    Md, udr, gd
 
 The four equations are fully coupled, so we must solve for the four variables
-simultaneously.
+simultaneously. When applying Newton's Second Law directly, additional coupled
+equations for each noncontributing force are necessary to solve the dynamical
+differential equations. When formulating the equations with Kane's method,
+similar equations for the noncontributing forces can be generated, but the
+noncontributing forces will remain absent from the dynamical differential
+equations.
 
 Auxiliary Generalized Speeds
 ============================
@@ -201,16 +212,19 @@ Auxiliary Generalized Speeds
 When we form Kane's equations, noncontributing forces will not be present in
 the equations of motion as they are above in the classical Newton formulation,
 but it is possible to expose select noncontributing forces by taking advantage
-of the role of the partial velocities. Forces that are in the direction of a
-partial velocity will contribute to the equations of motion. It is then
-possible to introduce a fictitious motion, an auxiliary generalized speed,
-along with a force or torque that acts in the same direction of the fictitious
-motion to generate extra equations for the noncontributing forces.
+of the role of the partial velocities. Forces and torques that are in the
+direction of a partial velocity will contribute to the equations of motion. It
+is then possible to introduce fictitious partial velocities via an auxiliary
+generalized speed, along with a force or torque that acts in the same direction
+of the fictitious motion to generate extra equations for the noncontributing
+forces. See [Kane1985]_ pg. 114 for more explanation of this idea.
 
-Here I introduce the fictitious generalized speed :math:`u_3` that lets the
-particle :math:`P_1` have a "separation velocity" relative to its fixed
-location on the pendulum arm. This is aligned with the desired noncontributing
-tension force we want to bring into evidence.
+As an example , here I introduce two fictitious generalized speeds, :math:`u_3`
+and :math:`u_4` that lets each particle have motion relative to its fixed
+location on the pendulum arm in the direction of the two noncontributing forces
+that we desire to know. :numref:`fig-noncontributing-pendulum-aux` shows the
+two additional speeds and the associated forces. We introduce these speeds
+without introducing any related generalized coordinates.
 
 .. _fig-noncontributing-pendulum-aux:
 .. figure:: figures/noncontributing-pendulum-aux.svg
@@ -220,17 +234,21 @@ tension force we want to bring into evidence.
    generalized speeds :math:`u_3` and :math:`u_4` and the associated
    contributing forces.
 
+First find the velocity of :math:`P_1` with the additional velocity component
+and store this separately in ``N_v_P1a`` to indicate it is affected by this
+auxiliary generalized speed.
+
 .. jupyter-execute::
 
    u3, u4 = me.dynamicsymbols('u3, u4')
 
-.. jupyter-execute::
-
    N_v_P1a = P1.vel(N) - u3*A.y
    N_v_P1a
 
-Add a similar fictitious generalized speed :math:`u_4` for the second tension
-force.
+Similarly, write the velocity of :math:`P_2` using the velocity two point
+theorem and adding the auxiliary component. Note that the pendulum arm does not
+change in length because we have not added any generalized coordinates, so the
+two auxiliary velocities can be simply added in each step.
 
 .. jupyter-execute::
 
@@ -239,7 +257,7 @@ force.
 
 These two velocities will be used to generate the partial velocities for two
 additional generalized active forces and generalized inertia forces, one for
-each of the auxiliary generalized speeds.
+each of the auxiliary generalized speeds :math:`u_3` and :math:`u_4`.
 
 Generalized Active Forces
 =========================
@@ -247,7 +265,8 @@ Generalized Active Forces
 We now have four generalized speeds, two of which are auxiliary generalized
 speeds. With these speeds we will formulate four generalized active forces. The
 generalized active forces associated with :math:`u_1` and :math:`u_2` are no
-different than if we were not exposing the noncontributing forces.
+different than if we were not exposing the noncontributing forces, so we follow
+the usual procedure.
 
 .. jupyter-execute::
 
@@ -287,6 +306,10 @@ generalized active forces are formed.
    F4 = N_v_P1a.diff(u4, N).dot(R_P1_aux) + N_v_P2a.diff(u4, N).dot(R_P2_aux)
    F4
 
+Finally, we form :math:`\bar{F}_r` that consists of the two normal generalized
+active forces and the two auxiliary generalized active forces, the later two
+containing the unknown force magnitudes :math:`T_1` and :math:`T_2`.
+
 .. jupyter-execute::
 
    Fr = sm.Matrix([F1, F2, F3, F4])
@@ -295,8 +318,9 @@ generalized active forces are formed.
 Generalized Inertia Forces
 ==========================
 
-Similarly the generalized inertia forces for :math:`u_1` and :math:`u_2` are
-computed as usual.
+Similar to the generalized active forces, the generalized inertia forces for
+:math:`u_1` and :math:`u_2` are computed as usual. See [Kane1985]_ pg. 169 and
+pg. 217 for more explanation.
 
 .. jupyter-execute::
 
@@ -306,24 +330,42 @@ computed as usual.
 .. jupyter-execute::
 
    F1s = P1.vel(N).diff(u1, N).dot(Rs_P1) + P2.vel(N).diff(u1, N).dot(Rs_P2)
-   F2s = P1.vel(N).diff(u2, N).dot(Rs_P1) + P2.vel(N).diff(u2, N).dot(Rs_P2)
+   F1s
 
-The auxiliary generalized inertia forces are found using the partial
-velocities where :math:`u_3` and :math:`u_4` are present. The acceleration of
-the particles need not include :math:`u_3` and :math:`u_4`, because they are
-equal to zero.
+.. jupyter-execute::
+
+   F2s = P1.vel(N).diff(u2, N).dot(Rs_P1) + P2.vel(N).diff(u2, N).dot(Rs_P2)
+   F2s
+
+The auxiliary generalized inertia forces are found using the velocities where
+:math:`u_3` and :math:`u_4` are present, but the acceleration of the particles
+need not include :math:`u_3` and :math:`u_4`, because they are equal to zero
+because :math:`u_3` and :math:`u_4` are actually equal to zero.
 
 .. jupyter-execute::
 
    F3s = N_v_P1a.diff(u3, N).dot(Rs_P1) + N_v_P2a.diff(u3, N).dot(Rs_P2)
+   F3s
+
+.. jupyter-execute::
+
    F4s = N_v_P1a.diff(u4, N).dot(Rs_P1) + N_v_P2a.diff(u4, N).dot(Rs_P2)
+   F4s
+
+And finally, :math:`\bar{F}_r^*` is formed for all four generalized speeds:
+
+.. jupyter-execute::
 
    Frs = sm.Matrix([F1s, F2s, F3s, F4s])
    Frs = sm.trigsimp(Frs)
    Frs
 
-We can now form Kane's Equations. These equations are linear in
-:math:`\dot{u}_1,\dot{u}_2,T_1` and :math:`T_2`.
+Dynamical Differential Equations
+================================
+
+We can now form Kane's dynamical differential equations which I will name
+:math:`\bar{f}_a` to indicate they include the auxiliary equations. These
+equations are linear in :math:`\dot{u}_1,\dot{u}_2,T_1` and :math:`T_2`.
 
 .. jupyter-execute::
 
@@ -332,7 +374,8 @@ We can now form Kane's Equations. These equations are linear in
 
 Now when we extract the linear coefficients, we see that the dynamical
 differential equations (the first two rows) are independent of the unknown
-force magnitudes, allowing us to use them independently.
+force magnitudes, allowing us to use the equations for :math:`\dot{\bar{u}}`
+independently.
 
 .. jupyter-execute::
 
@@ -363,8 +406,8 @@ Compare Newton and Kane Results
 
 To ensure that the Newton approach and the Kane approach do produce equivalent
 results, we can numerically evaluate the equations with the same inputs and see
-if the results are the same. Here are some numerical values for the states and
-constants.
+if the results are the same. Here are some arbitrary numerical values for the
+states and constants.
 
 .. jupyter-execute::
 
@@ -397,7 +440,8 @@ functions with the same numerical inputs from above.
    Md_vals, gd_vals = eval_d(q0, u0, p_vals)
    Ma_vals, ga_vals = eval_a(q0, u0, p_vals)
 
-Now compare the solutions for :math:`\left[ \dot{\bar{u}} \ \bar{r} \right]^T`.
+Now compare the solutions for :math:`\begin{bmatrix}\dot{\bar{u}} & \bar{r}
+\end{bmatrix}`.
 
 .. jupyter-execute::
 
@@ -408,9 +452,21 @@ Now compare the solutions for :math:`\left[ \dot{\bar{u}} \ \bar{r} \right]^T`.
    -np.linalg.solve(Ma_vals, np.squeeze(ga_vals))
 
 For this set of inputs, the outputs are the same showing that using the
-auxiliary speeds gives the same results.
+auxiliary speed approach gives the same results, with the slight advantage to
+the Newton method that the dynamical differential equations are not coupled to
+the equations for the noncontributing forces.
 
-..
+The forces can also be evaluated directly from the symbolic solutions, which is
+useful for post simulation application.
+
+.. jupyter-execute::
+
+   eval_forces = sm.lambdify((q, u, p), (T1_sol, T2_sol))
+   eval_forces(q0, u0, p_vals)
+
+.. todo:: Add simulations of each method showing how evaluation of the
+   noncontributing forces may work.
+
    .. jupyter-execute::
 
       def eval_rhs_newton(t, x, p):
