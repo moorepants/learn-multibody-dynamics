@@ -26,18 +26,29 @@ and noncontributing forces.
 Double Pendulum Example
 =======================
 
-Fig. X shows a schematic of a simple planar `double pendulum`_ described by two
-generalized coordinates :math:`q_1` and :math:`q_2`. The particles :math:`P_1`
-and :math:`P_2` have masses :math:`m_1` and :math:`m_2`, respectively. The
-lengths of the first and second pendulum arms are :math:`l_1` and :math:`l_2`
-respectively. On the right, the `free body diagrams`_ depict the two tension
-forces :math:`T_1` and :math:`T_2` that act on each particle to keep them at
-their respective radial locations.
+:numref:`fig-noncontributing-pendulum-fbd` shows a schematic of a simple planar
+`double pendulum`_ described by two generalized coordinates :math:`q_1` and
+:math:`q_2`. The particles :math:`P_1` and :math:`P_2` have masses :math:`m_1`
+and :math:`m_2`, respectively. The lengths of the first and second pendulum
+arms are :math:`l_1` and :math:`l_2` respectively. On the right, the `free body
+diagrams`_ depict the two tension forces :math:`T_1` and :math:`T_2` that act
+on each particle to keep them at their respective radial locations.
 
 .. _double pendulum: https://en.wikipedia.org/wiki/Double_pendulum
 .. _free body diagrams: https://en.wikipedia.org/wiki/Free_body_diagram
 
-Create all of the necessary variables:
+.. _fig-noncontributing-pendulum-fbd:
+.. figure:: figures/noncontributing-pendulum-fbd.svg
+   :align: center
+   :width: 100%
+
+   On the left, a kinematic diagram of a simple double planar pendulum with two
+   links :math:`A` of length :math:`l_1` and :math:`B` of length :math:`l_2`.
+   On the right are free body diagrams of each particle showing all of the
+   contributing and noncontributing forces acting on them. Gravity acts in the
+   :math:`-\hat{n}_y` direction.
+
+Start by creating all of the necessary variables:
 
 .. jupyter-execute::
 
@@ -110,14 +121,14 @@ are:
 
 .. jupyter-execute::
 
-   F_P1 = -T1*A.y + T2*B.y - m1*g*N.y
+   F_P1 = T1*A.y - T2*B.y - m1*g*N.y
    F_P1.express(N)
 
 and all of the forces acting on :math:`P_2` are:
 
 .. jupyter-execute::
 
-   F_P2 = -T2*B.y - m2*g*N.y
+   F_P2 = T2*B.y - m2*g*N.y
    F_P2.express(N)
 
 Now we can form the two vector expressions of Newton's Second Law for each
@@ -201,7 +212,13 @@ particle :math:`P_1` have a "separation velocity" relative to its fixed
 location on the pendulum arm. This is aligned with the desired noncontributing
 tension force we want to bring into evidence.
 
-.. todo:: Add figure.
+.. _fig-noncontributing-pendulum-aux:
+.. figure:: figures/noncontributing-pendulum-aux.svg
+   :align: center
+
+   Kinematic diagram of the double pendulum showing the fictitious auxiliarly
+   generalized speeds :math:`u_3` and :math:`u_4` and the associated
+   contributing forces.
 
 .. jupyter-execute::
 
@@ -209,7 +226,7 @@ tension force we want to bring into evidence.
 
 .. jupyter-execute::
 
-   N_v_P1a = P1.vel(N) + u3*A.y
+   N_v_P1a = P1.vel(N) - u3*A.y
    N_v_P1a
 
 Add a similar fictitious generalized speed :math:`u_4` for the second tension
@@ -217,7 +234,7 @@ force.
 
 .. jupyter-execute::
 
-   N_v_P2a = N_v_P1a + me.cross(B.ang_vel_in(N), P2.pos_from(P1)) + u4*B.y
+   N_v_P2a = N_v_P1a + me.cross(B.ang_vel_in(N), P2.pos_from(P1)) - u4*B.y
    N_v_P2a
 
 These two velocities will be used to generate the partial velocities for two
@@ -253,8 +270,8 @@ acting on the two particles.
 
 .. jupyter-execute::
 
-   R_P1_aux = R_P1 - T1*A.y + T2*B.y
-   R_P2_aux = R_P2 - T2*B.y
+   R_P1_aux = R_P1 + T1*A.y - T2*B.y
+   R_P2_aux = R_P2 + T2*B.y
 
 Now the velocities of the particles that include the auxiliary generalized
 speeds are used to calculate the partial velocities and the auxiliary
@@ -392,3 +409,20 @@ Now compare the solutions for :math:`\left[ \dot{\bar{u}} \ \bar{r} \right]^T`.
 
 For this set of inputs, the outputs are the same showing that using the
 auxiliary speeds gives the same results.
+
+..
+   .. jupyter-execute::
+
+      def eval_rhs_newton(t, x, p):
+
+          q = x[:2]
+          u = x[2:]
+
+          Md, gd = eval_d(q, u, p)
+          udr = -np.linalg.solve(Md, np.squeeze(gd))
+
+          qd = u
+          ud = sol[:2]
+          r = sol[2:]
+
+          return np.hstack((qd, ud))
