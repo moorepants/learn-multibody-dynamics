@@ -96,18 +96,18 @@ followed for this text:
 
 .. code:: rst
 
-   =====
-   Title
-   =====
-
+   =======
    Chapter
-   ==
+   =======
 
    Section
-   --
+   =======
 
    Subsection
-   ^^
+   ----------
+
+   Subsubsection
+   ^^^^^^^^^^^^^
 
 Reference styles:
 

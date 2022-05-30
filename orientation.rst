@@ -65,6 +65,7 @@ based on the angles among the two frames' unit vectors.
 .. _orientation-vector-position:
 
 .. figure:: figures/orientation-vector-position.svg
+   :align: center
 
    The image on the left and right represent the same set of right-handed
    mutually perpendicular unit vectors. Vectors, in general, do not have a
@@ -84,6 +85,7 @@ then say "reference frame :math:`A` is oriented with respect to reference frame
 .. _orientation-simple:
 
 .. figure:: figures/orientation-simple.svg
+   :align: center
 
    View of the parallel :math:`xy` planes of the simply oriented reference
    frames.
@@ -206,6 +208,7 @@ defined.  For example, the figure below shows the three angles
 .. _orientation-three-angles:
 
 .. figure:: figures/orientation-three-angles.svg
+   :align: center
 
    Three angles relating :math:`\hat{a}_x` to the unit vectors of :math:`N`.
 
@@ -284,6 +287,7 @@ reference frame :math:`B` is shown that is simply oriented with respect to
 .. _orientation-simple-successive:
 
 .. figure:: figures/orientation-simple-successive.svg
+   :align: center
 
    Two successive simple orientations through angles :math:`\theta` and then
    :math:`\alpha`.
@@ -526,6 +530,7 @@ This camera stabilization gimbal_ has three `revolute joints`_ that orient the
 camera :math:`D` relative to the handgrip frame :math:`A`.
 
 .. figure:: https://objects-us-east-1.dream.io/mechmotum/orientation-camera-gimbal.png
+   :align: center
 
    Four reference frames labeled on the Turnigy Pro Steady Hand Camera Gimbal.
    *Image copyright HobbyKing, used under fair use for educational purposes.*
@@ -563,6 +568,7 @@ unit vector through the angle :math:`\psi`, as shown below:
 
 .. figure:: figures/orientation-gimbal-psi.svg
    :width: 200px
+   :align: center
 
    View of the :math:`A` and :math:`B` :math:`x\textrm{-}y` plane showing the
    orientation of :math:`B` relative to :math:`A` about :math:`z` through angle
@@ -588,6 +594,7 @@ unit vector through angle :math:`\theta`.
 
 .. figure:: figures/orientation-gimbal-theta.svg
    :width: 200px
+   :align: center
 
    View of the :math:`B` and :math:`C` :math:`y\textrm{-}z` plane showing the
    orientation of :math:`C` relative to :math:`B` about :math:`x` through angle
@@ -608,6 +615,7 @@ shared :math:`y` unit vector through the angle :math:`\phi`.
 
 .. figure:: figures/orientation-gimbal-phi.svg
    :width: 200px
+   :align: center
 
    View of the :math:`C` and :math:`D` :math:`x\textrm{-}z` plane showing the
    orientation of :math:`D` relative to :math:`C` about :math:`y` through angle
@@ -663,6 +671,7 @@ is shown in this figure:
 .. _orientation-euler-animation:
 
 .. figure:: https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif
+   :align: center
 
    :math:`z\textrm{-}x\textrm{-}z` Euler angle visualization.
 

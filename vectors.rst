@@ -27,6 +27,7 @@ The direction the vector points is derived from both the orientation and the
 sense. Vectors are equal when all three characteristics are the same.
 
 .. figure:: figures/vectors-characteristics.svg
+   :align: center
 
    Three characteristics of vectors: magnitude, orientation, and sense.
 
@@ -198,6 +199,7 @@ reverses its sense (rotates it by :math:`\pi` radians).
 
 .. figure:: figures/vectors-scaling.svg
    :alt: Vector scaling
+   :align: center
 
    Vector scaling
 
@@ -277,6 +279,7 @@ measure numbers this results in the following:
 
 .. figure:: figures/vectors-dot-product.svg
    :alt: Vector dot product
+   :align: center
 
    Vector dot product
 
@@ -406,6 +409,7 @@ results in the following:
 
 .. figure:: figures/vectors-cross-product.svg
    :alt: Vector cross product
+   :align: center
 
    Vector cross product
 
@@ -529,6 +533,7 @@ joints configured in a way to balance the weight of the lamp in any
 configuration. Here are two examples:
 
 .. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Anglepoise_1227.jpg/353px-Anglepoise_1227.jpg
+   :align: center
 
    Balanced-arm desk lamp.
 
@@ -536,6 +541,7 @@ configuration. Here are two examples:
    https://creativecommons.org/licenses/by/2.0, via Wikimedia Commons
 
 .. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/GraphyArchy_-_Wikipedia_00323.jpg/320px-GraphyArchy_-_Wikipedia_00323.jpg
+   :align: center
 
    Example of a huge balance-arm lamp in Rotterdam at the Schouwburgplein.
 
