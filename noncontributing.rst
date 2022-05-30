@@ -16,7 +16,7 @@ Exposing Noncontributing Forces
    me.init_vprinting(use_latex='mathjax')
 
 Kane's formulation relieves us from having to consider noncontributing forces
-(See Sec. :ref:`Contributing and Non-contributing Forces`), but often we are
+(See Sec. :ref:`Contributing and Noncontributing Forces`), but often we are
 interested in one or more of these noncontributing forces. In this chapter, I
 will show how you can find the equation for a noncontributing force by
 introducing *auxiliary generalized speeds*. But first, let's solve the
