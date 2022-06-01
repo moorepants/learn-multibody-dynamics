@@ -101,11 +101,11 @@ formed.
 
 .. jupyter-execute::
 
-   P1.acc(N)
+   P1.a2pt_theory(O, N, A)
 
 .. jupyter-execute::
 
-   P2.acc(N)
+   P2.a2pt_theory(P1, N, B)
 
 All of the kinematics are strictly in terms of the generalized coordinates and
 the generalized speeds.
@@ -187,6 +187,10 @@ That means we can write the equations as:
 
 where :math:`\bar{r} = \left[T_1 \ T_2 \right]^T`. The linear coefficient
 matrix and the remainder can be extracted as usual:
+
+.. jupyter-execute::
+
+   ud, r
 
 .. jupyter-execute::
 
@@ -452,9 +456,9 @@ Now compare the solutions for :math:`\begin{bmatrix}\dot{\bar{u}} & \bar{r}
    -np.linalg.solve(Ma_vals, np.squeeze(ga_vals))
 
 For this set of inputs, the outputs are the same showing that using the
-auxiliary speed approach gives the same results, with the slight advantage to
-the Newton method that the dynamical differential equations are not coupled to
-the equations for the noncontributing forces.
+auxiliary speed approach gives the same results, with the slight advantage that
+the dynamical differential equations are not coupled to the equations for the
+noncontributing forces in Kane's method.
 
 The forces can also be evaluated directly from the symbolic solutions, which is
 useful for post simulation application.
