@@ -15,22 +15,21 @@ Unconstrained Equations of Motion with the TMT Method
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
-There are many mathematical methods available to formulate the equations of
-motion given a description of a multibody system model. The different methods
-offer different advantages and disadvantages over the original methods proposed
-by Netwon and Euler. For example, Joseph-Louis Lagrange developed a way to
-arrive at the equations of motion from the descriptions of kinetic and
-potential energy of the system. Sir William Hamilton then reformulated
-Lagrange's approach in terms of generalized momenta. Since then, Gibbs, Appell,
-Kane and others have formaulted other methods. In this chapter, we present an
-alternative method presented in [Vallery2020]_ call the "TMT Method".
+There are several mathematical methods available to formulate the equations of
+motion of a multibody system. These different methods offer various advantages
+and disadvantages over Newton and Euler's original formulations and among each
+other. For example, Joseph-Louis Lagrange developed a way to arrive at the
+equations of motion from the descriptions of kinetic and potential energy of
+the system. Sir William Hamilton then reformulated Lagrange's approach in terms
+of *generalized momenta* instead of energy. Since then, Gibbs & Appell, Kane,
+and others have proposed more methods. In this chapter, we present an
+alternative method presented in [Vallery2020]_ called the "TMT Method".
 
-Vallery and Schwab present a matrix that can be used to directly transform the
-mass and inertia of a system of rigid bodies expressed in a Cartesian
-coordinate system into the mass matrix for a specific set of generalized
-coordinates. This matrix is populated by the measure numbers of the partial
-velocities expressed in the inertial reference frame. The method has some
-advantages:
+Vallery and Schwab show how the mass matrices and external forces from the
+Newton-Euler equations for rigid body can be transformed into the reduced
+generalized coordinate form using the :math:`T` matrix. This matrix is
+populated by the measure numbers of the partial velocities expressed in the
+inertial reference frame. The method has these advantages:
 
 - Only the position and orientation of the bodies need be determined.
 - Contributing forces can be formaluated as generalized forces, or not, or
@@ -68,9 +67,14 @@ a matrix :math:`\mathbf{T}`.
 
 .. math::
 
-   \mathbf{T} = J_\bar{v},\dot{\bar{q}}
+   \mathbf{T} = J_{\bar{v},\dot{\bar{q}}} \in \mathbb{R}^{6\nu \times n}
+   \quad
+   \textrm{where}
+   \quad
+   \bar{v} = \mathbf{T} \dot{\bar{q}}
 
-The mass an inertia of each body can be expressed in a 
+For the six rows in :math:`\bar{v}` for a single rigid body, the associated
+mass and inertia for that body can be written as:
 
 .. math::
 
@@ -93,6 +97,9 @@ The mass an inertia of each body can be expressed in a
    \breve{I}^{B_1/B_{1o}} \cdot \hat{n}_z\hat{n}_z \\
    \end{bmatrix}
 
+The matrices for each rigid body can then be assembled into a matrix for the
+entire set of rigid bodies.
+
 .. math::
 
    \mathbf{M} =
@@ -103,13 +110,9 @@ The mass an inertia of each body can be expressed in a
    \mathbf{0}       & \mathbf{0}       & \ldots     & \mathbf{M}_{B_\nu}
    \end{bmatrix}
 
-Vallery and Schwab show that the the mass matrix of the system is:
-
-.. math::
-
-   \mathbf{M}_d = \mathbf{T}^T \mathbf{M} \mathbf{T}
-
-Now given a vector :math:`\bar{F}` of resultant forces and torques of couples acting on each rigid body:
+A vector :math:`\bar{F}` of resultant forces and torques of couples acting on
+each rigid body can be formed in a similar manner as :math:`\bar{v}`, by
+extracting the measure numbers in the inertial reference frame.
 
 .. math::
 
@@ -130,17 +133,37 @@ Now given a vector :math:`\bar{F}` of resultant forces and torques of couples ac
    \bar{T}^{B_2} \cdot \hat{n}_z \\
    \end{bmatrix}
 
+Vallery and Schwab show that the the mass matrix :math:`\mathbf{M}_d`
+associated with the generalized accelerations is:
+
+.. math::
+
+   \mathbf{M}_d = -\mathbf{T}^T \mathbf{M} \mathbf{T}
+
+and the remainder term is:
+
+.. math::
+
+   \bar{g}_d = \mathbf{T}^T\left(\bar{F} - \mathbf{M}\bar{g}\right)
+
+where:
+
 .. math::
 
    \bar{g} = \frac{d\bar{v}}{dt}\bigg\rvert_{\ddot{\bar{q}}=\bar{0}}
+
+The equations of motion then take this form:
 
 .. math::
 
    \mathbf{T}^T \mathbf{M} \mathbf{T} \ddot{\bar{q}} =
    \mathbf{T}^T\left(\bar{F} - \mathbf{M}\bar{g}\right)
 
-Example
-=======
+Example Formulation
+===================
+
+Let us return once again to the holonomic system introduced in :ref:`Example of
+Kane’s Equations`.
 
 .. _fig-eom-double-rod-pendulum:
 .. figure:: figures/eom-double-rod-pendulum.svg
@@ -152,9 +175,7 @@ Example
    the generalized coordinates are all zero, the two rods are perpendicular to
    each other.
 
-The following code is reproduced from the prior chapter and gives the
-velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
-:math:`B` in the inertial reference frame :math:`N`.
+The derivation of the kinematics is done in the same way as before.
 
 .. jupyter-execute::
 
@@ -191,6 +212,8 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
 
    Ao.vel(N), A.ang_vel_in(N), Bo.vel(N), B.ang_vel_in(N), Q.vel(N)
 
+Only the contributing forces need be declared.
+
 .. jupyter-execute::
 
    R_Ao = m*g*N.x
@@ -204,6 +227,9 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
    I = m*l**2/12
    I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
+
+The vector :math:`\bar{v}` is formed from the velocities and angular velocities
+of each rigid body or particle.
 
 .. jupyter-execute::
 
@@ -226,6 +252,7 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
    ])
    v
 
+The inertial matrices for each body and the particle :math:`Q` are:
 
 .. jupyter-execute::
 
@@ -242,10 +269,14 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
    MQ = sm.diag(m/4, m/4, m/4)
    MQ
 
+These can be assembled into :math:`\mathbf{M}`:
+
 .. jupyter-execute::
 
    M = sm.diag(MA, MB, MQ)
-   sm.trigsimp(M)
+   M
+
+:math:`\bar{F}` is contructed to match the order of :math:`\bar{v]`:
 
 .. jupyter-execute::
 
@@ -268,44 +299,56 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
    ])
    F
 
+Formulate the equations of motion
+==================================
+
+First find :math:`\mathbf{T}` using the Jacobian method:
+
 .. jupyter-execute::
 
    T = v.jacobian(q.diff(t))
    T
 
+and then compute :math:`\bar{g}`:
+
 .. jupyter-execute::
 
    qdd_repl = {qddi: 0 for qddi in q.diff(t, 2)}
-   gz = v.diff(t).xreplace(qdd_repl)
-   gz
+   gbar = v.diff(t).xreplace(qdd_repl)
+   gbar
+
+The mass matrix is then formed with :math:`-\mathbf{T}^T\mathbf{M}\mathbf{T}`:
 
 .. jupyter-execute::
 
-   Md = -sm.trigsimp(T.transpose()*M*T)
+   Md = sm.trigsimp(-T.transpose()*M*T)
    Md
 
 .. jupyter-execute::
 
-   gd = sm.trigsimp(T.transpose()*(F - M*gz))
+   gd = sm.trigsimp(T.transpose()*(F - M*gbar))
    gd
 
+Evaluate the equations of motion
+================================
+
+We can check to see if these dynamical differential equations are the same as
+the ones we found with Kane's Method by evaluating them with the same set of
+numbers we used before.
+
 .. jupyter-execute::
+
+   qd_vals = np.array([
+       0.1,  # u1, rad/s
+       2.2,  # u2, rad/s
+       0.3,  # u3, m/s
+   ])
 
    q_vals = np.array([
        np.deg2rad(25.0),  # q1, rad
        np.deg2rad(5.0),  # q2, rad
        0.1,  # q3, m
    ])
-
-.. jupyter-execute::
-
-   u_vals = np.array([
-       0.1,  # u1, rad/s
-       2.2,  # u2, rad/s
-       0.3,  # u3, m/s
-   ])
-
-.. jupyter-execute::
 
    p_vals = np.array([
        9.81,  # g, m/s**2
@@ -315,7 +358,8 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
        1.0,  # m, kg
    ])
 
-.. todo:: gd is slightly differen than my prior solution
+.. todo:: gd is slightly different than my prior solution. The first two rows
+   of gd are off.
 
 .. jupyter-execute::
 
@@ -323,10 +367,10 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
 
    eval_d = sm.lambdify((q.diff(t), q, p), (Md, gd))
 
-   eval_d(u_vals, q_vals, p_vals)
+   eval_d(qd_vals, q_vals, p_vals)
 
 .. jupyter-execute::
 
-   Md_vals, gd_vals = eval_d(u_vals, q_vals, p_vals)
+   Md_vals, gd_vals = eval_d(qd_vals, q_vals, p_vals)
    ud_vals = -np.linalg.solve(Md_vals, np.squeeze(gd_vals))
    ud_vals
