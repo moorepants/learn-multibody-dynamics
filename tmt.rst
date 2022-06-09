@@ -183,11 +183,15 @@ with:
 
    \bar{g}_d = \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
 
-where:
+where [*]_:
 
 .. math::
 
    \bar{g} = \frac{d\mathbf{M}\bar{v}}{dt}\bigg\rvert_{\dot{\bar{u}}=\bar{0}}
+
+.. [*] Note that my :math:`\bar{g}` is slightly different than the one
+   presented in [Vallery2020]_ to make sure the time derivative of the angular
+   momenta are properly calculated.
 
 The equations of motion then take this form:
 
