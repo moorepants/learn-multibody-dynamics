@@ -11,3 +11,5 @@ References
    bicycle: A benchmark and review,” Proceedings of the Royal Society A:
    Mathematical, Physical and Engineering Sciences, vol. 463, no. 2084, pp.
    1955–1982, Aug.  2007.
+.. [Vallery2020] Heike Vallery and Arend L. Schwab, "Advanced Dynamics", 3rd
+   edition, Delft University of Technology, 2020, ISBN/EAN 978-90-8309-060-3
