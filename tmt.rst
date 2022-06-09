@@ -18,31 +18,34 @@ Unconstrained Equations of Motion with the TMT Method
 There are several mathematical methods available to formulate the equations of
 motion of a multibody system. These different methods offer various advantages
 and disadvantages over Newton and Euler's original formulations and among each
-other. For example, Joseph-Louis Lagrange developed a way to arrive at the
+other. For example, `Joseph-Louis Lagrange`_ developed a way to arrive at the
 equations of motion from the descriptions of kinetic and potential energy of
 the system. Sir William Hamilton then reformulated Lagrange's approach in terms
-of *generalized momenta* instead of energy. Since then, Gibbs & Appell, Kane,
-and others have proposed more methods. In this chapter, we present an
-alternative method presented in [Vallery2020]_ called the "TMT Method".
+of *generalized momenta* instead of energy. Since then, `Gibbs & Appell`_, Kane
+[Kane1985]_, and others have proposed more methods. In this chapter, we present
+one of these alternative methods called the "TMT Method". The details and
+derivation of the TMT Method can be found in [Vallery2020]_ .
 
-Vallery and Schwab show how the mass matrices and external forces from the
-Newton-Euler equations for rigid body can be transformed into the reduced
-generalized coordinate form using the :math:`T` matrix. This matrix is
-populated by the measure numbers of the partial velocities expressed in the
-inertial reference frame. The method has these advantages:
+.. _Joseph-Louis Lagrange: https://en.wikipedia.org/wiki/Lagrangian_mechanics
+.. _Sir William Hamilton: https://en.wikipedia.org/wiki/Hamiltonian_mechanics
+.. _Gibbs & Appell: https://en.wikipedia.org/wiki/Appell%27s_equation_of_motion
 
-- Only the position and orientation of the bodies need be determined.
-- Contributing forces can be formaluated as generalized forces, or not, or
-  both.
+Vallery and Schwab show how the collection of Newton-Euler equations for each
+individual rigid body can be transformed into the reduced dynamical
+differential equations associated with the generalized coordinates, speeds, and
+accelerations using the :math:`\mathbf{T}` matrix. This :math:`\mathbf{T}`
+matrix is populated by the measure numbers of the partial velocities expressed
+in the inertial reference frame.
 
 Given :math:`\nu` rigid bodies in a multibody system, the velocities of each
 mass center and the angular velocities of each body in an inertial reference
 frame :math:`N` can be written in column vector :math:`\bar{v}` form by
-extracting the measure numbers of each velocity term.
+extracting the  measure numbers in the inertial reference frame :math:`N` of
+each velocity term.
 
 .. math::
 
-   \bar{v}(\dot{\bar{q}}, \bar{q}, t) =
+   \bar{v}(\bar{u}, \bar{q}, t) =
    \begin{bmatrix}
    {}^N\bar{v}^{B_{1o}} \cdot \hat{n}_x \\
    {}^N\bar{v}^{B_{1o}} \cdot \hat{n}_y \\
@@ -62,19 +65,20 @@ extracting the measure numbers of each velocity term.
    \mathbb{R}^{6\nu}
 
 The measure numbers of the partial velocities with respect to each speed in
-:math:`\dot{\bar{q}}` can be efficiently found with the Jacobian and stored in
-a matrix :math:`\mathbf{T}`.
+:math:`\bar{u}` can be efficiently found by taking the Jacobian of
+:math:`\bar{v}` with respect to the generalized speeds, which we will name
+matrix :math:`\mathbf{T}`.
 
 .. math::
 
-   \mathbf{T} = J_{\bar{v},\dot{\bar{q}}} \in \mathbb{R}^{6\nu \times n}
+   \mathbf{T} = \mathbf{J}_{\bar{v},\bar{q}} \in \mathbb{R}^{6\nu \times n}
    \quad
    \textrm{where}
    \quad
-   \bar{v} = \mathbf{T} \dot{\bar{q}}
+   \bar{v} = \mathbf{T} \bar{u}
 
-For the six rows in :math:`\bar{v}` for a single rigid body, the associated
-mass and inertia for that body can be written as:
+For each set of six rows in :math:`\bar{v}` tied to a single rigid body, the
+associated mass and inertia for that body can be written as:
 
 .. math::
 
@@ -97,6 +101,21 @@ mass and inertia for that body can be written as:
    \breve{I}^{B_1/B_{1o}} \cdot \hat{n}_z\hat{n}_z \\
    \end{bmatrix}
 
+Multiplying the velocities with this matrix gives the momenta of each rigid
+body.
+
+.. math::
+
+   \mathbf{M}_{B_1} \bar{v}_{B_1} =
+   \begin{bmatrix}
+   \bar{p}^{B_{1o}} \cdot \hat{n}_x \\
+   \bar{p}^{B_{1o}} \cdot \hat{n}_y \\
+   \bar{p}^{B_{1o}} \cdot \hat{n}_z \\
+   \bar{H}^{B_1/B_{1o}} \cdot \hat{n}_x \\
+   \bar{H}^{B_1/B_{1o}} \cdot \hat{n}_y \\
+   \bar{H}^{B_1/B_{1o}} \cdot \hat{n}_z \\
+   \end{bmatrix}
+
 The matrices for each rigid body can then be assembled into a matrix for the
 entire set of rigid bodies.
 
@@ -109,6 +128,9 @@ entire set of rigid bodies.
    \vdots           & \vdots           & \ddots     & \vdots \\
    \mathbf{0}       & \mathbf{0}       & \ldots     & \mathbf{M}_{B_\nu}
    \end{bmatrix}
+
+Allowing the momenta of all the rigid bodies to be found by matrix
+multiplication of :math:`\mathbf{M} \bar{v}`.
 
 A vector :math:`\bar{F}` of resultant forces and torques of couples acting on
 each rigid body can be formed in a similar manner as :math:`\bar{v}`, by
@@ -133,31 +155,48 @@ extracting the measure numbers in the inertial reference frame.
    \bar{T}^{B_2} \cdot \hat{n}_z \\
    \end{bmatrix}
 
-Vallery and Schwab show that the the mass matrix :math:`\mathbf{M}_d`
-associated with the generalized accelerations is:
+The dynamical differential equations for the entire Newton-Euler system are
+then:
+
+.. math::
+
+   \frac{d \mathbf{M} \bar{v}}{dt} = \bar{F} \in \mathbb{R}^{6\nu}
+
+We know that selecting :math:`n` generalized coordinates for such a system
+allows us to write the dynamical differential equations as a set of :math:`n`
+equations which is, in general, much smaller than :math:`6\nu` equations due to
+the large number of holonomic constraints that represent the connections of all
+the bodies in the system. Vallery and Schwab show that the mass matrix
+:math:`\mathbf{M}_d` for this reduced set of equations can be efficiently
+calculated using the :math:`\mathbf{T}` matrix ([Vallery2020]_, pg. 349):
 
 .. math::
 
    \mathbf{M}_d = -\mathbf{T}^T \mathbf{M} \mathbf{T}
 
-and the remainder term is:
+and that the forces not proportional to the generalized accelerations is found
+with:
 
 .. math::
 
-   \bar{g}_d = \mathbf{T}^T\left(\bar{F} - \mathbf{M}\bar{g}\right)
+   \bar{g}_d = \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
 
 where:
 
 .. math::
 
-   \bar{g} = \frac{d\bar{v}}{dt}\bigg\rvert_{\ddot{\bar{q}}=\bar{0}}
+   \bar{g} = \frac{d\mathbf{M}\bar{v}}{dt}\bigg\rvert_{\dot{\bar{u}}=\bar{0}}
 
 The equations of motion then take this form:
 
 .. math::
 
-   \mathbf{T}^T \mathbf{M} \mathbf{T} \ddot{\bar{q}} =
-   \mathbf{T}^T\left(\bar{F} - \mathbf{M}\bar{g}\right)
+   \bar{0} =
+   \mathbf{M}_d\dot{\bar{u}} + \bar{g}_d =
+   -\mathbf{T}^T \mathbf{M} \mathbf{T} \dot{\bar{u}} +
+   \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
+
+These equations are equivalent to Kane's Equations.
 
 Example Formulation
 ===================
@@ -175,16 +214,20 @@ Kane’s Equations`.
    the generalized coordinates are all zero, the two rods are perpendicular to
    each other.
 
-The derivation of the kinematics is done in the same way as before.
+Start by introducing the variables.
 
 .. jupyter-execute::
 
    m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
    q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
+   u1, u2, u3 = me.dynamicsymbols('u1, u2, u3')
    t = me.dynamicsymbols._t
 
    q = sm.Matrix([q1, q2, q3])
-   q
+   u = sm.Matrix([u1, u2, u3])
+   q, u
+
+The derivation of the kinematics is done in the same way as before.
 
 .. jupyter-execute::
 
@@ -194,6 +237,9 @@ The derivation of the kinematics is done in the same way as before.
 
    A.orient_axis(N, q1, N.z)
    B.orient_axis(A, q2, A.x)
+
+   A.set_ang_vel(N, u1*N.z)
+   B.set_ang_vel(A, u2*A.x)
 
    O = me.Point('O')
    Ao = me.Point('A_O')
@@ -207,12 +253,13 @@ The derivation of the kinematics is done in the same way as before.
    O.set_vel(N, 0)
    Ao.v2pt_theory(O, N, A)
    Bo.v2pt_theory(O, N, A)
-   Q.set_vel(B, q3.diff()*B.y)
+   Q.set_vel(B, u3*B.y)
    Q.v1pt_theory(Bo, N, B)
 
    Ao.vel(N), A.ang_vel_in(N), Bo.vel(N), B.ang_vel_in(N), Q.vel(N)
 
-Only the contributing forces need be declared.
+Only the contributing forces need be declared (noncontributing would cancel out
+in the TMT transformation if included).
 
 .. jupyter-execute::
 
@@ -221,6 +268,8 @@ Only the contributing forces need be declared.
    R_Q = m/4*g*N.x - kl*q3*B.y
    T_A = -kt*q1*N.z + kt*q2*A.x
    T_B = -kt*q2*A.x
+
+The inertia dyadics of each body will be needed.
 
 .. jupyter-execute::
 
@@ -306,16 +355,30 @@ First find :math:`\mathbf{T}` using the Jacobian method:
 
 .. jupyter-execute::
 
-   T = v.jacobian(q.diff(t))
+   T = v.jacobian(u)
    T
 
 and then compute :math:`\bar{g}`:
 
 .. jupyter-execute::
 
-   qdd_repl = {qddi: 0 for qddi in q.diff(t, 2)}
-   gbar = v.diff(t).xreplace(qdd_repl)
-   gbar
+   qd_repl = dict(zip(q.diff(t), u))
+   ud_repl = {udi: 0 for udi in u.diff(t)}
+   gbar = (M*v).diff(t).xreplace(qd_repl).xreplace(ud_repl)
+   sm.trigsimp(gbar)
+
+.. jupyter-execute::
+
+   N_a_Q = Q.acc(N).express(N).simplify()
+   N_a_Q.dot(N.x).xreplace(qd_repl).xreplace(ud_repl)
+
+.. jupyter-execute::
+
+   N_a_Q.dot(N.y).xreplace(qd_repl).xreplace(ud_repl)
+
+.. jupyter-execute::
+
+   N_a_Q.dot(N.z).xreplace(qd_repl).xreplace(ud_repl)
 
 The mass matrix is then formed with :math:`-\mathbf{T}^T\mathbf{M}\mathbf{T}`:
 
@@ -326,7 +389,7 @@ The mass matrix is then formed with :math:`-\mathbf{T}^T\mathbf{M}\mathbf{T}`:
 
 .. jupyter-execute::
 
-   gd = sm.trigsimp(T.transpose()*(F - M*gbar))
+   gd = sm.trigsimp(T.transpose()*(F - gbar))
    gd
 
 Evaluate the equations of motion
@@ -338,7 +401,7 @@ numbers we used before.
 
 .. jupyter-execute::
 
-   qd_vals = np.array([
+   u_vals = np.array([
        0.1,  # u1, rad/s
        2.2,  # u2, rad/s
        0.3,  # u3, m/s
@@ -365,12 +428,12 @@ numbers we used before.
 
    p = sm.Matrix([g, kl, kt, l, m])
 
-   eval_d = sm.lambdify((q.diff(t), q, p), (Md, gd))
+   eval_d = sm.lambdify((u, q, p), (Md, gd))
 
-   eval_d(qd_vals, q_vals, p_vals)
+   eval_d(u_vals, q_vals, p_vals)
 
 .. jupyter-execute::
 
-   Md_vals, gd_vals = eval_d(qd_vals, q_vals, p_vals)
+   Md_vals, gd_vals = eval_d(u_vals, q_vals, p_vals)
    ud_vals = -np.linalg.solve(Md_vals, np.squeeze(gd_vals))
    ud_vals
