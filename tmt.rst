@@ -15,17 +15,19 @@ Unconstrained Equations of Motion with the TMT Method
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
-There are several mathematical methods available to formulate the equations of
-motion of a multibody system. These different methods offer various advantages
-and disadvantages over Newton and Euler's original formulations and among each
-other. For example, `Joseph-Louis Lagrange`_ developed a way to arrive at the
-equations of motion from the descriptions of kinetic and potential energy of
-the system. Sir William Hamilton then reformulated Lagrange's approach in terms
-of *generalized momenta* instead of energy. Since then, `Gibbs & Appell`_, Kane
-[Kane1985]_, and others have proposed more methods. In this chapter, we present
-one of these alternative methods called the "TMT Method". The details and
-derivation of the TMT Method can be found in [Vallery2020]_ .
+There are `several mathematical methods`_ available to formulate the equations
+of motion of a multibody system. These different methods offer various
+advantages and disadvantages over Newton and Euler's original formulations and
+among each other. For example, `Joseph-Louis Lagrange`_ developed a way to
+arrive at the equations of motion from the descriptions of kinetic and
+potential energy of the system. `Sir William Hamilton`_ then reformulated
+Lagrange's approach in terms of *generalized momenta* instead of energy. Since
+then, `Gibbs & Appell`_, Kane [Kane1985]_, and others have proposed more
+methods. In this chapter, we present one of these alternative methods called
+the "TMT Method".  The details and derivation of the TMT Method can be found in
+[Vallery2020]_ .
 
+.. _several mathematical methods: https://en.wikipedia.org/wiki/Classical_mechanics
 .. _Joseph-Louis Lagrange: https://en.wikipedia.org/wiki/Lagrangian_mechanics
 .. _Sir William Hamilton: https://en.wikipedia.org/wiki/Hamiltonian_mechanics
 .. _Gibbs & Appell: https://en.wikipedia.org/wiki/Appell%27s_equation_of_motion
@@ -225,7 +227,8 @@ Start by introducing the variables.
 
    q = sm.Matrix([q1, q2, q3])
    u = sm.Matrix([u1, u2, u3])
-   q, u
+   p = sm.Matrix([g, kl, kt, l, m])
+   q, u, p
 
 The derivation of the kinematics is done in the same way as before.
 
@@ -277,6 +280,9 @@ The inertia dyadics of each body will be needed.
    I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
 
+Create the TMT Components
+=========================
+
 The vector :math:`\bar{v}` is formed from the velocities and angular velocities
 of each rigid body or particle.
 
@@ -311,21 +317,22 @@ The inertial matrices for each body and the particle :math:`Q` are:
 .. jupyter-execute::
 
    MB = sm.diag(m, m, m).col_join(sm.zeros(3)).row_join(sm.zeros(3).col_join(I_B_Bo.to_matrix(N)))
-   MB
+   sm.trigsimp(MB)
 
 .. jupyter-execute::
 
    MQ = sm.diag(m/4, m/4, m/4)
    MQ
 
-These can be assembled into :math:`\mathbf{M}`:
+Note that these matrices change with time because we've expressed the inertia
+scalars in the inertial reference frame :math:`N`. The matrices for all of the
+bodies can be assembled into :math:`\mathbf{M}`:
 
 .. jupyter-execute::
 
    M = sm.diag(MA, MB, MQ)
-   M
 
-:math:`\bar{F}` is contructed to match the order of :math:`\bar{v]`:
+:math:`\bar{F}` is constructed to match the order of :math:`\bar{v}`:
 
 .. jupyter-execute::
 
@@ -348,10 +355,13 @@ These can be assembled into :math:`\mathbf{M}`:
    ])
    F
 
-Formulate the equations of motion
-==================================
+These are the components we need to form the reduced dynamical differential
+equations.
 
-First find :math:`\mathbf{T}` using the Jacobian method:
+Formulate the reduced equations of motion
+=========================================
+
+First find :math:`\mathbf{T}` using the Jacobian:
 
 .. jupyter-execute::
 
@@ -367,25 +377,16 @@ and then compute :math:`\bar{g}`:
    gbar = (M*v).diff(t).xreplace(qd_repl).xreplace(ud_repl)
    sm.trigsimp(gbar)
 
-.. jupyter-execute::
-
-   N_a_Q = Q.acc(N).express(N).simplify()
-   N_a_Q.dot(N.x).xreplace(qd_repl).xreplace(ud_repl)
-
-.. jupyter-execute::
-
-   N_a_Q.dot(N.y).xreplace(qd_repl).xreplace(ud_repl)
-
-.. jupyter-execute::
-
-   N_a_Q.dot(N.z).xreplace(qd_repl).xreplace(ud_repl)
-
-The mass matrix is then formed with :math:`-\mathbf{T}^T\mathbf{M}\mathbf{T}`:
+The reduced mass matrix is then formed with
+:math:`-\mathbf{T}^T\mathbf{M}\mathbf{T}`:
 
 .. jupyter-execute::
 
    Md = sm.trigsimp(-T.transpose()*M*T)
    Md
+
+and the reduced remainder term is formed with :math:`\mathbf{T}^T(\bar{F} -
+\bar{g})`:
 
 .. jupyter-execute::
 
@@ -395,9 +396,9 @@ The mass matrix is then formed with :math:`-\mathbf{T}^T\mathbf{M}\mathbf{T}`:
 Evaluate the equations of motion
 ================================
 
-We can check to see if these dynamical differential equations are the same as
-the ones we found with Kane's Method by evaluating them with the same set of
-numbers we used before.
+Now we can check to see if these dynamical differential equations are the same
+as the ones we found with Kane's Method by evaluating them with the same set of
+numbers we used in :ref:`Numerical Evaluation`. The input values were:
 
 .. jupyter-execute::
 
@@ -421,19 +422,24 @@ numbers we used before.
        1.0,  # m, kg
    ])
 
-.. todo:: gd is slightly different than my prior solution. The first two rows
-   of gd are off.
+We can lambdify ``Md`` and ``gq`` to see if these give the same values as those
+found with Kane's Equations:
 
 .. jupyter-execute::
-
-   p = sm.Matrix([g, kl, kt, l, m])
 
    eval_d = sm.lambdify((u, q, p), (Md, gd))
 
-   eval_d(u_vals, q_vals, p_vals)
+   Md_vals, gd_vals = eval_d(u_vals, q_vals, p_vals)
+   Md_vals, gd_vals
+
+These numerical arrays are identical to our prior results. The state
+derivatives then should also be identical:
 
 .. jupyter-execute::
 
-   Md_vals, gd_vals = eval_d(u_vals, q_vals, p_vals)
+   eval_d(u_vals, q_vals, p_vals)
    ud_vals = -np.linalg.solve(Md_vals, np.squeeze(gd_vals))
    ud_vals
+
+which they are. We can be fairly confident that Kane's method and the TMT
+method result in the same equations of motion for this system.
