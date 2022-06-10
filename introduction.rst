@@ -6,11 +6,13 @@ What You Will Learn
 ===================
 
 - How to formulate the equations of motion for a set of interacting rigid
-  bodies, i.e. a multibody system.
+  bodies, i.e. a `multibody system`_.
 - How to manage and incorporate kinematic constraints.
 - How to simulate a multibody system.
 - How to visualize the motion of a multibody system in 2D and 3D.
 - How to interpret the behavior of multibody systems.
+
+.. _multibody system: https://en.wikipedia.org/wiki/Multibody_system
 
 Prerequisites
 =============
@@ -34,11 +36,10 @@ integrated. I hope to weave the two much more fluidly here so that you can
 learn the principles of multibody dynamics through computing.
 
 This text is less about teaching deep theory in multibody dynamics, but is
-focused on application and doing. After following the text, you should be able
-to correctly model, simulate, and visualize multibody dynamic systems so that
-you can use them as a tool to answer the engineering and scientific questions.
-There are plenty of other books to learn the theory and we will cite them so
-you can study further.
+focused on application and doing. After following the text and practicing, you
+should be able to correctly model, simulate, and visualize multibody dynamic
+systems so that you can use them as a tool to answer engineering and scientific
+questions.
 
 Choice of dynamics formalism
 ============================
@@ -50,14 +51,15 @@ Here I use the approach presented by `Thomas R. Kane`_ and David Levinson in
 their 1985 book "Dynamics, Theory and Application" [Kane1985]_. The notation
 offers a precise way to track all of the nuances in multibody dynamics
 bookkeeping and a realization of the equations of motion that obviates having
-to introduce virtual motion concepts that handles kinematic constraints
-without the need of Lagrange multipliers.
+to introduce virtual motion concepts and that handles kinematic constraints
+without the need of `Lagrange multipliers`_.
 
 .. _Newton and Euler: https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations
 .. _Lagrange: https://en.wikipedia.org/wiki/Lagrangian_mechanics
 .. _Hamilton: https://en.wikipedia.org/wiki/Hamiltonian_mechanics
 .. _Featherstone: https://en.wikipedia.org/wiki/Featherstone%27s_algorithm
 .. _Thomas R. Kane: https://en.wikipedia.org/wiki/Thomas_R._Kane
+.. _Lagrange multipliers: https://en.wikipedia.org/wiki/Lagrange_multiplier
 
 Choice of programming language
 ==============================
@@ -91,36 +93,40 @@ helped with Prof. Eke's 2015 course and taught the course in `2017
 <https://moorepants.github.io/mae223/2017/>`_ and `2019
 <https://moorepants.github.io/mae223/>`_ at UC Davis and this text is a
 continuation of the notes and materials I developed based on Profs. Hubbard and
-Eke's notes and materials.
+Eke's notes and materials which now includes some elements of TU Delft's past
+multibody dynamics course.
 
-When I took the course in 2006 as a graduate student, I naively decided to
-derive and analyze the non-linear and linear Carvallo-Whipple bicycle model
-[Meijaard2007]_ as my course project [*]_. Fortunately, another student
-visiting from Aachen University, Thomas Engelhardt, also choose the same model
-and his success finally helped me squash the bugs in my formulation. Luke
-Peterson, Gilbert Gede, and Angadh Nanjangud subsequently joined Hubbard and
-Eke's labs and with Luke's lead we were sucked into the world of open source
-scientific software. At that time, Python's use by scientists and engineers
-began to rapidly climb and we fortunately jumped on the bandwagon. We became
-quite frustrated with the black box approach of the commercial software tools
-most engineers used at that time, this included the tool Autolev that was
-developed by Kane's collaborators for the automation of multibody dynamics
-modeling. To remedy this frustration, Luke wrote the `first version of PyDy`_ as
-a `Google Summer of Code`_ participant in 2009. Gilbert followed him by
-implementing a new version as SymPy Mechanics in 2011 also as a Google Summer
-of Code participant. We use Gilbert's implementation in this text. Combined
-with the power of SymPy and Jupyter Notebooks (IPython Notebooks back then),
-SymPy Mechanics provides a computational tool that is especially helpful for
-learning and teaching multibody dynamics. It is also equally useful for
-advanced modeling in research and industry.
+When I took the UC Davis course in 2006 as a graduate student, I naively
+decided to derive and analyze the non-linear and linear Carvallo-Whipple
+bicycle model [Meijaard2007]_ as my course project [*]_. Fortunately, another
+student visiting from Aachen University, Thomas Engelhardt, also choose the
+same model and his success finally helped me squash the bugs in my formulation.
+Luke Peterson, Gilbert Gede, and Angadh Nanjangud subsequently joined Hubbard
+and Eke's labs and with Luke's lead we were sucked into the world of open
+source scientific software. At that time, Python's use by scientists and
+engineers began to gain traction and we fortunately jumped on the bandwagon. We
+had become quite frustrated with the black box approach of the commercial
+software tools most engineers used at that time, this included the tool Autolev
+that was developed by Kane's collaborators for the automation of multibody
+dynamics modeling. To remedy this frustration, Luke wrote the `first version of
+PyDy`_ as a `Google Summer of Code`_ participant in 2009. Gilbert followed him
+by implementing a new version as `SymPy Mechanics`_ in 2011 also as a Google
+Summer of Code participant. We use Gilbert's, now modified and extended,
+implementation in this text. Combined with the power of SymPy and Jupyter
+Notebooks (IPython Notebooks back then), SymPy Mechanics provides a
+computational tool that is especially helpful for learning and teaching
+multibody dynamics. It is also equally useful for advanced modeling in research
+and industry.
 
 .. _first version of PyDy: https://github.com/hazelnusse/pydy
 .. _Google Summer of Code: https://en.wikipedia.org/wiki/Google_Summer_of_Code
+.. _SymPy Mechanics: https://docs.sympy.org/latest/modules/physics/mechanics/index.html
 
-I've stewarded and developed the software as well as taught and researched with
-it over the last decade with the help of a long list of contributors. This text
-is a presentation of the methods and lessons learned from over the last decade
-years of doing multibody dynamics with open source Python software tools.
+I have stewarded and developed the software as well as taught and researched
+with it over the last decade with the help of a long list of contributors. This
+text is a presentation of the methods and lessons learned from over the last
+decade years of doing multibody dynamics with open source Python software
+tools.
 
 Acknowledgements
 ================
@@ -142,15 +148,15 @@ the text, in approximate order of first contribution:
 - Abhinav Kamath, 2020
 
 This is of course built on top of SymPy, whose `1000+ contributors`_ have also
-helped SymPy Mechanics be what it is. Furthermore, the software lies on the top
-of a large ecosystem of open source software written by thousands and thousands
-of contributors who we owe so much to.
+greatly helped SymPy Mechanics be what it is. Furthermore, the software lies on
+the top of a large ecosystem of open source software written by thousands and
+thousands of contributors who we owe so much to.
 
 .. _1000+ contributors: https://github.com/sympy/sympy/blob/master/AUTHORS
 
-Peter Stahlecker and Jan Heinen provided page-by-page review of the text while
-drafting the first version. Their feedback has helped improve the text in many
-ways.
+For this text, Peter Stahlecker and Jan Heinen provided page-by-page review of
+the text while drafting the first version. Their feedback has helped improve
+the text in many ways.
 
 .. [*] The project is shared at https://github.com/moorepants/MAE-223
 .. [*] Mont was working on a skateboard dynamics model in the late 70s and
