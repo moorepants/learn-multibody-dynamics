@@ -3,18 +3,19 @@ Install the Software
 ====================
 
 If you would like to run the software on your own computer, follow these
-instructions.
+instructions which recommend the use of a Conda_ based installation process.
+The process below describes setting up a new base environment with the needed
+software installed.
+
+.. _Conda: https://en.wikipedia.org/wiki/Conda_(package_manager)
 
 1) Miniconda
 ============
 
-If you already have Anaconda or Miniconda on your computer from another class,
-you can skip this step or delete your prior Anaconda/Miniconda folder on your
-computer to uninstall it. Anaconda or Miniconda are functionally the same, but
-Anaconda comes with much more pre-installed software. Miniconda is a stripped
-down version so that you can install only what you desire.
-
-Download miniconda for your operating system:
+Miniconda is a stripped down version of Anaconda so that you can install only
+what you desire. If you already have Miniconda on your computer, you can skip
+this step or delete your prior Miniconda folder on your computer to uninstall
+it. Download miniconda for your operating system:
 
 https://docs.conda.io/en/latest/miniconda.html
 
@@ -32,12 +33,11 @@ configuration.
 
 .. _Conda Forge: https://conda-forge.org/
 
-Open either the terminal (Linux/Mac) or the Anaconda command prompt (Windows)
-and type the following commands followed by the <enter> key to execute the
-commands.
+Open either the terminal (Linux/Mac) or the (Anaconda) command prompt (Windows)
+and type the following series of commands followed each by the <enter> key to
+execute the commands.
 
-This first command adds Conda Forge as a download source for software
-packages:
+This first command adds Conda Forge as a download source for software packages:
 
 .. code-block:: bash
 
@@ -56,8 +56,9 @@ installed with:
 
    conda update --all
 
-This command could take some minutes, especially if you are using Anaconda
-because it has many more package compatibilities to work out.
+This command could take some minutes, especially if you are using an existing
+Miniconda (or Anaconda) installation because it has many more package
+compatibilities to work out.
 
 3) Install Packages
 ===================
