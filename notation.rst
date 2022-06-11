@@ -127,3 +127,7 @@ then an example of a variable name that we use in the code.
    generalized speed :math:`u_r`.
 :math:`\bar{F}^*_r`, ``Frs``
    Column vector of all generalized active forces (holonomic or nonholonomic).
+:math:`\mathbf{J}_{\bar{v},\bar{u}}`
+   The Jacobian of the vector function :math:`\bar{v}` with respect to the
+   entries in vector :math:`\bar{u}` where the :math:`(i,j)` entries of the
+   Jacobian are :math:`\mathbf{J}_{ij} = \frac{\partial v_i}{\partial u_j}`.

@@ -39,11 +39,12 @@ accelerations using the :math:`\mathbf{T}` matrix. This :math:`\mathbf{T}`
 matrix is populated by the measure numbers of the partial velocities expressed
 in the inertial reference frame.
 
-Given :math:`\nu` rigid bodies in a multibody system, the velocities of each
-mass center and the angular velocities of each body in an inertial reference
-frame :math:`N` can be written in column vector :math:`\bar{v}` form by
-extracting the  measure numbers in the inertial reference frame :math:`N` of
-each velocity term.
+Given :math:`\nu` rigid bodies in a multibody system described by :math:`n`
+generalized coordinates and generalized speeds, the velocities of each mass
+center and the angular velocities of each body in an inertial reference frame
+:math:`N` can be written in column vector :math:`\bar{v}` form by extracting
+the measure numbers in the inertial reference frame :math:`N` of each velocity
+term.
 
 .. math::
 
@@ -66,14 +67,14 @@ each velocity term.
    \in
    \mathbb{R}^{6\nu}
 
-The measure numbers of the partial velocities with respect to each speed in
-:math:`\bar{u}` can be efficiently found by taking the Jacobian of
-:math:`\bar{v}` with respect to the generalized speeds, which we will name
-matrix :math:`\mathbf{T}`.
+The measure numbers of the partial velocities with respect to each of the
+:math:`n` generalized speeds in :math:`\bar{u}` can be efficiently found by
+taking the Jacobian of :math:`\bar{v}` with respect to the generalized speeds,
+which we will name matrix :math:`\mathbf{T}`.
 
 .. math::
 
-   \mathbf{T} = \mathbf{J}_{\bar{v},\bar{q}} \in \mathbb{R}^{6\nu \times n}
+   \mathbf{T} = \mathbf{J}_{\bar{v},\bar{u}} \in \mathbb{R}^{6\nu \times n}
    \quad
    \textrm{where}
    \quad
@@ -266,7 +267,8 @@ The derivation of the kinematics is done in the same way as before.
    Ao.vel(N), A.ang_vel_in(N), Bo.vel(N), B.ang_vel_in(N), Q.vel(N)
 
 Only the contributing forces need be declared (noncontributing would cancel out
-in the TMT transformation if included).
+in the TMT transformation if included). Do not forget Newton's Third Law and be
+sure to include the equal and opposite reactions.
 
 .. jupyter-execute::
 
