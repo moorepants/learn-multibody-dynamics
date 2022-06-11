@@ -128,6 +128,14 @@ text is a presentation of the methods and lessons learned from over the last
 decade years of doing multibody dynamics with open source Python software
 tools.
 
+.. [*] The project is shared at https://github.com/moorepants/MAE-223
+.. [*] Mont was working on a skateboard dynamics model in the late 70s and
+   presented his model to an audience that included Thomas Kane. As the story
+   goes, Prof. Kane approached Mont after the lecture to privately tell him his
+   dynamics model was incorrect. Mont then took it upon himself to learn Kane's
+   approach to dynamics so that his future models would be less likely to have
+   such errors.
+
 Acknowledgements
 ================
 
@@ -158,10 +166,27 @@ For this text, Peter Stahlecker and Jan Heinen provided page-by-page review of
 the text while drafting the first version. Their feedback has helped improve
 the text in many ways.
 
-.. [*] The project is shared at https://github.com/moorepants/MAE-223
-.. [*] Mont was working on a skateboard dynamics model in the late 70s and
-   presented his model to an audience that included Thomas Kane. As the story
-   goes, Prof. Kane approached Mont after the lecture to privately tell him his
-   dynamics model was incorrect. Mont then took it upon himself to learn Kane's
-   approach to dynamics so that his future models would be less likely to have
-   such errors.
+Tools Behind the Book
+=====================
+
+I write the contents in plain text using the reStructuredText_ markup language
+for processing by Sphinx_. The mathematics are rendered with MathJax_ in the
+HTML version. I use the `Jupyter Sphinx`_ extension which executes the code in
+each chapter as if it were a Jupyter notebook and embeds the Jupyter generated
+outputs into the resulting HTML page. The extension also converts each chapter
+into a Python script and Jupyter notebook for download. I use the `Material
+Sphinx Theme`_ and `sphinx-togglebutton`_ for the dropdown information boxes. I
+host the source for the book on Github_, where I use Github Actions to build
+the website and push it to a Github Pages host using `ghp-import`_. I use
+Github's issue tracker and pull request tools to manage tasks and changes. The
+figures are drawn with a Wacom One tablet and the `Xournal++`_ application.
+
+.. _reStructuredText: https://en.wikipedia.org/wiki/ReStructuredText
+.. _Sphinx: https://www.sphinx-doc.org
+.. _MathJax: https://www.mathjax.org
+.. _Jupyter Sphinx: https://github.com/jupyter/jupyter-sphinx
+.. _Material Sphinx Theme: https://github.com/bashtage/sphinx-material
+.. _sphinx-togglebutton: https://github.com/executablebooks/sphinx-togglebutton
+.. _Github: https://github.com
+.. _ghp-import: https://github.com/c-w/ghp-import
+.. _Xournal++: https://xournalpp.github.io
