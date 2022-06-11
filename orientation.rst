@@ -29,9 +29,11 @@ orientation.
 
 .. _Euclidean space: https://en.wikipedia.org/wiki/Euclidean_space
 
-It is important to note that a reference frame is not equivalent to a
-coordinate system. Any number of coordinate systems can be attached to a
-reference frame. We will characterize a reference frame by a right-handed set
+Note that a reference frame is not equivalent to a coordinate system.
+Any number of coordinate systems (e.g., Cartesian or spherical) can be used to
+describe the motion of points or objects in a reference frame.
+
+We will characterize a reference frame by a right-handed set
 of mutually perpendicular unit vectors.
 
 Unit Vectors
