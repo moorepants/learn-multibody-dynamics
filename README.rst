@@ -2,15 +2,14 @@
 README
 ======
 
-The source for the website "Learning Multibody Dynamics". Viewable at:
-
-https://moorepants.github.io/learn-multibody-dynamics/
+This repository containts the source for the website `Learn Multibody Dynamics
+<https://moorepants.github.io/learn-multibody-dynamics/>`_.
 
 License
 =======
 
 The contents of this repository are licensed under the CC-BY 4.0 license. See
-``license.rst``.
+``license.rst`` for more information.
 
 Building the Website
 ====================
@@ -20,20 +19,18 @@ Clone the repository::
    git clone https://github.com/moorepants/learn-multibody-dynamics.git
    cd learn-multibody-dynamics
 
-Install miniconda_ or Anaconda_.
+Install miniconda_ or Anaconda_ and create a conda environment for the book::
+
+   conda env create -f multibody-book-env.yml
 
 .. _miniconda: https://docs.conda.io/en/latest/miniconda.html
 .. _Anaconda: https://www.anaconda.com/products/individual
 
-Create a conda environment for the book::
-
-   conda env create -f multibody-book-env.yml
-
-Activate the environment::
+Activate the conda environment::
 
    conda activate multibody-book
 
-To build once run::
+To build the website run::
 
    make html
 
@@ -85,11 +82,10 @@ Editing Guide
 restructuredtext
 ----------------
 
-The text is written in reStructuredText and processed with Sphinx. The Sphinx
-reStructuredText documentation page is a good starting point to learn the
-syntax:
-
-https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
+The text is written in reStructuredText and processed with Sphinx. The `Sphinx
+reStructuredText documentation page
+<https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_ is a
+good starting point to learn the syntax.
 
 reStructuredText doesn't enforce a specific heading order, but this should be
 followed for this text:
@@ -109,16 +105,22 @@ followed for this text:
    Subsubsection
    ^^^^^^^^^^^^^
 
-Reference styles:
+Autoreferencing is enabled so the above sections can be referenced with:
+
+.. code:: rst
+
+   :ref:`Chapter`
+   :ref:`Section`
+   :ref:`Subsection`
+   :ref:`Subsubsection`
+
+For equations and figures, they need to be manually labeled for numbered
+referencing. Use these patterns:
 
 .. code:: rst
 
    :label:`eq-my-equation-name`
    :math:numref:`eq-my-equation-name`
-
-   :ref:`Chapter Name`
-
-   :ref:`Section Name`
 
    .. _fig-my-figure-name:
    :numref:`fig-my-figure-name`
@@ -139,22 +141,34 @@ Xournal++
 I draw the figures, one per page, in Xournal++. The I export as -> svg ->
 choose None for background and "current page" to get a single exported svg.
 
-Resize Xournal++ svg exports to just the extents
-
-seems to require gui to open (`--without-gui` doesn't work with verbs)
+The SVG figures should be cropped to the bounding box of the drawn elements.
+One can do so using Inkscape with these button presses: File -> Document
+Properties -> Resize Page to Content. With Inkscape > 1.0 this command will
+crop the figure:
 
 .. code:: bash
 
-   inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit orientation-camera-gimbal.svg
+   inkscape --export-type=svg --export-area-drawing ./my-figure.svg
 
 Live rebuilding with sphinx-autobuild
 -------------------------------------
 
-https://github.com/executablebooks/sphinx-autobuild
+`Sphinx autobuild`_ is a pretty good way to get almost instaneous rendered HTML
+versions of the reStructuredText file. You can open a window with your text
+editor and a window with your broswer side-by-side for almost instant feedback
+on the formatting and Jupyter code execution.
 
-::
+.. _Sphinx autobuild`: https://github.com/executablebooks/sphinx-autobuild
+
+.. code:: bash
 
    sphinx-autobuild -b html . _build/html/
+
+This is also encoded in the Makefile:
+
+.. code:: bash
+
+   make autobuild
 
 Execute code cells in IPython while writing
 -------------------------------------------
