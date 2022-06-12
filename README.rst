@@ -158,7 +158,7 @@ versions of the reStructuredText file. You can open a window with your text
 editor and a window with your broswer side-by-side for almost instant feedback
 on the formatting and Jupyter code execution.
 
-.. _Sphinx autobuild`: https://github.com/executablebooks/sphinx-autobuild
+.. _Sphinx autobuild: https://github.com/executablebooks/sphinx-autobuild
 
 .. code:: bash
 
