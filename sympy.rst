@@ -647,7 +647,7 @@ can be formed in one step with the ``.jacobian()`` method:
    A = exprs.jacobian([a1, a2])
    A
 
-The :math:`\bar{b}` vector can be formed by setting :math:`a=b=0`, leaving the
+The :math:`\bar{b}` vector can be formed by setting :math:`a_1=a_2=0`, leaving the
 terms that are not linear in :math:`a_1` and :math:`a_2`.
 
 .. jupyter-execute::
