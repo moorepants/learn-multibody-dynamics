@@ -33,11 +33,12 @@ author = 'Jason K. Moore'
 extensions = [
     'sphinx_togglebutton',  # this has to be first so that the material css doesn't clobber its css
     'jupyter_sphinx',
+    'sphinx.ext.autosectionlabel',
     'sphinx.ext.graphviz',
+    'sphinx.ext.imgconverter',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.todo',
-    'sphinx.ext.autosectionlabel',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
