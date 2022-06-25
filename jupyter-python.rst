@@ -118,7 +118,7 @@ Python.
 Basic Data Types
 ----------------
 
-Python has core builtin data types. the ``type()`` function can show you
+Python has core builtin data types. The ``type()`` function shows you
 the type of any Python object. For example, here are the types of some integers,
 floating point numbers, and strings:
 
