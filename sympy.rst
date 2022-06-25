@@ -9,13 +9,13 @@ SymPy
    :jupyter-download:notebook:`sympy`.
 
 SymPy_ is an open source, collaboratively developed computer algebra system
-(CAS) written in Python. We will use it extensively for manipulating symbolic
+(CAS) written in Python. It will be used extensively for manipulating symbolic
 expressions and equations.  All of the mathematics needed to formulate the
 equations of motion of multibody systems can be done with pencil and paper, but
-the book keeping becomes extremely tedious and error prone for systems with
-even a small number of bodies. SymPy allows us to let a computer handle the
+the bookkeeping becomes extremely tedious and error prone for systems with
+even a small number of bodies. SymPy lets a computer handle the
 tedious aspects, e.g. differentiation, solving linear systems of equations, and
-reduce the errors one would encounter with pencil and paper. This chapter
+reduces the errors one would encounter with pencil and paper. This chapter
 introduces SymPy and the primary core SymPy features needed we will be using.
 
 .. _SymPy: https://www.sympy.org
@@ -23,13 +23,13 @@ introduces SymPy and the primary core SymPy features needed we will be using.
 Import and Setup
 ================
 
-We will consistently import SymPy as follows:
+I will consistently import SymPy as follows:
 
 .. jupyter-execute::
 
    import sympy as sm
 
-Since SymPy lets you work with mathematical symbols it's nice to view SymPy
+Since SymPy works with mathematical symbols it's nice to view SymPy
 objects in a format that is similar to the math in a textbook. Executing
 :external:py:func:`~sympy.interactive.printing.init_printing` at the beginning
 of your Jupyter Notebook will ensure that SymPy objects render as typeset
@@ -58,7 +58,7 @@ This symbol object is of the :external:py:class:`~sympy.core.symbol.Symbol` type
    type(a)
 
 Multiple symbols can be created with one call to ``symbols()`` and SymPy
-recognizes common Greek symbols by spelled out name.
+recognizes common Greek symbols by their spelled out name.
 
 .. jupyter-execute::
 
@@ -68,7 +68,7 @@ recognizes common Greek symbols by spelled out name.
 Note that the argument provided to ``symbols()`` does not need to match the
 Python variable name it is assigned to. Using more verbose Python variable
 names may make code easier to read and understand, especially if there are many
-mathematical variables that you forget the meaning of. Note that the subscripts
+mathematical variables that you need to keep track of. Note that the subscripts
 are recognized too.
 
 .. jupyter-execute::
@@ -79,10 +79,10 @@ are recognized too.
 Undefined Functions
 ===================
 
-We will also work with undefined mathematical functions in addition to symbols.
+You will also work with undefined mathematical functions in addition to symbols.
 These will play an important role in setting up differential equations, where
-we typically don't know the function, but only its derivative(s). You can
-create arbitrary functions of variables. In this case, we make a function of
+you typically don't know the function, but only its derivative(s). You can
+create arbitrary functions of variables. In this case, you make a function of
 :math:`t`. First create the function name:
 
 .. jupyter-execute::
@@ -96,7 +96,7 @@ This is of a type :external:py:class:`~sympy.core.function.UndefinedFunction`.
 
    type(f)
 
-Now we can create functions of one or more variables like so:
+Now you can create functions of one or more variables like so:
 
 .. jupyter-execute::
 
@@ -120,7 +120,7 @@ The same ``UndefinedFunction`` can be used to create multivariate functions:
 Symbolic Expressions
 ====================
 
-Now that we have mathematical variables and functions available, they can be
+Now that you have mathematical variables and functions available, they can be
 used to construct mathematical expressions. The most basic way to construct
 expressions is with the standard Python operators ``+``, ``-``, ``*``, ``/``,
 and ``**``. For example:
@@ -249,7 +249,7 @@ Lastly, an expression of ``t``:
 Printing
 ========
 
-We introduced the ``srepr()`` form of SymPy expressions above and mentioned
+I introduced the ``srepr()`` form of SymPy expressions above and mentioned
 that expressions can have different representations. For the following
 ``srepr()`` form:
 
@@ -264,7 +264,7 @@ There is also a standard representation accessed with the ``repr()`` function:
    repr(expr3)
 
 This form matches what you typically would type to create the function and it
-returns a string. ``print()`` will display that string:
+returns a string. The ``print()`` function will display that string:
 
 .. jupyter-execute::
 
@@ -300,8 +300,8 @@ backslashes represent the escape character in Python strings.
 Differentiating
 ===============
 
-One of the most tedious tasks in formulating equations of motion is the
-differentiation of complex trigonometric expressions. SymPy can calculate
+One of the most tedious tasks in formulating equations of motion is
+differentiating complex trigonometric expressions. SymPy can calculate
 derivatives effortlessly. The :external:py:func:`~sympy.core.function.diff`
 SymPy function takes an undefined function or an expression and differentiates
 it with respect to the symbol provided as the second argument:
@@ -347,8 +347,8 @@ function`_.
 
 .. warning::
 
-   SymPy assumes all symbols are complex valued unless told otherwise. You can
-   attach assumptions to symbols to force them to be real, positive, negatives,
+   SymPy assumes all symbols are complex-valued unless told otherwise. You can
+   attach assumptions to symbols to force them to be real, positive, negative,
    etc. For example, compare these three outputs:
 
    .. jupyter-execute::
@@ -431,10 +431,10 @@ To convert this to Python floating point number, use ``float()``:
    type(float(expr3.evalf(n=300, subs=repl)))
 
 This value is a machine precision floating point value and can be used with
-standard Python functions that operating on floating point numbers.
+standard Python functions that operate on floating point numbers.
 
-To obtain machine precisions floating point numbers directly, it is better to
-use the :external:py:func:`~sympy.utilities.lambdify.lambdify` function to convert the expression into a Python
+To obtain machine precision floating point numbers directly, it is better to
+use the :external:py:func:`~sympy.utilities.lambdify.lambdify` function to convert the expression to a Python
 function:
 
 .. jupyter-execute::
@@ -462,9 +462,8 @@ precision is not required.
 
 .. note::
 
-   In these materials, you will almost always want to convert SymPy expressions
-   into machine precision floating point numbers, so use ``lambdify()`` almost
-   exclusively.
+   In this course, you will almost always want to convert SymPy expressions
+   to machine precision floating point numbers, so use ``lambdify()``.
 
 Matrices
 ========
@@ -531,6 +530,9 @@ function:
 .. jupyter-execute::
 
    sm.hadamard_product(mat1, mat2)
+
+Note that NumPy uses ``*`` for element-by-element multiplication and ``@`` for matrix multiplication,
+so to avoid possible confusion, use ``@`` for SymPy matrix multiplication.
 
 Differentiation operates on each element of the matrix:
 
@@ -676,8 +678,8 @@ simpler version:
 
    sm.simplify(A.LUsolve(b))
 
-But you'll have the best luck at simplifying if you use specific functions that
-target what type of expression you may have. The
+But you'll have the best luck at simplifying if you use simplification functions that
+target the type of expression you have. The
 :external:py:func:`~sympy.simplify.trigsimp.trigsimp` function only attempts
 trigonometric simplifications, for example:
 
@@ -691,11 +693,11 @@ trigonometric simplifications, for example:
    Larger expressions become increasingly computationally intensive to simplify
    and there is generally no need to do so in these materials.
 
-As mentioned earlier, SymPy represents expressions as graphs (trees). Symbolic
+As mentioned earlier, SymPy represents expressions as trees. Symbolic
 expressions can also be represented as `directed acyclic graphs`_ that contain
 only one node for each unique expression (unlike SymPy's trees which may have
-repeated expressions in nodes). These unique expressions, or "common
-sub-expressions", can be found with the
+the same expression in more than one node). These unique expressions, or "common
+subexpressions", can be found with the
 :external:py:func:`~sympy.simplify.cse_main.cse` function. This function will
 provide a simpler form of the equations that minimizes the number of operations
 to compute the answer.

@@ -3,7 +3,7 @@ Install the Software
 ====================
 
 If you would like to run the software on your own computer, follow these
-instructions which recommend the use of a Conda_ based installation process.
+instructions which recommend the use of a Conda_-based installation process.
 The process below describes setting up a new base environment with the needed
 software installed.
 

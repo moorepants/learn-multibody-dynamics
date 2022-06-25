@@ -2,7 +2,7 @@
 README
 ======
 
-This repository containts the source for the website `Learn Multibody Dynamics
+This repository contains the source for the website `Learn Multibody Dynamics
 <https://moorepants.github.io/learn-multibody-dynamics/>`_.
 
 License
