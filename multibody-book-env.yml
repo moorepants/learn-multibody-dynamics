@@ -6,7 +6,7 @@ dependencies:
   - graphviz
   - jupyter-sphinx
   - matplotlib
-  - numpy
+  - numpy <1.23  # scikits.odes 2.6.3 breaks with numpy 1.23
   - python ==3.9.*
   - pythreejs
   - scikits.odes
