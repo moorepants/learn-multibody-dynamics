@@ -58,7 +58,7 @@ This symbol object is of the :external:py:class:`~sympy.core.symbol.Symbol` type
    type(a)
 
 Multiple symbols can be created with one call to ``symbols()`` and SymPy
-recognizes common Greek symbols by their spelled out name.
+recognizes common Greek symbols by their spelled-out name.
 
 .. jupyter-execute::
 
