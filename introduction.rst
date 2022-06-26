@@ -66,12 +66,12 @@ Choice of programming language
 
 With the goal of teaching through computation, it means I need to also choose a
 programming language. There are many programming languages well suited to
-multibody dynamics computation, but we select Python_ for several reasons: 1)
+multibody dynamics computation, but I select Python_ for several reasons: 1)
 Python is open source and freely available for use, 2) Python is currently one,
 if not the, most popular programming language in the world, 3) the scientific
 libraries available in Python are voluminous and widely used in academia and
 industry, and 4) Python has SymPy_ which provides a foundation for computer
-aided algebra and calculus.
+aided-algebra and calculus.
 
 .. _Python: http://www.python.org
 .. _SymPy: http://www.sympy.org
@@ -84,7 +84,7 @@ presentation I and my fellow graduate students received in the graduate
 Multibody Dynamics course taught by Mont Hubbard and the late Fidelis O. Eke at
 the University of California, Davis in the early 2000's. Profs. Hubbard an Eke
 taught the course from the late 80s or early 90s until they retired in 2013
-(Prof. Hubbard) and 2016 (Prof. Eke). The 10 week course was based on Thomas R.
+(Prof. Hubbard) and 2016 (Prof. Eke). The 10-week course was based on Thomas R.
 Kane's and David A. Levinson's 1985 book "Dynamics, Theory and Application" and
 followed the book and companion computational materials closely. Prof. Eke was
 a PhD student of Thomas R. Kane at Stanford and Prof. Hubbard adopted Prof.
@@ -97,7 +97,7 @@ Eke's notes and materials which now includes some elements of TU Delft's past
 multibody dynamics course.
 
 When I took the UC Davis course in 2006 as a graduate student, I naively
-decided to derive and analyze the non-linear and linear Carvallo-Whipple
+decided to derive and analyze the nonlinear and linear Carvallo-Whipple
 bicycle model [Meijaard2007]_ as my course project [*]_. Fortunately, another
 student visiting from Aachen University, Thomas Engelhardt, also choose the
 same model and his success finally helped me squash the bugs in my formulation.
