@@ -163,8 +163,9 @@ thousands of contributors who we owe so much to.
 .. _1000+ contributors: https://github.com/sympy/sympy/blob/master/AUTHORS
 
 For this text, Peter Stahlecker and Jan Heinen provided page-by-page review of
-the text while drafting the first version. Their feedback has helped improve
-the text in many ways.
+the text while drafting the first version. Arthur Ryman also contributed
+numerous edits to the first version. Their feedback has helped improve the text
+in many ways.
 
 Tools Behind the Book
 =====================
