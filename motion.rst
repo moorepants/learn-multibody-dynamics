@@ -2,6 +2,12 @@
 Nonholonomic Constraints
 ========================
 
+.. note::
+
+   You can download this example as a Python script:
+   :jupyter-download:script:`motion` or Jupyter Notebook:
+   :jupyter-download:notebook:`motion`.
+
 .. jupyter-execute::
 
    import sympy as sm
