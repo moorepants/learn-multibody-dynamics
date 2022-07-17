@@ -210,3 +210,20 @@ create a vim slime config file for rst
 ::
 
    <Ctrl>+cc  # execute line(s) in ipython pane
+
+Content Resources
+=================
+
+Here are links to various resources of open dynamics with SymP materials:
+
+- my mae223 notebooks: https://moorepants.github.io/mae223/schedule.html
+- pydy tutorial: https://github.com/pydy/pydy-tutorial-human-standing
+- pydy docs examples: https://pydy.readthedocs.io/en/latest/index.html#examples
+- pydy examples: https://github.com/pydy/pydy/tree/master/examples
+- sympy mechanics docs: https://docs.sympy.org/dev/modules/physics/mechanics/index.html
+- resonance notebooks: https://moorepants.github.io/resonance/
+- yeadon example: https://nbviewer.jupyter.org/github/chrisdembia/yeadon/blob/v1.2.1/examples/bicyclerider/bicycle_example.ipynb
+- homework notebooks from Arend's class
+- Oliver's solutions to the TUD advanced dynamics course examples: https://github.com/pydy/pydy/pull/137
+- Maybe some problems from EME171: https://moorepants.github.io/eme171/resources.html
+- Problems from EME 134: https://moorepants.github.io/eme134/labs.html
