@@ -20,19 +20,20 @@ Partial Derivatives
 If a vector :math:`\bar{v}` is a function of :math:`n` scalar variables
 :math:`q_1,q_2,\ldots,q_n` in reference frame :math:`A` then the first partial
 derivatives of :math:`\bar{v}` in :math:`A` with respect to :math:`q_r` where
-:math:`r=1\ldots n` can be formed with the following definition:
+:math:`r=1\ldots n` can be formed by applying the product rule of
+differentation and taking into account that the mutually perpendicular unit
+vectors fixed in :math:`A` do not change when observed from :math:`A`. The
+partial derivatives are then:
 
 .. math::
    :label: partial-deriv-def
 
-   \frac{{}^A\partial \bar{v}}{\partial q_r} :=
-   \sum_{i=1}^3 \frac{\partial v_i}{\partial q_r} \hat{a}_i
+   \frac{{}^A\partial \bar{v}}{\partial q_r} = \sum_{i=1}^3 \frac{\partial
+   v_i}{\partial q_r} \hat{a}_i \textrm{ for } r=1\ldots n
 
 where :math:`v_i` are the measure numbers of :math:`\bar{v}` expressed in
-:math:`A` with mutually perpendicular unit vectors
-:math:`\hat{a}_1,\hat{a}_2,\hat{a}_3`. This definition relies on the fact that
-the unit vectors are fixed in :math:`A` and thus do not change when observed
-from :math:`A`.
+:math:`A` associated with the mutually perpendicular unit vectors
+:math:`\hat{a}_1,\hat{a}_2,\hat{a}_3`.
 
 Given :math:`\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z` the above
 definition expands to:
@@ -59,7 +60,9 @@ partial derivative reduces to a single variate derivative:
    A derivative written as :math:`\frac{\partial \bar{v}}{\partial q_r}` is
    meaningless because no reference frame is indicated. The derivative is
    dependent on which reference frame the change is observed from, so without a
-   reference frame, the derivative cannot be calculated.
+   reference frame, the derivative cannot be calculated. This is not the case
+   for partial derivatives of scalar expressions, as no reference frame is
+   involved.
 
 The above definition implies that a vector must be expressed in the reference
 frame one is observing the change from before calculating the partial
