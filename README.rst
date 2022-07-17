@@ -125,6 +125,12 @@ referencing. Use these patterns:
    .. _fig-my-figure-name:
    :numref:`fig-my-figure-name`
 
+When citing Kane & Levinson 1985 include the page number:
+
+.. code:: rst
+
+   ([Kane1985_], pg. 23)
+
 jupyer-sphinx
 -------------
 
