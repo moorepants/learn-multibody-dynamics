@@ -244,7 +244,7 @@ Generalized Coordinates
 If a set of :math:`v` points are constrained with :math:`M` holonomic
 constraints then only :math:`n` of the Cartesian coordinates are independent of
 each other. The number of independent coordinates is then defined as
-([Kane1985]_ pg 37):
+([Kane1985]_ pg. 37):
 
 .. math::
    :label: num-gen-coord

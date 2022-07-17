@@ -51,7 +51,7 @@ Moment
 
 If a vector is a bound vector, then we can define its *moment* about a point.
 The moment :math:`\bar{M}` of bound vector :math:`\bar{v}` about point
-:math:`P` is a vector itself and is defined as ([Kane1985]_, pg 90):
+:math:`P` is a vector itself and is defined as ([Kane1985]_, pg. 90):
 
 .. math::
    :label: eq-moment-definition
@@ -174,7 +174,7 @@ and moments about any point are equal to the torque.
 Given a set of bound vectors :math:`S` and a set of bound vectors that consist
 of a torque of a couple :math:`\bar{T}` and vector :math:`\bar{v}` bound to an
 arbitrary point :math:`P` it is a necessary and sufficient condition that the
-second set is a replacement of the first if ([Kane1985]_, pg 95):
+second set is a replacement of the first if ([Kane1985]_, pg. 95):
 
 .. math::
    :label: eq-couple-torque-repl

@@ -185,7 +185,7 @@ The inertia vector fully describes the distribution of the particles with
 respect to :math:`O` about :math:`\hat{n}_a`.
 
 A component of :math:`\bar{I}_a` in the :math:`\hat{n}_b` direction is called
-an *inertia scalar* and is defined as ([Kane1985]_, pg 62):
+an *inertia scalar* and is defined as ([Kane1985]_, pg. 62):
 
 .. math::
    :label: inertia-scalar
@@ -462,7 +462,7 @@ Inertia Dyadic
 Previously we defined the inertia vector. Using the `vector triple product`_
 identity: :math:`\bar{a}\times(\bar{b}\times\bar{c}) =
 \bar{b}(\bar{a}\cdot\bar{c}) - \bar{c}(\bar{a}\cdot\bar{b})`, the inertia
-vector can be written as ([Kane1985]_, pg 68):
+vector can be written as ([Kane1985]_, pg. 68):
 
 .. _vector triple product: https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product
 
