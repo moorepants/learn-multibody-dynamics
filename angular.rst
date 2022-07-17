@@ -11,13 +11,13 @@ Angular Kinematics
 Angular Velocity
 ================
 
-In Ch. :ref:`Orientation of Reference Frames` we learned that reference frames can be oriented
-relative to each other. If the relative orientation of two reference frames
-change with respect to time, then we can calculate the angular velocity
-:math:`{}^A\bar{\omega}^B` of reference frame :math:`B` when observed from
-reference frame :math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are right
-handed mutually perpendicular unit vectors fixed in :math:`B` then the angular
-velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
+In Ch. :ref:`Orientation of Reference Frames` we learned that reference frames
+can be oriented relative to each other. If the relative orientation of two
+reference frames change with respect to time, then we can calculate the angular
+velocity :math:`{}^A\bar{\omega}^B` of reference frame :math:`B` when observed
+from reference frame :math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are
+right handed mutually perpendicular unit vectors fixed in :math:`B` then the
+angular velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
 
 .. math::
    :label: angular-velocity-definition
