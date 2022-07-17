@@ -47,7 +47,8 @@ A four bar linkage is an example of a *closed kinematic loop*. The case of
 .. math::
    :label: vector-loop
 
-   \bar{r}^{P_4/P_1} = \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3}
+   \bar{r}^{P_4/P_1} = & l_n \hat{n}_x \\
+   \bar{r}^{P_4/P_1} = & \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} = l_a\hat{a}_x + l_b\hat{b}_x + l_c\hat{c}_x
 
 For the loop to close, the two vector paths must equate. We can resolve this by
 disconnecting the loop at some location, :math:`P_4` in our case, and forming
@@ -57,7 +58,7 @@ the open loop vector equations to points that should coincide.
 
    import sympy as sm
    import sympy.physics.mechanics as me
-   me.init_vprinting()
+   me.init_vprinting(use_latex='mathjax')
 
 Setup the variables, reference frames, and points:
 
@@ -218,6 +219,10 @@ Finally in e), :math:`P_4` is constrained with the single scalar:
    :label: p4-constraint
 
    \bar{r}^{P_4/P_1} \cdot \hat{n}_y = 0
+
+Notice that we did not need :math:`\bar{r}^{P_4/P_1} \cdot \hat{n}_x = 0`,
+because :numref:math:`length-constraint` ensures the :math:`x` coordinate of
+:math:`P_4` is in the correct location.
 
 These 11 constraints leave a single free coordinate to describe the orientation
 of :math:`A`, :math:`B`, and :math:`C` in :math:`N`. When we originally
