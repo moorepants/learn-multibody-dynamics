@@ -78,7 +78,8 @@ intersphinx_mapping = {
 
 # Options for Math
 # These options influence Math notations.
-# Set this option to True if you want all displayed math to be numbered. The default is False.
+# Set this option to True if you want all displayed math to be numbered. The
+# default is False.
 
 math_number_all = True
 
