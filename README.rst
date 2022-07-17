@@ -125,11 +125,19 @@ referencing. Use these patterns:
    .. _fig-my-figure-name:
    :numref:`fig-my-figure-name`
 
-When citing Kane & Levinson 1985 include the page number:
+When citing Kane & Levinson 1985 or other books include the page number:
 
 .. code:: rst
 
    ([Kane1985_], pg. 23)
+
+Cross-referencing API documentation in various libraries:
+
+.. code:: rst
+
+   :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_acc_in`
+   :external:py:class:`~sympy.physics.vector.frame.ReferenceFrame`
+   :external:py:func:`~sympy.physics.vector.functions.cross`
 
 jupyer-sphinx
 -------------
