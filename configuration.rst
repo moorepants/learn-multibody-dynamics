@@ -221,7 +221,7 @@ Finally in e), :math:`P_4` is constrained with the single scalar:
    \bar{r}^{P_4/P_1} \cdot \hat{n}_y = 0
 
 Notice that we did not need :math:`\bar{r}^{P_4/P_1} \cdot \hat{n}_x = 0`,
-because :numref:math:`length-constraint` ensures the :math:`x` coordinate of
+because :math:numref:`length-constraint` ensures the :math:`x` coordinate of
 :math:`P_4` is in the correct location.
 
 These 11 constraints leave a single free coordinate to describe the orientation
