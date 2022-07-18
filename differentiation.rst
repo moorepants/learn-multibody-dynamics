@@ -285,8 +285,8 @@ And these scalar functions can be differentiated:
    q.diff(t)
 
 SymPy Mechanics provides the convince function
-:external:py:func:`~sympy.physics.vector.functions.dynamicsymbols` to create
-scalar functions of time just like ``symbols()``:
+:external:py:func:`~sympy.physics.vector.dynamicsymbols` to create scalar
+functions of time just like ``symbols()``:
 
 .. jupyter-execute::
 

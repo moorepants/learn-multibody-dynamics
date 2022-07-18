@@ -725,7 +725,7 @@ various integration methods to ensure you are getting the results you desire.
 For now, be aware that truncation error and `floating point arithmetic
 error`_ can give you inaccurate results.
 
-.. _floating point arthmetic error: https://en.wikipedia.org/wiki/Floating-point_arithmetic
+.. _floating point arithmetic error: https://en.wikipedia.org/wiki/Floating-point_arithmetic
 
 Now set ``xs`` equal to the ``solve_ivp()`` result for use in the next section:
 
@@ -768,8 +768,8 @@ for visualization purposes:
 Now, we can project the four points :math:`B_o,Q,B_l,B_r` onto the unit vectors
 of :math:`M` using ``lambdify()`` to get the Cartesian coordinates of each
 point relative to point :math:`O`. I use
-:external:py:meth:`~sympy.matrices.Matrix.row_join` to stack the matrices together
-to build a single matrix with all points' coordinates.
+:external:py:meth:`~sympy.matrices.common.MatrixCommon.row_join` to stack the
+matrices together to build a single matrix with all points' coordinates.
 
 .. jupyter-execute::
 

@@ -90,7 +90,7 @@ where :math:`L_i` is a point on the line of action of the associated
 :math:`\bar{v}_i`.
 
 The moment of the set of bound vectors :math:`S` about one point :math:`P` is
-related to the moment of the set about another point :math:`Q` by ([Kane1985_],
+related to the moment of the set about another point :math:`Q` by ([Kane1985]_,
 pg. 91):
 
 .. math::

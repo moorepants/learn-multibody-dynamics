@@ -83,6 +83,9 @@ intersphinx_mapping = {
 
 math_number_all = True
 
+# Don't parse these files with Sphinx:
+exclude_patterns = ['README.rst']
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for

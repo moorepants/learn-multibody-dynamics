@@ -263,8 +263,8 @@ These two velocities will be used to generate the partial velocities for two
 additional generalized active forces and generalized inertia forces, one for
 each of the auxiliary generalized speeds :math:`u_3` and :math:`u_4`.
 
-Generalized Active Forces
-=========================
+Auxiliary Generalized Active Forces
+===================================
 
 We now have four generalized speeds, two of which are auxiliary generalized
 speeds. With these speeds we will formulate four generalized active forces. The
@@ -319,8 +319,8 @@ containing the unknown force magnitudes :math:`T_1` and :math:`T_2`.
    Fr = sm.Matrix([F1, F2, F3, F4])
    Fr
 
-Generalized Inertia Forces
-==========================
+Auxiliary Generalized Inertia Forces
+====================================
 
 Similar to the generalized active forces, the generalized inertia forces for
 :math:`u_1` and :math:`u_2` are computed as usual. See [Kane1985]_ pg. 169 and
@@ -364,8 +364,8 @@ And finally, :math:`\bar{F}_r^*` is formed for all four generalized speeds:
    Frs = sm.trigsimp(Frs)
    Frs
 
-Dynamical Differential Equations
-================================
+Augmented Dynamical Differential Equations
+==========================================
 
 We can now form Kane's dynamical differential equations which I will name
 :math:`\bar{f}_a` to indicate they include the auxiliary equations. These

@@ -550,9 +550,9 @@ Differentiation operates on each element of the matrix:
    mat3.diff(t)
 
 The Jacobian_ matrix of vector (column matrix) can be formed with the
-:external:py:meth:`~sympy.matrices.matrices.DenseMatrix.jacobian` method. This
-calculates the partial derivatives of each element in the vector with respect
-to a vector (or sequence) of variables.
+:external:py:meth:`~sympy.matrices.matrices.MatrixCalculus.jacobian` method.
+This calculates the partial derivatives of each element in the vector with
+respect to a vector (or sequence) of variables.
 
 .. jupyter-execute::
 
@@ -668,7 +668,7 @@ Simplification
 ==============
 
 The above result from
-:external:py:meth:`~sympy.matrices.matrices.MutableDenseMatrix.LUsolve` is a bit
+:external:py:meth:`~sympy.matrices.matrices.MatrixBase.LUsolve` is a bit
 complicated. SymPy has some functionality for automatically simplifying
 symbolic expressions. The function
 :external:py:func:`~sympy.simplify.simplify.simplify` will attempt to find a

@@ -470,6 +470,7 @@ classic video from 1993 shows how to propel the board:
    Николайков Вячеслав, `CC BY-SA 3.0
    <https://creativecommons.org/licenses/by-sa/3.0>`_, via Wikimedia Commons
 
+.. _fig-snakeboard-configuration:
 .. figure:: figures/motion-snakeboard.svg
    :align: center
 

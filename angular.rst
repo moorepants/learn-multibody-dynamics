@@ -122,8 +122,8 @@ The angular velocity vector is then:
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
    A_w_B
 
-Simple Orientations
-===================
+Angular Velocity of Simple Orientations
+=======================================
 
 For a simple orientation about the :math:`z` axis through :math:`\theta` the
 direction cosine matrix is:

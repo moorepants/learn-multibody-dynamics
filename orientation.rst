@@ -18,14 +18,13 @@ Reference Frames
 
 In the study of multibody dynamics, we are interested in observing motion of
 connected and interacting objects in three dimensional space. This observation
-necessitates the concept of a frame of reference, or :term:`reference frame`,
-which is an abstraction defined by the set of all points in `Euclidean space`_
-that is carried by the observer of any given state of motion. Practically
-speaking, it is useful to image your eye as an observer of motion. Your eye can
-orient itself in 3D space to view the motion of objects from any direction and
-the motion of objects will appear differently in the set of points associated
-with the reference frame attached to your eye depending on your eye's
-orientation.
+necessitates the concept of a frame of reference, or reference frame, which is
+an abstraction defined by the set of all points in `Euclidean space`_ that is
+carried by the observer of any given state of motion. Practically speaking, it
+is useful to image your eye as an observer of motion. Your eye can orient
+itself in 3D space to view the motion of objects from any direction and the
+motion of objects will appear differently in the set of points associated with
+the reference frame attached to your eye depending on your eye's orientation.
 
 .. _Euclidean space: https://en.wikipedia.org/wiki/Euclidean_space
 
@@ -234,8 +233,8 @@ between the two vectors, so this also holds:
    \hat{a}_y = (\hat{a}_y \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_y \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_y \cdot \hat{n}_z) \hat{n}_z \\
    \hat{a}_x = (\hat{a}_z \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_z \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_z \cdot \hat{n}_z) \hat{n}_z \\
 
-Now the general :term:`direction cosine matrix` of :math:`A` with respect to
-:math:`N` is defined as:
+Now the general direction cosine matrix of :math:`A` with respect to :math:`N`
+is defined as:
 
 .. math::
    :label: dcm-dot-full-eq

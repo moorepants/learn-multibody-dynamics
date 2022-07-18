@@ -209,9 +209,9 @@ Example Formulation
 ===================
 
 Let us return once again to the holonomic system introduced in :ref:`Example of
-Kane’s Equations`.
+Kane's Equations`.
 
-.. _fig-eom-double-rod-pendulum:
+.. _fig-eom-double-rod-pendulum-again:
 .. figure:: figures/eom-double-rod-pendulum.svg
    :align: center
    :width: 600px

@@ -460,8 +460,8 @@ in a single namespace.
 Learning More
 =============
 
-Jupyter
--------
+More Jupyter
+------------
 
 There are many introductory resources for learning to use Jupyter which can be
 found with search engines. As examples, this RealPython introduction is a good
@@ -478,8 +478,8 @@ and this video is a 7 minute video that also gives the basics:
    frameborder="0" allow="accelerometer; autoplay; clipboard-write;
    encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Python
-------
+More Python
+-----------
 
 There are literally thousands of Python learning materials freely available on
 the web that fit many different needs. Here are a few recommendations for core

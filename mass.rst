@@ -128,8 +128,8 @@ Then, for example, if :math:`m_2=2m_1` and :math:`m_3=3m_1`:
 
    r_O_So.xreplace({m2: 2*m1, m3: 3*m1}).simplify()
 
-Mass Distribution
-=================
+Distribution of Mass
+====================
 
 The inertia, or second moment of mass, describes the distribution of mass
 relative to a point about an axis. Inertia characterizes the resistance to
@@ -612,7 +612,7 @@ The last term is the inertia of a particle with mass :math:`m` (total mass of
 the body or set of particles) located at the mass center about point :math:`O`.
 
 .. math::
-   :label: eq-parallel-axis-theorem
+   :label: eq-parallel-axis-theorem-expanded
 
    \breve{I}^{B_o/O} = m \left(
    \left|\bar{r}^{B_o/O}\right|^2 \breve{U}  -
