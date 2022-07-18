@@ -5,6 +5,13 @@ README
 This repository contains the source for the website `Learn Multibody Dynamics
 <https://moorepants.github.io/learn-multibody-dynamics/>`_.
 
+Authors and Contributors
+========================
+
+Authors: Jason K. Moore
+
+Contributors: Peter Stahlecker, Jan Heinen, @tamoora, Christopher Dembia, Arthur Ryman
+
 License
 =======
 
@@ -14,12 +21,16 @@ The contents of this repository are licensed under the CC-BY 4.0 license. See
 Building the Website
 ====================
 
+Setup the code and environment
+------------------------------
+
 Clone the repository::
 
    git clone https://github.com/moorepants/learn-multibody-dynamics.git
    cd learn-multibody-dynamics
 
-Install miniconda_ or Anaconda_ and create a conda environment for the book::
+Install miniconda_ or a similar tool (e.g.  Anaconda_) and create a conda
+environment for the book::
 
    conda env create -f multibody-book-env.yml
 
@@ -29,6 +40,9 @@ Install miniconda_ or Anaconda_ and create a conda environment for the book::
 Activate the conda environment::
 
    conda activate multibody-book
+
+Build and view the website
+--------------------------
 
 To build the website run::
 
@@ -41,6 +55,9 @@ When complete, the website is then viewable in your browser::
 You can also run sphinx-autobuild (updates while while you edit) with::
 
    make autobuild
+
+Working with a remote git branch
+--------------------------------
 
 If you want to build one of the branches (for example a pull request), you'll
 need to fetch and checkout the branch. First fetch down all the branches::
@@ -149,6 +166,17 @@ is here:
 
 https://jupyter-sphinx.readthedocs.io
 
+Each page that has executable code should include these download links at the
+top of the page. If the filename is ``page.rst`` then include:
+
+.. code:: rst
+
+   .. note::
+
+      You can download this example as a Python script:
+      :jupyter-download:script:`page` or Jupyter Notebook:
+      :jupyter-download:notebook:`page`.
+
 Xournal++
 ---------
 
@@ -214,16 +242,16 @@ create a vim slime config file for rst
 Content Resources
 =================
 
-Here are links to various resources of open dynamics with SymP materials:
+Here are links to various resources that use SymPy for dynamics that could be
+incorporated into this repository, as is or as inspiration:
 
-- my mae223 notebooks: https://moorepants.github.io/mae223/schedule.html
-- pydy tutorial: https://github.com/pydy/pydy-tutorial-human-standing
-- pydy docs examples: https://pydy.readthedocs.io/en/latest/index.html#examples
-- pydy examples: https://github.com/pydy/pydy/tree/master/examples
-- sympy mechanics docs: https://docs.sympy.org/dev/modules/physics/mechanics/index.html
-- resonance notebooks: https://moorepants.github.io/resonance/
-- yeadon example: https://nbviewer.jupyter.org/github/chrisdembia/yeadon/blob/v1.2.1/examples/bicyclerider/bicycle_example.ipynb
-- homework notebooks from Arend's class
-- Oliver's solutions to the TUD advanced dynamics course examples: https://github.com/pydy/pydy/pull/137
-- Maybe some problems from EME171: https://moorepants.github.io/eme171/resources.html
+- UC Davis MAE223 notebooks: https://moorepants.github.io/mae223/schedule.html
+- PyDy tutorial: https://github.com/pydy/pydy-tutorial-human-standing
+- PyDy documentation examples: https://pydy.readthedocs.io/en/latest/index.html#examples
+- PyDy source examples: https://github.com/pydy/pydy/tree/master/examples
+- SymPy Mechanics documentation: https://docs.sympy.org/dev/modules/physics/mechanics/index.html
+- Resonance notebooks: https://moorepants.github.io/resonance/
+- Yeadon example: https://nbviewer.jupyter.org/github/chrisdembia/yeadon/blob/v1.2.1/examples/bicyclerider/bicycle_example.ipynb
 - Problems from EME 134: https://moorepants.github.io/eme134/labs.html
+- TU Delft MAE41055 2021 homework notebooks
+- Oliver's solutions to the TUD advanced dynamics course examples: https://github.com/pydy/pydy/pull/137
