@@ -686,7 +686,7 @@ nonholonomic generalized active force contributions from a particle :math:`P`
 and rigid body :math:`B` are:
 
 .. math::
-   :label: eq-nonholonomic-gaf
+   :label: eq-nonholonomic-gif
 
    (\tilde{F}^*_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
    (\tilde{F}^*_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
