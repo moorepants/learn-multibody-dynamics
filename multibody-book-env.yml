@@ -4,9 +4,9 @@ channels:
 dependencies:
   - ghp-import
   - graphviz
-  - jupyter-sphinx
+  - jupyter-sphinx >=0.4.0  # required for new directive names jupyter-download-script/notebook
   - matplotlib
-  - numpy <1.23  # scikits.odes 2.6.3 breaks with numpy 1.23
+  - numpy
   - python ==3.9.*
   - pythreejs
   - scikits.odes

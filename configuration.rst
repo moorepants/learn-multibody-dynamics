@@ -5,8 +5,8 @@ Holonomic  Constraints
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`configuration` or Jupyter Notebook:
-   :jupyter-download:notebook:`configuration`.
+   :jupyter-download-script:`configuration` or Jupyter Notebook:
+   :jupyter-download-notebook:`configuration`.
 
 Four-Bar Linkage
 ================

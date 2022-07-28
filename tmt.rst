@@ -5,8 +5,8 @@ Unconstrained Equations of Motion with the TMT Method
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`tmt` or Jupyter Notebook:
-   :jupyter-download:notebook:`tmt`.
+   :jupyter-download-script:`tmt` or Jupyter Notebook:
+   :jupyter-download-notebook:`tmt`.
 
 .. jupyter-execute::
 

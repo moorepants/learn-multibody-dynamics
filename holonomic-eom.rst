@@ -5,8 +5,8 @@ Equations of Motion with Holonomic Constraints
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`holonomic-eom` or Jupyter Notebook:
-   :jupyter-download:notebook:`holonomic-eom`.
+   :jupyter-download-script:`holonomic-eom` or Jupyter Notebook:
+   :jupyter-download-notebook:`holonomic-eom`.
 
 .. jupyter-execute::
 

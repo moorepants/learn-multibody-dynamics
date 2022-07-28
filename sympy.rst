@@ -5,8 +5,8 @@ SymPy
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`sympy` or Jupyter notebook:
-   :jupyter-download:notebook:`sympy`.
+   :jupyter-download-script:`sympy` or Jupyter notebook:
+   :jupyter-download-notebook:`sympy`.
 
 SymPy_ is an open source, collaboratively developed computer algebra system
 (CAS) written in Python. It will be used extensively for manipulating symbolic

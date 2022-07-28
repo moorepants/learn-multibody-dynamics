@@ -5,8 +5,8 @@ Force, Moment, and Torque
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`loads` or Jupyter Notebook:
-   :jupyter-download:notebook:`loads`.
+   :jupyter-download-script:`loads` or Jupyter Notebook:
+   :jupyter-download-notebook:`loads`.
 
 .. jupyter-execute::
 

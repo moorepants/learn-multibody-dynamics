@@ -174,8 +174,8 @@ top of the page. If the filename is ``page.rst`` then include:
    .. note::
 
       You can download this example as a Python script:
-      :jupyter-download:script:`page` or Jupyter Notebook:
-      :jupyter-download:notebook:`page`.
+      :jupyter-download-script:`page` or Jupyter Notebook:
+      :jupyter-download-notebook:`page`.
 
 Xournal++
 ---------

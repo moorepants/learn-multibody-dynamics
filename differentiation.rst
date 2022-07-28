@@ -5,8 +5,8 @@ Vector Differentiation
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`differentiation` or Jupyter Notebook:
-   :jupyter-download:notebook:`differentiation`.
+   :jupyter-download-script:`differentiation` or Jupyter Notebook:
+   :jupyter-download-notebook:`differentiation`.
 
 .. jupyter-execute::
 

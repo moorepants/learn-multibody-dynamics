@@ -5,8 +5,8 @@ Unconstrained Equations of Motion
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`eom` or Jupyter Notebook:
-   :jupyter-download:notebook:`eom`.
+   :jupyter-download-script:`eom` or Jupyter Notebook:
+   :jupyter-download-notebook:`eom`.
 
 .. jupyter-execute::
 

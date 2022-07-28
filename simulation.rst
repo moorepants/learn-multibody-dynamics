@@ -5,8 +5,8 @@ Simulation and Visualization
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`simulation` or Jupyter Notebook:
-   :jupyter-download:notebook:`simulation`.
+   :jupyter-download-script:`simulation` or Jupyter Notebook:
+   :jupyter-download-notebook:`simulation`.
 
 .. jupyter-execute::
 
