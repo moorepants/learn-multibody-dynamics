@@ -5,8 +5,8 @@ Equations of Motion with Nonholonomic Constraints
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`nonholonomic-eom` or Jupyter Notebook:
-   :jupyter-download:notebook:`nonholonomic-eom`.
+   :jupyter-download-script:`nonholonomic-eom` or Jupyter Notebook:
+   :jupyter-download-notebook:`nonholonomic-eom`.
 
 .. jupyter-execute::
 

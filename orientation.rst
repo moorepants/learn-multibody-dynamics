@@ -5,8 +5,8 @@ Orientation of Reference Frames
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`orientation` or Jupyter Notebook:
-   :jupyter-download:notebook:`orientation`.
+   :jupyter-download-script:`orientation` or Jupyter Notebook:
+   :jupyter-download-notebook:`orientation`.
 
 .. jupyter-execute::
 

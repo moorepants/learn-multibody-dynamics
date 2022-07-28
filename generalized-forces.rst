@@ -5,8 +5,8 @@ Generalized Forces
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`generalized-forces` or Jupyter Notebook:
-   :jupyter-download:notebook:`generalized-forces`.
+   :jupyter-download-script:`generalized-forces` or Jupyter Notebook:
+   :jupyter-download-notebook:`generalized-forces`.
 
 .. jupyter-execute::
 

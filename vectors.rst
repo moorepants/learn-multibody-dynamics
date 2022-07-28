@@ -5,8 +5,8 @@ Vectors
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`vectors` or Jupyter Notebook:
-   :jupyter-download:notebook:`vectors`.
+   :jupyter-download-script:`vectors` or Jupyter Notebook:
+   :jupyter-download-notebook:`vectors`.
 
 .. jupyter-execute::
 

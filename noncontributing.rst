@@ -5,8 +5,8 @@ Exposing Noncontributing Forces
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`noncontributing` or Jupyter Notebook:
-   :jupyter-download:notebook:`noncontributing`.
+   :jupyter-download-script:`noncontributing` or Jupyter Notebook:
+   :jupyter-download-notebook:`noncontributing`.
 
 .. jupyter-execute::
 

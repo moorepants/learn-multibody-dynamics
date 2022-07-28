@@ -5,8 +5,8 @@ Jupyter and Python
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`jupyter-python` or Jupyter notebook:
-   :jupyter-download:notebook:`jupyter-python`.
+   :jupyter-download-script:`jupyter-python` or Jupyter notebook:
+   :jupyter-download-notebook:`jupyter-python`.
 
 The following is a brief introduction to Python and how to use Python from a
 Jupyter Notebook. There is much more to learn than what is covered here. This

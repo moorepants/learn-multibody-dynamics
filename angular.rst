@@ -5,8 +5,8 @@ Angular Kinematics
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`angular` or Jupyter Notebook:
-   :jupyter-download:notebook:`angular`.
+   :jupyter-download-script:`angular` or Jupyter Notebook:
+   :jupyter-download-notebook:`angular`.
 
 Angular Velocity
 ================

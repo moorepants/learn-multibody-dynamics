@@ -5,8 +5,8 @@ Three Dimensional Visualization
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download:script:`visualization` or Jupyter Notebook:
-   :jupyter-download:notebook:`visualization`.
+   :jupyter-download-script:`visualization` or Jupyter Notebook:
+   :jupyter-download-notebook:`visualization`.
 
 .. jupyter-execute::
 
