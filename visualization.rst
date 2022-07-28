@@ -238,7 +238,7 @@ information in the `ThreeJS documentation`_. We will import pythreejs like so:
 .. _ThreeJS documentation: https://threejs.org/docs/index.html
 
 pythreejs has many `primitive geometric shapes`_, for example
-:external:py:class:`~py3js.geometries.CylinderGeometry` can be used to create
+:external:py:class:`~pythreejs.CylinderGeometry` can be used to create
 cylinders and cones:
 
 .. jupyter-execute::
@@ -252,8 +252,8 @@ hold, and move the object.
 .. _primitive geometric shapes: https://pythreejs.readthedocs.io/en/stable/examples/Geometries.html
 
 If you want to apply a material to the surface of the geometry you create a
-:external:py:class:`~py3js.Mesh` which associates a
-:external:py:class:`~py3js.Material` with the geometry. For example, you can
+:external:py:class:`~pythreejs.Mesh` which associates a
+:external:py:class:`~pythreejs.Material` with the geometry. For example, you can
 color the above cylinder like so:
 
 .. jupyter-execute::
@@ -269,8 +269,8 @@ Creating a Scene
 
 Here I create a new orange cylinder that is displaced from the origin of the
 scene and that has its own coordinate axes.
-:external:py:class:`~py3js.AxesHelper()` creates simple X (red), Y (green), and
-Z (blue) affixed to the mesh. :external:py:attr:`~py3js.Mesh.position` is
+:external:py:class:`~pythreejs.AxesHelper` creates simple X (red), Y (green), and
+Z (blue) affixed to the mesh. :external:py:attr:`~pythreejs.Object3D.position` is
 overridden to set the position.
 
 .. jupyter-execute::
@@ -282,12 +282,12 @@ overridden to set the position.
    cyl_mesh.add(axes)
    cyl_mesh.position = (3.0, 3.0, 3.0)
 
-Now we will create a :external:py:class:`~py3js.Scene` which can contain
+Now we will create a :external:py:class:`~pythreejs.Scene` which can contain
 multiple meshes and other objects like lights, cameras, and axes. There is a
 fair amount of boiler plate code for creating the static scene. All of the
 objects should be added to the ``children=`` keyword argument of ``Scene``. The
-last line creates a :external:py:class:`~py3js.Renderer` that links the camera
-view to the scene and enables :external:py:class:`~py3js.OrbitControls` to
+last line creates a :external:py:class:`~pythreejs.WebGLBufferRenderer` that links the camera
+view to the scene and enables :external:py:class:`~pythreejs.OrbitControls` to
 allow zooming, panning, and rotating with a mouse or trackpad.
 
 .. jupyter-execute::
@@ -340,7 +340,7 @@ columns, the position vector to a reference point :math:`P` fixed in the mesh
 relative to the scene's origin point :math:`O` is stored in the first three
 columns of the bottom row. If there is no rotation or translation, the
 transformation matrix becomes the identity matrix. This matrix is stored in the
-:external:py:attr:`~py3js.Mesh.matrix` attribute of the mesh:
+:external:py:attr:`~pythreejs.Object3D.matrix` attribute of the mesh:
 
 .. jupyter-execute::
 
@@ -353,8 +353,8 @@ Notice that the 4x4 matrix is stored "flattened" in a single list of 16 values.
    len(cyl_mesh.matrix)
 
 If you change this list to a NumPy array you can
-:external:py:meth:`~numpy.reshape` it and :external:py:meth:`~numpy.flatten` it
-to see the connection.
+:external:py:meth:`~numpy.ndarray.reshape` it and
+:external:py:meth:`~numpy.ndarray.flatten` it to see the connection.
 
 .. jupyter-execute::
 
@@ -483,7 +483,7 @@ Create two cylinders for rods :math:`A` and :math:`B` and a sphere for particle
 Now create meshes for each body and add a material of a different color for
 each mesh. Each mesh will need a unique name so that we can associate the
 animation information with the correct object. After the creation of the mesh
-set :external:py:attr:`~py3js.Mesh.matrixAutoUpdate` to false so that we can
+set :external:py:attr:`~pythreejs.Object3D.matrixAutoUpdate` to false so that we can
 manually specify the transformation matrix during the animation.  Lastly, add
 local coordinate axes to each mesh and set the transformation matrix to the
 initial configuration.
@@ -551,7 +551,7 @@ Animation Setup
 ===============
 
 three.js uses the concept of a "track" to track the data that changes over time
-for an animation. A :external:py:class:`~py3js.VectorKeyframeTrack` can be used
+for an animation. A :external:py:class:`~pythreejs.VectorKeyframeTrack` can be used
 to associate time varying transformation matrices with a specific mesh. Create
 a track for each mesh. Make sure that the name keyword argument matches the
 name of the mesh with this syntax: ``scene/<mesh name>.matrix``. The ``times``
