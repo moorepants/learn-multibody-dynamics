@@ -40,7 +40,6 @@ Table of Contents
    noncontributing
    tmt
    notation
-   glossary
    references
 
 Lecture Videos
