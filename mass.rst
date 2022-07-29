@@ -14,6 +14,26 @@ Mass Distribution
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
 In the prior chapters, we have developed the tools to formulate the kinematics
 of points and reference frames. The kinematics are the first of three essential
 parts needed to form the equations of motion of a multibody system; the other

@@ -15,6 +15,26 @@ Three Dimensional Visualization
    import sympy as sm
    import sympy.physics.mechanics as me
 
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
 In this chapter, I will give a basic introduction to creating three dimensional
 graphics to visualize the motion of your multibody system. There are many
 software tools for generating interactive three dimensional graphics from

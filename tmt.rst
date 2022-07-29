@@ -15,6 +15,26 @@ Unconstrained Equations of Motion with the TMT Method
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
 There are `several mathematical methods`_ available to formulate the equations
 of motion of a multibody system. These different methods offer various
 advantages and disadvantages over Newton and Euler's original formulations and

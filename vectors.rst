@@ -14,6 +14,27 @@ Vectors
    import sympy.physics.mechanics as me
    sm.init_printing(use_latex='mathjax')
 
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
+
 What is a vector?
 =================
 
@@ -362,9 +383,9 @@ helpful:
 .. admonition:: Exercise
 
    Given the vectors
-   :math:`\bar{v}_1 = a \hat{\mathbf{n}}_x + b\hat{\mathbf{n}}_y + a \hat{\mathbf{n}}_z`
+   :math:`\bar{v}_1 = a \hat{n}_x + b\hat{n}_y + a \hat{n}_z`
    and
-   :math:`\bar{v}_2=b \hat{\mathbf{n}}_x + a\hat{\mathbf{n}}_y + b \hat{\mathbf{n}}_z`
+   :math:`\bar{v}_2=b \hat{n}_x + a\hat{n}_y + b \hat{n}_z`
    find the angle between the two vectors using the dot product.
 
 .. admonition:: Solution

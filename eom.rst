@@ -14,6 +14,26 @@ Unconstrained Equations of Motion
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
 
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
 Dynamical Differential Equations
 ================================
 
@@ -54,7 +74,8 @@ present the dynamical differential equations in this form:
    :label: eq-canonical-eom-form
 
    -\bar{F}^*_r = \bar{F}_r \rightarrow
-   \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t) &= \bar{F}(\bar{u}, \bar{q}, t)
+   \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t)
+   = \bar{F}(\bar{u}, \bar{q}, t)
 
 .. _fictitious forces: https://en.wikipedia.org/wiki/Fictitious_force
 

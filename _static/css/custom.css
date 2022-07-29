@@ -22,3 +22,7 @@
 .md-typeset .admonition {
   overflow: visible !important;
 }
+
+.container.invisible {
+  display: none;
+}

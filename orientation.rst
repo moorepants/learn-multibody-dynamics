@@ -416,6 +416,26 @@ aspects of multibody dynamics. We will import the module consistently as:
 
    import sympy.physics.mechanics as me
 
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
 ``mechanics`` includes a way to define and orient reference frames. To create a
 reference frame, use :external:py:class:`ReferenceFrame()
 <sympy.physics.vector.frame.ReferenceFrame>` and provide a name for your frame.

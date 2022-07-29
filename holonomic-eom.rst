@@ -20,6 +20,27 @@ Equations of Motion with Holonomic Constraints
 
    me.init_vprinting(use_latex='mathjax')
 
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
+
 When there are holonomic constraints present the equations of motion are
 comprised of the kinematical differential equations :math:`\bar{f}_k=0`,
 dynamical differential equations :math:`\bar{f}_d=0`, and the holonomic
