@@ -183,10 +183,10 @@ Now :math:`M=2` holonomic constraints can be found by closing the loop.
 
 .. warning::
 
-   Be careful about using :external:py:func:`~sympy.trigsimp` on larger
-   problems, as it can really slow down the calculations. It is not necessary
-   to use, but I do so here so that the resulting equations are human readable
-   in this context.
+   Be careful about using :external:py:func:`~sympy.simplify.trigsimp.trigsimp`
+   on larger problems, as it can really slow down the calculations. It is not
+   necessary to use, but I do so here so that the resulting equations are human
+   readable in this context.
 
 Note that these constraints are only a function of the :math:`N` coordinates,
 not their time derivatives.

@@ -90,7 +90,7 @@ create arbitrary functions of variables. In this case, you make a function of
    f = sm.Function('f')
    f
 
-This is of a type :external:py:class:`~sympy.core.function.UndefinedFunction`.
+This is of a type ``sympy.core.function.UndefinedFunction``.
 
 .. jupyter-execute::
 
@@ -523,8 +523,7 @@ Both the ``*`` and the ``@`` operator perform matrix multiplication:
 
    mat1@mat2
 
-Element-by-element multiplication requires the
-:external:py:func:`~sympy.matrices.expressions.hadamard.hadamard_product`
+Element-by-element multiplication requires the ``sympy.hadamard_product()``
 function:
 
 .. jupyter-execute::
