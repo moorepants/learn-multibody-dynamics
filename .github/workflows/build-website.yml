@@ -28,12 +28,13 @@ jobs:
 
     - name: Install apt dependencies
       run: |
-        sudo apt install graphviz
+        sudo apt install texlive texlive-xetex latexmk fonts-freefont-otf
 
-    - name: Build the website
+    - name: Build the website & PDF
       shell: bash -l {0}
       run: |
         make html
+        make latexpdf
 
     - name: Find Comment
       if: ${{ github.event_name == 'pull_request' }}
@@ -67,6 +68,7 @@ jobs:
         git config --global user.name "Github Actions"
         git config --global user.email moorepants@users.noreply.github.com
         git remote add deploy "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/moorepants/learn-multibody-dynamics.git"
+        cp _build/latex/learnmultibodydynamics.pdf _build/html/
         ghp-import -o -r deploy -b gh-pages -m "Updated via Github Actions [skip ci]" -p _build/html --no-jekyll
 
     - name: Deploy the PR

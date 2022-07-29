@@ -5,7 +5,8 @@ Learn Multibody Dynamics
 This website contains the companion materials for TU Delft's `Multibody
 Dynamics B`_ course taught by `Jason K. Moore`_. It is organized as an online
 book with interactive code woven into the text. Each page can be downloaded as
-a Jupyter Notebook or Python script.
+a Jupyter Notebook or Python script. The materials are also `available in PDF
+format <learnmultibodydynamics.pdf>`_.
 
 .. _Multibody Dynamics B: https://moorepants.github.io/me41055
 .. _Jason K. Moore: https://www.moorepants.info
