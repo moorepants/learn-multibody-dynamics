@@ -279,8 +279,8 @@ to provide a form that more closely resembles typeset math:
    sm.pprint(expr3)
 
 Lastly, the following lines show how SymPy expressions can be represented as
-:math:`\LaTeX` code. The double backslashes are present because double
-backslashes represent the escape character in Python strings.
+LaTeX code. The double backslashes are present because double backslashes
+represent the escape character in Python strings.
 
 .. jupyter-execute::
 

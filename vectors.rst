@@ -296,7 +296,7 @@ The dot product is often used to determine:
 - a vector’s magnitude: :math:`|\bar{v}| = \sqrt{\bar{v} \cdot \bar{v}}`
 - the length of a vector along a direction of another vector :math:`\hat{u}`
   (called the projection):
-  :math:`\mbox{proj}_\hat{u} \bar{v} = \bar{v} \cdot \hat{u}`
+  :math:`\mbox{proj}_{\hat{u}} \bar{v} = \bar{v} \cdot \hat{u}`
 - if two vectors are perpendicular: :math:`\bar{v} \cdot \bar{w} = 0 \mbox{ if }\bar{v} \perp \bar{w}`
 - Compute power: :math:`P = \bar{F} \cdot \bar{v}`, where :math:`\bar{F}` is a
   force vector and :math:`\bar{v}` is the velocity of the point the force is

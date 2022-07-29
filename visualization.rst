@@ -19,7 +19,7 @@ In this chapter, I will give a basic introduction to creating three dimensional
 graphics to visualize the motion of your multibody system. There are many
 software tools for generating interactive three dimensional graphics from
 classic lower level tools like OpenGL_ to graphical user interfaces for drawing
-and animating 3D models like Blender_ [*]_.  We will use pythreejs_ which is a
+and animating 3D models like Blender_ [#]_.  We will use pythreejs_ which is a
 Python wrapper to the three.js_ Javascript library that is built on WebGL_
 which is a low level graphics library similar to OpenGL but made to execute
 through your web browser. Check out the demos_ on three.js's website to get an
@@ -220,7 +220,7 @@ output.
 
    ts.shape, xs.shape
 
-.. [*] Blender was birthed in the Netherlands!
+.. [#] Blender was birthed in the Netherlands!
 
 pythreejs
 =========

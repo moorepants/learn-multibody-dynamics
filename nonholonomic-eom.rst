@@ -23,11 +23,11 @@ Equations of Motion with Nonholonomic Constraints
 In chapters, :ref:`Holonomic Constraints` and :ref:`Nonholonomic Constraints`,
 I introduced two types of constraints: holonomic (configuration) constraints
 and nonholonomic (motion) constraints. Holonomic constraints are nonlinear
-constraints in the coordinates [*]_. Nonholonomic constraints are linear in the
+constraints in the coordinates [#]_. Nonholonomic constraints are linear in the
 generalized speeds, by definition. We will address the nonholonomic equations
 of motion first, as they are slightly easier to deal with.
 
-.. [*] They can be linear in the coordinates, but then there is little reason
+.. [#] They can be linear in the coordinates, but then there is little reason
    not to solve for the depedendent coordinates and eliminate them.
 
 Nonholonomic Equations of Motion

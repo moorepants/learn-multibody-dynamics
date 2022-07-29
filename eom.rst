@@ -53,8 +53,8 @@ present the dynamical differential equations in this form:
 .. math::
    :label: eq-canonical-eom-form
 
-   -\bar{F}^*_r &= \bar{F}_r \rightarrow
-   \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t) &= \bar{F}(\bar{u}, \bar{q}, t) \\
+   -\bar{F}^*_r = \bar{F}_r \rightarrow
+   \mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t) &= \bar{F}(\bar{u}, \bar{q}, t)
 
 .. _fictitious forces: https://en.wikipedia.org/wiki/Fictitious_force
 

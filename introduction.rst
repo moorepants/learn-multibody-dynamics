@@ -88,7 +88,7 @@ taught the course from the late 80s or early 90s until they retired in 2013
 Kane's and David A. Levinson's 1985 book "Dynamics, Theory and Application" and
 followed the book and companion computational materials closely. Prof. Eke was
 a PhD student of Thomas R. Kane at Stanford and Prof. Hubbard adopted Prof.
-Kane's approach to dynamics after moving to UC Davis from Stanford [*]_. I
+Kane's approach to dynamics after moving to UC Davis from Stanford [#]_. I
 helped with Prof. Eke's 2015 course and taught the course in `2017
 <https://moorepants.github.io/mae223/2017/>`_ and `2019
 <https://moorepants.github.io/mae223/>`_ at UC Davis and this text is a
@@ -98,7 +98,7 @@ multibody dynamics course.
 
 When I took the UC Davis course in 2006 as a graduate student, I naively
 decided to derive and analyze the nonlinear and linear Carvallo-Whipple
-bicycle model [Meijaard2007]_ as my course project [*]_. Fortunately, another
+bicycle model [Meijaard2007]_ as my course project [#]_. Fortunately, another
 student visiting from Aachen University, Thomas Engelhardt, also choose the
 same model and his success finally helped me squash the bugs in my formulation.
 Luke Peterson, Gilbert Gede, and Angadh Nanjangud subsequently joined Hubbard
@@ -128,8 +128,8 @@ text is a presentation of the methods and lessons learned from over the last
 decade years of doing multibody dynamics with open source Python software
 tools.
 
-.. [*] The project is shared at https://github.com/moorepants/MAE-223
-.. [*] Mont was working on a skateboard dynamics model in the late 70s and
+.. [#] The project is shared at https://github.com/moorepants/MAE-223
+.. [#] Mont was working on a skateboard dynamics model in the late 70s and
    presented his model to an audience that included Thomas Kane. As the story
    goes, Prof. Kane approached Mont after the lecture to privately tell him his
    dynamics model was incorrect. Mont then took it upon himself to learn Kane's

@@ -643,7 +643,7 @@ handgrip frame :math:`A`:
 With these three orientations the camera can be oriented arbitrarily relative
 to the handgrip frame. These successive :math:`z\textrm{-}x\textrm{-}y`
 orientations are a standard way of describing the orientation of two reference
-frames and are often referred to as `Euler Angles`_ [*]_.
+frames and are often referred to as `Euler Angles`_ [#]_.
 
 .. _Euler Angles: https://en.wikipedia.org/wiki/Euler_angles
 
@@ -696,6 +696,6 @@ The :math:`z\textrm{-}x\textrm{-}z` Euler angles shown in
 
 .. rubric:: Footnotes
 
-.. [*] Technically, this set of angles for the gimbal are one of the 6 Tait-Bryan angles,
+.. [#] Technically, this set of angles for the gimbal are one of the 6 Tait-Bryan angles,
    but "Euler Angles" is used as a general term to describe both Tait-Bryan angles
    and "proper Euler angles".

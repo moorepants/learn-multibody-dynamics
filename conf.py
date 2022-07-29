@@ -35,7 +35,7 @@ extensions = [
     'jupyter_sphinx',
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.graphviz',
-    'sphinx.ext.imgconverter',
+    'sphinx.ext.imgconverter',  # converts the svg for latex builds
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.todo',
@@ -130,3 +130,6 @@ jupyter_execute_data_priority = [
     'image/jpeg',
     'text/plain',
 ]
+
+# latex build options
+latex_engine = 'xelatex'  # handles unicode
