@@ -28,7 +28,7 @@ jobs:
 
     - name: Install apt dependencies
       run: |
-        sudo apt install texlive-xetex
+        sudo apt install texlive texlive-xetex
 
     - name: Build the website & PDF
       shell: bash -l {0}
