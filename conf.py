@@ -133,3 +133,4 @@ jupyter_execute_data_priority = [
 
 # latex build options
 latex_engine = 'xelatex'  # handles unicode
+latex_toplevel_sectioning = 'chapter'

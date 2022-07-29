@@ -11,12 +11,26 @@ format <learnmultibodydynamics.pdf>`_.
 .. _Multibody Dynamics B: https://moorepants.github.io/me41055
 .. _Jason K. Moore: https://www.moorepants.info
 
-Table of Contents
-=================
+.. raw:: html
+
+   <p>There is a set of companion lecture videos that follow the written
+   chapters recorded for the 2022 course offering available in the YouTube
+   playlist below:</p>
+
+   <center>
+   <iframe
+     width="560"
+     height="315"
+     src="https://www.youtube.com/embed/videoseries?list=PLK0jeQYhBx8MfvU6bNDTYzgxYnkVQNsLy"
+     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+     clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+     allowfullscreen>
+   </iframe>
+   </center>
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Table of Contents
 
    introduction
    license
@@ -42,26 +56,3 @@ Table of Contents
    tmt
    notation
    references
-
-Lecture Videos
-==============
-
-There is a set of companion lecture videos that follow the written chapters
-recorded for the 2022 course offering available in the YouTube playlist below:
-
-.. raw:: html
-
-   <iframe
-     width="560"
-     height="315"
-     src="https://www.youtube.com/embed/videoseries?list=PLK0jeQYhBx8MfvU6bNDTYzgxYnkVQNsLy"
-     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
-     clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-     allowfullscreen>
-   </iframe>
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
