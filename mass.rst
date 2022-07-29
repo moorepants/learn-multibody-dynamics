@@ -564,7 +564,7 @@ other reference frame:
    .. math::
       :label: eq-angular-momentum
 
-      {}^A \mathbf{H}^{B/O} := \breve{I}^{B/O} \cdot {}^A\bar{\omega}^B
+      {}^A \bar{H}^{B/O} := \breve{I}^{B/O} \cdot {}^A\bar{\omega}^B
 
    If the point is instead the mass center of :math:`B`, point :math:`B_o`,
    then the inertia dyadic is the *central inertia dyadic* and the result is
@@ -573,7 +573,7 @@ other reference frame:
    .. math::
       :label: eq-central-angular-momentum
 
-      {}^A \mathbf{H}^{B/B_o} = \breve{I}^{B/B_o} \cdot {}^A\bar{\omega}^B
+      {}^A \bar{H}^{B/B_o} = \breve{I}^{B/B_o} \cdot {}^A\bar{\omega}^B
 
    Here is an example of calculating the angular momentum in SymPy Mechanics:
 
