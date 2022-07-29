@@ -85,7 +85,7 @@ then an example of a variable name that we use in the code.
 :math:`\breve{I}^{B/B_o}`, ``I_B_Bo``
    Central inertia dyadic of body :math:`B` or set of particles :math:`B` with respect
    to mass center :math:`B_o`.
-:math:`{}^A \mathbf{H}^{B/O}`, ``A_H_B_O``
+:math:`{}^A \bar{H}^{B/O}`, ``A_H_B_O``
    Angular momentum of rigid body :math:`B` with respect to point :math:`O` in
    reference frame :math:`A`.
 :math:`\bar{R}^{S}`, ``R_S``
