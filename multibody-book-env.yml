@@ -4,6 +4,7 @@ channels:
 dependencies:
   - ghp-import ==2.1.0
   - graphviz ==5.0.0
+  - imagemagick
   - jupyter-sphinx ==0.4.0  # >=0.4.0 required for new directive names jupyter-download-script/notebook
   - matplotlib ==3.5.2
   - numpy ==1.23.1
