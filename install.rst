@@ -13,9 +13,9 @@ software installed.
 ============
 
 Miniconda is a stripped down version of Anaconda so that you can install only
-what you desire. If you already have Miniconda on your computer, you can skip
-this step or delete your prior Miniconda folder on your computer to uninstall
-it. Download miniconda for your operating system:
+what you desire. If you already have Miniconda (or Anaconda) on your computer,
+you can skip this step or delete your prior Miniconda (or Anaconda) folder on
+your computer to uninstall it. Download Miniconda for your operating system:
 
 https://docs.conda.io/en/latest/miniconda.html
 
@@ -23,52 +23,40 @@ Install as a user, not an administrator, when asked. This will install the
 package manager conda and configure your computer to use the Python installed
 with Miniconda when you open a terminal or command prompt.
 
-2) Conda Forge
-==============
-
-Configure conda to download packages from `Conda Forge`_ as the primary
-download source. Conda Forge is a community maintained collection of compatible
-software packages and offers a larger number of packages than the default
-configuration.
-
-.. _Conda Forge: https://conda-forge.org/
+2) Create and Activate an Environment
+=====================================
 
 Open either the terminal (Linux/Mac) or the (Anaconda) command prompt (Windows)
 and type the following series of commands followed each by the <enter> key to
 execute the commands.
 
-This first command adds Conda Forge as a download source for software packages:
+Create the environment with:
 
 .. code-block:: bash
 
-   conda config --add channels conda-forge
+   conda create -c conda-forge -n learn-multibody-dynamics python=3.8
 
-This ensures conda selects packages from Conda Forge first:
+The ``-c conda-forge`` flag installs the packages from `Conda Forge`_. Conda
+Forge is a community maintained collection of compatible software packages and
+offers a larger number of packages than the default configuration.
+
+.. _Conda Forge: https://conda-forge.org/
+
+Now activate the environment:
 
 .. code-block:: bash
 
-   conda config --set channel_priority strict
-
-Now that Conda Forge packages are available, update everything that is already
-installed with:
-
-.. code-block:: bash
-
-   conda update --all
-
-This command could take some minutes, especially if you are using an existing
-Miniconda (or Anaconda) installation because it has many more package
-compatibilities to work out.
+   conda activate learn-multibody-dynamics
 
 3) Install Packages
 ===================
 
-Now you can install the packages that are required for these materials with
-this command:
+Now you can install the packages that are required for executing the code in
+this book with this command:
 
 .. code-block:: bash
 
-   conda install ipympl ipython jupyter matplotlib notebook numpy pythreejs "scikits.odes" scipy "sympy>=1.9"
+   conda install -c conda-forge ipympl ipython jupyter matplotlib notebook numpy pythreejs "scikits.odes" scipy "sympy>=1.11"
 
 4) Open Jupyter Notebook
 ========================
