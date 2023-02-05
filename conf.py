@@ -21,7 +21,7 @@ import os
 
 project = 'Learn Multibody Dynamics'
 html_title = project
-copyright = '2022, Jason K. Moore'
+copyright = '2022-2023, Jason K. Moore'
 author = 'Jason K. Moore'
 
 
