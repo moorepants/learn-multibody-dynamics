@@ -156,6 +156,19 @@ Cross-referencing API documentation in various libraries:
    :external:py:class:`~sympy.physics.vector.frame.ReferenceFrame`
    :external:py:func:`~sympy.physics.vector.functions.cross`
 
+Exercises look like this:
+
+.. code:: rst
+
+   .. admonition:: Exercise
+
+      What is 1 + 1?
+
+   .. admonition:: Solution
+      :class: dropdown
+
+      The answer is 2.
+
 jupyer-sphinx
 -------------
 
