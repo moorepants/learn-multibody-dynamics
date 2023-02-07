@@ -14,9 +14,12 @@ Learning Objectives
 After completing this chapter readers will be able to:
 
 - Write mathematical expressions with symbols and functions using SymPy.
+- Print different forms of expressions and equations with SymPy.
 - Differentiate mathematical expressions using SymPy.
 - Evaluate mathematical expressions using SymPy.
+- Create matrices and do linear algebra using SymPy.
 - Solve a linear system of equations with SymPy.
+- Simplify mathematical expressions with SymPy.
 
 Introduction
 ============
@@ -740,7 +743,36 @@ respect to a vector (or sequence) of variables.
 
 .. _Jacobian: https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant
 
-.. todo:: Add an exercise here.
+.. admonition:: Exercise
+
+   Write your own function that produces a Jacobian given a column matrix of
+   expressions. It should look like::
+
+      def jacobian(v, x):
+          """Returns the Jacobian of the vector function v with respect to the
+          vector of variables x."""
+          # fill in your code here
+          return J_v_x
+
+   Show that it gives the same solution as the above ``.jacobian()`` method. Do
+   not use the ``.jacobian()`` method in your function.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      def jacobian(v, x):
+          """Returns the Jacobian of the vector function v with respect to the
+          vector of variables x."""
+          diffs = []
+          for expr in v:
+            for var in x:
+               diffs.append(expr.diff(var))
+          J_v_x = sm.Matrix(diffs).reshape(len(v), len(x))
+          return J_v_x
+
+      jacobian(mat3, mat4)
 
 Solving Linear Systems
 ======================
@@ -841,9 +873,9 @@ The ``.inv()`` method can compute the inverse of A to find the solution:
 
    A.inv() @ b
 
-But it is best to use the ``.LUsolve()`` method to perform `LU decomposition`_
-style Gaussian-Elimination to solve the system, especially as the dimension of
-:math:`\mathbf{A}` grows:
+But it is best to use the ``.LUsolve()`` method to perform an `LU
+decomposition`_ Gaussian-Elimination to solve the system, especially as the
+dimension of :math:`\mathbf{A}` grows:
 
 .. jupyter-execute::
 
@@ -851,17 +883,74 @@ style Gaussian-Elimination to solve the system, especially as the dimension of
 
 .. _LU decomposition: https://en.wikipedia.org/wiki/LU_decomposition
 
-.. todo:: Add exercise
+.. admonition:: Exercise
+
+   Solve the following equations for all of the :math:`L`'s and then use
+   ``lambdify()`` to evaluate the solution for :math:`F_1=13` and
+   :math:`F_2=32`.
+
+   .. math::
+
+      -L_1 + L_2 - L_3/\sqrt{2} = & 0 \\
+      L_3/\sqrt{2} + L_4 = &  F_1 \\
+      -L_2 - L_5/\sqrt{2} = &  0 \\
+      L_5/\sqrt{2} = & F_2 \\
+      L_5/\sqrt{2} + L_6 = &  0 \\
+      -L_4 -L_5/\sqrt{2} = &  0
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      L1, L2, L3, L4, L5, L6, F1, F2 = sm.symbols('L1, L2, L3, L4, L5, L6, F1, F2')
+
+      exprs = sm.Matrix([
+          -L1 + L2 - L3/sm.sqrt(2),
+          L3/sm.sqrt(2) + L4 - F1,
+          -L2 - L5/sm.sqrt(2),
+          L5/sm.sqrt(2) - F2,
+          L5/sm.sqrt(2) + L6,
+          -L4 -L5/sm.sqrt(2),
+      ])
+      exprs
+
+   .. jupyter-execute::
+
+      unknowns = sm.Matrix([L1, L2, L3, L4, L5, L6])
+
+      coef_mat = exprs.jacobian(unknowns)
+      rhs = exprs.xreplace(dict(zip(unknowns, [0]*6)))
+
+      sol = coef_mat.LUsolve(rhs)
+
+      sm.Eq(unknowns, sol)
+
+   .. jupyter-execute::
+
+      eval_sol = sm.lambdify((F1, F2), sol)
+      eval_sol(13, 32)
 
 Simplification
 ==============
 
 The above result from
 :external:py:meth:`~sympy.matrices.matrices.MatrixBase.LUsolve` is a bit
-complicated. SymPy has some functionality for automatically simplifying
-symbolic expressions. The function
-:external:py:func:`~sympy.simplify.simplify.simplify` will attempt to find a
-simpler version:
+complicated. Reproduced here:
+
+.. jupyter-execute::
+
+   a1, a2 = sm.symbols('a1, a2')
+   exprs = sm.Matrix([
+       [a1*sm.sin(f(t))*sm.cos(2*f(t)) + a2 + omega/sm.log(f(t), t) + 100],
+       [a1*omega**2 + f(t)*a2 + omega + f(t)**3],
+   ])
+   A = exprs.jacobian([a1, a2])
+   b = -exprs.xreplace({a1: 0, a2: 0})
+
+SymPy has some functionality for automatically simplifying symbolic
+expressions. The function :external:py:func:`~sympy.simplify.simplify.simplify`
+will attempt to find a simpler version:
 
 .. jupyter-execute::
 
@@ -934,6 +1023,8 @@ intermediate variables.
 .. jupyter-execute::
 
    simplified[0]
+
+.. todo:: Add exercise.
 
 Learn more
 ==========
