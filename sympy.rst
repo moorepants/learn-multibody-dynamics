@@ -947,6 +947,7 @@ complicated. Reproduced here:
    ])
    A = exprs.jacobian([a1, a2])
    b = -exprs.xreplace({a1: 0, a2: 0})
+   sol = A.LUsolve(b)
 
 SymPy has some functionality for automatically simplifying symbolic
 expressions. The function :external:py:func:`~sympy.simplify.simplify.simplify`
@@ -954,7 +955,7 @@ will attempt to find a simpler version:
 
 .. jupyter-execute::
 
-   sm.simplify(A.LUsolve(b))
+   sm.simplify(sol)
 
 But you'll have the best luck at simplifying if you use simplification functions that
 target the type of expression you have. The
@@ -983,13 +984,20 @@ the same expression in more than one node). These unique expressions, or
 "common subexpressions", can be found with the
 :external:py:func:`~sympy.simplify.cse_main.cse` function. This function will
 provide a simpler form of the equations that minimizes the number of operations
-to compute the answer.
-
-.. _Directed acyclic graphs: https://en.wikipedia.org/wiki/Directed_acyclic_graph
+to compute the answer. We can count the number of basic operations (additions,
+multiplies, etc.) using :external:py:func:`~sympy.core.function.count_ops`:
 
 .. jupyter-execute::
 
-   substitutions, simplified = sm.cse(A.LUsolve(b))
+   sm.count_ops(sol)
+
+.. _Directed acyclic graphs: https://en.wikipedia.org/wiki/Directed_acyclic_graph
+
+We can simplify with ``cse()``:
+
+.. jupyter-execute::
+
+   substitutions, simplified = sm.cse(sol)
 
 The ``substitutions`` variable contains a list of tuples, where each tuple has
 a new intermediate variable and the sub-expression it is equal to.
@@ -1024,7 +1032,49 @@ intermediate variables.
 
    simplified[0]
 
-.. todo:: Add exercise.
+We can count the number of operations of the simplified version:
+
+.. jupyter-execute::
+
+   num_ops = sm.count_ops(simplified[0])
+   for sub in substitutions:
+       num_ops += sm.count_ops(sub[1])
+   num_ops
+
+.. admonition:: Exercise
+
+   :external:py:func:`~sympy.utilities.lambdify.lambdify` has an optional
+   argument ``cse=True|False`` that applies common subexpression elimination
+   internally to simplify the number of operations. Differentiate the
+   ``base_expr`` with respect to ``x`` 10 times to generate a very long
+   expression. Create two functions using ``lambdify()``, one with ``cse=True``
+   and one with ``cse=False``. Compare how long it takes to numerically
+   evaluate the resulting functions using the ``%timeit`` magic.
+
+   .. jupyter-execute::
+
+      a, b, c, x, y, z = sm.symbols('a, b, c, x, y, z')
+      base_expr = a*sm.sin(x*x + b*sm.cos(x*y) + c*sm.sin(x*z))
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      long_expr = base_expr.diff(x, 10)
+
+      eval_long_expr = sm.lambdify((a, b, c, x, y, z), long_expr)
+      eval_long_expr_cse = sm.lambdify((a, b, c, x, y, z), long_expr, cse=True)
+
+   .. jupyter-execute::
+
+      %%timeit
+      eval_long_expr(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
+
+   .. jupyter-execute::
+
+      %%timeit
+      eval_long_expr_cse(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
 
 Learn more
 ==========
