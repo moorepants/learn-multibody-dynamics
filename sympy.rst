@@ -841,12 +841,15 @@ The ``.inv()`` method can compute the inverse of A to find the solution:
 
    A.inv() @ b
 
-But it is best to use the ``.LUsolve()`` method to perform Gaussian-Elimination
-to solve the system, especially as the dimension of :math:`\mathbf{A}` grows:
+But it is best to use the ``.LUsolve()`` method to perform `LU decomposition`_
+style Gaussian-Elimination to solve the system, especially as the dimension of
+:math:`\mathbf{A}` grows:
 
 .. jupyter-execute::
 
    A.LUsolve(b)
+
+.. _LU decomposition: https://en.wikipedia.org/wiki/LU_decomposition
 
 .. todo:: Add exercise
 
