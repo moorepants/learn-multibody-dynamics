@@ -752,10 +752,10 @@ below. First, you should know you have equations of this form:
 
 .. math::
 
-   a_{11} x_1 + a_{12} x_2 + {} & \ldots & {} + a_{1n} x_n + b_1 = 0 \\
-   a_{21} x_1 + a_{22} x_2 + {} & \ldots & {} + a_{2n} x_n + b_2 = 0 \\
-   & \vdots & \\
-   a_{n1} x_1 + a_{n2} x_2 + {} & \ldots & {} + a_{nn} x_n + b_n = 0
+   a_{11} x_1 + a_{12} x_2 + \ldots + a_{1n} x_n + b_1 = 0 \\
+   a_{21} x_1 + a_{22} x_2 + \ldots + a_{2n} x_n + b_2 = 0 \\
+   \vdots \\
+   a_{n1} x_1 + a_{n2} x_2 + \ldots + a_{nn} x_n + b_n = 0
 
 .. _linear systems of equations: https://en.wikipedia.org/wiki/System_of_linear_equations
 .. _a number of ways to do this: https://docs.sympy.org/latest/guides/solving/index.html
