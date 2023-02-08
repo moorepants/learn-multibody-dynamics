@@ -890,16 +890,17 @@ dimension of :math:`\mathbf{A}` grows:
 
    1. expressions that are not acutally linear in the variables the Jacobian is
       taken with respect to
-   2. A matrix entries that would evaluate to zero if simplified or specific
-      numerical values are provided
+   2. :math:`\mathbf{A}` matrix entries that would evaluate to zero if
+      simplified or specific numerical values are provided
 
    So only use this method if you are sure your equations are linear and if
-   your A matrix is made up of complex expressions, watch out for ``nan``
-   results after lambdifying. :external:py:func:`~sympy.solvers.solvers.solvee`
-   and :external:py:func:`~sympy.solvers.solveset.linsolve` can also solve
-   linear systems and they check for linearity and properties of the A matrix.
-   The cost is that they can be extremely slow for large expressions (which we
-   will have in this course).
+   your :math:`\mathbf{A}` matrix is made up of complex expressions, watch out
+   for ``nan`` results after lambdifying.
+   :external:py:func:`~sympy.solvers.solvers.solve` and
+   :external:py:func:`~sympy.solvers.solveset.linsolve` can also solve linear
+   systems and they check for linearity and properties of the A matrix.  The
+   cost is that they can be extremely slow for large expressions (which we will
+   have in this course).
 
 .. admonition:: Exercise
 
