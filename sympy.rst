@@ -883,6 +883,24 @@ dimension of :math:`\mathbf{A}` grows:
 
 .. _LU decomposition: https://en.wikipedia.org/wiki/LU_decomposition
 
+.. warning::
+
+   This method of solving symbolic linear systems is fast, but it can give
+   incorrect answers for:
+
+   1. expressions that are not acutally linear in the variables the Jacobian is
+      taken with respect to
+   2. A matrix entries that would evaluate to zero if simplified or specific
+      numerical values are provided
+
+   So only use this method if you are sure your equations are linear and if
+   your A matrix is made up of complex expressions, watch out for ``nan``
+   results after lambdifying. :external:py:func:`~sympy.solvers.solvers.solvee`
+   and :external:py:func:`~sympy.solvers.solveset.linsolve` can also solve
+   linear systems and they check for linearity and properties of the A matrix.
+   The cost is that they can be extremely slow for large expressions (which we
+   will have in this course).
+
 .. admonition:: Exercise
 
    Solve the following equations for all of the :math:`L`'s and then use
@@ -1059,12 +1077,20 @@ We can count the number of operations of the simplified version:
 .. admonition:: Solution
    :class: dropdown
 
+   Differentiate 10 times:
+
    .. jupyter-execute::
 
       long_expr = base_expr.diff(x, 10)
 
+   Create the numerical functions:
+
+   .. jupyter-execute::
+
       eval_long_expr = sm.lambdify((a, b, c, x, y, z), long_expr)
       eval_long_expr_cse = sm.lambdify((a, b, c, x, y, z), long_expr, cse=True)
+
+   Now time each function:
 
    .. jupyter-execute::
 
