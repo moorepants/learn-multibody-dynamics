@@ -40,7 +40,7 @@ and the primary SymPy features needed we will be using.
 Import and Setup
 ================
 
-I will import SymPy as follows through this book:
+I will import SymPy as follows throughout this book:
 
 .. jupyter-execute::
 
