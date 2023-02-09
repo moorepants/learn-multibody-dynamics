@@ -26,22 +26,6 @@ taught by `Jason K.  Moore`_ but it is designed to standalone from the course.
 
 .. _Version 0.1: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.1
 
-.. raw:: html
-
-   <p>There are companion lecture videos that align with many of the chapters.
-   The 2022 YouTube playlist is shown below:</p>
-
-   <center>
-   <iframe
-     width="560"
-     height="315"
-     src="https://www.youtube.com/embed/videoseries?list=PLK0jeQYhBx8MfvU6bNDTYzgxYnkVQNsLy"
-     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
-     clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-     allowfullscreen>
-   </iframe>
-   </center>
-
 .. toctree::
    :maxdepth: 2
    :caption: Table of Contents
@@ -70,3 +54,42 @@ taught by `Jason K.  Moore`_ but it is designed to standalone from the course.
    tmt
    notation
    references
+
+2023 Lecture Video Playlist
+===========================
+
+.. raw:: html
+
+   <p>There are companion lecture videos that align with many of the chapters.
+   The 2023 YouTube playlist is shown below:</p>
+
+   <center>
+     <iframe
+       width="560"
+       height="315"
+       src="https://www.youtube.com/embed/videoseries?list=PLK0jeQYhBx8Oi-6_-trPa-3MZcD3TKXuH"
+       title="YouTube video player"
+       frameborder="0"
+       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+       allowfullscreen>
+     </iframe>
+   </center>
+
+2022 Lecture Video Playlist
+===========================
+
+.. raw:: html
+
+   <p>There are companion lecture videos that align with many of the chapters.
+   The 2022 YouTube playlist is shown below:</p>
+
+   <center>
+   <iframe
+     width="560"
+     height="315"
+     src="https://www.youtube.com/embed/videoseries?list=PLK0jeQYhBx8MfvU6bNDTYzgxYnkVQNsLy"
+     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+     clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+     allowfullscreen>
+   </iframe>
+   </center>
