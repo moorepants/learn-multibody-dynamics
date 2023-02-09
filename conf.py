@@ -49,7 +49,9 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-if "ONGITHUB" not in os.environ:
+ONGITHUB = "ONGITHUB" in os.environ
+
+if not ONGITHUB:
     # Display TODO notes.
     todo_include_todos = True
 
@@ -107,7 +109,7 @@ html_theme_options = {
     'master_doc': False,  # Doesn't show duplicate title
     'nav_links': [{"href": "index", "internal": True, "title": "Home"}],
 }
-if "ONGITHUB" in os.environ:
+if ONGITHUB:
     # Takes too long to build locally for autobuild, so only do it in
     # production.
     html_theme_options['css_minify'] = False
