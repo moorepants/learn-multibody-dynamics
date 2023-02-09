@@ -2,6 +2,8 @@
 Angular Kinematics
 ==================
 
+.. warning:: This page as not yet been updated for the 2022-2023 course.
+
 .. note::
 
    You can download this example as a Python script:
