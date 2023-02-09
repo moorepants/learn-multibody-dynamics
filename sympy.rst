@@ -867,15 +867,17 @@ terms that are not linear in :math:`a_1` and :math:`a_2`.
    b = -exprs.xreplace({a1: 0, a2: 0})
    b
 
-The ``.inv()`` method can compute the inverse of A to find the solution:
+The :external:py:meth:`~sympy.matrices.matrices.MatrixBase.inv` method can
+compute the inverse of A to find the solution:
 
 .. jupyter-execute::
 
    A.inv() @ b
 
-But it is best to use the ``.LUsolve()`` method to perform an `LU
-decomposition`_ Gaussian-Elimination to solve the system, especially as the
-dimension of :math:`\mathbf{A}` grows:
+But it is best to use the
+:external:py:meth:`~sympy.matrices.matrices.MatrixBase.LUsolve` method to
+perform an `LU decomposition`_ Gaussian-Elimination to solve the system,
+especially as the dimension of :math:`\mathbf{A}` grows:
 
 .. jupyter-execute::
 
