@@ -492,18 +492,9 @@ It seems to work, giving a result for the time derivative of the state vector,
 matching the results we had above. Now we can try out the ``euler_integrate()``
 function to integration from ``t0`` to ``tf``:
 
-.. When building locally, run the simulations for a shorter duration for faster
-   builds.
-
 .. jupyter-execute::
 
    tf = 2.0
-
-.. only:: draft
-
-   .. jupyter-execute::
-
-      tf = 0.4
 
 .. jupyter-execute::
 

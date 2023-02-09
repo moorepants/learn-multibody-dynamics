@@ -559,18 +559,9 @@ We can now integrate the equations of motion to find the state trajectories. I
 setup the time array for the solution to correspond to 30 frames per second for
 later use in the animation of the motion.
 
-.. When building locally, run the simulations for a shorter duration for faster
-   builds.
-
 .. jupyter-execute::
 
    t0, tf = 0.0, 10.0
-
-.. only:: draft
-
-   .. jupyter-execute::
-
-      t0, tf = 0.0, 1.0
 
 .. jupyter-execute::
 

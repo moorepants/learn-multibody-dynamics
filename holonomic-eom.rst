@@ -535,18 +535,9 @@ created. We will start at an initial state of rest with :math:`u_1(t_0)=0`.
 We will integrate over 30 seconds to show how the constraints hold up over a
 longer period of time.
 
-.. When building locally, run the simulations for a shorter duration for faster
-   builds.
-
 .. jupyter-execute::
 
    t0, tf, fps = 0.0, 30.0, 20
-
-.. only:: draft
-
-   .. jupyter-execute::
-
-      t0, tf, fps = 0.0, 4.0, 20
 
 With consistent coordinates the initial conditions can be set and
 ``eval_rhs()`` tested.
