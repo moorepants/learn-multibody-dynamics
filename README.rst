@@ -225,6 +225,24 @@ This is also encoded in the Makefile:
 
    make autobuild
 
+The ``only`` directive can be helpful in speeding up the builds. In the
+``Makefile`` a tag ``-t draft`` is set so if you use ``make autobuild`` you can
+do something like:
+
+.. code:: rst
+
+   .. jupyter-execute::
+
+      duration = 30.0  # seconds
+
+   .. only:: draft
+
+      .. jupyter-execute::
+
+         duration = 1.0  # seconds
+
+To override simulation durations, saving some build time.
+
 Execute code cells in IPython while writing
 -------------------------------------------
 
