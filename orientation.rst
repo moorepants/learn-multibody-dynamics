@@ -20,31 +20,38 @@ Reference Frames
 
 In the study of multibody dynamics, we are interested in observing motion of
 connected and interacting objects in three dimensional space. This observation
-necessitates the concept of a frame of reference, or reference frame, which is
-an abstraction defined by the set of all points in `Euclidean space`_ that is
-carried by the observer of any given state of motion. Practically speaking, it
-is useful to image your eye as an observer of motion. Your eye can orient
-itself in 3D space to view the motion of objects from any direction and the
-motion of objects will appear differently in the set of points associated with
-the reference frame attached to your eye depending on your eye's orientation.
+necessitates the concept of a frame of reference, or reference frame. A
+reference frame is an abstraction which we define as the set of all points in
+`Euclidean space`_ that are carried by and fixed to the observer of any given
+state of motion. Practically speaking, it is useful to image your eye as an
+observer of motion. Your eye can orient itself in 3D space to view the motion
+of objects from any direction and the motion of objects will appear differently
+in the set of points associated with the reference frame attached to your eye
+depending on your eye's orientation.
 
 .. _Euclidean space: https://en.wikipedia.org/wiki/Euclidean_space
 
-Note that a reference frame is not equivalent to a coordinate system.
-Any number of coordinate systems (e.g., Cartesian or spherical) can be used to
-describe the motion of points or objects in a reference frame.
+It is important to note that a reference frame is not equivalent to a
+coordinate system. Any number of coordinate systems (e.g., Cartesian or
+spherical) can be used to describe the motion of points or objects in a
+reference frame. The coordinate system offers a system of measurement in a
+reference frame. We will characterize a reference frame by a right-handed_ set
+of mutually perpendicular unit vectors that can be used to describe its
+orientation relative to other reference frames and we will align a Cartesian
+coordinate system with the unit vectors to allow for easy measurement of points
+fixed or moving in the reference frame.
 
-We will characterize a reference frame by a right-handed set
-of mutually perpendicular unit vectors.
+.. _right-handed: https://en.wikipedia.org/wiki/Right-hand_rule
 
 Unit Vectors
 ============
 
-Vectors have a magnitude, direction, and sense (:math:`\pm`). Unit vectors have
-a magnitude of 1. Unit vectors can be fixed, orientation-wise, to a reference
-frame. For a reference frame named :math:`N` we will define the three mutually
-perpendicular unit vectors as :math:`\hat{n}_x, \hat{n}_y, \hat{n}_z` where
-these right-handed `cross products`_ hold:
+Vectors have a magnitude, direction, and sense (:math:`\pm`) but notably not a
+position. Unit vectors have a magnitude of 1. Unit vectors can be fixed,
+orientation-wise, to a reference frame. For a reference frame named :math:`N`
+we will define the three mutually perpendicular unit vectors as
+:math:`\hat{n}_x, \hat{n}_y, \hat{n}_z` where these right-handed `cross
+products`_ hold:
 
 .. _cross products: https://en.wikipedia.org/wiki/Cross_product
 
@@ -83,7 +90,8 @@ of unit vectors are initially aligned, the :math:`A` frame can then be simply
 oriented about the common parallel :math:`z` unit vectors of the two frames. We
 then say "reference frame :math:`A` is oriented with respect to reference frame
 :math:`N` about the shared :math:`z` unit vectors through an angle
-:math:`\theta`. A visual representation of this orientation is:
+:math:`\theta`. A visual representation of this orientation looking into the
+:math:`z` unit vectors is:
 
 .. _orientation-simple:
 
@@ -103,7 +111,7 @@ From the above figure these relationships between the :math:`\hat{a}` and
    \hat{a}_y & = -\sin{\theta} \hat{n}_x + \cos{\theta} \hat{n}_y + 0 \hat{n}_z \\
    \hat{a}_z & = 0 \hat{n}_x + 0 \hat{n}_y + 1 \hat{n}_z
 
-These equations can also be written in matrix form:
+These equations can also be written in a matrix form:
 
 .. math::
    :label: simple-orientation-unit-vector-relation-matrix
@@ -126,7 +134,7 @@ These equations can also be written in matrix form:
    \end{bmatrix}
 
 This matrix uniquely describes the orientation between the two reference frames
-and so we can give it its own variable:
+and so we give it its own variable:
 
 .. math::
    :label: simple-orient-dcm
@@ -197,14 +205,30 @@ between reference frames. Following the notation convention, this holds:
 
    {}^N\mathbf{C}^A = \left({}^A\mathbf{C}^N\right)^{-1} = \left({}^A\mathbf{C}^N\right)^T
 
+.. admonition:: Exercise
+
+   Write :math:`{}^N\mathbf{C}^A` for a simple rotation about the shared
+   :math:`\hat{n}_y` and :math:`\hat{a}_y` axes, rotating :math:`A` with
+   respect to :math:`N`.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. math::
+
+      \begin{bmatrix}
+        \cos{\theta} & 0 & -\sin{\theta} \\
+        0 &  1  & 0 \\
+        \sin{\theta} & 0 & \cos{\theta}
+      \end{bmatrix}
 
 Direction Cosine Matrix
 =======================
 
 If now :math:`A` is oriented relative to :math:`N` and the pairwise angles
 between each :math:`\hat{a}` and :math:`\hat{n}` mutually perpendicular unit
-vectors are measured, an orientation matrix for an arbitrary orientation can be
-defined.  For example, the figure below shows the three angles
+vectors are measured, a matrix for an arbitrary orientation can be defined.
+For example, the figure below shows the three angles
 :math:`\alpha_{xx},\alpha_{xy},\alpha_{xz}` relating :math:`\hat{a}_x` to each
 :math:`\hat{n}` unit vector.
 
@@ -215,7 +239,9 @@ defined.  For example, the figure below shows the three angles
 
    Three angles relating :math:`\hat{a}_x` to the unit vectors of :math:`N`.
 
-Similarly to the simple example above, we can write these equations:
+Similar to the simple example above, we can write these equations if the
+:math:`\alpha_y` and :math:`\alpha_z` angles relate the :math:`\hat{a}_y` and
+:math:`\hat{a}_z` unit vectors to those of :math:`N`:
 
 .. math::
    :label: direction-cosine-unit-vectors
@@ -235,8 +261,8 @@ between the two vectors, so this also holds:
    \hat{a}_y = (\hat{a}_y \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_y \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_y \cdot \hat{n}_z) \hat{n}_z \\
    \hat{a}_x = (\hat{a}_z \cdot \hat{n}_x) \hat{n}_x + (\hat{a}_z \cdot \hat{n}_y) \hat{n}_y + (\hat{a}_z \cdot \hat{n}_z) \hat{n}_z \\
 
-Now the general direction cosine matrix of :math:`A` with respect to :math:`N`
-is defined as:
+Now the matrix relating the orientation of :math:`A` with respect to :math:`N`
+can be formed:
 
 .. math::
    :label: dcm-dot-full-eq
@@ -247,18 +273,14 @@ is defined as:
      \hat{a}_z
    \end{bmatrix}
    =
-   \begin{bmatrix}
-     \hat{a}_x \cdot \hat{n}_x &\hat{a}_x \cdot \hat{n}_y & \hat{a}_x \cdot \hat{n}_z \\
-     \hat{a}_y \cdot \hat{n}_x &\hat{a}_y \cdot \hat{n}_y & \hat{a}_y \cdot \hat{n}_z \\
-     \hat{a}_z \cdot \hat{n}_x &\hat{a}_z \cdot \hat{n}_y & \hat{a}_z \cdot \hat{n}_z
-   \end{bmatrix}
+   {}^A\mathbf{C}^N
    \begin{bmatrix}
      \hat{n}_x \\
      \hat{n}_y \\
      \hat{n}_z
    \end{bmatrix}
 
-where the general direction cosine matrix is then:
+where
 
 .. math::
    :label: dcm-dot-products
@@ -271,21 +293,26 @@ where the general direction cosine matrix is then:
      \hat{a}_z \cdot \hat{n}_x &\hat{a}_z \cdot \hat{n}_y & \hat{a}_z \cdot \hat{n}_z
    \end{bmatrix}
 
-This matrix uniquely defines the relative orientation between reference frames
-:math:`N` and :math:`A`, it is invertible, and its inverse is equal to the
-transpose, as shown above in the simple example. The direction cosine matrix
-found in the prior section for a simple orientation is a specific case of this
-more general definition. The direction cosine matrix is also referred to as a
-rotation matrix in some texts.
+We call :math:`{}^A\mathbf{C}^N` the "direction cosine matrix" as a general
+description of the relative orientation of two reference frames. This matrix
+uniquely defines the relative orientation between reference frames :math:`N`
+and :math:`A`, it is invertible, and its inverse is equal to the transpose, as
+shown above in the simple example. The direction cosine matrix found in the
+prior section for a simple orientation is a specific case of this more general
+definition. The direction cosine matrix is also referred to as a "rotation
+matrix" or "orientation matrix" in some texts.
 
+.. todo:: Apply the general definition of the direction cosine matrix to a
+   simple rotation about x to show it is the same as we worked out above.
 
 Successive Orientations
 =======================
 
 Successive orientations of a series of reference frames provides a convenient
-way to manage orientation among more than a single pair. Below, an additional
-reference frame :math:`B` is shown that is simply oriented with respect to
-:math:`A` in the same way that :math:`A` is from :math:`N` above.
+way to describe an arbitrary orientation between a pair of reference frames.
+Below, an additional reference frame :math:`B` is shown that is simply oriented
+with respect to :math:`A` in the same way that :math:`A` is from :math:`N`
+above.
 
 .. _orientation-simple-successive:
 
