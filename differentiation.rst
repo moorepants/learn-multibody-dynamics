@@ -2,8 +2,6 @@
 Vector Differentiation
 ======================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -36,6 +34,20 @@ Vector Differentiation
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Calculate the partial derivative of a vector with respect to any variable
+  when viewed from any reference frame.
+- Use the product rule to find the relationship of changing measure numbers and
+  changing unit vectors.
+- Explain the difference in expressing a vector in a reference frame and taking
+  the derivative of the vector when observed from the reference frame.
+- Calculate second partial derivatives.
+- Calculate time derivatives of vector functions.
+
 Partial Derivatives
 ===================
 
@@ -57,8 +69,8 @@ where :math:`v_i` are the measure numbers of :math:`\bar{v}` expressed in
 :math:`A` associated with the mutually perpendicular unit vectors
 :math:`\hat{a}_1,\hat{a}_2,\hat{a}_3`.
 
-Given :math:`\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z` the above
-definition expands to:
+If :math:`\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z` the above definition
+expands to:
 
 .. math::
    :label: partial-measure
@@ -67,6 +79,7 @@ definition expands to:
    \frac{\partial v_x}{\partial q_r} \hat{a}_x +
    \frac{\partial v_y}{\partial q_r} \hat{a}_y +
    \frac{\partial v_z}{\partial q_r} \hat{a}_z
+   \textrm{ for } r=1\ldots n
 
 Many of the vectors we will work with in multibody dynamics will be a function
 of a single variable, most often time :math:`t`. If that is the case, the
@@ -114,18 +127,18 @@ scalar is differentiated:
 
 .. jupyter-execute::
 
-   dvdax = v.dot(A.x).diff(alpha)
-   dvdax
+   dvdalphaAx = v.dot(A.x).diff(alpha)
+   dvdalphaAx
 
 .. jupyter-execute::
 
-   dvday = v.dot(A.y).diff(alpha)
-   dvday
+   dvdalphaAy = v.dot(A.y).diff(alpha)
+   dvdalphaAy
 
 .. jupyter-execute::
 
-   dvdaz = v.dot(A.z).diff(alpha)
-   dvdaz
+   dvdalphaAz = v.dot(A.z).diff(alpha)
+   dvdalphaAz
 
 We can then construct the vector :math:`\frac{{}^A\partial \bar{v}}{\partial
 \alpha}` from the new measure numbers know that the :math:`A` unit vectors are
@@ -133,8 +146,8 @@ fixed:
 
 .. jupyter-execute::
 
-   dvda = dvdax*A.x + dvday*A.y + dvdaz*A.z
-   dvda
+   dvdalphaA = dvdalphaAx*A.x + dvdalphaAy*A.y + dvdalphaAz*A.z
+   dvdalphaA
 
 SymPy Mechanics vectors have a special
 :external:py:meth:`~sympy.physics.vector.vector.Vector.diff` method that
@@ -144,25 +157,48 @@ followed by the reference frame you are observing from:
 
 .. jupyter-execute::
 
-   dvdalpha = v.diff(alpha, A)
-   dvdalpha
+   v.diff(alpha, A)
 
-The result is not so simplified because SymPy attempts to express the
-derivative in the same components as the vector was, so you can use the vector
-:external:py:meth:`~sympy.physics.vector.vector.Vector.simplify` method, which
-applies :external:py:func:`~sympy.simplify.trigsimp.trigsimp` to each measure
-number:
+This gives the identical result as our manually constructed partial derivative
+above.
 
-.. jupyter-execute::
+.. admonition:: Exercise
 
-   v.diff(alpha, A).simplify()
+   Calculate :math:`\frac{{}^B\partial \bar{v}}{\partial e}` manually and with
+   :external:py:meth:`~sympy.physics.vector.vector.Vector.diff` and show the
+   results are the same.
 
-This multi reference frame form can be shown to be the same as we calculated
-above by expressing it fully in :math:`A` and simplifying:
+.. admonition:: Solution
+   :class: dropdown
 
-.. jupyter-execute::
+   .. jupyter-execute::
 
-   v.diff(alpha, A).express(A).simplify()
+      dvdeBx = v.dot(B.x).diff(e)
+      dvdeBy = v.dot(B.y).diff(e)
+      dvdeBz = v.dot(B.z).diff(e)
+      dvdeBx*B.x + dvdeBy*B.y + dvdeBz*B.z
+
+   .. jupyter-execute::
+
+      v.diff(e, B).express(B)
+
+.. warning:: What's the difference in `.express()` and `.diff()`?
+
+   Any vector can be "expressed" in any reference frame. To express a vector in
+   a reference frame means to project it onto the three mutually perpendicular
+   unit vectors fixed in the reference frame and then to rewrite the vector in
+   terms of measure numbers associated with those three unit vectors using the
+   relevant direction cosine matrix entries. This has nothing to do with
+   differentiation.
+
+   We can also take the derivative of a vector when viewed from a specific
+   reference frame. To do so, we observe how the vector changes when viewed
+   from the reference frame and formulate that derivative. Once the derivative
+   is taken, we can express the new vector in any reference frame we desire.
+
+   Expressing a vector in a reference frame and taking a derivative of a vector
+   when observered from a reference frame are two different things! Try not to
+   get tripped up by this important distinction.
 
 Product Rule
 ============
@@ -243,8 +279,8 @@ like :math:`\bar{v}`, may be a vector function. We can thus calculate the
 second partial derivative with respect to :math:`q_s` where :math:`s=1\ldots
 n`. This second partial derivative need not be taken with respect to the same
 reference frame as the first partial derivative. If we first differentiate with
-respect to :math:`A` and then with respect to :math:`B`, the second partial
-derivative is:
+when viewed from :math:`A` and then when viewed from :math:`B`, the second
+partial derivative is:
 
 .. math::
    :label: second-derivative
@@ -263,8 +299,10 @@ Second partials in different reference frames do not necessarily commute:
    \frac{{}^A\partial}{\partial q_r} \left(\frac{{}^B\partial\bar{v}}{\partial
    q_s}\right)
 
-If the reference frames of each partial derivative are the same, then mixed
-partials do commute.
+If the reference frames of each partial derivative are the same, then `mixed
+partials do commute`_.
+
+.. _mixed partials do commute: https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
 
 .. todo:: Make an example of second derivatives not commuting.
 
@@ -306,7 +344,7 @@ And these scalar functions can be differentiated:
 
    q.diff(t)
 
-SymPy Mechanics provides the convince function
+SymPy Mechanics provides the convenience function
 :external:py:func:`~sympy.physics.vector.dynamicsymbols` to create scalar
 functions of time just like ``symbols()``:
 
@@ -348,8 +386,12 @@ And the time derivative can be found with:
 
 Lastly, vectors have a
 :external:py:meth:`~sympy.physics.vector.vector.Vector.dt` method that
-calculates time derivatives, saving a few characters of typing:
+calculates time derivatives when viewed from a reference frame, saving a few
+characters of typing:
 
 .. jupyter-execute::
 
    v.dt(A)
+
+We will use time derivatives in the next chapters to formulate velocity and
+acceleration.
