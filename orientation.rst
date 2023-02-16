@@ -88,7 +88,8 @@ of unit vectors are initially aligned, the :math:`A` frame can then be simply
 oriented about the common parallel :math:`z` unit vectors of the two frames. We
 then say "reference frame :math:`A` is oriented with respect to reference frame
 :math:`N` about the shared :math:`z` unit vectors through an angle
-:math:`\theta`. A visual representation of this orientation looking from the direction of the positive :math:`z` unit vector is:
+:math:`\theta`. A visual representation of this orientation looking from the
+direction of the positive :math:`z` unit vector is:
 
 .. _orientation-simple:
 
@@ -263,9 +264,9 @@ Similar to the simple example above, we can write these equations if the
    \hat{a}_y & = \cos\alpha_{yx} \hat{n}_x +\cos\alpha_{yy} \hat{n}_y + \cos\alpha_{yz} \hat{n}_z \\
    \hat{a}_z & = \cos\alpha_{zx} \hat{n}_x +\cos\alpha_{zy} \hat{n}_y + \cos\alpha_{zz} \hat{n}_z
 
-Since we are working with mutually perpendicular unit vectors the cosine of the
-angle between each pair of unit vectors is equivalent to the dot product
-between the two vectors, so this also holds:
+Since we are working with unit vectors the cosine of the angle between each
+pair of vectors is equivalent to the dot product between the two vectors, so
+this also holds:
 
 .. math::
    :label:
@@ -701,9 +702,9 @@ If we introduce two additional auxiliary reference frames, :math:`B` and
 successive simple orientations to go from :math:`A` to :math:`D`. We can
 formulate the direction cosine matrices for the reference frames using the same
 technique for the successive simple orientations shown in :ref:`Successive
-Orientations`, but now we will have three dimensional orientation between
-:math:`A` and :math:`D` allowing :math:`D` to be oriented in any direction
-relative to :math:`A`.
+Orientations`, but now our sequence of three orientations will enable us to
+orient :math:`D` in any way possible relative to :math:`A` in three dimensional
+space.
 
 .. _gimbal: https://en.wikipedia.org/wiki/Gimbal
 .. _revolute joints: https://en.wikipedia.org/wiki/Revolute_joint
@@ -804,7 +805,7 @@ handgrip frame :math:`A`:
 
    D.dcm(A)
 
-With these three successive orientations the camera can be oriented arbitrarily
+With these three successive orientations the camera can be rotated arbitrarily
 relative to the handgrip frame. These successive
 :math:`z\textrm{-}x\textrm{-}y` orientations are a standard way of describing
 the orientation of two reference frames and are referred to as `Euler Angles`_
