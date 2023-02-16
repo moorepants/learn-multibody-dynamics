@@ -310,7 +310,7 @@ We call :math:`{}^A\mathbf{C}^N` the "direction cosine matrix" as a general
 description of the relative orientation of two reference frames. This matrix
 uniquely defines the relative orientation between reference frames :math:`N`
 and :math:`A`, it is invertible, and its inverse is equal to the transpose, as
-shown above in the simple example. The direction cosine matrix found in the
+shown above in the simple example. The determinant of the matrix is also always 1, to ensure both associated frames are right-handed. The direction cosine matrix found in the
 prior section for a simple orientation is a specific case of this more general
 definition. The direction cosine matrix is also referred to as a "rotation
 matrix" or "orientation matrix" in some texts.
