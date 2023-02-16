@@ -921,31 +921,50 @@ without the need to create auxiliary reference frames :math:`B` and :math:`C`:
 Alternatives for Representing Orientation
 ==========================================
 
-In the previous section, Euler-angles were used to encode the orientation of a frame or body. There are many alternative approaches to representing
-orientations. Three such representations, which will be used throughout these materials, were already introduced:
+In the previous section, Euler-angles were used to encode the orientation of a
+frame or body. There are many alternative approaches to representing
+orientations. Three such representations, which will be used throughout these
+materials, were already introduced:
 
-* **Euler angles** themselves, which provides a minimal representation (only 3 numbers), and a relatively straightforward way to compute the change in orientation from the angular velocity (see :ref:`Angular Kinematics`).
-* the **direction cosine matrix**, which allow easy rotations or vectors and consecutive rotations, both via matrix multiplication,
-* the **axis-angle representation** (used in the :external:py:meth:`orient_axis() <sympy.physics.vector.frame.ReferenceFrame.orient_axis>` method), which is often an intuitive way to describe the orientation for manual input, and is useful when the axis of rotation is fixed.
+* **Euler angles** themselves, which provides a minimal representation (only 3
+  numbers), and a relatively straightforward way to compute the change in
+  orientation from the angular velocity (see :ref:`Angular Kinematics`).
+* the **direction cosine matrix**, which allow easy rotations or vectors and
+  consecutive rotations, both via matrix multiplication,
+* the **axis-angle representation** (used in the
+  :external:py:meth:`orient_axis()
+  <sympy.physics.vector.frame.ReferenceFrame.orient_axis>` method), which is
+  often an intuitive way to describe the orientation for manual input, and is
+  useful when the axis of rotation is fixed.
 
-Each representation also has downsides. For example, the direction cosine matrix consists of 9 elements, less efficient then 3 Euler angles.
-Furthermore, not all combinations of nine elements form a valid direction cosine matrix, so we have to be careful to check and enforce
-validity when writing code.
+Each representation also has downsides. For example, the direction cosine
+matrix consists of 9 elements, less efficient then 3 Euler angles.
+Furthermore, not all combinations of nine elements form a valid direction
+cosine matrix, so we have to be careful to check and enforce validity when
+writing code.
 
-One more frequently used representation is based on so called quaternions, which are like imaginary numbers, but with three imaginary constant. Apart from the usual :math:`i`, :math:`j` and :math:`k` are used.
-They act as described by the rule 
+One more frequently used representation is based on so called quaternions,
+which are like imaginary numbers, but with three imaginary constant. Apart from
+the usual :math:`i`, :math:`j` and :math:`k` are used.  They act as described
+by the rule
 
 .. math::
+
    i^2 = j^2 = k^2 = ijk = -1,
 
-and the notion that inverting the order of any multiplication between the symbols flips the sign of the outcome. 
-It is straightforward to convert an orientation described by a rotation of angle :math:`\theta` around an axis :math:`\hat{a} = \begin{bmatrix}a_x & a_y & a_z\end{bmatrix}^\text{T}` to its quaternion form:
+and the notion that inverting the order of any multiplication between the
+symbols flips the sign of the outcome.
+It is straightforward to convert an orientation described by a rotation of
+angle :math:`\theta` around an axis :math:`\hat{a} = \begin{bmatrix}a_x & a_y &
+a_z\end{bmatrix}^\text{T}` to its quaternion form:
 
 .. math::
+
    q = \cos\left(\frac{\theta}{2}\right) + \sin\left(\frac{\theta}{2}\right)(a_xi + a_yj + a_zk).
 
-The length of a quaternion is the square root of the sum of the squares of its components. For a quaternion representing an orientation,
-this length is always one. Quaternions are part of sympy, and can be used as follows:
+The length of a quaternion is the square root of the sum of the squares of its
+components. For a quaternion representing an orientation, this length is always
+one. Quaternions are part of sympy, and can be used as follows:
 
 .. jupyter-execute::
 
@@ -957,19 +976,27 @@ this length is always one. Quaternions are part of sympy, and can be used as fol
    print("The norm of the quaternion is {}".format(quaternion.norm()))
    quaternion
 
-It turns out that the multiplication rules for (unit) quaternions provide an efficient way to compose multiple rotations,
-and to numerically integrate the orientation when given an angular velocity. 
-Due to the interpretation related
-to the angle and axis representation, it is also a somewhat intuitive representation. 
-However, the integration algorithm
-needs to take an additional step to ensure the quaternion always has unit length.
-For further study on quaternions, the `Wikipedia page on quaternions <https://en.wikipedia.org/wiki/Quaternion>`_ and [Vallery2020]_ are good places to start.
+It turns out that the multiplication rules for (unit) quaternions provide an
+efficient way to compose multiple rotations, and to numerically integrate the
+orientation when given an angular velocity.
+Due to the interpretation related to the angle and axis representation, it is
+also a somewhat intuitive representation.
+However, the integration algorithm needs to take an additional step to ensure
+the quaternion always has unit length.
+For further study on quaternions, the `Wikipedia page on quaternions
+<https://en.wikipedia.org/wiki/Quaternion>`_ and [Vallery2020]_ are good places
+to start.
 In the remainder of these materials, quaternions will therefore not be used.
 
-Furthermore, the mathematics behind the represenation of orientations turns out to be part of a broader concept called Lie-groups. The theory of Lie-groups has further
-applications to the mechanics and control of multibody systems. Such applications focus on generalizing certain concepts, such as simplifying the equations
-for symmetric systems, so they can be applied more easily and to more systems. The Lie-group theory is not used in these materials. 
-Instead, the interested reader can use `this <https://en.wikipedia.org/wiki/3D_rotation_group>`_ related Wikipedia page as a starting point for further study.
+Furthermore, the mathematics behind the represenation of orientations turns out
+to be part of a broader concept called Lie-groups. The theory of Lie-groups has
+further applications to the mechanics and control of multibody systems. Such
+applications focus on generalizing certain concepts, such as simplifying the
+equations for symmetric systems, so they can be applied more easily and to more
+systems. The Lie-group theory is not used in these materials. Instead, the
+interested reader can use `this
+<https://en.wikipedia.org/wiki/3D_rotation_group>`_ related Wikipedia page as a
+starting point for further study.
 
 .. rubric:: Footnotes
 .. [#] Technically, this set of angles for the gimbal are one of the 6 Tait-Bryan angles,
