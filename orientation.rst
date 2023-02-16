@@ -13,6 +13,18 @@ Orientation of Reference Frames
    import sympy as sm
    sm.init_printing(use_latex='mathjax')
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Define a reference frame with associated unit vectors.
+- Define a direction cosine matrix between two oriented reference frames.
+- Derive direction cosine matrices for simple rotations.
+- Derive direction cosine matrices for successive rotations.
+- Manage orientation and direction cosine matrices with SymPy.
+- Rotate reference frames using Euler Angles.
+
 Reference Frames
 ================
 
