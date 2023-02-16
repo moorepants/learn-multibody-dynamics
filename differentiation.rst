@@ -127,18 +127,18 @@ scalar is differentiated:
 
 .. jupyter-execute::
 
-   dvdax = v.dot(A.x).diff(alpha)
-   dvdax
+   dvdalphaAx = v.dot(A.x).diff(alpha)
+   dvdalphaAx
 
 .. jupyter-execute::
 
-   dvday = v.dot(A.y).diff(alpha)
-   dvday
+   dvdalphaAy = v.dot(A.y).diff(alpha)
+   dvdalphaAy
 
 .. jupyter-execute::
 
-   dvdaz = v.dot(A.z).diff(alpha)
-   dvdaz
+   dvdalphaAz = v.dot(A.z).diff(alpha)
+   dvdalphaAz
 
 We can then construct the vector :math:`\frac{{}^A\partial \bar{v}}{\partial
 \alpha}` from the new measure numbers know that the :math:`A` unit vectors are
@@ -146,7 +146,7 @@ fixed:
 
 .. jupyter-execute::
 
-   dvdalphaA = dvdax*A.x + dvday*A.y + dvdaz*A.z
+   dvdalphaA = dvdalphaAx*A.x + dvdalphaAy*A.y + dvdalphaAz*A.z
    dvdalphaA
 
 SymPy Mechanics vectors have a special
@@ -173,10 +173,10 @@ above.
 
    .. jupyter-execute::
 
-      dvdex = v.dot(B.x).diff(e)
-      dvdey = v.dot(B.y).diff(e)
-      dvdez = v.dot(B.z).diff(e)
-      dvdex*B.x + dvdey*B.y + dvdez*B.z
+      dvdeBx = v.dot(B.x).diff(e)
+      dvdeBy = v.dot(B.y).diff(e)
+      dvdeBz = v.dot(B.z).diff(e)
+      dvdeBx*B.x + dvdeBy*B.y + dvdeBz*B.z
 
    .. jupyter-execute::
 

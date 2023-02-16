@@ -49,10 +49,10 @@ then an example of a variable name that we use in the code.
         \hat{b}_z
       \end{bmatrix}
 
-:math:`\frac{{}^A\partial \bar{v}}{\partial q}`, ``dvdqA = v.diff(q, A)``
+:math:`\frac{{}^A\partial \bar{v}}{\partial q}`, ``dvdqA = v.diff(q, A)``, |notation-vec-par-diff|
    Partial derivative of :math:`\bar{v}` with respect to :math:`q` when
    observed from :math:`A`.
-:math:`\frac{{}^A d \bar{v}}{dt}`, ``dvdtA = v.dt(A)``
+:math:`\frac{{}^A d \bar{v}}{dt}`, ``dvdtA = v.dt(A)``, |notation-vec-time-diff|
    Time derivative of :math:`\bar{v}` when observed from :math:`A`.
 :math:`{}^A\bar{\omega}^B`, ``A_w_B``
    Angular velocity vector of reference frame or rigid body :math:`B` when
@@ -143,3 +143,9 @@ then an example of a variable name that we use in the code.
 
 .. |notation-dcm| image:: figures/notation-dcm.svg
    :height: 20px
+
+.. |notation-vec-par-diff| image:: figures/notation-vec-par-diff.svg
+   :height: 30px
+
+.. |notation-vec-time-diff| image:: figures/notation-vec-time-diff.svg
+   :height: 30px
