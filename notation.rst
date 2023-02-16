@@ -9,22 +9,22 @@ then an example of a variable name that we use in the code.
 
 :math:`x`, ``x``, |notation-scalar|
    Scalars are normal mathematical font.
-:math:`\bar{v}`, ``v``
+:math:`\bar{v}`, ``v``, |notation-vector|
    Vectors are indicated with a bar.
 :math:`\hat{u}`, ``uhat = u.normalize()``, |notation-unit-vec|
    Unit vectors are indicated with a hat.
 :math:`A`, ``A``, |notation-ref-frame|
    Reference frame :math:`A`.
-:math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`, ``A.x``, ``A.y``, ``A.z``
+:math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`, ``A.x``, ``A.y``, ``A.z``, |notation-ref-frame-unit-vec|
    Right handed mutually perpendicular unit vectors fixed in reference frame
    :math:`A`.
-:math:`|\bar{v}|`, ``v.magnitude()``
+:math:`|\bar{v}|`, ``v.magnitude()``, |notation-vec-mag|
    Magnitude of a vector; Euclidean norm (2-norm).
-:math:`\bar{u} \cdot \bar{v}`, ``u.dot(v)``
+:math:`\bar{u} \cdot \bar{v}`, ``u.dot(v)``, |notation-vec-dot|
    Dot product of two vectors.
-:math:`\bar{u} \times \bar{v}`, ``u.cross(v)``
+:math:`\bar{u} \times \bar{v}`, ``u.cross(v)``, |notation-vec-cross|
    Cross product of two vectors.
-:math:`\bar{u} \otimes \bar{v}`, ``u.outer(v)``
+:math:`\bar{u} \otimes \bar{v}`, ``u.outer(v)``, |notation-vec-outer|
    Outer product of two vectors.
 :math:`\mathbf{R}`, ``R``
    Matrices are capitalized letters in bold font.
@@ -60,7 +60,7 @@ then an example of a variable name that we use in the code.
 :math:`{}^A\bar{\alpha}^B`, ``A_alp_B``
    Angular acceleration vector of reference frame or rigid body :math:`B` when
    observed from reference frame or rigid body :math:`A`.
-:math:`\bar{r}^{P/O}`, ``r_O_P``
+:math:`\bar{r}^{P/O}`, ``r_O_P``, |notation-pos-vec|
    Vector from point :math:`O` to point :math:`P`.
 :math:`{}^A\bar{v}^P`, ``A_v_P``
    Translational velocity of point :math:`P` when observed from reference frame
@@ -135,6 +135,9 @@ then an example of a variable name that we use in the code.
 .. |notation-scalar| image:: figures/notation-scalar.svg
    :height: 10px
 
+.. |notation-vector| image:: figures/notation-vector.svg
+   :height: 15px
+
 .. |notation-unit-vec| image:: figures/notation-unit-vec.svg
    :height: 15px
 
@@ -142,4 +145,25 @@ then an example of a variable name that we use in the code.
    :height: 20px
 
 .. |notation-dcm| image:: figures/notation-dcm.svg
+   :height: 25px
+
+.. |notation-pos-vec| image:: figures/notation-pos-vec.svg
+   :height: 25px
+
+.. |notation-ref-frame-unit-vec| image:: figures/notation-ref-frame-unit-vec.svg
+   :height: 20px
+
+.. |notation-ref-frame| image:: figures/notation-ref-frame.svg
+   :height: 20px
+
+.. |notation-vec-cross| image:: figures/notation-vec-cross.svg
+   :height: 20px
+
+.. |notation-vec-dot| image:: figures/notation-vec-dot.svg
+   :height: 20px
+
+.. |notation-vec-mag| image:: figures/notation-vec-mag.svg
+   :height: 20px
+
+.. |notation-vec-outer| image:: figures/notation-vec-outer.svg
    :height: 20px

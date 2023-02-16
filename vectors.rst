@@ -2,8 +2,6 @@
 Vectors
 =======
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -36,6 +34,18 @@ Vectors
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- State the properties of a vectors.
+- Determine what scalars a vector is a function of.
+- Add, subtract, scale, negate, normalize vectors.
+- Dot and cross vectors with each other.
+- Express vectors in different reference frames.
+- Define vectors with components expressed in different reference frames.
+- Create position vectors between points using reference frame unit vectors.
 
 What is a vector?
 =================
@@ -283,7 +293,7 @@ reverses its sense (rotates it by :math:`\pi` radians).
 Dot Product
 ===========
 
-The dot product, which yields a scalar quantity, is defined as:
+The `dot product`_, which yields a scalar quantity, is defined as:
 
 .. math::
    :label: vector-dot
@@ -305,6 +315,8 @@ measure numbers this results in the following:
    :align: center
 
    Vector dot product
+
+.. _dot product: https://en.wikipedia.org/wiki/Dot_product
 
 The dot product has these properties:
 
@@ -457,7 +469,7 @@ The cross product is used to:
 
 
 SymPy Mechanics can calculate cross products with the
-:external:py:func:`~sympy.physics.vector.functions.cross`. function:
+:external:py:func:`~sympy.physics.vector.functions.cross` function:
 
 .. jupyter-execute::
 
@@ -513,15 +525,17 @@ The method form is equivalent:
 Vectors Expressed in Multiple Reference Frames
 ==============================================
 
-This presentation of vectors becomes quite useful when you need to describe
-vectors with components in multiple reference frames. Utilizing unit vectors
-fixed in various frames is rather natural, with no need to think about
-direction cosine matrices.
+The notation of vectors represented by a scalar measure numbers associated with
+unit vectors becomes quite useful when you need to describe vectors with
+components in multiple reference frames. Utilizing unit vectors fixed in
+various frames is rather natural, with no need to think about direction cosine
+matrices.
 
 .. jupyter-execute::
 
    N = me.ReferenceFrame('N')
    A = me.ReferenceFrame('A')
+
    a, b, theta = sm.symbols('a, b, theta')
 
    v = a*A.x + b*N.y
@@ -573,20 +587,21 @@ configuration. Here are two examples:
 
 .. _balanced-arm lamp: https://en.wikipedia.org/wiki/Balanced-arm_lamp
 
-With those in mind, :numref:`vectors-desk-lamp` shows a possible diagram of a
-desk lamp with all necessary configuration information present. The base
-:math:`N` is fixed to the desk. The first linkage :math:`A` is oriented with
-respect to :math:`N` by a :math:`z\textrm{-}x` body fixed orientation through
-angles :math:`q_1` and :math:`q_2`. Point :math:`P_1` is fixed in :math:`N` and
-is located at the center of the base. Linkage :math:`A` is defined by points
-:math:`P_1` and :math:`P_2` which are separated by length :math:`l_1` along the
-:math:`\hat{a}_z` direction. Linkage :math:`B` orients simply with respect to
-:math:`A` about :math:`\hat{a}_x=\hat{b}_x` through angle :math:`q_3` and point
-:math:`P_3` is :math:`l_2` from :math:`P_2` along :math:`\hat{b}_z`. Lastly,
-the lamp head :math:`C` orients relative to :math:`B` by a :math:`x\textrm{-}z`
-body fixed orientation through angles :math:`q_4` and :math:`q_5`. The center of
-the light bulb :math:`P_4` is located relative to :math:`P_3` by the distances
-:math:`l_3` along :math:`\hat{c}_z` and :math:`l_4` along :math:`-\hat{c}_y`.
+With those lamps in mind, :numref:`vectors-desk-lamp` shows a diagram of a
+similar desk lamp with all necessary configuration information present. The
+base :math:`N` is fixed to the desk. The first linkage :math:`A` is oriented
+with respect to :math:`N` by a :math:`z\textrm{-}x` body fixed orientation
+through angles :math:`q_1` and :math:`q_2`. Point :math:`P_1` is fixed in
+:math:`N` and is located at the center of the base. Linkage :math:`A` is
+defined by points :math:`P_1` and :math:`P_2` which are separated by length
+:math:`l_1` along the :math:`\hat{a}_z` direction. Linkage :math:`B` orients
+simply with respect to :math:`A` about :math:`\hat{a}_x=\hat{b}_x` through
+angle :math:`q_3` and point :math:`P_3` is :math:`l_2` from :math:`P_2` along
+:math:`\hat{b}_z`. Lastly, the lamp head :math:`C` orients relative to
+:math:`B` by a :math:`x\textrm{-}z` body fixed orientation through angles
+:math:`q_4` and :math:`q_5`. The center of the light bulb :math:`P_4` is
+located relative to :math:`P_3` by the distances :math:`l_3` along
+:math:`\hat{c}_z` and :math:`l_4` along :math:`-\hat{c}_y`.
 
 .. _vectors-desk-lamp:
 .. figure:: figures/vectors-desk-lamp.svg
@@ -603,8 +618,9 @@ position between two points:
 
    \bar{r}^{P_2/P_1}
 
-which reads as the "position vector from :math:`P_1` to :math:`P_2`". The tail
-of the vector is at :math:`P_1` and the tip is at :math:`P_2`.
+which reads as the "position vector from :math:`P_1` to :math:`P_2`" or the
+"position vector of :math:`P_2` with respect to :math:`P_1`. The tail of the
+vector is at :math:`P_1` and the tip is at :math:`P_2`.
 
 .. admonition:: Exercise
 
@@ -619,7 +635,7 @@ of the vector is at :math:`P_1` and the tip is at :math:`P_2`.
 .. admonition:: Solution
    :class: dropdown
 
-   See below how to use ``.free_symbols()`` to find the answers.
+   See below how to use ``.free_symbols()`` to check your answers.
 
 We can now write position vectors between pairs of points as we move from the
 base of the lamp to the light bulb. We'll do so with SymPy Mechanics. First
@@ -634,29 +650,33 @@ create the necessary symbols and reference frames.
    B = me.ReferenceFrame('B')
    C = me.ReferenceFrame('C')
 
-Now establish the orientations, starting with :math:`A`'s orientation relative to
-:math:`N`.
+Now establish the orientations, starting with :math:`A`'s orientation relative
+to :math:`N`:
 
 .. jupyter-execute::
 
    A.orient_body_fixed(N, (q1, q2, 0), 'ZXZ')
 
-Notice that the unneeded third simple orientation angle was set to zero. Set a
-simple orientation for :math:`B` relative to :math:`A`.
+.. note:: Notice that the unneeded third simple orientation angle was set to
+   zero.
+
+Then :math:`B`'s orientation relatie to :math:`A`:
 
 .. jupyter-execute::
 
    B.orient_axis(A, q3, A.x)
 
-And finally :math:`C` relative to :math:`B`.
+And finally :math:`C`'s orientation relative to :math:`B`:
 
 .. jupyter-execute::
 
    C.orient_body_fixed(B, (q4, q5, 0), 'XZX')
 
 We can now create position vectors between pairs of points in the most
-convenient frame to do so, i.e. the reference frame in which both points are
-fixed.
+convenient frame to do so, i.e. the reference frame in which both points lie on
+a line parallel to an existing unit vector. The intermediate vectors that
+connect :math:`P_1` to :math:`P_2`, :math:`P_2` to :math:`P_3`, and :math:`P_3`
+to :math:`P_4` are:
 
 .. jupyter-execute::
 
@@ -689,7 +709,7 @@ variables that vector function depends on in :math:`N`.
 
    R_P1_P2.express(N)
 
-By inspection we see :math:`l_1,q_1,q_2`. The
+By inspection, we see the variables are :math:`l_1,q_1,q_2`. The
 :external:py:meth:`~sympy.physics.vector.vector.Vector.free_symbols` function
 can extract these scalars directly:
 
