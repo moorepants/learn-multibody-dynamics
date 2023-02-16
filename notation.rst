@@ -7,13 +7,13 @@ then an example of a variable name that we use in the code.
 
 .. todo:: Add the notation that is in the hand drawn figures.
 
-:math:`x`, ``x``
+:math:`x`, ``x``, |notation-scalar|
    Scalars are normal mathematical font.
 :math:`\bar{v}`, ``v``
    Vectors are indicated with a bar.
-:math:`\hat{u}`, ``uhat = u.normalize()``
+:math:`\hat{u}`, ``uhat = u.normalize()``, |notation-unit-vec|
    Unit vectors are indicated with a hat.
-:math:`A`, ``A``
+:math:`A`, ``A``, |notation-ref-frame|
    Reference frame :math:`A`.
 :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`, ``A.x``, ``A.y``, ``A.z``
    Right handed mutually perpendicular unit vectors fixed in reference frame
@@ -28,7 +28,7 @@ then an example of a variable name that we use in the code.
    Outer product of two vectors.
 :math:`\mathbf{R}`, ``R``
    Matrices are capitalized letters in bold font.
-:math:`{}^A\mathbf{C}^B`, ``A_C_B``
+:math:`{}^A\mathbf{C}^B`, ``A_C_B``, |notation-dcm|
    Direction cosine matrix relating reference frames (or rigid bodies)
    :math:`B` and :math:`A` where this relation between the right handed
    mutually perpendicular unit vectors fixed in the two reference frames follow
@@ -131,3 +131,15 @@ then an example of a variable name that we use in the code.
    The Jacobian of the vector function :math:`\bar{v}` with respect to the
    entries in vector :math:`\bar{u}` where the :math:`(i,j)` entries of the
    Jacobian are :math:`\mathbf{J}_{ij} = \frac{\partial v_i}{\partial u_j}`.
+
+.. |notation-scalar| image:: figures/notation-scalar.svg
+   :height: 10px
+
+.. |notation-unit-vec| image:: figures/notation-unit-vec.svg
+   :height: 15px
+
+.. |notation-ref-frame| image:: figures/notation-ref-frame.svg
+   :height: 20px
+
+.. |notation-dcm| image:: figures/notation-dcm.svg
+   :height: 20px
