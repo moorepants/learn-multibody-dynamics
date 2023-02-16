@@ -916,8 +916,99 @@ without the need to create auxiliary reference frames :math:`B` and :math:`C`:
 
       D.dcm(A)
 
-.. rubric:: Footnotes
 
+
+Alternatives for Representing Orientation
+==========================================
+
+In the previous section, Euler-angles were used to encode the orientation of a
+frame or body. There are many alternative approaches to representing
+orientations. Three such representations, which will be used throughout these
+materials, were already introduced:
+
+* **Euler-angles** themselves, which provides a minimal representation (only 3
+  numbers), and a relatively straightforward way to compute the change in
+  orientation from the angular velocity (see :ref:`Angular Kinematics`).
+* the **direction cosine matrix**, which allow easy rotations or vectors and
+  consecutive rotations, both via matrix multiplication,
+* the **axis-angle representation** (used in the
+  :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_axis` method), which is
+  often an intuitive way to describe the orientation for manual input, and is
+  useful when the axis of rotation is fixed.
+
+Each representation also has downsides. For example, the direction cosine
+matrix consists of nine elements; more to keep track of than three Euler angles.
+Furthermore, not all combinations of nine elements form a valid direction
+cosine matrix, so we have to be careful to check and enforce validity when
+writing code.
+
+Learn more
+==========
+
+One more frequently used approach to representing orientations is based on so called `quaternions`_.
+Quaternions are like imaginary numbers, but with three imaginary constants: :math:`i`, :math:`j` and :math:`k`. 
+These act as described by the rule
+
+.. math::
+
+   i^2 = j^2 = k^2 = ijk = -1.
+
+A general quaternion :math:`q` can thus be written in terms of its components :math:`q_0`, :math:`q_i` :math:`q_j`, :math:`q_k`:
+
+.. math::
+
+   q = q_0 + q_ii + q_jj + q_kk 
+
+.. _quaternions: https://en.wikipedia.org/wiki/Quaternion
+
+The :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_quaternion` method enables
+orienting a reference frame using a quaternion in sympy:
+
+.. jupyter-execute::
+
+   N = me.ReferenceFrame('N')
+   A = me.ReferenceFrame('A')
+
+   q_0, qi, qj, qk = sm.symbols('q_0 q_i q_j q_k')
+   q = (q_0, qi, qj, qk)
+   A.orient_quaternion(N, q)
+   A.dcm(N)
+
+A rotation of an angle :math:`\theta` around a unit vector :math:`\hat{e}` can 
+be converted to a quaternion representation by having :math:`q_0 = \cos\left(\frac{\theta}{2}\right)`,
+and the other components equal to a factor :math:`\sin\left(\frac{\theta}{2}\right)` times
+the components of the axis of rotation :math:`\hat{e}`. For example, if the rotation axis is :math:`\hat{n}_x`, we get:
+
+.. jupyter-execute::
+
+   q = (sm.cos(theta/2), sm.sin(theta/2), 0, 0)
+   A.orient_quaternion(N, q)
+   sm.simplify(A.dcm(N))
+
+The length of a quaternion is the square root of the sum of the squares of its
+components. For a quaternion representing an orientation, this length must always
+be 1.
+
+It turns out that the multiplication rules for (unit) quaternions provide an
+efficient way to compose multiple rotations, and to numerically integrate the
+orientation when given an angular velocity.
+Due to the interpretation related to the angle and axis representation, it is
+also a somewhat intuitive representation.
+However, the integration algorithm needs to take an additional step to ensure
+the quaternion always has unit length.
+
+The representation of orientations in general, turns out to be related to an area 
+of mathematics called Lie-groups. The theory of Lie-groups has
+further applications to the mechanics and control of multibody systems. An example
+application is finding a general method for simplifying the
+equations for symmetric systems, so this can be done more easily and to more
+systems. The Lie-group theory is not used in these materials. Instead, the
+interested reader can look up the `3D rotation group`_ as a starting point for
+further study.
+
+.. _3D rotation group: https://en.wikipedia.org/wiki/3D_rotation_group
+
+.. rubric:: Footnotes
 .. [#] Technically, this set of angles for the gimbal are one of the 6 Tait-Bryan angles,
-   but "Euler Angles" is used as a general term to describe both Tait-Bryan angles
-   and "proper Euler angles".
+   but “Euler Angles” is used as a general term to describe both Tait-Bryan angles
+   and “proper Euler angles”.
