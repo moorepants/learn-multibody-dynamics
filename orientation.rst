@@ -816,7 +816,7 @@ There are 12 valid sets of successive orientations that can arbitrarily orient
 one reference frame with respect to another. We will also refer to these 12
 possible orientation sets as "body fixed orientations". As we will soon see, a
 rigid body and a reference frame are synonymous from an orientation perspective
-and each successive orientations rotates about a shared unit vector fixed in
+and each successive orientation rotates about a shared unit vector fixed in
 both of the reference frames (or bodies), thus "body fixed orientations". The
 method
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_body_fixed`
