@@ -946,16 +946,14 @@ Learn more
 ==========
 
 One more frequently used approach to representing orientations is based on so called `quaternions`_.
-which are like imaginary numbers, but with three imaginary constant. Apart from
-the usual :math:`i`, also :math:`j` and :math:`k` are used.  They act as described
-by the rule
+Quaternions are like imaginary numbers, but with three imaginary constants: :math:`i`, :math:`j` and :math:`k`. 
+These act as described by the rule
 
 .. math::
 
-   i^2 = j^2 = k^2 = ijk = -1,
+   i^2 = j^2 = k^2 = ijk = -1.
 
-and the notion that inverting the order of any multiplication between the
-symbols flips the sign of the outcome. A general quaternion can thus be written as:
+A general quaternion :math:`q` can thus be written in terms of its components :math:`q_0`, :math:`q_i` :math:`q_j`, :math:`q_k`:
 
 .. math::
 
