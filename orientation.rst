@@ -194,7 +194,7 @@ SymPy can also find the transpose of this matrix;
    A_C_N.transpose()
 
 Notably, the inverse and the transpose are the same here. This indicates that
-this matrix is an `orthogonal matrix`_. All matrices that describe the
+this matrix is a `special orthogonal matrix`_. All matrices that describe the
 orientation between reference frames are orthogonal matrices. Following the
 notation convention, this holds:
 
