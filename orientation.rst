@@ -88,8 +88,7 @@ of unit vectors are initially aligned, the :math:`A` frame can then be simply
 oriented about the common parallel :math:`z` unit vectors of the two frames. We
 then say "reference frame :math:`A` is oriented with respect to reference frame
 :math:`N` about the shared :math:`z` unit vectors through an angle
-:math:`\theta`. A visual representation of this orientation looking into the
-:math:`z` unit vectors is:
+:math:`\theta`. A visual representation of this orientation looking from the direction of the positive :math:`z` unit vector is:
 
 .. _orientation-simple:
 
