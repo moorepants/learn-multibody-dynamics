@@ -10,7 +10,7 @@ Authors and Contributors
 
 Authors: Jason K. Moore
 
-Contributors: Peter Stahlecker, Jan Heinen, @tamoora, Christopher Dembia, Arthur Ryman
+Contributors: Peter Stahlecker, Jan Heinen, @tamoora, Christopher Dembia, Arthur Ryman, Wouter Wolfslag
 
 License
 =======

@@ -47,9 +47,9 @@ Choice of dynamics formalism
 To teach multibody dynamics, one must choose a formalism for notation and
 deriving the equations of motion. There are numerous methods for doing so, from
 `Newton and Euler`_'s to Lagrange_ and Hamilton_'s to Jain and Featherstone_'s.
-Here I use the approach presented by `Thomas R. Kane`_ and David Levinson in
-their 1985 book "Dynamics, Theory and Application" [Kane1985]_. The notation
-offers a precise way to track all of the nuances in multibody dynamics
+Here I use an approach primarily derived from `Thomas R. Kane`_ and David
+Levinson in their 1985 book "Dynamics, Theory and Application" [Kane1985]_. The
+notation offers a precise way to track all of the nuances in multibody dynamics
 bookkeeping and a realization of the equations of motion that obviates having
 to introduce virtual motion concepts and that handles kinematic constraints
 without the need of `Lagrange multipliers`_.
@@ -97,20 +97,20 @@ Eke's notes and materials which now includes some elements of TU Delft's past
 multibody dynamics course.
 
 When I took the UC Davis course in 2006 as a graduate student, I naively
-decided to derive and analyze the nonlinear and linear Carvallo-Whipple
-bicycle model [Meijaard2007]_ as my course project [#]_. Fortunately, another
-student visiting from Aachen University, Thomas Engelhardt, also choose the
-same model and his success finally helped me squash the bugs in my formulation.
-Luke Peterson, Gilbert Gede, and Angadh Nanjangud subsequently joined Hubbard
-and Eke's labs and with Luke's lead we were sucked into the world of open
-source scientific software. At that time, Python's use by scientists and
-engineers began to gain traction and we fortunately jumped on the bandwagon. We
-had become quite frustrated with the black box approach of the commercial
-software tools most engineers used at that time, this included the tool Autolev
-that was developed by Kane's collaborators for the automation of multibody
-dynamics modeling. To remedy this frustration, Luke wrote the `first version of
-PyDy`_ as a `Google Summer of Code`_ participant in 2009. Gilbert followed him
-by implementing a new version as `SymPy Mechanics`_ in 2011 also as a Google
+decided to derive and analyze the nonlinear and linear Carvallo-Whipple bicycle
+model [Meijaard2007]_ as my course project [#]_. Fortunately, another student
+visiting from Aachen University, Thomas Engelhardt, also choose the same model
+and his success finally helped me squash the bugs in my formulation.  Luke
+Peterson, Gilbert Gede, and Angadh Nanjangud subsequently joined Hubbard and
+Eke's labs and with Luke's lead we were sucked into the world of open source
+scientific software. At that time, Python's use by scientists and engineers
+began to gain traction and we fortunately jumped on the bandwagon. We had
+become quite frustrated with the black box approach of the commercial software
+tools most engineers used at that time, this included the tool Autolev that was
+developed by Kane's collaborators for the automation of multibody dynamics
+modeling. To remedy this frustration, Luke wrote the `first version of PyDy`_
+as a `Google Summer of Code`_ participant in 2009. Gilbert followed him by
+implementing a new version as `SymPy Mechanics`_ in 2011 also as a Google
 Summer of Code participant. We use Gilbert's, now modified and extended,
 implementation in this text. Combined with the power of SymPy and Jupyter
 Notebooks (IPython Notebooks back then), SymPy Mechanics provides a
@@ -124,9 +124,8 @@ and industry.
 
 I have stewarded and developed the software as well as taught and researched
 with it over the last decade with the help of a long list of contributors. This
-text is a presentation of the methods and lessons learned from over the last
-decade years of doing multibody dynamics with open source Python software
-tools.
+text is a presentation of the methods and lessons learned from over the years
+of doing multibody dynamics with open source Python software tools.
 
 .. [#] The project is shared at https://github.com/moorepants/MAE-223
 .. [#] Mont was working on a skateboard dynamics model in the late 70s and
@@ -154,18 +153,21 @@ the text, in approximate order of first contribution:
 - Nikhil Pappu, 2018
 - Sudeep Sidhu, 2020
 - Abhinav Kamath, 2020
+- Timo Stienstra, 2022
 
-This is of course built on top of SymPy, whose `1000+ contributors`_ have also
-greatly helped SymPy Mechanics be what it is. Furthermore, the software lies on
+SymPy Mechanics is built on top of SymPy, whose `1000+ contributors`_ have also
+greatly helped SymPy Mechanics be what it is. Furthermore, the software sits on
 the top of a large ecosystem of open source software written by thousands and
-thousands of contributors who we owe so much to.
+thousands of contributors who we owe for the solid foundation.
 
 .. _1000+ contributors: https://github.com/sympy/sympy/blob/master/AUTHORS
 
 For this text, Peter Stahlecker and Jan Heinen provided page-by-page review of
 the text while drafting the first version. Arthur Ryman also contributed
-numerous edits to the first version. Their feedback has helped improve the text
-in many ways.
+numerous edits to the first version. Wouter Wolfslag contributed sections and
+chapters to the second version and also reviewed the text updates. Their
+feedback has helped improve the text in many ways. We also thank the students
+of TU Delft's Multibody Dynamics course who test the materials while learning.
 
 Tools Behind the Book
 =====================
