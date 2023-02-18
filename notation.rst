@@ -141,9 +141,6 @@ then an example of a variable name that we use in the code.
 .. |notation-unit-vec| image:: figures/notation-unit-vec.svg
    :height: 15px
 
-.. |notation-ref-frame| image:: figures/notation-ref-frame.svg
-   :height: 20px
-
 .. |notation-dcm| image:: figures/notation-dcm.svg
    :height: 25px
 
