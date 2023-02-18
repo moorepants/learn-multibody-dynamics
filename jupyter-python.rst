@@ -466,8 +466,8 @@ trigonometric functions:
 and there may be times when you want to use more than one version of ``cos()``
 in a single namespace.
 
-Learning More
-=============
+Learn More
+==========
 
 More Jupyter
 ------------

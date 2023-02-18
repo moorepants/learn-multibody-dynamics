@@ -116,9 +116,10 @@ Vector Functions
 Vectors can be functions of scalar variables. If a change in scalar variable
 :math:`q` changes the magnitude and/or direction of :math:`\bar{v}` when
 observed from :math:`A`, :math:`\bar{v}` is a vector function of :math:`q` in
-:math:`A`. Note that this implies that :math:`\bar{v}` may not be a vector
-function of scalar variable :math:`q` when observed from another reference
-frame.
+:math:`A`. It is possible that :math:`\bar{v}` may not be a vector function of
+scalar variable :math:`q` when observed from another reference frame, i.e. the
+function dependency of a vector on a scalar depends on the reference frame it
+is observed from.
 
 Let vector :math:`\bar{v}` be a function of :math:`n` scalars
 :math:`q_1,q_2,\ldots,q_n` in :math:`A`. If we introduce
@@ -332,7 +333,8 @@ The dot product is often used to determine:
 - the length of a vector along a direction of another vector :math:`\hat{u}`
   (called the projection):
   :math:`\mbox{proj}_{\hat{u}} \bar{v} = \bar{v} \cdot \hat{u}`
-- if two vectors are perpendicular: :math:`\bar{v} \cdot \bar{w} = 0 \mbox{ if }\bar{v} \perp \bar{w}`
+- if two vectors are perpendicular: :math:`\bar{v} \cdot \bar{w} = 0 \mbox{ if
+  and only if}\bar{v} \perp \bar{w}`
 - Compute power: :math:`P = \bar{F} \cdot \bar{v}`, where :math:`\bar{F}` is a
   force vector and :math:`\bar{v}` is the velocity of the point the force is
   acting on.

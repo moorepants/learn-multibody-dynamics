@@ -826,12 +826,27 @@ the orientation of two reference frames and are referred to as `Euler Angles`_
 .. _Euler Angles: https://en.wikipedia.org/wiki/Euler_angles
 
 There are 12 valid sets of successive orientations that can arbitrarily orient
-one reference frame with respect to another. We will also refer to these 12
-possible orientation sets as "body fixed orientations". As we will soon see, a
-rigid body and a reference frame are synonymous from an orientation perspective
-and each successive orientation rotates about a shared unit vector fixed in
-both of the reference frames (or bodies), thus "body fixed orientations". The
-method
+one reference frame with respect to another. These are the six "Proper Euler
+Angles":
+
+.. math::
+
+   x\textrm{-}y\textrm{-}z, y\textrm{-}z\textrm{-}x, z\textrm{-}x\textrm{-}y,
+   x\textrm{-}z\textrm{-}y, z\textrm{-}y\textrm{-}x, y\textrm{-}x\textrm{-}z
+
+and the six "Tait-Bryan Angles":
+
+.. math::
+
+   z\textrm{-}x\textrm{-}z, x\textrm{-}y\textrm{-}x, y\textrm{-}z\textrm{-}y,
+   z\textrm{-}y\textrm{-}z, x\textrm{-}z\textrm{-}x, y\textrm{-}x\textrm{-}y
+
+Different sets can be more or less suitable for the kinematic nature of the
+system you are describing. We will also refer to these 12 possible orientation
+sets as "body fixed orientations". As we will soon see, a rigid body and a
+reference frame are synonymous from an orientation perspective and each
+successive orientation rotates about a shared unit vector fixed in both of the
+reference frames (or bodies), thus "body fixed orientations". The method
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_body_fixed`
 can be used to establish the relationship between :math:`A` and :math:`D`
 without the need to create auxiliary reference frames :math:`B` and :math:`C`:
@@ -957,7 +972,7 @@ These act as described by the rule
    i^2 = j^2 = k^2 = ijk = -1.
 
 A general quaternion :math:`q` can thus be written in terms of its components
-:math:`q_0`, :math:`q_i` :math:`q_j`, :math:`q_k`:
+:math:`q_0`, :math:`q_i` :math:`q_j`, :math:`q_k` which are real numbers:
 
 .. math::
 
@@ -990,7 +1005,7 @@ For example, if the rotation axis is :math:`\hat{n}_x`, we get:
 
    q = (sm.cos(theta/2), sm.sin(theta/2), 0, 0)
    A.orient_quaternion(N, q)
-   sm.simplify(A.dcm(N))
+   sm.trigsimp(A.dcm(N))
 
 The length of a quaternion is the square root of the sum of the squares of its
 components.
