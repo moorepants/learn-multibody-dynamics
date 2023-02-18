@@ -470,7 +470,6 @@ Simplifying these trigonometric expressions shows the expected result:
    :class: dropdown
 
    .. math::
-      :label: dcm-simple-relationship
 
       {}^B\mathbf{C}^N
       &=

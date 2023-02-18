@@ -567,7 +567,7 @@ later use in the animation of the motion.
 
 .. jupyter-execute::
 
-   fps = 30
+   fps = 20
    ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
    sol = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)

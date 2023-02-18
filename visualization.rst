@@ -232,7 +232,7 @@ output.
       x0[:3] = q_vals
       x0[3:] = u_vals
 
-      fps = 50
+      fps = 20
       t0, tf = 0.0, 10.0
       ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
       result = solve_ivp(eval_rhs, (t0, tf), x0, args=(p_vals,), t_eval=ts)
