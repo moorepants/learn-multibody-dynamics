@@ -16,4 +16,5 @@ dependencies:
   - sphinx-autobuild  # dev
   - sphinx-material ==0.0.35
   - sphinx-togglebutton ==0.3.1
+  - sphinxcontrib-youtube ==1.2.0
   - sympy ==1.11.1

@@ -1119,12 +1119,8 @@ https://docs.sympy.org, where you will find general information on SymPy.
 
 The tutorial is also available on video:
 
-.. raw:: html
-
-   <iframe width="560" height="315"
-   src="https://www.youtube.com/embed/AqnpuGbM6-Q" title="YouTube video player"
-   frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-   encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+.. youtube:: AqnpuGbM6-Q
+   :align: center
 
 If you want to ask a question about using SymPy (or search to see if someone
 else has asked your question), you can do so at the following places:

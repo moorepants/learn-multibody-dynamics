@@ -468,14 +468,8 @@ nonholonomic locomotion [Ostrowski1994]_. Similar to the Chaplygin Sleigh, the
 wheels can generally only travel in the direction they are pointed. This
 classic video from 1993 shows how to propel the board:
 
-.. raw:: html
-
-   <center>
-   <iframe width="560" height="315"
-   src="https://www.youtube.com/embed/yxlC95YjmEs" title="YouTube video player"
-   frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-   encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-   </center>
+.. youtube:: yxlC95YjmEs
+   :align: center
 
 .. _snakeboard: https://en.wikipedia.org/wiki/Snakeboard
 

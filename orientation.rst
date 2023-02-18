@@ -724,19 +724,9 @@ space.
 Watch this video to get a sense of the orientation axes for each intermediate
 auxiliary reference frame:
 
-.. raw:: html
-
-   <center>
-      <iframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/xQMBIXqWcjI?start=177"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-   </center>
+.. youtube:: xQMBIXqWcjI
+   :align: center
+   :url_parameters: "?start=177"
 
 We first orient :math:`B` with respect to :math:`A` about the shared :math:`z`
 unit vector through the angle :math:`\psi`, as shown below:
