@@ -18,6 +18,24 @@ License
 The contents of this repository are licensed under the CC-BY 4.0 license. See
 ``license.rst`` for more information.
 
+Design
+======
+
+The design of the book has these general goals:
+
+- use computational thinking to teach multibody dynamics
+- the book is online and interactive (run/modify code, interact with figures)
+- don't just teach the math and expect the students to figure out the
+  computation on their own, the computations should be first class and could
+  even go as far as replacing the math as the teach mechanism
+- computational difficulties should not be hidden and should be taught
+- after completing the book, you should be able to create a physics engine if
+  you desired
+- most lessons should be motivated by a real problem statement, instead of
+  teaching the concepts with little connection to reality or strictly from a
+  mathematical sense
+- allow collaborative contributions
+
 Building the Website
 ====================
 
