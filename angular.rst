@@ -98,6 +98,15 @@ angular velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
    \left(\frac{{}^A d\hat{b}_x}{dt} \cdot \hat{b}_y\right) \hat{b}_z
    \textrm{.}
 
+.. warning::
+
+   Don't confuse the left and right superscripts on direction cosine matrices
+   and angular velocities. :math:`{}^B\mathbf{C}^A` describes the orientation
+   of :math:`B` rotated with respect to :math:`A` and the mapping of vectors in
+   :math:`A` to vectors expressed in :math:`B`. Whereas
+   :math:`{}^A\bar{\omega}^B` describes the angular velocity of :math:`B` when
+   observed from :math:`A`.
+
 If :math:`B` is oriented with respect to :math:`A` and mutually perpendicular
 unit vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` are fixed in :math:`A` then
 there are these general relationships among the unit vectors of each frame (see
@@ -186,10 +195,81 @@ The angular velocity vector is then:
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
    A_w_B
 
+If you know the direction cosine matrix and the derivative of its entries with
+respect to time, the angular velocity can be directly calculated with the above
+equation.
+
+.. admonition:: Exercise
+
+   At one instance of time, the direction cosine matrix is:
+
+   .. math::
+
+      {}^B\mathbf{C}^A =
+      \begin{bmatrix}
+        \frac{\sqrt{2}}{4} & \frac{\sqrt{2}}{2} & \frac{\sqrt{6}}{4} \\
+        -\frac{\sqrt{3}}{2} & 0 & \frac{1}{2} \\
+        \frac{\sqrt{2}}{4} & - \frac{\sqrt{2}}{2} & \frac{\sqrt{6}}{4}
+      \end{bmatrix}
+
+   and the time derivatives of the entries of the direction cosine matrix are:
+
+   .. math::
+
+      \frac{d{}^B\mathbf{C}^A}{dt} =
+      \begin{bmatrix}
+        -\frac{\sqrt{6}}{2} - \frac{3 \sqrt{2}}{4} & - \frac{\sqrt{6}}{4} + \frac{3 \sqrt{2}}{2} & - \frac{3 \sqrt{6}}{4} + \sqrt{2}\\
+        -1 & - \frac{1}{2} & - \sqrt{3}\\
+        - \frac{\sqrt{6}}{2} + \frac{3 \sqrt{2}}{4} & - \frac{\sqrt{6}}{4} + \frac{3 \sqrt{2}}{2} & \frac{3 \sqrt{6}}{4}
+      \end{bmatrix}
+
+   apply the definition of angular velocity to find :math:`{}^A\bar{\omega}^B`.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   Define the two matrices:
+
+   .. jupyter-execute::
+
+      B_C_A = sm.Matrix([
+          [ sm.sqrt(2)/4,  sm.sqrt(2)/2, sm.sqrt(6)/4],
+          [-sm.sqrt(3)/2,          0,       sm.S(1)/2],
+          [ sm.sqrt(2)/4, -sm.sqrt(2)/2, sm.sqrt(6)/4]
+      ])
+      B_C_A
+
+   .. jupyter-execute::
+
+      B_C_A_dt = sm.Matrix([
+          [-sm.sqrt(6)/2 - 3*sm.sqrt(2)/4, -sm.sqrt(6)/4 + 3*sm.sqrt(2)/2, -3*sm.sqrt(6)/4 + sm.sqrt(2)],
+          [                      -1,                     -sm.S(1)/2,               -sm.sqrt(3)],
+          [-sm.sqrt(6)/2 + 3*sm.sqrt(2)/4, -sm.sqrt(6)/4 + 3*sm.sqrt(2)/2,            3*sm.sqrt(6)/4]
+      ])
+      B_C_A_dt
+
+   Recognizing the pattern in the definition of angular velocity, rows of each
+   matrix can be matrix multiplied to arrive at the correct measure number:
+
+   .. jupyter-execute::
+
+      mnx = (B_C_A[2, :]*B_C_A_dt[1, :].transpose())[0, 0]
+      mny = (B_C_A[0, :]*B_C_A_dt[2, :].transpose())[0, 0]
+      mnz = (B_C_A[1, :]*B_C_A_dt[0, :].transpose())[0, 0]
+
+      A_w_B = mnx*B.x + mny*B.y + mnz*B.z
+
+   :external:py:meth:`~sympy.physics.vector.vector.Vector.simplify` applies
+   ``simplify()`` to each measure number of a vector:
+
+   .. jupyter-execute::
+
+      A_w_B.simplify()
+
 Angular Velocity of Simple Orientations
 =======================================
 
-For a simple orientation of :math:`A` with respect to :math:`B` about the
+For a simple orientation of :math:`B` with respect to :math:`A` about the
 :math:`z` axis through :math:`\theta` the direction cosine matrix is:
 
 .. jupyter-execute::
@@ -199,36 +279,36 @@ For a simple orientation of :math:`A` with respect to :math:`B` about the
    B_C_A = sm.Matrix([[sm.cos(theta), sm.sin(theta), 0],
                       [-sm.sin(theta), sm.cos(theta), 0],
                       [0, 0, 1]])
+
    B_C_A
 
-Following the same pattern as before the angular velocity of :math:`B` in
-:math:`A` can be formed:
+Applying the definition of angular velocity as before, the angular velocity of
+:math:`B` in :math:`A` is:
 
 .. jupyter-execute::
 
    A = me.ReferenceFrame('A')
    B = me.ReferenceFrame('B')
-   A.orient_explicit(B, B_C_A)
+   B.orient_explicit(A, B_C_A.transpose())
 
    mnx = me.dot(B.y.express(A).dt(A), B.z)
    mny = me.dot(B.z.express(A).dt(A), B.x)
    mnz = me.dot(B.x.express(A).dt(A), B.y)
 
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
+   A_w_B
+
+This can be simplified with a trigonometric identity. We can do this with
+:external:py:meth:`~sympy.physics.vector.vector.Vector.simplify` which applies
+``simplify()`` to each measure number of a vector:
+
+.. jupyter-execute::
+
    A_w_B.simplify()
 
-.. note::
-
-   Don't confuse the left and right superscripts on direction cosine matrices
-   and angular velocities. :math:`{}^B\mathbf{C}^A` describes the orientation
-   of :math:`B` rotated with respect to :math:`A` and the mapping of vectors in
-   :math:`A` to vectors expressed in :math:`B`. Whereas
-   :math:`{}^A\bar{\omega}^B` describes the angular velocity of :math:`B` when
-   observed from :math:`A`.
-
-The angular velocity of a simple orientation is simply the time rate of change of
-:math:`\theta` about :math:`\hat{b}_z`, the axis of the simple orientation. SymPy
-Mechanics offers the
+The angular velocity of a simple orientation is simply the time rate of change
+of :math:`\theta` about :math:`\hat{b}_z=\hat{a}_z`, the axis of
+the simple orientation. SymPy Mechanics offers the
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_vel_in`
 method for automatically calculating the angular velocity if a direction cosine
 matrix exists between the two reference frames:
@@ -254,7 +334,6 @@ some finite time. If this is the case, then :math:`{}^A\bar{\omega}^B = \omega
 :math:`B` both of which are perpendicular to the orientation axis :math:`\hat{k}`.
 We call :math:`\omega=\dot{\theta}` the angular speed of :math:`B` in
 :math:`A`.
-
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_axis` can
 take any arbitrary vector fixed in :math:`A` and :math:`B` to establish the
 orientation:
@@ -302,16 +381,34 @@ vector is:
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
    A_w_B.simplify()
 
-.. todo::
-
-   ``simplify()`` shouldn't be needed here: https://github.com/sympy/sympy/issues/23130
-
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_vel_in` gives
 the same result:
 
 .. jupyter-execute::
 
-   B.ang_vel_in(A).simplify()
+   B.ang_vel_in(A)
+
+
+.. admonition:: Exercise
+
+   Calculate the angular velocity of the T-handle if z is along the spin axis,
+   y aligns with the handle, and x follows from the right hand rule.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   psi: rotation about y
+   theta: spin
+   phi: reversal angle
+
+   .. jupyter-execute::
+
+      psi, theta, phi = me.dynamicsymbols('psi, theta, varphi')
+
+      A = me.ReferenceFrame('A')
+      B = me.ReferenceFrame('B')
+      B.orient_body_fixed(A, (psi, theta, phi), 'yxz')
+      B.ang_vel_in(A)
 
 Time Derivatives of Vectors
 ===========================
