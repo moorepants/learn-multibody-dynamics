@@ -2,47 +2,11 @@
 Angular Kinematics
 ==================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
    :jupyter-download-script:`angular` or Jupyter Notebook:
    :jupyter-download-notebook:`angular`.
-
-Angular Velocity
-================
-
-In Ch. :ref:`Orientation of Reference Frames` we learned that reference frames
-can be oriented relative to each other. If the relative orientation of two
-reference frames change with respect to time, then we can calculate the angular
-velocity :math:`{}^A\bar{\omega}^B` of reference frame :math:`B` when observed
-from reference frame :math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are
-right handed mutually perpendicular unit vectors fixed in :math:`B` then the
-angular velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
-
-.. math::
-   :label: angular-velocity-definition
-
-   {}^A\bar{\omega}^B :=
-   \left(\frac{{}^A d\hat{b}_y}{dt} \cdot \hat{b}_z\right) \hat{b}_x +
-   \left(\frac{{}^A d\hat{b}_z}{dt} \cdot \hat{b}_x\right) \hat{b}_y +
-   \left(\frac{{}^A d\hat{b}_x}{dt} \cdot \hat{b}_y\right) \hat{b}_z
-
-If :math:`B` is oriented with respect to :math:`A` and mutually perpendicular
-unit vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` are fixed in :math:`A` then
-there are these general relationships among the unit vectors of each frame (see
-:ref:`Direction Cosine Matrix`):
-
-.. math::
-   :label: unit-vector-general-relation
-
-   \hat{b}_x & = c_{xx} \hat{a}_x + c_{xy} \hat{a}_y + c_{xz} \hat{a}_z \\
-   \hat{b}_y & = c_{yx} \hat{a}_x + c_{yy} \hat{a}_y + c_{yz} \hat{a}_z \\
-   \hat{b}_z & = c_{zx} \hat{a}_x + c_{zy} \hat{a}_y + c_{zz} \hat{a}_z
-
-We can create these equations in SymPy to demonstrate how to work with the
-definition of angular velocity.
 
 .. jupyter-execute::
 
@@ -70,8 +34,85 @@ definition of angular velocity.
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
 
-We first create the direction cosine matrix with time varying elements:
+- apply the definition of angular velocity
+
+Introduction
+============
+
+To apply `Euler's Laws of Motion`_ to a multibody system we will need to
+determine how the `angular momentum`_ of each rigid body changes with time.
+This requires that we specify the angular kinematics of each body in the
+system: typically both angular velocity and angular acceleration. Assuming that
+a reference frame is fixed to a rigid body, we will start by finding the
+angular kinematics of a single reference frame and then use the properties of
+:ref:`Successive Orientations` to find the angular kinematics of a set of
+connected reference frames.
+
+.. _Euler's Laws of Motion: https://en.wikipedia.org/wiki/Euler%27s_laws_of_motion
+.. _angular momentum: https://en.wikipedia.org/wiki/Angular_momentum
+
+In the video below, a small T-handle is shown spinning in low Earth orbit
+gravity onboard the International Space Station. This single rigid body has an
+orientation, angular velocity, and angular acceleration at any given instance
+of time.
+
+.. raw:: html
+
+   <center>
+   <video width="640" height="360" controls>
+     <source
+       src="https://upload.wikimedia.org/wikipedia/commons/b/be/Dzhanibekov_effect.ogv"
+       type="video/ogg">
+   </video>
+   <p>Public Domain, NASA</p>
+   </center>
+
+The T-handle exhibits unintuitive motion, reversing back and forth
+periodically. This phenomena is often referred to as the "`Dzhanibekov
+effect`_" and Euler's Laws of Motion predict the behavior, which we will
+investigate in later chapters. For now, we will learn how to specify the
+angular kinematics of a reference frame in motion, such as this.
+
+.. _Dzhanibekov effect: https://en.wikipedia.org/wiki/Tennis_racket_theorem
+
+Angular Velocity
+================
+
+In Ch. :ref:`Orientation of Reference Frames` we learned that reference frames
+can be oriented relative to each other. If the relative orientation of two
+reference frames change with respect to time, then we can calculate the angular
+velocity :math:`{}^A\bar{\omega}^B` of reference frame :math:`B` when observed
+from reference frame :math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are
+right handed mutually perpendicular unit vectors fixed in :math:`B` then the
+angular velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
+
+.. math::
+   :label: angular-velocity-definition
+
+   {}^A\bar{\omega}^B :=
+   \left(\frac{{}^A d\hat{b}_y}{dt} \cdot \hat{b}_z\right) \hat{b}_x +
+   \left(\frac{{}^A d\hat{b}_z}{dt} \cdot \hat{b}_x\right) \hat{b}_y +
+   \left(\frac{{}^A d\hat{b}_x}{dt} \cdot \hat{b}_y\right) \hat{b}_z
+   \textrm{.}
+
+If :math:`B` is oriented with respect to :math:`A` and mutually perpendicular
+unit vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` are fixed in :math:`A` then
+there are these general relationships among the unit vectors of each frame (see
+:ref:`Direction Cosine Matrices`):
+
+.. math::
+   :label: unit-vector-general-relation
+
+   \hat{b}_x & = c_{xx} \hat{a}_x + c_{xy} \hat{a}_y + c_{xz} \hat{a}_z \\
+   \hat{b}_y & = c_{yx} \hat{a}_x + c_{yy} \hat{a}_y + c_{yz} \hat{a}_z \\
+   \hat{b}_z & = c_{zx} \hat{a}_x + c_{zy} \hat{a}_y + c_{zz} \hat{a}_z
+
+We can create these equations in SymPy to demonstrate how to work with the
+definition of angular velocity. Start by first creating the direction cosine
+matrix with time varying elements:
 
 .. jupyter-execute::
 
@@ -148,8 +189,8 @@ The angular velocity vector is then:
 Angular Velocity of Simple Orientations
 =======================================
 
-For a simple orientation about the :math:`z` axis through :math:`\theta` the
-direction cosine matrix is:
+For a simple orientation of :math:`A` with respect to :math:`B` about the
+:math:`z` axis through :math:`\theta` the direction cosine matrix is:
 
 .. jupyter-execute::
 
