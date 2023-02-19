@@ -186,61 +186,6 @@ The angular velocity vector is then:
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
    A_w_B
 
-.. admonition:: Exercise
-
-   Apply the definition of angular velocity to find :math:`{}^B\bar{\omega}^A`
-   and state how :math:`{}^B\bar{\omega}^A` nd :math:`{}^A\bar{\omega}^B`
-   relate.
-
-.. admonition:: Solution
-   :class: dropdown
-
-   Apply the definition using the same direction cosine matrix as before:
-
-   .. jupyter-execute::
-
-      mnx = me.dot(A.y.express(B).dt(B), A.z)
-      mny = me.dot(A.z.express(B).dt(B), A.x)
-      mnz = me.dot(A.x.express(B).dt(B), A.y)
-
-      B_w_A = mnx*A.x + mny*A.y + mnz*A.z
-      B_w_A
-
-   .. jupyter-execute::
-
-      repl = {
-      cxx.diff(): 1.0,
-      cyy.diff(): 2.0,
-      czz.diff(): 3.0,
-      cxy.diff(): 4.0,
-      cyx.diff(): -4.0,
-      cxz.diff(): 5.0,
-      czx.diff(): -5.0,
-      cyz.diff(): 6.0,
-      czy.diff(): -6.0,
-      cxx: 1.0,
-      cyy: 2.0,
-      czz: 3.0,
-      cxy: 4.0,
-      cyx: 4.0,
-      cxz: 5.0,
-      czx: 5.0,
-      cyz: 6.0,
-      czy: 6.0,
-      }
-
-   .. jupyter-execute::
-
-      A_w_B.xreplace(repl)
-
-   .. jupyter-execute::
-
-      B_w_A.express(B).xreplace(repl)
-
-   .. jupyter-execute::
-
-      A_w_B.xreplace(repl).angle_between(B_w_A.express(B).xreplace(repl))
-
 Angular Velocity of Simple Orientations
 =======================================
 
