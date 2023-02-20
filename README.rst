@@ -187,6 +187,25 @@ Exercises look like this:
 
       The answer is 2.
 
+Indentation:
+
+- Python: 4 spaces
+- RestructuredText: 3 spaces
+- LaTeX: 2 spaces
+
+.. code:: rst
+
+   .. math::
+
+      \begin{bmatrix}
+        a & b
+      \end{bmatrix}
+
+   .. juputer-execute::
+
+      def f(a):
+          return a
+
 jupyer-sphinx
 -------------
 
