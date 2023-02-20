@@ -220,7 +220,7 @@ notation convention, this holds:
 
 .. admonition:: Exercise
 
-   Write :math:`{}^N\mathbf{C}^A` for simple rotations about both the shared
+   Write :math:`{}^A\mathbf{C}^N` for simple rotations about both the shared
    :math:`\hat{n}_x` and :math:`\hat{a}_x` and shared :math:`\hat{n}_y` and
    :math:`\hat{a}_y` axes, rotating :math:`A` with respect to :math:`N` through
    angle :math:`\theta`.
