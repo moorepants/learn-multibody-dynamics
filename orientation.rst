@@ -479,6 +479,8 @@ Simplifying these trigonometric expressions shows the expected result:
       &=
       \left({}^B\mathbf{C}^N
       \left({}^A\mathbf{C}^N\right)^T\right)^T
+      &=
+      {}^A\mathbf{C}^N\left({}^B\mathbf{C}^N\right)^T
 
 SymPy Mechanics
 ===============
@@ -830,15 +832,15 @@ Angles":
 
 .. math::
 
-   x\textrm{-}y\textrm{-}z, y\textrm{-}z\textrm{-}x, z\textrm{-}x\textrm{-}y,
-   x\textrm{-}z\textrm{-}y, z\textrm{-}y\textrm{-}x, y\textrm{-}x\textrm{-}z
+   z\textrm{-}x\textrm{-}z, x\textrm{-}y\textrm{-}x, y\textrm{-}z\textrm{-}y,
+   z\textrm{-}y\textrm{-}z, x\textrm{-}z\textrm{-}x, y\textrm{-}x\textrm{-}y
 
 and the six "Tait-Bryan Angles":
 
 .. math::
 
-   z\textrm{-}x\textrm{-}z, x\textrm{-}y\textrm{-}x, y\textrm{-}z\textrm{-}y,
-   z\textrm{-}y\textrm{-}z, x\textrm{-}z\textrm{-}x, y\textrm{-}x\textrm{-}y
+   x\textrm{-}y\textrm{-}z, y\textrm{-}z\textrm{-}x, z\textrm{-}x\textrm{-}y,
+   x\textrm{-}z\textrm{-}y, z\textrm{-}y\textrm{-}x, y\textrm{-}x\textrm{-}z
 
 Different sets can be more or less suitable for the kinematic nature of the
 system you are describing. We will also refer to these 12 possible orientation
