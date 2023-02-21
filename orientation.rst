@@ -704,7 +704,7 @@ frame :math:`A`.
 
 .. _camera-gimbal:
 
-.. figure:: https://objects-us-east-1.dream.io/mechmotum/orientation-camera-gimbal.png
+.. figure:: https://moorepants.info/mechmotum-bucket/orientation-camera-gimbal.png
    :align: center
 
    Four reference frames labeled on the Turnigy Pro Steady Hand Camera Gimbal.
