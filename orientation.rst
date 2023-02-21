@@ -479,7 +479,7 @@ Simplifying these trigonometric expressions shows the expected result:
       &=
       \left({}^B\mathbf{C}^N
       \left({}^A\mathbf{C}^N\right)^T\right)^T
-      &=
+      =
       {}^A\mathbf{C}^N\left({}^B\mathbf{C}^N\right)^T
 
 SymPy Mechanics
