@@ -80,7 +80,7 @@ of time.
    </center>
 
 The T-handle exhibits unintuitive motion, reversing back and forth
-periodically. This phenomena is often referred to as the "`Dzhanibekov
+periodically. This phenomena is commonly referred to as the "`Dzhanibekov
 effect`_" and Euler's Laws of Motion predict the behavior, which we will
 investigate in later chapters. For now, we will learn how to specify the
 angular kinematics of a reference frame in motion, such as one fixed to this
@@ -495,10 +495,10 @@ respect to time we can infer:
    {}^A\bar{\omega}^B \times v\hat{b}_x =
    {}^A\bar{\omega}^B \times \bar{v}
 
-:math:numref:`time-derivative-fixed-unit-vector` extends to any vector **fixed
-in** :math:`B` and observed from :math:`A`, making the time derivative equal to
-the cross product of the angular velocity of :math:`B` in :math:`A` with the
-vector.
+Eq. :math:numref:`time-derivative-fixed-unit-vector` extends to any vector
+**fixed in** :math:`B` and observed from :math:`A`, making the time derivative
+equal to the cross product of the angular velocity of :math:`B` in :math:`A`
+with the vector.
 
 Now, if :math:`\bar{u}` is a vector that is **not fixed in** :math:`B` we
 return to the product rule in Section :ref:`Product Rule` and first express
@@ -526,13 +526,13 @@ theorem:
    \frac{{}^Bd\bar{u}}{dt} +
    {}^A\bar{\omega}^B\times\bar{u}
 
-:math:numref:`deriv-arb-vector` is a powerful equation because it lets us
+Eq. :math:numref:`deriv-arb-vector` is a powerful equation because it lets us
 differentiate any vector if we know how it changes in a rotating reference
 frame relative to the reference frame we are observing the change from.
 
 We can show that Eq. :math:numref:`deriv-arb-vector` holds with an example.
-Take a :math:`z\textrm{-}x` orientation and an arbitrary vector that is not fixed
-in :math:`B`:
+Take a :math:`z\textrm{-}x` orientation and an arbitrary vector that is not
+fixed in :math:`B`:
 
 .. jupyter-execute::
 
@@ -590,7 +590,7 @@ simplifying:
 
 .. admonition:: Exercise
 
-   Show that ``.dt()`` uses the theorem :math:numref:`deriv-arb-vector`
+   Show that ``.dt()`` uses the theorem Eq. :math:numref:`deriv-arb-vector`
    internally.
 
 .. admonition:: Solution
@@ -779,7 +779,7 @@ does not result in a valid total angular acceleration.
    \ldots +
    {}^Y\bar{\alpha}^Z
 
-We can show by example that an equality in
+We can show by example that an equality in Eq.
 :math:numref:`addition-angular-acceleration` will  not hold. Coming back to the
 successive orientations that form a :math:`y\textrm{-}x\textrm{-}y` Euler
 rotation, we can test the relationship.
