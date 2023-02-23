@@ -683,9 +683,11 @@ and with manual derivatives:
 Addition of Angular Acceleration
 ================================
 
-The calculation of angular acceleration is relatively simple, but the addition
-of angular velocities explained in Sec. :ref:`Addition of Angular Velocity`
-does not extend to angular accelerations.
+The calculation of angular acceleration is relatively simple due to the
+equivalence when observed from different reference frames, but the addition of
+angular velocities explained in Sec. :ref:`Addition of Angular Velocity` does
+not extend to angular accelerations. Adding successive angular accelerations
+does not result in a valid total angular acceleration.
 
 .. math::
    :label: addition-angular-acceleration
@@ -696,9 +698,10 @@ does not extend to angular accelerations.
    \ldots +
    {}^Y\bar{\alpha}^Z
 
-Coming back to the successive orientations that form a
-:math:`y\textrm{-}x\textrm{-}y` Euler rotation, we can see that the result is
-not the same as above:
+We can show by example that an equality in
+:math:numref:`addition-angular-acceleration` will  not hold. Coming back to the
+successive orientations that form a :math:`y\textrm{-}x\textrm{-}y` Euler
+rotation, we can test the relationship.
 
 .. jupyter-execute::
 
@@ -713,7 +716,7 @@ not the same as above:
    C.orient_axis(B, theta, B.x)
    D.orient_axis(C, phi, C.y)
 
-The simple angular acceleration of each successive orientations is shown:
+The simple angular acceleration of each successive orientation is shown:
 
 .. jupyter-execute::
 
@@ -730,7 +733,8 @@ The simple angular acceleration of each successive orientations is shown:
    C_alp_D = D.ang_acc_in(C)
    C_alp_D
 
-Summing the successive angular accelerations gives this result:
+Summing the successive angular accelerations and expressing the resulting
+vector in the body fixed reference frame :math:`D` gives this result:
 
 .. jupyter-execute::
 
@@ -741,6 +745,11 @@ which is not equal to the correct, more complex, result:
 
 .. jupyter-execute::
 
-   D.ang_acc_in(A).express(D).simplify()
+   D.ang_vel_in(A).dt(A).express(D).simplify()
 
-.. warning:: Do not sum successive angular accelerations!
+Angular accelerations derived from successive orientations require an explicit
+differentiation of the associated angular velocity vector. There unfortunately
+is no theorem that simplifies this calculation as we see with orientation and
+angular velocity.
+
+.. todo:: Exericse that asks for angular acceleration of some linked system.
