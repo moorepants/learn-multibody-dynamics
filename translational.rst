@@ -8,6 +8,18 @@ Translational Kinematics
    :jupyter-download-script:`translational` or Jupyter Notebook:
    :jupyter-download-notebook:`translational`.
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- calculate the velocity and acceleration of a point in a multibody system
+- apply the one and two point theorems to calculate velocity and acceleration
+  of points
+
+Introduction
+============
+
 In multibody dynamics, we are going to need to calculate the translation
 velocities and accelerations of points. We will learn that the acceleration of
 the mass centers of the bodies in a multibody system will be a primary
