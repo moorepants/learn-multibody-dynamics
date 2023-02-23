@@ -431,9 +431,9 @@ this same calculation and gives the same result:
 
    .. math::
 
-      0 \leq & \psi & \leq \pi \\
-      -\pi/2 \leq & \theta & \leq \pi/2 \\
-      -\infty \leq & \varphi & \leq \infty
+      0       \leq \psi    \leq \pi \\
+      -\pi/2  \leq \theta  \leq \pi/2 \\
+      -\infty \leq \varphi \leq \infty
 
    Now we can check the direction cosine matrix at the limits of :math:`\psi`
    and :math:`\theta` to see if they reduce the direction cosine matrix to a
