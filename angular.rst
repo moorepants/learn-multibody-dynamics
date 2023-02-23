@@ -42,7 +42,7 @@ After completing this chapter readers will be able to:
 - apply the definition of angular velocity
 - calculate the angular velocity of simple rotations
 - choose Euler angles for a rotating reference frame
-- calctulate the angular velocity of references frames described by successive
+- calculate the angular velocity of references frames described by successive
   simple rotations
 - derive the time derivative of a vector in terms of angular velocities
 - calculate the angular acceleration of a reference frame
@@ -83,7 +83,8 @@ The T-handle exhibits unintuitive motion, reversing back and forth
 periodically. This phenomena is often referred to as the "`Dzhanibekov
 effect`_" and Euler's Laws of Motion predict the behavior, which we will
 investigate in later chapters. For now, we will learn how to specify the
-angular kinematics of a reference frame in motion, such as this.
+angular kinematics of a reference frame in motion, such as one fixed to this
+T-handle.
 
 .. _Dzhanibekov effect: https://en.wikipedia.org/wiki/Tennis_racket_theorem
 
@@ -197,7 +198,7 @@ Each of the measure numbers of :math:`{}^A\bar{\omega}^B` are then:
    mnz = me.dot(B.x.express(A).dt(A), B.y)
    mnz
 
-The angular velocity vector is then:
+The angular velocity vector for an arbitrary direction cosine matrix is then:
 
 .. jupyter-execute::
 
@@ -269,7 +270,8 @@ equation.
       A_w_B = mnx*B.x + mny*B.y + mnz*B.z
 
    :external:py:meth:`~sympy.physics.vector.vector.Vector.simplify` applies
-   ``simplify()`` to each measure number of a vector:
+   :external:py:meth:`~sympy.simplify.simplify.simplify` to each measure number
+   of a vector:
 
    .. jupyter-execute::
 
@@ -363,7 +365,9 @@ The angular speed is then:
    B.ang_vel_in(A).magnitude()
 
 .. note:: This result should be :math:`|\dot{\theta}|`. This is a bug in SymPy,
-   see https://github.com/sympy/sympy/issues/23173 for more info.
+   see https://github.com/sympy/sympy/issues/23173 for more info. This
+   generally will not cause issues, but for certain equation of motion
+   derivations it could, so beware.
 
 .. todo:: Why doesn't this simplify to theta dot? I tried ``real=True`` on
    theta.
@@ -390,8 +394,9 @@ vector is:
    A_w_B = mnx*B.x + mny*B.y + mnz*B.z
    A_w_B.simplify()
 
-:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_vel_in` gives
-the same result:
+The method
+:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.ang_vel_in` does
+this same calculation and gives the same result:
 
 .. jupyter-execute::
 
@@ -402,9 +407,9 @@ the same result:
    Calculate the angular velocity of the T-handle :math:`T` with respect to the
    space station :math:`N` if :math:`\hat{t}_z` is parallel to the spin axis,
    :math:`\hat{t}_y` is parallel with the handle axis, and :math:`\hat{t}_x` is
-   normal to the "T" and follows from the right hand rule. Select Euler angles
-   that avoid `gimbal lock`_. *Hint: Read "Loss of degree of freedom with Euler
-   angles" in the gimbal lock article.*
+   normal to the plane made by the "T" and follows from the right hand rule.
+   Select Euler angles that avoid `gimbal lock`_. *Hint: Read "Loss of degree
+   of freedom with Euler angles" in the gimbal lock article.*
 
    .. _gimbal lock: https://en.wikipedia.org/wiki/Gimbal_lock
 
@@ -419,17 +424,20 @@ the same result:
       T = me.ReferenceFrame('T')
       T.orient_body_fixed(N, (psi, theta, phi), 'xyz')
 
-   When selecting the :math:`x\textrm{-}y\textrm{-}z` body fixed rotations
-   the angles we observe in the video are bounded like so:
+   To check whether the :math:`x\textrm{-}y\textrm{-}z` body fixed rotation
+   angles we chose are suitable for the observed moition in the video we first
+   estimate the likely bounds of motion in terms of multiples of :math:`\pi/2`.
+   For our Euler angles this seems reasonable:
 
    .. math::
 
-      0 \leq \psi \leq \pi \\
-      -\pi/2 \leq \theta \leq \pi/2 \\
-      -\inf \leq \varphi \leq \inf \\
+      0 \leq & \psi & \leq \pi \\
+      -\pi/2 \leq & \theta & \leq \pi/2 \\
+      -\infty \leq & \varphi & \leq \infty
 
-   So we can check the direction cosine matrix at the limits of :math:`\psi`
-   and :math:`\theta`.
+   Now we can check the direction cosine matrix at the limits of :math:`\psi`
+   and :math:`\theta` to see if they reduce the direction cosine matrix to a
+   form that indicates gimbal lock.
 
    .. jupyter-execute::
 
@@ -440,7 +448,7 @@ the same result:
       sm.trigsimp(T.dcm(N).xreplace({psi: sm.pi}))
 
    These first matrices show that we can still orient the handle if
-   :math:`\psi` is fixed at its limits.
+   :math:`\psi` is at its limits.
 
    .. jupyter-execute::
 
@@ -451,35 +459,9 @@ the same result:
       sm.trigsimp(T.dcm(N).xreplace({theta: sm.pi/2}))
 
    These second set of matrices show that gimbal lock can occur if
-   :math:`\theta` reaches its limits. But for the observed motion this
-   shouldn't occur and we can use this Euler angle set to model the T-handle
-   for the observed motion.
-
-   .. todo:: Add figure.
-
-   The angular velocity :math:`{}^N\bar{\omega}^T` is:
-
-   .. jupyter-execute::
-
-      T.ang_vel_in(N)
-
-   Another way to check for gimbal lock is to look for possible divide by zero
-   cases in the inverse of the Jacobian of the body fixed measure numbers with
-   respect to the time derivatives of the angles. This will be explained in
-   detail in :ref:`Equations of Motion Nonholonomic Constraints`.
-
-   .. jupyter-execute::
-
-      body_fixed_measure = T.ang_vel_in(N).to_matrix(T)
-      body_fixed_measure
-
-   .. jupyter-execute::
-
-      J = body_fixed_measure.jacobian([psi.diff(), theta.diff(), phi.diff()])
-      sm.trigsimp(J.inv())
-
-   Note the divide by zero if :math:`\theta=n\pi/2` for :math:`n=0, 2, 4,
-   \ldots`.
+   :math:`\theta` reaches its limits. But for the observed motion this limit
+   shouldn't ever be reached. So we can use this Euler angle set to model the
+   T-handle for the observed motion without worry of gimbal lock.
 
 Time Derivatives of Vectors
 ===========================
@@ -493,8 +475,8 @@ that the time derivative of a unit vector **fixed in** :math:`B` is related to
 
    \frac{{}^Ad\hat{b}_x}{dt} = {}^A\bar{\omega}^B \times \hat{b}_x
 
-This indicates that the time derivative is always normal to the unit vector,
-because the magnitude of the unit vector is constant, and the derivative scales
+This indicates that the time derivative is always normal to the unit vector
+because the magnitude of the unit vector is constant and the derivative scales
 with the magnitude of the angular velocity:
 
 .. math::
@@ -503,7 +485,7 @@ with the magnitude of the angular velocity:
    \frac{{}^Ad\hat{b}_x}{dt} = \left| {}^A\bar{\omega}^B \right| \left( {}^A\hat{\omega}^B \times \hat{b}_x \right)
 
 Now if vector :math:`\bar{v} = v\hat{b}_x` and :math:`v` is constant with
-respect to time then:
+respect to time we can infer:
 
 .. math::
    :label: time-derivative-fixed-vector
@@ -537,12 +519,16 @@ theorem:
    \frac{{}^Ad\bar{u}}{dt} &=
    \dot{u}_1\hat{b}_x + \dot{u}_2\hat{b}_y + \dot{u}_3\hat{b}_z +
    u_1\frac{{}^Ad\hat{b}_x}{dt} + u_2\frac{{}^Ad\hat{b}_y}{dt} + u_3\frac{{}^Ad\hat{b}_z}{dt} \\
-   &=
+   \frac{{}^Ad\bar{u}}{dt} &=
    \frac{{}^Bd\bar{u}}{dt} +
    u_1{}^A\bar{\omega}^B\times\hat{b}_x + u_2{}^A\bar{\omega}^B\times\hat{b}_y + u_3{}^A\bar{\omega}^B\times\hat{b}_z \\
-   &=
+   \frac{{}^Ad\bar{u}}{dt} &=
    \frac{{}^Bd\bar{u}}{dt} +
    {}^A\bar{\omega}^B\times\bar{u}
+
+:math:numref:`deriv-arb-vector` is a powerful equation because it lets us
+differentiate any vector if we know how it changes in a rotating reference
+frame relative to the reference frame we are observing the change from.
 
 We can show that Eq. :math:numref:`deriv-arb-vector` holds with an example.
 Take a :math:`z\textrm{-}x` orientation and an arbitrary vector that is not fixed
@@ -579,7 +565,7 @@ in :math:`A`. First :math:`\frac{{}^Bd\bar{u}}{dt}`:
 
    u.dt(B)
 
-and then :math:`{}^A\bar{\omega}^B\times\bar{u}`:
+and then :math:`{}^A\bar{\omega}^B`:
 
 .. jupyter-execute::
 
@@ -592,13 +578,15 @@ and then :math:`{}^A\bar{\omega}^B\times\bar{u}`:
 
    u.dt(B) + me.cross(A_w_B, u)
 
+which is a relatively simple form of the derivative when expressed in the
+rotating reference frame.
+
 We can show that the first result is equivalent by expressing in :math:`B` and
 simplifying:
 
 .. jupyter-execute::
 
    u.express(A).dt(A).express(B).simplify()
-
 
 .. admonition:: Exercise
 
@@ -736,7 +724,7 @@ the orientations are established. For a simple orientation:
    B.orient_axis(A, theta, A.z)
    B.ang_acc_in(A)
 
-Similarly we can calcualte the derivative manually:
+Similarly we can calculate the derivative manually:
 
 .. jupyter-execute::
 
@@ -760,7 +748,7 @@ For a body fixed orientation we get:
 
    D.ang_acc_in(A).simplify()
 
-and with manual derivatives:
+and with manual derivatives of the measure numbers:
 
 .. jupyter-execute::
 
@@ -769,6 +757,9 @@ and with manual derivatives:
 .. jupyter-execute::
 
    D.ang_vel_in(A).dt(D).simplify()
+
+Note the equivalence regardless of the frame the change in velocity is observed
+from.
 
 Addition of Angular Acceleration
 ================================
