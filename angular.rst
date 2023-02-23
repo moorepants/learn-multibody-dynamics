@@ -37,7 +37,16 @@ Angular Kinematics
 Learning Objectives
 ===================
 
+After completing this chapter readers will be able to:
+
 - apply the definition of angular velocity
+- calculate the angular velocity of simple rotations
+- choose Euler angles for a rotating reference frame
+- calctulate the angular velocity of references frames described by successive
+  simple rotations
+- derive the time derivative of a vector in terms of angular velocities
+- calculate the angular acceleration of a reference frame
+- calculate the angular acceleration of successive rotations
 
 Introduction
 ============
@@ -388,41 +397,103 @@ the same result:
 
    B.ang_vel_in(A)
 
-
 .. admonition:: Exercise
 
-   Calculate the angular velocity of the T-handle if z is along the spin axis,
-   y aligns with the handle, and x follows from the right hand rule.
+   Calculate the angular velocity of the T-handle :math:`T` with respect to the
+   space station :math:`N` if :math:`\hat{t}_z` is parallel to the spin axis,
+   :math:`\hat{t}_y` is parallel with the handle axis, and :math:`\hat{t}_x` is
+   normal to the "T" and follows from the right hand rule. Select Euler angles
+   that avoid `gimbal lock`_. *Hint: Read "Loss of degree of freedom with Euler
+   angles" in the gimbal lock article.*
+
+   .. _gimbal lock: https://en.wikipedia.org/wiki/Gimbal_lock
 
 .. admonition:: Solution
    :class: dropdown
-
-   psi: rotation about y
-   theta: spin
-   phi: reversal angle
 
    .. jupyter-execute::
 
       psi, theta, phi = me.dynamicsymbols('psi, theta, varphi')
 
-      A = me.ReferenceFrame('A')
-      B = me.ReferenceFrame('B')
-      B.orient_body_fixed(A, (psi, theta, phi), 'yxz')
-      B.ang_vel_in(A)
+      N = me.ReferenceFrame('N')
+      T = me.ReferenceFrame('T')
+      T.orient_body_fixed(N, (psi, theta, phi), 'xyz')
+
+   When selecting the :math:`x\textrm{-}y\textrm{-}z` body fixed rotations
+   the angles we observe in the video are bounded like so:
+
+   .. math::
+
+      0 \leq \psi \leq \pi \\
+      -\pi/2 \leq \theta \leq \pi/2 \\
+      -\inf \leq \varphi \leq \inf \\
+
+   So we can check the direction cosine matrix at the limits of :math:`\psi`
+   and :math:`\theta`.
+
+   .. jupyter-execute::
+
+      sm.trigsimp(T.dcm(N).xreplace({psi: 0}))
+
+   .. jupyter-execute::
+
+      sm.trigsimp(T.dcm(N).xreplace({psi: sm.pi}))
+
+   These first matrices show that we can still orient the handle if
+   :math:`\psi` is fixed at its limits.
+
+   .. jupyter-execute::
+
+      sm.trigsimp(T.dcm(N).xreplace({theta: -sm.pi/2}))
+
+   .. jupyter-execute::
+
+      sm.trigsimp(T.dcm(N).xreplace({theta: sm.pi/2}))
+
+   These second set of matrices show that gimbal lock can occur if
+   :math:`\theta` reaches its limits. But for the observed motion this
+   shouldn't occur and we can use this Euler angle set to model the T-handle
+   for the observed motion.
+
+   .. todo:: Add figure.
+
+   The angular velocity :math:`{}^N\bar{\omega}^T` is:
+
+   .. jupyter-execute::
+
+      T.ang_vel_in(N)
+
+   Another way to check for gimbal lock is to look for possible divide by zero
+   cases in the inverse of the Jacobian of the body fixed measure numbers with
+   respect to the time derivatives of the angles. This will be explained in
+   detail in :ref:`Equations of Motion Nonholonomic Constraints`.
+
+   .. jupyter-execute::
+
+      body_fixed_measure = T.ang_vel_in(N).to_matrix(T)
+      body_fixed_measure
+
+   .. jupyter-execute::
+
+      J = body_fixed_measure.jacobian([psi.diff(), theta.diff(), phi.diff()])
+      sm.trigsimp(J.inv())
+
+   Note the divide by zero if :math:`\theta=n\pi/2` for :math:`n=0, 2, 4,
+   \ldots`.
 
 Time Derivatives of Vectors
 ===========================
 
 Using the definition of angular velocity one can show ([Kane1985]_, pg. 17)
 that the time derivative of a unit vector **fixed in** :math:`B` is related to
-:math:`B`'s angular velocity as so:
+:math:`B`'s angular velocity by the following theorem:
 
 .. math::
    :label: time-derivative-fixed-unit-vector
 
    \frac{{}^Ad\hat{b}_x}{dt} = {}^A\bar{\omega}^B \times \hat{b}_x
 
-This shows that the derivative is always normal to the rotating unit vector,
+This indicates that the time derivative is always normal to the unit vector,
 because the magnitude of the unit vector is constant, and the derivative scales
 with the magnitude of the angular velocity:
 
@@ -442,12 +513,13 @@ respect to time then:
    {}^A\bar{\omega}^B \times v\hat{b}_x =
    {}^A\bar{\omega}^B \times \bar{v}
 
-This extends to any vector **fixed in** :math:`B` and observed from :math:`A`,
-making the time derivative equal to the cross product of the angular velocity
-of :math:`B` in :math:`A` with the vector.
+:math:numref:`time-derivative-fixed-unit-vector` extends to any vector **fixed
+in** :math:`B` and observed from :math:`A`, making the time derivative equal to
+the cross product of the angular velocity of :math:`B` in :math:`A` with the
+vector.
 
 Now, if :math:`\bar{u}` is a vector that is **not fixed in** :math:`B` we
-return to the product rule in Section :ref:`Product Rule`. First expressed
+return to the product rule in Section :ref:`Product Rule` and first express
 :math:`\bar{u}` in :math:`B`:
 
 .. math::
@@ -455,7 +527,9 @@ return to the product rule in Section :ref:`Product Rule`. First expressed
 
    \bar{u} = u_1\hat{b}_x + u_2\hat{b}_y + u_3\hat{b}_z
 
-The derivative in another reference frame :math:`A` is then:
+Taking the derivative in another reference frame :math:`A` by applying the
+product rule and applying the above theorems let's us arrive at this new
+theorem:
 
 .. math::
    :label: deriv-arb-vector
@@ -526,14 +600,30 @@ simplifying:
    u.express(A).dt(A).express(B).simplify()
 
 
+.. admonition:: Exercise
+
+   Show that ``.dt()`` uses the theorem :math:numref:`deriv-arb-vector`
+   internally.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      u.dt(A)
+
+   .. jupyter-execute::
+
+      u.dt(B) + me.cross(A_w_B, u)
+
 Addition of Angular Velocity
 ============================
 
 Similar to the relationship in direction cosine matrices of successive
 orientations (Sec. :ref:`Successive Orientations`), there is a relationship
 among the angular velocities of successively oriented reference frames
-([Kane1985]_, pg. 24) but it is tied to the addition of vectors instead of
-multiplication of matrices.
+([Kane1985]_, pg. 24) but it relies on the addition of vectors instead of
+multiplication of matrices. The theorem is:
 
 .. math::
    :label: addition-angular-velocity
