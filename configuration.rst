@@ -2,13 +2,43 @@
 Holonomic  Constraints
 ======================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
    :jupyter-download-script:`configuration` or Jupyter Notebook:
    :jupyter-download-notebook:`configuration`.
+
+Code Setup
+==========
+
+.. jupyter-execute::
+
+   import sympy as sm
+   import sympy.physics.mechanics as me
+   me.init_vprinting(use_latex='mathjax')
+
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
+Learning Objectives
+===================
 
 Four-Bar Linkage
 ================
@@ -38,49 +68,34 @@ bicycle:
    Four bar linkage shown in blue, red, orange, and green used in the rear
    suspension mechanism of a mountain bicycle.
 
-   Cartemere, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
+   Cartemere, CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0, via Wikimedia Commons
 
 .. _four-bar linkage: https://en.wikipedia.org/wiki/Four-bar_linkage
 
+Depending on the length of the links, different motion types are possible.
+:numref:`grashof-animation` shows some of the possible motions.
+
+.. _grashof-animation:
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/c/ca/Grashof_Type_I_Four-Bar_Kinematic_Inversions.gif
+   :align: center
+   :width: 80%
+
+   Pasimi, CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0, via Wikimedia Commons
+
 A four bar linkage is an example of a *closed kinematic loop*. The case of
 :numref:`configuration-four-bar` there are two vector paths to point
-:math:`P_4`:
+:math:`P_4` from :math:`P_1`:
 
 .. math::
    :label: vector-loop
 
-   \bar{r}^{P_4/P_1} = & l_n \hat{n}_x \\
-   \bar{r}^{P_4/P_1} = & \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} = l_a\hat{a}_x + l_b\hat{b}_x + l_c\hat{c}_x
+   \bar{r}^{P_4/P_1} & = l_n \hat{n}_x \\
+   \bar{r}^{P_4/P_1} & = \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} = l_a\hat{a}_x + l_b\hat{b}_x + l_c\hat{c}_x
 
 For the loop to close, the two vector paths must equate. We can resolve this by
 disconnecting the loop at some location, :math:`P_4` in our case, and forming
-the open loop vector equations to points that should coincide.
-
-.. jupyter-execute::
-
-   import sympy as sm
-   import sympy.physics.mechanics as me
-   me.init_vprinting(use_latex='mathjax')
-
-.. container:: invisible
-
-   .. jupyter-execute::
-
-      class ReferenceFrame(me.ReferenceFrame):
-
-          def __init__(self, *args, **kwargs):
-
-              kwargs.pop('latexs', None)
-
-              lab = args[0].lower()
-              tex = r'\hat{{{}}}_{}'
-
-              super(ReferenceFrame, self).__init__(*args,
-                                                   latexs=(tex.format(lab, 'x'),
-                                                           tex.format(lab, 'y'),
-                                                           tex.format(lab, 'z')),
-                                                   **kwargs)
-      me.ReferenceFrame = ReferenceFrame
+the *open loop* vector equations to points that should coincide. Keep in mind
+that we assume that the lengths are constant and the angles change with time.
 
 Setup the variables, reference frames, and points:
 
@@ -104,8 +119,9 @@ Setup the variables, reference frames, and points:
    P4 = me.Point('P4')
 
 SymPy Mechanics will warn you if you try to establish a closed loop among a set
-of points and you should not do that. Instead you will establish positions
-among points on one open leg of the chain:
+of points and you should not do that because functions that use points have no
+way to know which vector path you desire to use. Instead you will establish
+positions among points on one open leg of the chain:
 
 .. jupyter-execute::
 
@@ -121,7 +137,8 @@ Now, declare a vector for the other path to :math:`P_4`:
 
    r_P1_P4 = ln*N.x
 
-Now we can form the left hand side of the following equation:
+With both vector paths written, we can form the left hand side of the following
+equation:
 
 .. math::
    :label: constraint-expression
@@ -136,9 +153,11 @@ open loop leg made of points and the additional vector:
    loop = P4.pos_from(P1) - r_P1_P4
    loop
 
-This "loop" vector equation must equate to zero for our linkage to always be a
-closed loop. We have a planar mechanism, so we can extract two scalar equations
-associated with a pair of unit vectors in the plane of the mechanism:
+This "loop" vector expression must equate to zero for our linkage to always be
+a closed loop. We have a planar mechanism, so we can extract two scalar
+equations associated with a pair of unit vectors in the plane of the mechanism.
+We can pick any two non-parallel unit vectors to express the componets in, with
+the intuitive choice being :math:`\hat{n}_x` and :math:`\hat{y}`.
 
 .. jupyter-execute::
 
@@ -152,21 +171,21 @@ associated with a pair of unit vectors in the plane of the mechanism:
 
 For the loop to close, these two expressions must equal zero for all values
 :math:`q_1,q_2,q_3`. These are two nonlinear equations in three time varying
-variables. A solution, sometimes analytically but likely only numerical, can be
-found if we solve for two of the time varying variables. For example,
-:math:`q_2` and :math:`q_3` can be solved for in terms of :math:`q_1`. We would
-then say that :math:`q_2` and :math:`q_3` depend on :math:`q_1`. These two
-equations are called holonomic constraints, or configuration constraints
-because they constrain the kinematic configuration to be a loop. Holonomic
-constraints take the form:
+variables. The solution can be found if we solve for two of the time varying
+variables. For example, :math:`q_2` and :math:`q_3` can be solved for in terms
+of :math:`q_1`. We would then say that :math:`q_2` and :math:`q_3` depend on
+:math:`q_1`. These two equations are called holonomic constraints, or
+configuration constraints, because they constrain the kinematic configuration
+to be a loop. Holonomic constraints take the form of a real valued vector
+function:
 
 .. math::
    :label: configuration-constraint
 
    \bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M
 
-These constraints are functions of configuration variables: time varying angles
-and distances. In our case of the four-bar linkage:
+The four-bar linkage constraints are functions of configuration variables: time
+varying angles and distances. In our case the equations are:
 
 .. math::
    :label: four-bar-constraints
@@ -179,6 +198,139 @@ In SymPy, we'll typically form this column vector as so:
 
    fh = sm.Matrix([fhx, fhy])
    fh
+
+.. admonition:: Exercise
+
+   Write the holonomic constraints for the `Watt's Linkage`_. Use the
+   dimensions :math:`a` and :math:`b` found in the caption of the "Animation of
+   Watt's Linkage" on the Wikipedia page.
+
+   .. figure:: https://upload.wikimedia.org/wikipedia/commons/9/9e/Watts_Linkage.gif
+      :width: 60%
+      :align: center
+
+      Arglin Kampling, CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0, via Wikimedia Commons
+
+   .. _Watt's Linkage: https://en.wikipedia.org/wiki/Watt%27s_linkage
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
+      a, b = sm.symbols('a, b')
+
+      N = me.ReferenceFrame('N')
+      A = me.ReferenceFrame('A')
+      B = me.ReferenceFrame('B')
+      C = me.ReferenceFrame('C')
+
+      A.orient_axis(N, q1, N.z)
+      B.orient_axis(N, q2, N.z)
+      C.orient_axis(N, q3, N.z)
+
+      P1 = me.Point('P1')
+      P2 = me.Point('P2')
+      P3 = me.Point('P3')
+      P4 = me.Point('P4')
+
+      P2.set_pos(P1, b*A.x)
+      P3.set_pos(P2, 2*a*B.x)
+      P4.set_pos(P3, b*C.x)
+
+      P4.pos_from(P1)
+
+      r_P1_P4 = 2*b*N.x - 2*a*N.y
+
+      loop = P4.pos_from(P1) - r_P1_P4
+
+      fh_watts = sm.trigsimp(sm.Matrix([loop.dot(N.x), loop.dot(N.y)]))
+      fh_watts
+
+Solving Holonomic Constraints
+=============================
+
+Only the simplest of holonomic constraint equations may be solved symbolically,
+so you will in general need to solve them numerically. In :ref:`Equations of
+Motion with Holonomic Constraints` we will show how to solve them for
+simulation purposes, but for now SymPy's can
+:external:py:func:`~sympy.solvers.solvers.nsolve` be used to numerically solve
+the equations. If we choose :math:`q_2` and :math:`q_3` to be the dependent
+coordinates, we need to select numerical values for all other variables. Note
+that not all link length combinations result in a valid linkage geometry.
+Starting with the replacements:
+
+.. jupyter-execute::
+
+   import math  # provides pi as a float
+
+   repl = {
+       la: 1.0,
+       lb: 4.0,
+       lc: 3.0,
+       ln: 5.0,
+       q1: 30.0/180.0*math.pi,  # 30 degrees in radians
+   }
+   repl
+
+we can then formulate the constraint equations such that only :math:`q_2` and
+:math:`q_3` are variables:
+
+.. jupyter-execute::
+
+   fh.xreplace(repl)
+
+Generally there may be multiple numerical solutions for the unknowns and the
+unerlying algorthims require a guess to return a specific result. If we make an
+educated guess for the unknowns, then we can find the specific solution with
+``nsolve()``:
+
+.. jupyter-execute::
+
+   q2_guess = -75.0/180.0*math.pi  # -75 degrees in radians
+   q3_guess = 100.0/180.0*math.pi  # 100 degrees in radians
+
+   sol = sm.nsolve(fh.xreplace(repl), (q2, q3), (q2_guess, q3_guess))
+   sol/math.pi*180.0  # to degrees
+
+.. admonition:: Exercise
+
+   Find the angles of the remaining links in `Watt's Linkage`_ if the middle
+   linkage is rotated clockwise 2 degrees.
+
+   .. _Watt's Linkage: https://en.wikipedia.org/wiki/Watt%27s_linkage
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      import math  # provides pi as a float
+
+      repl = {
+          a: 1.0,
+          b: 4.0,
+          q2: -2.0/180.0*math.pi,
+      }
+      repl
+
+   .. jupyter-execute::
+
+      fh_watts.xreplace(repl)
+
+   Generally there may be multiple numerical solutions for the unknowns and the
+   unerlying algorthims require a guess to return a specific result. If we make an
+   educated guess for the unknowns, then we can find the specific solution with
+   ``nsolve()``:
+
+   .. jupyter-execute::
+
+      q2_guess = 15.0/180.0*math.pi
+      q3_guess = -15.0/180.0*math.pi
+
+      #sol = sm.nsolve(fh_watts.xreplace(repl), (q2, q3), (q2_guess, q3_guess))
+      #sol/math.pi*180.0  # to degrees
 
 General Holonomic Constraints
 =============================
