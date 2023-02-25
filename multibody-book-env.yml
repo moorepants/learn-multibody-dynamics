@@ -5,6 +5,7 @@ dependencies:
   - ghp-import ==2.1.0
   - graphviz ==5.0.0
   - imagemagick
+  - ipython <8.9  # 8.9 introduced changes to the autocomplete
   - jupyter-sphinx ==0.4.0  # >=0.4.0 required for new directive names jupyter-download-script/notebook
   - matplotlib ==3.5.*
   - numpy ==1.22.*
