@@ -270,7 +270,7 @@ equation.
       A_w_B = mnx*B.x + mny*B.y + mnz*B.z
 
    :external:py:meth:`~sympy.physics.vector.vector.Vector.simplify` applies
-   :external:py:meth:`~sympy.simplify.simplify.simplify` to each measure number
+   :external:py:func:`~sympy.simplify.simplify.simplify` to each measure number
    of a vector:
 
    .. jupyter-execute::
