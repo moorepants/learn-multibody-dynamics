@@ -40,6 +40,17 @@ Code Setup
 Learning Objectives
 ===================
 
+After completing this chapter readers will be able to:
+
+- derive and specify the configuration constraints (holonomic constraints)
+  equations for a system of connected rigid bodies
+- numerically solve a set of holonomic constraints for the dependent
+  coordinates
+- apply a point configuration constraints as a general approach to constraining
+  a system
+- calculate the number of generalized coordinates
+- choose generalized coordinates
+
 Four-Bar Linkage
 ================
 
@@ -201,9 +212,11 @@ In SymPy, we'll typically form this column vector as so:
 
 .. admonition:: Exercise
 
-   Write the holonomic constraints for the `Watt's Linkage`_. Use the
-   dimensions :math:`a` and :math:`b` found in the caption of the "Animation of
-   Watt's Linkage" on the Wikipedia page.
+   Write the holonomic constraints for the `Watt's Linkage`_. The coupler link
+   has a length of :math:`2a`, the left and right links have length :math:`b`.
+   The vertical distance between the fixed points of the left and right lengths
+   are :math:`2a` and the horizontal distance is :math:`(2-1/20)b`. Use the
+   same reference frame and angle definitions as the four-bar linkage above.
 
    .. figure:: https://upload.wikimedia.org/wikipedia/commons/9/9e/Watts_Linkage.gif
       :width: 60%
@@ -227,8 +240,8 @@ In SymPy, we'll typically form this column vector as so:
       C = me.ReferenceFrame('C')
 
       A.orient_axis(N, q1, N.z)
-      B.orient_axis(N, q2, N.z)
-      C.orient_axis(N, q3, N.z)
+      B.orient_axis(A, q2, A.z)
+      C.orient_axis(B, q3, B.z)
 
       P1 = me.Point('P1')
       P2 = me.Point('P2')
@@ -241,7 +254,7 @@ In SymPy, we'll typically form this column vector as so:
 
       P4.pos_from(P1)
 
-      r_P1_P4 = 2*b*N.x - 2*a*N.y
+      r_P1_P4 = (2 - sm.S(1)/20)*b*N.x - 2*a*N.y
 
       loop = P4.pos_from(P1) - r_P1_P4
 
@@ -251,15 +264,15 @@ In SymPy, we'll typically form this column vector as so:
 Solving Holonomic Constraints
 =============================
 
-Only the simplest of holonomic constraint equations may be solved symbolically,
-so you will in general need to solve them numerically. In :ref:`Equations of
-Motion with Holonomic Constraints` we will show how to solve them for
-simulation purposes, but for now SymPy's can
-:external:py:func:`~sympy.solvers.solvers.nsolve` be used to numerically solve
+Only the simplest of holonomic constraint equations may be solved symbolically
+due to their nonlinear nature, so you will in general need to solve them
+numerically. In :ref:`Equations of Motion with Holonomic Constraints` we will
+show how to solve them for simulation purposes, but for now SymPy's
+:external:py:func:`~sympy.solvers.solvers.nsolve` can be used to numerically solve
 the equations. If we choose :math:`q_2` and :math:`q_3` to be the dependent
 coordinates, we need to select numerical values for all other variables. Note
 that not all link length combinations result in a valid linkage geometry.
-Starting with the replacements:
+Starting with the replacements,
 
 .. jupyter-execute::
 
@@ -281,7 +294,7 @@ we can then formulate the constraint equations such that only :math:`q_2` and
 
    fh.xreplace(repl)
 
-Generally there may be multiple numerical solutions for the unknowns and the
+Generally, there may be multiple numerical solutions for the unknowns and the
 unerlying algorthims require a guess to return a specific result. If we make an
 educated guess for the unknowns, then we can find the specific solution with
 ``nsolve()``:
@@ -297,12 +310,15 @@ educated guess for the unknowns, then we can find the specific solution with
 .. admonition:: Exercise
 
    Find the angles of the remaining links in `Watt's Linkage`_ if the middle
-   linkage is rotated clockwise 2 degrees.
+   linkage is rotated clockwise 5 degrees and :math:`a=2` and :math:`b=4`.
 
    .. _Watt's Linkage: https://en.wikipedia.org/wiki/Watt%27s_linkage
 
 .. admonition:: Solution
    :class: dropdown
+
+   The angle relative to vertical of the middle link is
+   :math:`3\pi/2-(q_1+q_2)`, which we can use to solve for :math:`q_2`.
 
    .. jupyter-execute::
 
@@ -311,7 +327,7 @@ educated guess for the unknowns, then we can find the specific solution with
       repl = {
           a: 1.0,
           b: 4.0,
-          q2: -2.0/180.0*math.pi,
+          q2: 3.0*math.pi/2.0 - 5.0/180.0*math.pi - q1,
       }
       repl
 
@@ -319,18 +335,30 @@ educated guess for the unknowns, then we can find the specific solution with
 
       fh_watts.xreplace(repl)
 
-   Generally there may be multiple numerical solutions for the unknowns and the
-   unerlying algorthims require a guess to return a specific result. If we make an
-   educated guess for the unknowns, then we can find the specific solution with
-   ``nsolve()``:
-
    .. jupyter-execute::
 
-      q2_guess = 15.0/180.0*math.pi
-      q3_guess = -15.0/180.0*math.pi
+      q1_guess = 10.0/180.0*math.pi
+      q3_guess = 100.0/180.0*math.pi
 
-      #sol = sm.nsolve(fh_watts.xreplace(repl), (q2, q3), (q2_guess, q3_guess))
-      #sol/math.pi*180.0  # to degrees
+      sol = sm.nsolve(fh_watts.xreplace(repl), (q1, q3), (q1_guess, q3_guess))
+      sol/math.pi*180.0  # to degrees
+
+..
+   # code to plot the linkage
+   coordinates = P1.pos_from(P1).to_matrix(N)
+   for point in [P2, P3, P4]:
+       coordinates = coordinates.row_join(point.pos_from(P1).to_matrix(N))
+   eval_point_coords = sm.lambdify((q1, q2, q3, a, b), coordinates)
+   eval_point_coords(1.0, 2.0, 3.0, 4.0, 5.0)
+   x, y, _ = eval_point_coords(
+       float(sol[0, 0]),
+       float(repl[q2].xreplace({q1: sol[0, 0]})),
+       float(sol[1, 0]),
+       repl[a], repl[b])
+   import matplotlib.pyplot as plt
+   plt.plot(x, y)
+   plt.grid()
+   plt.axis('equal')
 
 General Holonomic Constraints
 =============================
@@ -395,7 +423,7 @@ Finally in e), :math:`P_4` is constrained with the single scalar:
    \bar{r}^{P_4/P_1} \cdot \hat{n}_y = 0
 
 Notice that we did not need :math:`\bar{r}^{P_4/P_1} \cdot \hat{n}_x = 0`,
-because :math:numref:`length-constraint` ensures the :math:`x` coordinate of
+because :math:numref:`length-constraints` ensures the :math:`x` coordinate of
 :math:`P_4` is in the correct location.
 
 These 11 constraints leave a single free coordinate to describe the orientation
@@ -414,8 +442,9 @@ coordinates is then ([Kane1985]_ pg. 35):
 
    f_h(x_1, y_1, z_1, \ldots, x_v, y_v, z_v, t) = 0
 
-We include :math:`t` as it may also be possible that the constraint is an
-explicit function of time (instead of only implicit, as seen above).
+We include :math:`t` as it is possible that the constraint is an explicit
+function of time (instead of only implicit, as seen above in the four-bar
+linkage example).
 
 Generalized Coordinates
 =======================
