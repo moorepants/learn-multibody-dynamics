@@ -89,7 +89,10 @@ exclude_patterns = [
     'README.rst',
 ]
 
-CHAPTER = None
+if "CHAPTER" in os.environ:
+    CHAPTER = os.environ['CHAPTER']
+else:
+    CHAPTER = None
 
 chapters = [
     'angular',

@@ -262,6 +262,18 @@ This is also encoded in the Makefile:
 
    make autobuild
 
+If errors occur in jupyter-sphinx cells while editing this will always cause
+the entire book to be rebuilt, i.e. it wipes the sphinx cache. If you set an
+environment variable ``CHAPTER`` to the name of chapter's filename (without the
+``.rst`` extension) only the chapter you are working on will be built. For
+example:
+
+.. code:: bash
+
+   CHAPTER=configuration make autobuild
+
+will only build the ``configuration.rst`` chapter.
+
 Execute code cells in IPython while writing
 -------------------------------------------
 
