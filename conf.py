@@ -16,7 +16,6 @@ import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'Learn Multibody Dynamics'
@@ -71,11 +70,11 @@ mathjax2_config = {
 # Setup intersphinx so that we can reference the SymPy documentation.
 # :external:py:func:`~sympy.physics.vector.functions.dot` for example.
 intersphinx_mapping = {
-    'matplotlib': ('https://matplotlib.org/stable/', None),
-    'numpy': ('https://numpy.org/doc/stable/', None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/', None),
-    'sympy': ('https://docs.sympy.org/latest/', None),
-    'py3js': ('https://pythreejs.readthedocs.io/en/stable', None),
+    #'matplotlib': ('https://matplotlib.org/stable/', None),
+    #'numpy': ('https://numpy.org/doc/stable/', None),
+    #'scipy': ('https://docs.scipy.org/doc/scipy/', None),
+    #'sympy': ('https://docs.sympy.org/latest/', None),
+    #'py3js': ('https://pythreejs.readthedocs.io/en/stable', None),
 }
 
 # Options for Math
@@ -86,7 +85,41 @@ intersphinx_mapping = {
 math_number_all = True
 
 # Don't parse these files with Sphinx:
-exclude_patterns = ['README.rst']
+exclude_patterns = [
+    'README.rst',
+]
+
+if "CHAPTER" in os.environ:
+    CHAPTER = os.environ['CHAPTER']
+else:
+    CHAPTER = None
+
+chapters = [
+    'angular',
+    'configuration',
+    'differentiation',
+    'eom',
+    'generalized-forces',
+    'holonomic-eom',
+    'jupyter-python',
+    'loads',
+    'mass',
+    'motion',
+    'noncontributing',
+    'nonholonomic-eom',
+    'notation',
+    'orientation',
+    'simulation',
+    'sympy',
+    'tmt',
+    'translational',
+    'vectors',
+    'visualization',
+]
+
+if (CHAPTER is not None) and (CHAPTER.lower() in chapters):
+    chapters.remove(CHAPTER.lower())
+    exclude_patterns += [c + '.rst' for c in chapters]
 
 # -- Options for HTML output -------------------------------------------------
 
