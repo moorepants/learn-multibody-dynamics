@@ -7,6 +7,7 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
+CHAPTER       =
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -28,4 +29,4 @@ resizesvg:
 	#inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit *.svg
 
 autobuild:
-	sphinx-autobuild -b html --ignore "$(shell pwd)/_build/jupyter_execute/*" . _build/html/
+	sphinx-autobuild -j "auto" -D CHAPTER=$(CHAPTER) -b html --ignore "$(shell pwd)/_build/jupyter_execute/*" . _build/html/
