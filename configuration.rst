@@ -167,7 +167,7 @@ open loop leg made of points and the additional vector:
 This "loop" vector expression must equate to zero for our linkage to always be
 a closed loop. We have a planar mechanism, so we can extract two scalar
 equations associated with a pair of unit vectors in the plane of the mechanism.
-We can pick any two non-parallel unit vectors to express the componets in, with
+We can pick any two non-parallel unit vectors to express the components in, with
 the intuitive choice being :math:`\hat{n}_x` and :math:`\hat{y}`.
 
 .. jupyter-execute::
@@ -212,11 +212,13 @@ In SymPy, we'll typically form this column vector as so:
 
 .. admonition:: Exercise
 
-   Write the holonomic constraints for the `Watt's Linkage`_. The coupler link
-   has a length of :math:`2a`, the left and right links have length :math:`b`.
-   The vertical distance between the fixed points of the left and right lengths
-   are :math:`2a` and the horizontal distance is :math:`(2-1/20)b`. Use the
-   same reference frame and angle definitions as the four-bar linkage above.
+   `Watt's Linkage`_ is a four-bar linkage that can generate almost straight
+   line motion of the center point of the middle coupler link. Write the
+   holonomic constraints for the Watt's Linkage. The coupler link has a length
+   of :math:`2a`, the left and right links have length :math:`b`. Make the
+   vertical distance between the fixed points of the left and right lengths
+   :math:`2a` and the horizontal distance :math:`(2-1/20)b`. Use the same
+   reference frame and angle definitions as the four-bar linkage above.
 
    .. figure:: https://upload.wikimedia.org/wikipedia/commons/9/9e/Watts_Linkage.gif
       :width: 60%
@@ -295,7 +297,7 @@ we can then formulate the constraint equations such that only :math:`q_2` and
    fh.xreplace(repl)
 
 Generally, there may be multiple numerical solutions for the unknowns and the
-unerlying algorthims require a guess to return a specific result. If we make an
+underlying algorithms require a guess to return a specific result. If we make an
 educated guess for the unknowns, then we can find the specific solution with
 ``nsolve()``:
 
@@ -538,3 +540,6 @@ coordinates to describe the system we only need 2 constraint equations (Eq.
 :math:numref:`four-bar-constraints`)! This simplifies the mathematical problem
 description and, as we will later see, is essential for obtaining the simplest
 forms of the equations of motion of a multibody system.
+
+.. todo:: Add a section explaining how to calculate velocities and
+   accelerations of points when dependent speeds are involved.
