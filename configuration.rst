@@ -8,9 +8,6 @@ Holonomic  Constraints
    :jupyter-download-script:`configuration` or Jupyter Notebook:
    :jupyter-download-notebook:`configuration`.
 
-Code Setup
-==========
-
 .. jupyter-execute::
 
    import sympy as sm
