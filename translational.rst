@@ -55,13 +55,13 @@ reference frames, so:
    & =
    {}^B\bar{v}^{P/Q} + {}^A\bar{\omega}^B\times\bar{r}^{P/Q}
 
-It is often useful to define a single point of reference :math:`O`, that is fixed with
-respect to an inertial reference frame. In that case, these materials
-sometimes use a shorthand notation, dropping the :math:`/O` part. For example:
+It is often useful to define a single, fixed, point of reference :math:`O`. In that case, when it is clear
+in which frames the point :math:`O` is fixed, these materials sometimes use a shorthand notation, dropping 
+the :math:`/O` part. For example:
 
 .. math::
    
-   {}^A\bar{v}^{P} = {}^A\bar{v}^{P/O} = {}^B\bar{v}^{P} + {}^A\bar{\omega}^B\times\bar{r}^{P}
+   {}^A\bar{v}^{P} = {}^A\bar{v}^{P/O} = {}^B\bar{v}^{P/O} + {}^A\bar{\omega}^B\times\bar{r}^{P/O}
 
 This formulation will allow us to utilize different reference frames to
 simplify velocity calculations. Take for example this piece of kinetic art that
