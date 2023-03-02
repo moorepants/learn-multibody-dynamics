@@ -15,6 +15,14 @@ dependencies:
   - scipy ==1.7.*
   - sphinx ==5.1.1
   - sphinx-autobuild  # dev
-  - sphinx-material ==0.0.35
   - sphinx-togglebutton ==0.3.1
   - sympy ==1.11.1
+  # This is a work around for installing sphinx-material until
+  # https://github.com/conda-forge/sphinx-material-feedstock/pull/13 is merged.
+  #- sphinx-material ==0.0.35
+  - beautifulsoup4
+  - css-html-js-minify
+  - lxml
+  - python-slugify
+  - pip:
+    - sphinx-material
