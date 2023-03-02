@@ -30,14 +30,14 @@ and accelerations of points in a system.
 Translational Velocity
 ======================
 
-If a point :math:`P` is moving with respect to a point :math:`O` that is fixed
-in reference frame :math:`A` the translational velocity vector of point
-:math:`P` is defined as:
+If a point :math:`P` is moving with respect to another point :math:`Q` the 
+translational velocity vector of point :math:`P` with respect to point 
+:math:`Q` as observed in frame :math:`A` is defined as:
 
 .. math::
    :label: translational-velocity-definition
 
-   {}^A\bar{v}^P := \frac{{}^Ad\bar{r}^{P/O}}{dt}
+   {}^A\bar{v}^{P/Q} := \frac{{}^Ad\bar{r}^{P/Q}}{dt}
 
 We also know from Eq. :math:numref:`deriv-arb-vector` that the time derivative
 of any vector can be written in terms of the angular velocity of the associated
@@ -46,14 +46,22 @@ reference frames, so:
 .. math::
    :label: point-velocity-two-frames
 
-   {}^A\bar{v}^P
+   {}^A\bar{v}^{P/Q}
    & =
-   \frac{{}^Ad\bar{r}^{P/O}}{dt} \\
+   \frac{{}^Ad\bar{r}^{P/Q}}{dt} \\
    & =
-   \frac{{}^Bd\bar{r}^{P/O}}{dt} +
-   {}^A\bar{\omega}^B\times\bar{r}^{P/O} \\
+   \frac{{}^Bd\bar{r}^{P/Q}}{dt} +
+   {}^A\bar{\omega}^B\times\bar{r}^{P/Q} \\
    & =
-   {}^B\bar{v}^P + {}^A\bar{\omega}^B\times\bar{r}^{P/O}
+   {}^B\bar{v}^{P/Q} + {}^A\bar{\omega}^B\times\bar{r}^{P/Q}
+
+It is often useful to define a single point of reference :math:`O`, that is fixed with
+respect to an inertial reference frame. In that case, these materials
+sometimes use a shorthand notation, dropping the :math:`/O` part. For example:
+
+.. math::
+   
+   {}^A\bar{v}^{P} = {}^A\bar{v}^{P/O} = {}^B\bar{v}^{P} + {}^A\bar{\omega}^B\times\bar{r}^{P}
 
 This formulation will allow us to utilize different reference frames to
 simplify velocity calculations. Take for example this piece of kinetic art that
