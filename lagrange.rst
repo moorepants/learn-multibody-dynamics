@@ -8,6 +8,12 @@ Equations of Motion with the Lagrange Method
    :jupyter-download-script:`tmt` or Jupyter Notebook:
    :jupyter-download-notebook:`lagrange`.
 
+.. jupyter-execute::
+
+   import sympy as sm
+   import sympy.physics.mechanics as me
+   me.init_vprinting(use_latex='mathjax')
+
 This book has already discussed three methods to derive the equations
 of motion of multibody systems: Newton-Euler, Kane's method and the TMT
 method. This chapter will add a third: the Lagrange method, originally 
@@ -45,15 +51,43 @@ The derivation of this formula is discussed in the section
 Example: 3D body in outer space
 
 
+.. jupyter-execute::
+    # Setting up reference frames
+    psi,theta, phi, x, y, z = me.dynamicsymbols('psi theta phi x y z')
+    N = me.ReferenceFrame('N')
+    B = me.ReferenceFrame('B')
+    B.orient_body_fixed(N, (psi, theta, phi), 'zxy')
+
+    # Mass and inertia
+    m, Ixx, Iyy, Izz = sm.symbols('M, I_{xx}, I_{yy}, I_{zz}')
+    I_B = me.inertia(B, Ixx, Iyy, Izz)
+
+    # Kinematics and kinetic energy
+
+    omega_B = B.ang_vel_in(N)
+    r_com = x*N.x + y*N.y + z*N.z
+    v_com = r_com.dt(N)
+    T = omega_B.dot(I_B.dot(omega_B))/2 + m*v_com.dot(v_com)/2
+
+    # Euler-Lagrange equation
+
+    t = me.dynamicsymbols._t
+    q = sm.Matrix([psi, theta, phi, x, y, z])
+    qdot = q.diff(t)
+    qddot = qdot.diff(t)
+    p = sm.Matrix([T]).jacobian(qdot).transpose()
+    g = -sm.Matrix([T]).jacobian(q).transpose()
+    left_hand_side = p.diff(t) + g
+
+
 This gives the equations of motion, but the terms, particularly the terms
 involving :math:`\dot{u}_r` are mangled. It is common to extract the system
 mass matrix and velocity forces vector like so:
 
-Example: extra mass matrix and velocity forces vector
+.. jupyter-execute::
 
-
-
-
+    mass_matrix = left_hand_side.jacobian(qddot)
+    dynamic_bias = left_hand_side - mass_matrix*qddot
 
 
 Conservative Forces
@@ -132,7 +166,8 @@ Compute the applied forces as before, add the constraint equation as before
 Lagrange equation from virtual work
 ===================================
 
-Derivation
+Show that the Euler-Lagrange equation leads to the same results as virtual work,
+for a system consisting of :math:`n` particles.
 
 (Learn more) Generalized momentum
 =================================
