@@ -196,6 +196,19 @@ function:
 
    \bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M
 
+.. warning::
+
+   Holonomic constraints are defined strictly as equations that are function of
+   the time varying coordinates. It is true that these equations are only valid
+   for a limited set of ranges for the constants in the equations, e.g. the
+   lengths of the bars, but the range and combination constraints on the
+   constants are not what we are considering here. Secondly, Eq.
+   :math:numref:`configuration-constraint` does not represent inequality
+   constraints. A coordinate may be constrained to a specific range, e.g.
+   :math:`-\pi<q_1<\pi`, but these are not holonomic constraints in the sense
+   definied here. Inequality constraints are generally dealt with using
+   collision models to capture the real dynamics of forcefully limiting motion.
+
 The four-bar linkage constraints are functions of configuration variables: time
 varying angles and distances. In our case the equations are:
 
