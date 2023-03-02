@@ -313,7 +313,7 @@ educated guess for the unknowns, then we can find the specific solution with
 .. admonition:: Exercise
 
    Find the angles of the remaining links in `Watt's Linkage`_ if the middle
-   linkage is rotated clockwise 5 degrees and :math:`a=2` and :math:`b=4`.
+   linkage is rotated clockwise 5 degrees, :math:`a=1`, and :math:`b=4`.
 
    .. _Watt's Linkage: https://en.wikipedia.org/wiki/Watt%27s_linkage
 
@@ -324,8 +324,6 @@ educated guess for the unknowns, then we can find the specific solution with
    :math:`3\pi/2-(q_1+q_2)`, which we can use to solve for :math:`q_2`.
 
    .. jupyter-execute::
-
-      import math  # provides pi as a float
 
       repl = {
           a: 1.0,
@@ -347,21 +345,23 @@ educated guess for the unknowns, then we can find the specific solution with
       sol/math.pi*180.0  # to degrees
 
 ..
-   # code to plot the linkage
-   coordinates = P1.pos_from(P1).to_matrix(N)
-   for point in [P2, P3, P4]:
-       coordinates = coordinates.row_join(point.pos_from(P1).to_matrix(N))
-   eval_point_coords = sm.lambdify((q1, q2, q3, a, b), coordinates)
-   eval_point_coords(1.0, 2.0, 3.0, 4.0, 5.0)
-   x, y, _ = eval_point_coords(
-       float(sol[0, 0]),
-       float(repl[q2].xreplace({q1: sol[0, 0]})),
-       float(sol[1, 0]),
-       repl[a], repl[b])
-   import matplotlib.pyplot as plt
-   plt.plot(x, y)
-   plt.grid()
-   plt.axis('equal')
+   .. jupyter-execute::
+
+      # code to plot the linkage
+      coordinates = P1.pos_from(P1).to_matrix(N)
+      for point in [P2, P3, P4]:
+          coordinates = coordinates.row_join(point.pos_from(P1).to_matrix(N))
+      eval_point_coords = sm.lambdify((q1, q2, q3, a, b), coordinates)
+      eval_point_coords(1.0, 2.0, 3.0, 4.0, 5.0)
+      x, y, _ = eval_point_coords(
+          float(sol[0, 0]),
+          float(repl[q2].xreplace({q1: sol[0, 0]})),
+          float(sol[1, 0]),
+          repl[a], repl[b])
+      import matplotlib.pyplot as plt
+      plt.plot(x, y)
+      plt.grid()
+      plt.axis('equal')
 
 General Holonomic Constraints
 =============================
