@@ -50,9 +50,13 @@ After completing this chapter readers will be able to:
   a system
 - calculate the number of generalized coordinates
 - choose generalized coordinates
+- calculate velocities when holonomic constraints are present
 
 Four-Bar Linkage
 ================
+
+.. todo:: This chapter would be clearer if I made a P_4* and P_4 so we can talk
+   about the points that come into existence when the linkage is cut.
 
 Consider the linkage shown below:
 
@@ -541,5 +545,134 @@ coordinates to describe the system we only need 2 constraint equations (Eq.
 description and, as we will later see, is essential for obtaining the simplest
 forms of the equations of motion of a multibody system.
 
-.. todo:: Add a section explaining how to calculate velocities and
-   accelerations of points when dependent speeds are involved.
+Calculating Additional Kinematic Quantities
+===========================================
+
+You will often need to calculate velocities and accelerations of points and
+reference frames of systems with holonomic constraints. Due to the
+differentiation chain rule, velocities will be linear in the time derivatives
+of the coordinates and accelerations will be linear in the double time
+derivatives of the coordinates. Our holonomic constraints dictate that there is
+no relative motion between points or reference frames, implying that the
+relevant positions, velocities, and accelerations will all equate to zero.
+
+Start by setting up the points for the four-bar linkage again:
+
+.. jupyter-execute::
+
+   P1 = me.Point('P1')
+   P2 = me.Point('P2')
+   P3 = me.Point('P3')
+   P4 = me.Point('P4')
+   P2.set_pos(P1, la*A.x)
+   P3.set_pos(P2, lb*B.x)
+   P4.set_pos(P3, lc*C.x)
+
+In the four-bar linkage, :math:`{}^N\bar{v}^{P_4}` must be zero. We can
+calculate the unconstrained velocity like so:
+
+.. jupyter-execute::
+
+   P1.set_vel(N, 0)
+   P4.vel(N)
+
+The scalar velocity constraints can be formed in a similar fashion as the
+configuration constraints:
+
+.. math::
+
+   {}^N\bar{v}^{P_4}\cdot\hat{n}_x = 0 \\
+   {}^N\bar{v}^{P_4}\cdot\hat{n}_y = 0
+
+.. jupyter-execute::
+
+   sm.trigsimp(P4.vel(N).dot(N.x))
+
+.. jupyter-execute::
+
+   sm.trigsimp(P4.vel(N).dot(N.y))
+
+Notice that this is identical to taking the time derivative of the constraint
+vector function :math:`\bar{f}_h`:
+
+.. jupyter-execute::
+
+   t = me.dynamicsymbols._t
+   fhd = fh.diff(t)
+   fhd
+
+We can see that the expressions are linear in :math:`\dot{q}_1,\dot{q}_2` and
+:math:`\dot{q}_3`. If we select :math:`\dot{q}_2` and :math:`\dot{q}_3` to be
+dependent, we can solve the linear system :math:`\mathbf{A}\bar{x}=\bar{b}` for
+those variables using the technique shown in :ref:`Solving Linear Systems`.
+First we define a column vector holding the dependent variables:
+
+.. jupyter-execute::
+
+   x = sm.Matrix([q2.diff(t), q3.diff(t)])
+   x
+
+then extract the linear terms:
+
+.. jupyter-execute::
+
+   A = fhd.jacobian(x)
+   A
+
+find the terms not linear in the dependent variables:
+
+.. jupyter-execute::
+
+   b = -fhd.xreplace({q2.diff(t): 0, q3.diff(t): 0})
+   b
+
+and finally solve for the dependent variables:
+
+.. jupyter-execute::
+
+   x_sol = sm.simplify(A.LUsolve(b))
+   x_sol
+
+Now we can write any velocity strictly in terms of the independent speed
+:math:`\dot{q}_1` and all of the other coordinates.
+:external:py:meth:`~sympy.physics.vector.vector.Vector.free_dynamicsymbols`
+shows us what coordinates and their time derivatives present an any vector:
+
+.. jupyter-execute::
+
+   P4.vel(N).free_dynamicsymbols(N)
+
+Using the results in ``x_sol`` above we can write the velocity in terms of only
+the independent :math:`\dot{q}_1`:
+
+.. math::
+
+   {}^N\bar{v}^A =
+   v_x(\dot{q}_1, q_1, q_2, q_3)\hat{n}_x +
+   v_y(\dot{q}_1, q_1, q_2, q_3)\hat{n}_y +
+   v_z(\dot{q}_1, q_1, q_2, q_3)\hat{n}_z
+
+Making the substitutions gives the desired result:
+
+.. jupyter-execute::
+
+   qd_dep_repl = {
+     q2.diff(t): x_sol[0, 0],
+     q3.diff(t): x_sol[1, 0],
+   }
+   qd_dep_repl
+
+.. jupyter-execute::
+
+   P4.vel(N).xreplace(qd_dep_repl)
+
+.. jupyter-execute::
+
+   P4.vel(N).xreplace(qd_dep_repl).free_dynamicsymbols(N)
+
+The holonomic constraints will have to be solved numerically as described in
+:ref:`Solving Holonomic Constraints`, but once done only the independent
+:math:`\dot{q}_1` is needed.
+
+.. todo:: Add exercise to numerically calculate the velocity of the center
+   point of the Watt's Linkage.
