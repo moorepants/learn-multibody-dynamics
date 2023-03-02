@@ -70,11 +70,11 @@ mathjax2_config = {
 # Setup intersphinx so that we can reference the SymPy documentation.
 # :external:py:func:`~sympy.physics.vector.functions.dot` for example.
 intersphinx_mapping = {
-    #'matplotlib': ('https://matplotlib.org/stable/', None),
-    #'numpy': ('https://numpy.org/doc/stable/', None),
-    #'scipy': ('https://docs.scipy.org/doc/scipy/', None),
-    #'sympy': ('https://docs.sympy.org/latest/', None),
-    #'py3js': ('https://pythreejs.readthedocs.io/en/stable', None),
+    'matplotlib': ('https://matplotlib.org/stable/', None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/', None),
+    'sympy': ('https://docs.sympy.org/latest/', None),
+    'py3js': ('https://pythreejs.readthedocs.io/en/stable', None),
 }
 
 # Options for Math
