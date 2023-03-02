@@ -28,4 +28,4 @@ resizesvg:
 	#inkscape --verb=FitCanvasToDrawing --verb=FileSave --verb=FileQuit *.svg
 
 autobuild:
-	sphinx-autobuild -b html --ignore "$(shell pwd)/_build/jupyter_execute/*" . _build/html/
+	sphinx-autobuild -j "auto" -b html --ignore "$(shell pwd)/_build/jupyter_execute/*" . _build/html/
