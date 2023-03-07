@@ -68,6 +68,11 @@ then an example of a variable name that we use in the code.
 :math:`{}^A\bar{a}^P`, ``A_a_P``
    Translational acceleration of point :math:`P` when observed from reference
    frame or rigid body :math:`A`.
+:math:`N,M,n,m,p`
+   :math:`N` coordinates, :math:`M` holonomic constraints, :math:`n`
+   generalized coordinates and generalized speeds, :math:`m` nonholonomic
+   constraints, and :math:`p` degrees of freedom. These are related by the two
+   equations :math:`n=M-N` and :math:`p=n-m`.
 :math:`\bar{f}_h(q_1, \ldots, q_N, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`, ``fh``
    Vector function of :math:`M` holonomic constraint equations among the
    :math:`N` coordinates.
