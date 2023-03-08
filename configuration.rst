@@ -198,6 +198,7 @@ valued vector function:
 
 :math:`N` is number of coordinates that you have used to describe the system
 and :math:`M` is the number of scalar constraint equations.
+
 .. warning::
 
    Holonomic constraints are defined strictly as equations that are function of
