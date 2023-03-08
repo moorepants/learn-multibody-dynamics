@@ -39,11 +39,11 @@ Nonholonomic Constraints
 Motion Constraints
 ==================
 
-In :ref:`Holonomic Constraints`, we discussed constraints on the
-configuration of a system. Configuration only concerns where points are and how
-reference frames are oriented. In this chapter, we will consider constraints on
-the motion of a system. Motion concerns how points and reference frames move.
-Take parallel parking a car as a motivating example.
+In :ref:`Holonomic Constraints`, we discussed constraints on the configuration
+of a system. Configuration only concerns where points are and how reference
+frames are oriented. In this chapter, we will consider constraints on the
+motion of a system. Motion concerns how points and reference frames move. Take
+parallel parking a car as a motivating example.
 
 .. _fig-motion-parallel:
 .. figure:: figures/motion-parallel.svg
@@ -54,16 +54,16 @@ Take parallel parking a car as a motivating example.
    actual motion to move car 2 into the empty spot
 
 We know that car 2 can be in either the left or right location in a), i.e. the
-car's configuration permits either location. But the scenario in b) isn't
-possible. A car can't move from the left configuration to the right
-configuration by simply moving directly to the right (see the note below if you
-are thinking that is not true). Although, this surely would be nice if we
-could. A car has wheels and only the front wheels can be steered, so the
-scenario in c) is the only way for the car to end up in the correct final
-configuration. The car has to *move* in a specific way to get from one
-configuration to another. This entails that we have some kind of constraint on
-the motion but not the configuration. Constraints such as these are called
-*nonholonomic constraints* and they take the form:
+car's configuration permits either location. But the motion scenario in b) is
+not possible. A car cannot move from the left configuration to the right
+configuration by simply sliding directly to the right (see the note below if
+you question this). Although, this surely would be nice if we could. A car has
+wheels and only the front wheels can be steered, so the scenario in c) is a
+viable motion for the car to end up in the correct final configuration. The car
+has to *move* in a specific way to get from one configuration to another. This
+implies that we have some kind of constraint on the motion but not the
+configuration. Constraints such as these are called *nonholonomic constraints*
+and they take the form:
 
 .. math::
    :label: eq-nonholonomic-qdot
@@ -83,7 +83,7 @@ coordinates and arise from scalar equations derived from velocities.
    constraint is just a model of a physical phenomena. We know that if we push
    hard enough and low enough that the car's lateral motion is not constrained.
    Also, if the car were on ice, then the nonholomonic constraint would be a
-   poor modelling decision.
+   poor modeling decision.
 
 Chaplygin Sleigh
 ================
@@ -218,16 +218,44 @@ We see that to for the last two pairs, the mixed partials do not commute. This
 proves that :math:`f_n` is not integrable and is thus an essential nonholonomic
 constraint.
 
-.. todo:: Apply the mixed partials check to the four bar linkage equation.
+.. admonition:: Exercise
+
+   Check whether the mixed partials of the time derivative of the four-bar
+   linkage constraints commute.
+
+.. admonition:: Solution
+
+   .. jupyter-execute::
+
+      fnx = fhx.diff(t)
+      dfdq1 = fnx.diff(q1)
+      dfdq2 = fnx.diff(q2)
+      dfdq3 = fnx.diff(q3)
+
+   .. jupyter-execute::
+
+      dfdq1.diff(q2) -  dfdq2.diff(q1)
+
+   .. jupyter-execute::
+
+      dfdq2.diff(q3) - dfdq3.diff(q2)
+
+   .. jupyter-execute::
+
+      dfdq3.diff(q1) - dfdq1.diff(q3)
+
+   All of the mixed partials are the same so this is a holonomic constraint in
+   disguise.
 
 Kinematical Differential Equations
 ==================================
 
 In Eq. :math:numref:`eq-nonholonomic-qdot` we show the form of the nonholonomic
-constraints in terms of :math:`\dot{\bar{q}}`. We know that Newton's Second Law
-:math:`\sum\bar{F} = m\bar{a}` will require calculation of acceleration, which
-is the second time derivative of position. Newton's Second Law is a second
-order differential equation because it involves these second derivatives. Any
+constraints in terms of :math:`\dot{\bar{q}}`. Newton's and Euler's Second
+Laws of motion will require calculation of acceleration and angular
+acceleration respectively. These laws of motion are second
+order differential equations because it involves second time derivatives of
+distances and angles. Any
 second order differential equation can be equivalently represented by two first
 order differential equations by introducing a new variable for any first
 derivative terms. We are working towards writing the equations of motion of a
