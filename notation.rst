@@ -72,7 +72,7 @@ then an example of a variable name that we use in the code.
    :math:`N` coordinates, :math:`M` holonomic constraints, :math:`n`
    generalized coordinates and generalized speeds, :math:`m` nonholonomic
    constraints, and :math:`p` degrees of freedom. These are related by the two
-   equations :math:`n=M-N` and :math:`p=n-m`.
+   equations :math:`n=N-M` and :math:`p=n-m`.
 :math:`\bar{f}_h(q_1, \ldots, q_N, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`, ``fh``
    Vector function of :math:`M` holonomic constraint equations among the
    :math:`N` coordinates.
