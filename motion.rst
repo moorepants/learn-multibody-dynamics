@@ -164,10 +164,10 @@ time we can retrieve the original holonomic constraint, so it really isn't a
 nonholonomic constraint even though it looks like one.
 
 So if we can integrate :math:`f_n` with respect to time and we arrive at a
-function of only the generalized coordinates and time, then we do not have an
-essential nonholonomic constraint, but a holonomic constraint in disguise.
-Unfortunately, it is not generally possible to integrate :math:`f_n` so we can
-check the integrability of :math:`f_n` indirectly.
+function of only the generalized coordinates and time, then we do not have a
+nonholonomic constraint, but a holonomic constraint in disguise. Unfortunately,
+it is not generally possible to integrate :math:`f_n` so we can check the
+integrability of :math:`f_n` indirectly.
 
 If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
 :math:`f_h` then it must be able to be expressed in this form:
@@ -216,7 +216,7 @@ and the other two pairs:
 
 We see that to for the last two pairs, the mixed partials do not commute. This
 proves that :math:`f_n` is not integrable and is thus an essential nonholonomic
-constraint.
+constraint that is not a holonomic constraint in disguise.
 
 .. admonition:: Exercise
 
