@@ -90,11 +90,11 @@ Chaplygin Sleigh
 
 Take the simple example of the `Chaplygin Sleigh`_, sketched out in
 :numref:`fig-motion-sleigh`. A sleigh can slide along a flat plane, but can
-only move in the direction it is pointing, much like the car above. This system
-is described by three generalized coordinates :math:`x,y,\theta`. For the
-motion to only occur along its body fixed :math:`\hat{a}_x` direction, the
-component of velocity in the body fixed :math:`\hat{a}_y` direction must equal
-zero at all times.
+only move in the direction it is pointing, much like the wheels of the car
+above. This system is described by three generalized coordinates
+:math:`x,y,\theta`. For the motion to only occur along its body fixed
+:math:`\hat{a}_x` direction, the component of velocity in the body fixed
+:math:`\hat{a}_y` direction must equal zero at all times.
 
 .. _Chaplygin Sleigh: https://en.wikipedia.org/wiki/Chaplygin_sleigh
 
@@ -224,6 +224,7 @@ constraint.
    linkage constraints commute.
 
 .. admonition:: Solution
+   :class: dropdown
 
    .. jupyter-execute::
 
@@ -231,6 +232,8 @@ constraint.
       dfdq1 = fnx.diff(q1)
       dfdq2 = fnx.diff(q2)
       dfdq3 = fnx.diff(q3)
+
+   All of the mixed partials are the same:
 
    .. jupyter-execute::
 
@@ -251,17 +254,17 @@ Kinematical Differential Equations
 ==================================
 
 In Eq. :math:numref:`eq-nonholonomic-qdot` we show the form of the nonholonomic
-constraints in terms of :math:`\dot{\bar{q}}`. Newton's and Euler's Second
-Laws of motion will require calculation of acceleration and angular
-acceleration respectively. These laws of motion are second
-order differential equations because it involves second time derivatives of
-distances and angles. Any
-second order differential equation can be equivalently represented by two first
-order differential equations by introducing a new variable for any first
-derivative terms. We are working towards writing the equations of motion of a
-multibody system, which will be differential equations in a first order form.
-To do this, we now introduce the variables :math:`u_1, \ldots, u_n` and define
-them as linear functions of the time derivatives of the generalized coordinates
+constraints in terms of :math:`\dot{\bar{q}}`. Newton's and Euler's Second Laws
+of motion will require calculation of acceleration and angular acceleration
+respectively. These laws of motion are second order differential equations
+because it involves second time derivatives of distances and angles. Any second
+order differential equation can be equivalently represented by two first order
+differential equations by introducing a new variable for any first derivative
+terms. We are working towards writing the equations of motion of a multibody
+system, which will be differential equations that are most useful for
+simulation when in a first order form. To do this, we now introduce the
+variables :math:`\bar{u} = \left[u_1, \ldots, u_n\right]^T` and define them as
+linear functions of the time derivatives of the generalized coordinates
 :math:`\dot{q}_1, \ldots, \dot{q}_n`. These variables are called *generalized
 speeds*. They take the form:
 
@@ -271,8 +274,8 @@ speeds*. They take the form:
    \bar{u} := \mathbf{Y}_k(\bar{q}, t) \dot{\bar{q}} + \bar{z}_k(\bar{q}, t)
 
 :math:`\bar{u}` must be chosen such that :math:`\mathbf{Y}_k` is invertible. If
-we solve for :math:`\dot{\bar{q}}` we can write these first order differential
-equations as such:
+it is, then we solve for :math:`\dot{\bar{q}}` we can write these first order
+differential equations as such:
 
 .. math::
    :label: eq-kinematical-diff-eq
@@ -312,10 +315,10 @@ select them as you please, as long as they fit the form of equation
 :math:numref:`eq-generalized-speeds` and :math:`\mathbf{Y}_k` is invertible.
 Some selections of generalized speeds can reduce the complexity of important
 velocity expressions and if selected carefully may reduce the complexity of the
-equations of motion we will derive in a later chapters. To see some examples of
-selecting generalized speeds, take for example the angular velocity of a
-reference frame which is oriented with a :math:`z\textrm{-}x\textrm{-}y` body
-fixed orientation:
+equations of motion we will derive in a later chapters (see [Mitiguy1996]_ for
+examples). To see some examples of selecting generalized speeds, take for
+example the angular velocity of a reference frame which is oriented with a
+:math:`z\textrm{-}x\textrm{-}y` body fixed orientation:
 
 .. jupyter-execute::
 
@@ -591,7 +594,7 @@ The two point theorem is handy for computing the other two velocities:
 
    Co.v2pt_theory(Ao, N, A)
 
-The unit vectors :math:`B` and :math:`C` are aligned with the wheels of the
+The unit vectors of :math:`B` and :math:`C` are aligned with the wheels of the
 Snakeboard. This lets us impose that there is no velocity in the direction
 normal to the wheel's rolling direction by taking dot products with the
 respectively reference frames' :math:`y` direction unit vector to form the two
@@ -661,14 +664,14 @@ speeds, the nonholonomic constraints can be written as:
    :label: eq-contraint-linear-form
 
    \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) =
-   \mathbf{A}_r \bar{u}_r - \mathbf{A}_s \bar{u}_s - \bar{b}_{rs} = 0
+   \mathbf{A}_r \bar{u}_r + \mathbf{A}_s \bar{u}_s + \bar{b}_{rs} = 0
 
 or
 
 .. math::
    :label: eq-contraint-linear-form-solve
 
-   \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_{rs}\right) \\
+   \bar{u}_r = \mathbf{A}_r^{-1}\left(-\mathbf{A}_s \bar{u}_s - \bar{b}_{rs}\right) \\
    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n
 
 For the Snakeboard let's choose :math:`\bar{u}_s = [u_3, u_4, u_5]^T` as the
@@ -687,37 +690,37 @@ dependent generalized speeds.
    Ar = fn.jacobian(ur)
    Ar
 
-:math:`\mathbf{A}_s` are the negative of the linear coefficients of
-:math:`\bar{u}_s` so:
+:math:`\mathbf{A}_s` are the linear coefficients of :math:`\bar{u}_s` so:
 
 .. jupyter-execute::
 
-   As = -fn.jacobian(us)
+   As = fn.jacobian(us)
    As
 
-:math:`-\bar{b}_{rs}` remains when :math:`\bar{u}=0`:
+:math:`\bar{b}_{rs}` remains when :math:`\bar{u}=0`:
 
 .. jupyter-execute::
 
-   bs = -fn.xreplace(dict(zip([u1, u2, u3, u4, u5], [0, 0, 0, 0, 0])))
-   bs
+   brs = fn.xreplace(dict(zip([u1, u2, u3, u4, u5], [0, 0, 0, 0, 0])))
+   brs
 
 :math:`\mathbf{A}_n` and :math:`\bar{b}_n` are formed by solving the linear
 system:
 
 .. jupyter-execute::
 
-   An = Ar.LUsolve(As)
+   An = Ar.LUsolve(-As)
    An = sm.simplify(An)
    An
 
 .. jupyter-execute::
 
-   bn = Ar.LUsolve(bs)
+   bn = Ar.LUsolve(-brs)
    bn
 
-We now have the dependent generalized speeds written as functions of the
-independent generalized speeds:
+We now have the :math:`m=2` dependent generalized speeds
+:math:`\bar{u}_r=\left[u_1,u_2\right]^T` written as functions of the `n=1`
+independent generalized speeds :math:`\bar{u}_s`=\left[u_3\right]:
 
 .. jupyter-execute::
 
@@ -727,7 +730,7 @@ Degrees of Freedom
 ==================
 
 For simple nonholonomic systems observed in a reference frame :math:`A`, such
-as the Chapylgin Sleigh or the Snakeboard, the *degrees of freedom* in
+as the Chaplygin Sleigh or the Snakeboard, the *degrees of freedom* in
 :math:`A` are equal to the number of independent generalized speeds. The number
 of degrees of freedom :math:`p` is defined as:
 
@@ -742,11 +745,33 @@ there are no nonholonomic constraints, the system is a holonomic system in
 :math:`A` and :math:`p=n` making the number of degrees of freedom equal to the
 number of generalized coordinates.
 
-.. todo:: Turn this last paragraph into exercises.
+.. admonition:: Exercise
 
-The Chapylgin Sleigh has :math:`p = 3 - 1 = 2` degrees of freedom and the
-Snakeboard has :math:`p = 5 - 2 = 3` degrees of freedom. The four bar linkage
-of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom. It is not
-typically easy to visualize the degrees of freedom of a nonholonomic system,
-but for holonomic systems thought experiments where you vary one or two
-generalized coordinates at a time can help you visualize the motion.
+   What are the number of degrees of freedom for the Chaplygin Sleigh,
+   Snakeboard, and Four-bar linkage?
+
+.. admonition:: Solution
+   :class: dropdown
+
+   The Chapylgin Sleigh has :math:`n=3` generalized coordinates
+   :math:`x,y,\theta` and :math:`m=1` nonholonomic constraints. The degrees of
+   freedom are then :math:`p = 3 - 1 = 2`.
+
+   The Snakeboard has :math:`n=5` generalized coordinates and :math:`m=2`
+   nonholonomic constraints. The degrees of freedom are then :math:`p = 5 - 2 =
+   3`.
+
+   We described the four-bar linkage with :math:`N=3` coordinates and there
+   were :math:`M=2` holonomic constraints leaving us with :math:`n=N-M=3-2=1`
+   generalized coordinates. There are no nonholonomic constraints so
+   :math:`m=0`. This means that there :math:`p=n-m=1-0=1` degrees of freedom.
+
+It is not always easy to visualize the degrees of freedom of a nonholonomic
+system when thinking of its motion, but for holonomic systems thought
+experiments where you vary one or two generalized coordinates at a time can
+help you visualize the motion.
+
+If you have a holonomic system (no nonholonomic constraints) the degrees of
+freedom are equal to the number of generalized coordinates. Nonholonomic
+systems (those with non-integrable motion constraints) have fewer degrees of
+freedom than the number of generalized coordinates.
