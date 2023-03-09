@@ -2,8 +2,6 @@
 Nonholonomic Constraints
 ========================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -36,14 +34,30 @@ Nonholonomic Constraints
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Formulate nonholonomic constraints to constrain motion.
+- Determine if a nonholonomic constraint is essential and not simply a
+  differentiated holonomic constraint.
+- Formulate a nonholonomic constraint for rolling without slip.
+- Define kinematical differential equations and solve them to put in first
+  order form.
+- Select different choices of generalized speeds.
+- Solve for the dependent generalized speeds in terms of the independent
+  generalized speeds.
+- Calculate the degrees of freedom of a multibody system.
+
 Motion Constraints
 ==================
 
-In :ref:`Holonomic Constraints`, we discussed constraints on the
-configuration of a system. Configuration only concerns where points are and how
-reference frames are oriented. In this chapter, we will consider constraints on
-the motion of a system. Motion concerns how points and reference frames move.
-Take parallel parking a car as a motivating example.
+In :ref:`Holonomic Constraints`, we discussed constraints on the configuration
+of a system. Configuration only concerns where points are and how reference
+frames are oriented. In this chapter, we will consider constraints on the
+motion of a system. Motion concerns how points and reference frames move. Take
+parallel parking a car as a motivating example.
 
 .. _fig-motion-parallel:
 .. figure:: figures/motion-parallel.svg
@@ -54,16 +68,16 @@ Take parallel parking a car as a motivating example.
    actual motion to move car 2 into the empty spot
 
 We know that car 2 can be in either the left or right location in a), i.e. the
-car's configuration permits either location. But the scenario in b) isn't
-possible. A car can't move from the left configuration to the right
-configuration by simply moving directly to the right (see the note below if you
-are thinking that is not true). Although, this surely would be nice if we
-could. A car has wheels and only the front wheels can be steered, so the
-scenario in c) is the only way for the car to end up in the correct final
-configuration. The car has to *move* in a specific way to get from one
-configuration to another. This entails that we have some kind of constraint on
-the motion but not the configuration. Constraints such as these are called
-*nonholonomic constraints* and they take the form:
+car's configuration permits either location. But the motion scenario in b) is
+not possible. A car cannot move from the left configuration to the right
+configuration by simply sliding directly to the right (see the note below if
+you question this). Although, this surely would be nice if we could. A car has
+wheels and only the front wheels can be steered, so the scenario in c) is a
+viable motion for the car to end up in the correct final configuration. The car
+has to *move* in a specific way to get from one configuration to another. This
+implies that we have some kind of constraint on the motion but not the
+configuration. Constraints such as these are called *nonholonomic constraints*
+and they take the form:
 
 .. math::
    :label: eq-nonholonomic-qdot
@@ -83,18 +97,18 @@ coordinates and arise from scalar equations derived from velocities.
    constraint is just a model of a physical phenomena. We know that if we push
    hard enough and low enough that the car's lateral motion is not constrained.
    Also, if the car were on ice, then the nonholomonic constraint would be a
-   poor modelling decision.
+   poor modeling decision.
 
 Chaplygin Sleigh
 ================
 
 Take the simple example of the `Chaplygin Sleigh`_, sketched out in
 :numref:`fig-motion-sleigh`. A sleigh can slide along a flat plane, but can
-only move in the direction it is pointing, much like the car above. This system
-is described by three generalized coordinates :math:`x,y,\theta`. For the
-motion to only occur along its body fixed :math:`\hat{a}_x` direction, the
-component of velocity in the body fixed :math:`\hat{a}_y` direction must equal
-zero at all times.
+only move in the direction it is pointing, much like the wheels of the car
+above. This system is described by three generalized coordinates
+:math:`x,y,\theta`. For the motion to only occur along its body fixed
+:math:`\hat{a}_x` direction, the component of velocity in the body fixed
+:math:`\hat{a}_y` direction must equal zero at all times.
 
 .. _Chaplygin Sleigh: https://en.wikipedia.org/wiki/Chaplygin_sleigh
 
@@ -164,10 +178,10 @@ time we can retrieve the original holonomic constraint, so it really isn't a
 nonholonomic constraint even though it looks like one.
 
 So if we can integrate :math:`f_n` with respect to time and we arrive at a
-function of only the generalized coordinates and time, then we do not have an
-essential nonholonomic constraint, but a holonomic constraint in disguise.
-Unfortunately, it is not generally possible to integrate :math:`f_n` so we can
-check the integrability of :math:`f_n` indirectly.
+function of only the generalized coordinates and time, then we do not have a
+nonholonomic constraint, but a holonomic constraint in disguise. Unfortunately,
+it is not generally possible to integrate :math:`f_n` so we can check the
+integrability of :math:`f_n` indirectly.
 
 If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
 :math:`f_h` then it must be able to be expressed in this form:
@@ -216,24 +230,152 @@ and the other two pairs:
 
 We see that to for the last two pairs, the mixed partials do not commute. This
 proves that :math:`f_n` is not integrable and is thus an essential nonholonomic
-constraint.
+constraint that is not a holonomic constraint in disguise.
 
-.. todo:: Apply the mixed partials check to the four bar linkage equation.
+.. admonition:: Exercise
+
+   Check whether the mixed partials of the time derivative of the four-bar
+   linkage constraints commute.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      fnx = fhx.diff(t)
+      dfdq1 = fnx.diff(q1)
+      dfdq2 = fnx.diff(q2)
+      dfdq3 = fnx.diff(q3)
+
+   All of the mixed partials are the same:
+
+   .. jupyter-execute::
+
+      dfdq1.diff(q2) -  dfdq2.diff(q1)
+
+   .. jupyter-execute::
+
+      dfdq2.diff(q3) - dfdq3.diff(q2)
+
+   .. jupyter-execute::
+
+      dfdq3.diff(q1) - dfdq1.diff(q3)
+
+   All of the mixed partials are the same so this is a holonomic constraint in
+   disguise.
+
+Rolling Without Slip
+====================
+
+It is quite common to make the modeling assumption that a wheel rolls without
+slip. A wheel best provides its beneficial properties of rolling and propulsion
+by ensuring that the friction between the wheel and the surface it rolls on is
+sufficiently high. This avoids relative motion between a point fixed on the
+wheel and a point fixed on the surface located at the wheel-surface contact
+location at any given time. This nature can be modeled by a nonholonomic
+constraint. The key to developing the constraint to ensure there is no relative
+slip velocity is to identify the correct two points, calculate the velocity of
+those points, and specify that the relative velocity is zero.
+
+.. _fig-motion-wheel:
+.. figure:: figures/motion-wheel.svg
+   :align: center
+
+   A 2D disc :math:`B` rolling on a motionless plane :math:`N`.
+
+For example, when a 2D disc :math:`B` rolls without slip over a motionless
+plane :math:`N` (:numref:`fig-motion-wheel`), the velocity of a point :math:`C`
+fixed in :math:`B` at the contact point with the plane must be zero to ensure
+no slip when observed from the plane's reference frame. We can state this
+mathematically as:
+
+.. math::
+
+   {}^N\bar{v}^{C} = 0
+
+One must be careful about calculating this velocity and recognizing that there
+are numerous points of possible interest at the same wheel-plane contact
+location. You may consider these points, for example:
+
+- A point :math:`B_C` that moves in the plane :math:`N` which is *always*
+  located at the wheel-plane contact location. The coordinate :math:`q_1`
+  tracks this point in the figure.
+- A point :math:`G_C` that is fixed in the wheel which follows a cycloid_ curve
+  as it rolls along.
+- A point :math:`G` that is fixed in the plane which is located at the
+  wheel-plane contact point at any given instance of time.
+- A point :math:`C` that is fixed in the wheel which is located at the
+  wheel-plane contact point at any given instance of time.
+
+.. _cycloid: https://en.wikipedia.org/wiki/Cycloid
+
+A nonholonomic constraint that ensures rolling without slip, can only be formed
+by considering the last two points. The vector constraint equation is:
+
+.. math::
+
+   {}^N\bar{v}^{C} - {}^N\bar{v}^{G} = 0
+
+Point :math:`G` is fixed in :math:`N` so it has no velocity in :math:`N`:
+
+.. math::
+
+   {}^N\bar{v}^{G} = 0
+
+Point :math:`C` is fixed in :math:`B`. To determine its velocity, take
+:math:`B_o` to be the wheel center which is also fixed in :math:`B`. Since both
+points are fixed in :math:`B` we can apply the two point velocity theorem.
+
+.. math::
+
+   {}^N\bar{v}^{C} = {}^N\bar{v}^{B_o} + {}^N\bar{\omega}^B \times \bar{r}^{C/B_o}
+
+We can then use two generalized coordinates to describe the position
+:math:`q_1` (from :math:`O` fixed in :math:`N`) and rotation :math:`q_2` of the
+wheel. The velocity of the wheel center is then:
+
+.. math::
+
+   {}^N\bar{v}^{B_o} = \dot{q}_1\hat{n}_x
+
+The cross product terms are found with the radius of the wheel with :math:`r`
+and the angular velocity to give the velocity of :math:`C`:
+
+.. math::
+
+   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 \hat{n}_z \times -r\hat{n}_y \\
+   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 r \hat{n}_x
+
+Applying the nonholonomic constraint and knowing that  :math:`{}^N\bar{v}^{G} =
+0` gives us this scalar constraint equation:
+
+.. math::
+
+   \dot{q}_1 - \dot{q}_2 r = 0
+
+This is a scalar nonholonomic constraint equation that ensures rolling without
+slip. Take care to calculate the relative velocities of the two points fixed in
+each of the bodies in rolling contact that are located at the contact point at
+that *instance of time*.
+
+.. todo:: Exercise to calculate the constraint if the plane has a horizontal
+   velocity.
 
 Kinematical Differential Equations
 ==================================
 
 In Eq. :math:numref:`eq-nonholonomic-qdot` we show the form of the nonholonomic
-constraints in terms of :math:`\dot{\bar{q}}`. We know that Newton's Second Law
-:math:`\sum\bar{F} = m\bar{a}` will require calculation of acceleration, which
-is the second time derivative of position. Newton's Second Law is a second
-order differential equation because it involves these second derivatives. Any
-second order differential equation can be equivalently represented by two first
-order differential equations by introducing a new variable for any first
-derivative terms. We are working towards writing the equations of motion of a
-multibody system, which will be differential equations in a first order form.
-To do this, we now introduce the variables :math:`u_1, \ldots, u_n` and define
-them as linear functions of the time derivatives of the generalized coordinates
+constraints in terms of :math:`\dot{\bar{q}}`. Newton's and Euler's Second Laws
+of motion will require calculation of acceleration and angular acceleration
+respectively. These laws of motion are second order differential equations
+because it involves second time derivatives of distances and angles. Any second
+order differential equation can be equivalently represented by two first order
+differential equations by introducing a new variable for any first derivative
+terms. We are working towards writing the equations of motion of a multibody
+system, which will be differential equations that are most useful for
+simulation when in a first order form. To do this, we now introduce the
+variables :math:`\bar{u} = \left[u_1, \ldots, u_n\right]^T` and define them as
+linear functions of the time derivatives of the generalized coordinates
 :math:`\dot{q}_1, \ldots, \dot{q}_n`. These variables are called *generalized
 speeds*. They take the form:
 
@@ -243,8 +385,8 @@ speeds*. They take the form:
    \bar{u} := \mathbf{Y}_k(\bar{q}, t) \dot{\bar{q}} + \bar{z}_k(\bar{q}, t)
 
 :math:`\bar{u}` must be chosen such that :math:`\mathbf{Y}_k` is invertible. If
-we solve for :math:`\dot{\bar{q}}` we can write these first order differential
-equations as such:
+it is, then we solve for :math:`\dot{\bar{q}}` we can write these first order
+differential equations as such:
 
 .. math::
    :label: eq-kinematical-diff-eq
@@ -284,10 +426,10 @@ select them as you please, as long as they fit the form of equation
 :math:numref:`eq-generalized-speeds` and :math:`\mathbf{Y}_k` is invertible.
 Some selections of generalized speeds can reduce the complexity of important
 velocity expressions and if selected carefully may reduce the complexity of the
-equations of motion we will derive in a later chapters. To see some examples of
-selecting generalized speeds, take for example the angular velocity of a
-reference frame which is oriented with a :math:`z\textrm{-}x\textrm{-}y` body
-fixed orientation:
+equations of motion we will derive in a later chapters (see [Mitiguy1996]_ for
+examples). To see some examples of selecting generalized speeds, take for
+example the angular velocity of a reference frame which is oriented with a
+:math:`z\textrm{-}x\textrm{-}y` body fixed orientation:
 
 .. jupyter-execute::
 
@@ -563,7 +705,7 @@ The two point theorem is handy for computing the other two velocities:
 
    Co.v2pt_theory(Ao, N, A)
 
-The unit vectors :math:`B` and :math:`C` are aligned with the wheels of the
+The unit vectors of :math:`B` and :math:`C` are aligned with the wheels of the
 Snakeboard. This lets us impose that there is no velocity in the direction
 normal to the wheel's rolling direction by taking dot products with the
 respectively reference frames' :math:`y` direction unit vector to form the two
@@ -620,27 +762,30 @@ These nonholonomic constraints take this form:
 
    \bar{f}_n(u_1, u_2, u_3, q_3, q_4, q_5) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^2
 
-We now have two equations with three unknown generalized speeds. We can solve
-for two of the generalized speeds in terms of the third. So we select two as
-dependent generalized speeds and one as an independent generalized speed.
-Because nonholonomic constraints are derived from measure numbers of velocity
-vectors, the nonholonomic constraints are always linear in the generalized
-speeds. If we introduce :math:`\bar{u}_s` as a vector of independent
-generalized speeds and :math:`\bar{u}_r` as a vector of dependent generalized
-speeds, the nonholonomic constraints can be written as:
+We now have two equations with three unknown generalized speeds. Note that all
+of the generalized coordinates are not present in these constraints which is
+common. We can solve for two of the generalized speeds in terms of the third.
+So we select two as dependent generalized speeds and one as an independent
+generalized speed.  Because nonholonomic constraints are derived from measure
+numbers of velocity vectors, the nonholonomic constraints are always linear in
+the generalized speeds. If we introduce :math:`\bar{u}_s` as a vector of
+independent generalized speeds and :math:`\bar{u}_r` as a vector of dependent
+generalized speeds, the nonholonomic constraints can be written as:
 
 .. math::
    :label: eq-contraint-linear-form
 
    \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) =
-   \mathbf{A}_r \bar{u}_r - \mathbf{A}_s \bar{u}_s - \bar{b}_{rs} = 0
+   \mathbf{A}_r(\bar{q}, t) \bar{u}_r +
+   \mathbf{A}_s(\bar{q}, t) \bar{u}_s +
+   \bar{b}_{rs}(\bar{q}, t) = 0
 
 or
 
 .. math::
    :label: eq-contraint-linear-form-solve
 
-   \bar{u}_r = \mathbf{A}_r^{-1}\left(\mathbf{A}_s \bar{u}_s + \bar{b}_{rs}\right) \\
+   \bar{u}_r = \mathbf{A}_r^{-1}\left(-\mathbf{A}_s \bar{u}_s - \bar{b}_{rs}\right) \\
    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n
 
 For the Snakeboard let's choose :math:`\bar{u}_s = [u_3, u_4, u_5]^T` as the
@@ -659,37 +804,37 @@ dependent generalized speeds.
    Ar = fn.jacobian(ur)
    Ar
 
-:math:`\mathbf{A}_s` are the negative of the linear coefficients of
-:math:`\bar{u}_s` so:
+:math:`\mathbf{A}_s` are the linear coefficients of :math:`\bar{u}_s` so:
 
 .. jupyter-execute::
 
-   As = -fn.jacobian(us)
+   As = fn.jacobian(us)
    As
 
-:math:`-\bar{b}_{rs}` remains when :math:`\bar{u}=0`:
+:math:`\bar{b}_{rs}` remains when :math:`\bar{u}=0`:
 
 .. jupyter-execute::
 
-   bs = -fn.xreplace(dict(zip([u1, u2, u3, u4, u5], [0, 0, 0, 0, 0])))
-   bs
+   brs = fn.xreplace(dict(zip([u1, u2, u3, u4, u5], [0, 0, 0, 0, 0])))
+   brs
 
 :math:`\mathbf{A}_n` and :math:`\bar{b}_n` are formed by solving the linear
 system:
 
 .. jupyter-execute::
 
-   An = Ar.LUsolve(As)
+   An = Ar.LUsolve(-As)
    An = sm.simplify(An)
    An
 
 .. jupyter-execute::
 
-   bn = Ar.LUsolve(bs)
+   bn = Ar.LUsolve(-brs)
    bn
 
-We now have the dependent generalized speeds written as functions of the
-independent generalized speeds:
+We now have the :math:`m=2` dependent generalized speeds
+:math:`\bar{u}_r=\left[u_1,u_2\right]^T` written as functions of the `n=1`
+independent generalized speeds :math:`\bar{u}_s=\left[u_3\right]`:
 
 .. jupyter-execute::
 
@@ -699,7 +844,7 @@ Degrees of Freedom
 ==================
 
 For simple nonholonomic systems observed in a reference frame :math:`A`, such
-as the Chapylgin Sleigh or the Snakeboard, the *degrees of freedom* in
+as the Chaplygin Sleigh or the Snakeboard, the *degrees of freedom* in
 :math:`A` are equal to the number of independent generalized speeds. The number
 of degrees of freedom :math:`p` is defined as:
 
@@ -714,11 +859,34 @@ there are no nonholonomic constraints, the system is a holonomic system in
 :math:`A` and :math:`p=n` making the number of degrees of freedom equal to the
 number of generalized coordinates.
 
-.. todo:: Turn this last paragraph into exercises.
+.. admonition:: Exercise
 
-The Chapylgin Sleigh has :math:`p = 3 - 1 = 2` degrees of freedom and the
-Snakeboard has :math:`p = 5 - 2 = 3` degrees of freedom. The four bar linkage
-of the previous chapter has :math:`p = 1 - 0 = 1` degrees of freedom. It is not
-typically easy to visualize the degrees of freedom of a nonholonomic system,
-but for holonomic systems thought experiments where you vary one or two
-generalized coordinates at a time can help you visualize the motion.
+   What are the number of degrees of freedom for the Chaplygin Sleigh,
+   Snakeboard, and Four-bar linkage?
+
+.. admonition:: Solution
+   :class: dropdown
+
+   The Chapylgin Sleigh has :math:`n=3` generalized coordinates
+   :math:`x,y,\theta` and :math:`m=1` nonholonomic constraints. The degrees of
+   freedom are then :math:`p = 3 - 1 = 2`.
+
+   The Snakeboard has :math:`n=5` generalized coordinates and :math:`m=2`
+   nonholonomic constraints. The degrees of freedom are then :math:`p = 5 - 2 =
+   3`.
+
+   We described the four-bar linkage with :math:`N=3` coordinates and there
+   were :math:`M=2` holonomic constraints leaving us with :math:`n=N-M=3-2=1`
+   generalized coordinates. There are no nonholonomic constraints so
+   :math:`m=0`. This means that there :math:`p=n-m=1-0=1` degrees of freedom.
+
+It is not always easy to visualize the degrees of freedom of a nonholonomic
+system when thinking of its motion, but for holonomic systems thought
+experiments where you vary one or two generalized coordinates at a time can
+help you visualize the motion.
+
+If you have a holonomic system (no nonholonomic constraints) the degrees of
+freedom are equal to the number of generalized coordinates. Nonholonomic
+systems (those with non-integrable motion constraints) have fewer degrees of
+freedom than the number of generalized coordinates.
+
