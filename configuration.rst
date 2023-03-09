@@ -183,26 +183,29 @@ the intuitive choice being :math:`\hat{n}_x` and :math:`\hat{y}`.
 
 For the loop to close, these two expressions must equal zero for all values
 :math:`q_1,q_2,q_3`. These are two nonlinear equations in three time varying
-variables. The solution can be found if we solve for two of the time varying
-variables. For example, :math:`q_2` and :math:`q_3` can be solved for in terms
-of :math:`q_1`. We would then say that :math:`q_2` and :math:`q_3` depend on
-:math:`q_1`. These two equations are called holonomic constraints, or
-configuration constraints, because they constrain the kinematic configuration
-to be a loop. Holonomic constraints take the form of a real valued vector
-function:
+variables called coordinates. The solution can be found if we solve for two of
+the time varying variables. For example, :math:`q_2` and :math:`q_3` can be
+solved for in terms of :math:`q_1`. We would then say that :math:`q_2` and
+:math:`q_3` depend on :math:`q_1`. These two equations are called holonomic
+constraints, or configuration constraints, because they constrain the kinematic
+configuration to be a loop. Holonomic constraints take the form of a real
+valued vector function:
 
 .. math::
    :label: configuration-constraint
 
-   \bar{f}_h(q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M
+   \bar{f}_h(q_1, \ldots, q_N, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M
+
+:math:`N` is number of coordinates that you have used to describe the system
+and :math:`M` is the number of scalar constraint equations.
 
 .. warning::
 
    Holonomic constraints are defined strictly as equations that are function of
-   the time varying coordinates. It is true that these equations are only valid
-   for a limited set of ranges for the constants in the equations, e.g. the
-   lengths of the bars, but the range and combination constraints on the
-   constants are not what we are considering here. Secondly, Eq.
+   the :math:`N` time varying coordinates. It is true that these equations are
+   only valid for a limited set of ranges for the constants in the equations,
+   e.g. the lengths of the bars, but the range and combination constraints on
+   the constants are not what we are considering here. Secondly, Eq.
    :math:numref:`configuration-constraint` does not represent inequality
    constraints. A coordinate may be constrained to a specific range, e.g.
    :math:`-\pi<q_1<\pi`, but these are not holonomic constraints in the sense
@@ -210,12 +213,14 @@ function:
    collision models to capture the real dynamics of forcefully limiting motion.
 
 The four-bar linkage constraints are functions of configuration variables: time
-varying angles and distances. In our case the equations are:
+varying angles and distances. In our case the constraint equations are:
 
 .. math::
    :label: four-bar-constraints
 
    \bar{f}_h(q_1, q_2, q_3) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^2
+
+and :math:`N=3` and :math:`M=2`.
 
 In SymPy, we'll typically form this column vector as so:
 
@@ -484,7 +489,12 @@ of explicit constraint equations needed to describe the system's configuration
 at all times :math:`t`. These generalized coordinates are typically determined
 by inspection of the system and there is a bit of an art to choosing the best
 set. But you can always fall back to the formal process of constraining each
-relevant point.
+relevant point. If you describe your system with :math:`N\leq3v` coordinates
+then:
+
+.. math::
+
+   n := N - M
 
 Take this simple pendulum with points :math:`O` and :math:`P` as an example:
 
@@ -529,7 +539,7 @@ Now, let's return to the four-bar linkage example in
 coordinates of this system are. We know, at least intuitively, that :math:`n=1`
 for the four bar linkage. The four-bar linkage in
 :numref:`configuration-four-bar` is described in a way that assumes a number of
-constraints are fulfilled, such as Eqs.  :math:numref:`planar-constraints` and
+constraints are fulfilled, such as Eqs. :math:numref:`planar-constraints` and
 :math:numref:`p1-constraint`, so we do not have to formally consider them.
 
 .. admonition:: Exercise
@@ -548,7 +558,7 @@ constraints are fulfilled, such as Eqs.  :math:numref:`planar-constraints` and
    :math:`q_1`, :math:`q_2`, **or** :math:`q_3` to be the indepdendent
    generalized coordinate.
 
-If we take the formal approach, starting with four unconstrained points, we
+If we take the general approach, starting with four unconstrained points, we
 need 11 constraints to describe the system, but if we select generalized
 coordinates to describe the system we only need 2 constraint equations (Eq.
 :math:numref:`four-bar-constraints`)! This simplifies the mathematical problem

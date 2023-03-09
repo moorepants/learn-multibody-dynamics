@@ -107,7 +107,6 @@ chapters = [
     'motion',
     'noncontributing',
     'nonholonomic-eom',
-    'notation',
     'orientation',
     'simulation',
     'sympy',

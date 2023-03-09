@@ -7,27 +7,26 @@ then an example of a variable name that we use in the code.
 
 .. todo:: Add the notation that is in the hand drawn figures.
 
+General
+=======
+
 :math:`x`, ``x``, |notation-scalar|
    Scalars are normal mathematical font.
-:math:`\bar{v}`, ``v``, |notation-vector|
-   Vectors are indicated with a bar.
-:math:`\hat{u}`, ``uhat = u.normalize()``, |notation-unit-vec|
-   Unit vectors are indicated with a hat.
+:math:`\mathbf{R}`, ``R``
+   Matrices are capitalized letters in bold font.
+:math:`\mathbf{J}_{\bar{v},\bar{u}}`
+   The Jacobian of the vector function :math:`\bar{v}` with respect to the
+   entries in vector :math:`\bar{u}` where the :math:`(i,j)` entries of the
+   Jacobian are :math:`\mathbf{J}_{ij} = \frac{\partial v_i}{\partial u_j}`.
+
+Orientation of Reference Frames
+===============================
+
 :math:`A`, ``A``, |notation-ref-frame|
    Reference frame :math:`A`.
 :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`, ``A.x``, ``A.y``, ``A.z``, |notation-ref-frame-unit-vec|
    Right handed mutually perpendicular unit vectors fixed in reference frame
    :math:`A`.
-:math:`|\bar{v}|`, ``v.magnitude()``, |notation-vec-mag|
-   Magnitude of a vector; Euclidean norm (2-norm).
-:math:`\bar{u} \cdot \bar{v}`, ``u.dot(v)``, |notation-vec-dot|
-   Dot product of two vectors.
-:math:`\bar{u} \times \bar{v}`, ``u.cross(v)``, |notation-vec-cross|
-   Cross product of two vectors.
-:math:`\bar{u} \otimes \bar{v}`, ``u.outer(v)``, |notation-vec-outer|
-   Outer product of two vectors.
-:math:`\mathbf{R}`, ``R``
-   Matrices are capitalized letters in bold font.
 :math:`{}^A\mathbf{C}^B`, ``A_C_B``, |notation-dcm|
    Direction cosine matrix relating reference frames (or rigid bodies)
    :math:`B` and :math:`A` where this relation between the right handed
@@ -49,11 +48,30 @@ then an example of a variable name that we use in the code.
         \hat{b}_z
       \end{bmatrix}
 
+Vectors and Vector Differentiation
+==================================
+
+:math:`\bar{v}`, ``v``, |notation-vector|
+   Vectors are indicated with a bar.
+:math:`\hat{u}`, ``uhat = u.normalize()``, |notation-unit-vec|
+   Unit vectors are indicated with a hat.
+:math:`|\bar{v}|`, ``v.magnitude()``, |notation-vec-mag|
+   Magnitude of a vector; Euclidean norm (2-norm).
+:math:`\bar{u} \cdot \bar{v}`, ``u.dot(v)``, |notation-vec-dot|
+   Dot product of two vectors.
+:math:`\bar{u} \times \bar{v}`, ``u.cross(v)``, |notation-vec-cross|
+   Cross product of two vectors.
+:math:`\bar{u} \otimes \bar{v}`, ``u.outer(v)``, |notation-vec-outer|
+   Outer product of two vectors.
 :math:`\frac{{}^A\partial \bar{v}}{\partial q}`, ``dvdqA = v.diff(q, A)``, |notation-vec-par-diff|
    Partial derivative of :math:`\bar{v}` with respect to :math:`q` when
    observed from :math:`A`.
 :math:`\frac{{}^A d \bar{v}}{dt}`, ``dvdtA = v.dt(A)``, |notation-vec-time-diff|
    Time derivative of :math:`\bar{v}` when observed from :math:`A`.
+
+Angular and Translational Kinematics
+====================================
+
 :math:`{}^A\bar{\omega}^B`, ``A_w_B``
    Angular velocity vector of reference frame or rigid body :math:`B` when
    observed from reference frame or rigid body :math:`A`.
@@ -68,12 +86,25 @@ then an example of a variable name that we use in the code.
 :math:`{}^A\bar{a}^P`, ``A_a_P``
    Translational acceleration of point :math:`P` when observed from reference
    frame or rigid body :math:`A`.
+
+Constraints
+===========
+
+:math:`N,M,n,m,p`
+   :math:`N` coordinates, :math:`M` holonomic constraints, :math:`n`
+   generalized coordinates and generalized speeds, :math:`m` nonholonomic
+   constraints, and :math:`p` degrees of freedom. These are related by the two
+   equations :math:`n=N-M` and :math:`p=n-m`.
 :math:`\bar{f}_h(q_1, \ldots, q_N, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M`, ``fh``
    Vector function of :math:`M` holonomic constraint equations among the
    :math:`N` coordinates.
 :math:`\bar{f}_n(u_1, \ldots, u_n, q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^m`, ``fn``
    Vector function of :math:`m` nonholonomic constraint equations among the
    :math:`n` generalized speeds and generalized coordinates.
+
+Mass Distribution
+=================
+
 :math:`\bar{I}^{B/O}_a`, ``I_B_O_a``
    Inertia vector of rigid body :math:`B` with respect to point :math:`O` about
    the unit vector :math:`\hat{n}_a`.
@@ -88,6 +119,10 @@ then an example of a variable name that we use in the code.
 :math:`{}^A \bar{H}^{B/O}`, ``A_H_B_O``
    Angular momentum of rigid body :math:`B` with respect to point :math:`O` in
    reference frame :math:`A`.
+
+Force, Moment, and Torque
+=========================
+
 :math:`\bar{R}^{S}`, ``R_S``
    Resultant of the vector set :math:`S`.
 :math:`\bar{R}^{S/Q}`, ``R_S_Q``
@@ -97,6 +132,10 @@ then an example of a variable name that we use in the code.
    Moment of the resultant of the vector set :math:`S` about point :math:`P`.
 :math:`\bar{T}^{B}`, ``T_B``
    Torque of couple acting on reference frame or body :math:`B`.
+
+Generalized Forces
+==================
+
 :math:`{}^A\bar{v}_r^P`, ``v_P_r``
    r\ :sup:`th` holonomic partial velocity of point :math:`P` in reference
    frame :math:`A` associated with the generalized speed :math:`u_r`.
@@ -127,10 +166,6 @@ then an example of a variable name that we use in the code.
    generalized speed :math:`u_r`.
 :math:`\bar{F}^*_r`, ``Frs``
    Column vector of all generalized active forces (holonomic or nonholonomic).
-:math:`\mathbf{J}_{\bar{v},\bar{u}}`
-   The Jacobian of the vector function :math:`\bar{v}` with respect to the
-   entries in vector :math:`\bar{u}` where the :math:`(i,j)` entries of the
-   Jacobian are :math:`\mathbf{J}_{ij} = \frac{\partial v_i}{\partial u_j}`.
 
 .. |notation-scalar| image:: figures/notation-scalar.svg
    :height: 10px
