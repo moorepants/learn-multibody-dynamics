@@ -250,6 +250,103 @@ constraint.
    All of the mixed partials are the same so this is a holonomic constraint in
    disguise.
 
+Rolling Without Slip
+====================
+
+It is quite common to make the modeling assumption that a wheel rolls without
+slip. A wheel best provides its beneficial properties of rolling and propulsion
+by ensuring that the friction between the wheel and the surface it rolls on is
+sufficiently high. This avoids relative motion between a point fixed on the
+wheel and a point fixed on the surface located at the wheel-surface contact
+location at any given time. This nature can be modeled by a nonholonomic
+constraint. The key to developing the constraint to ensure there is no relative
+slip velocity is to identify the correct two points, calculate the velocity of
+those points, and specify that the relative velocity is zero.
+
+.. _fig-motion-wheel:
+.. figure:: figures/motion-wheel.svg
+   :align: center
+
+   A 2D disc :math:`B` rolling on a motionless plane :math:`N`.
+
+For example, when a 2D disc :math:`B` rolls without slip over a motionless
+plane :math:`N` (:numref:`fig-motion-wheel`), the velocity of a point :math:`C`
+fixed in :math:`B` at the contact point with the plane must be zero to ensure
+no slip when observed from the plane's reference frame. We can state this
+mathematically as:
+
+.. math::
+
+   {}^N\bar{v}^{C} = 0
+
+One must be careful about calculating this velocity and recognizing that there
+are numerous points of possible interest at the same wheel-plane contact
+location. You may consider these points, for example:
+
+- A point :math:`B_C` that moves in the plane :math:`N` which is *always*
+  located at the wheel-plane contact location. The coordinate :math:`q_1`
+  tracks this point in the figure.
+- A point :math:`G_C` that is fixed in the wheel which follows a cycloid_ curve
+  as it rolls along.
+- A point :math:`G` that is fixed in the plane which is located at the
+  wheel-plane contact point at any given instance of time.
+- A point :math:`C` that is fixed in the wheel which is located at the
+  wheel-plane contact point at any given instance of time.
+
+.. _cycloid: https://en.wikipedia.org/wiki/Cycloid
+
+A nonholonomic constraint that ensures rolling without slip, can only be formed
+by considering the last two points. The vector constraint equation is:
+
+.. math::
+
+   {}^N\bar{v}^{C} - {}^N\bar{v}^{G} = 0
+
+Point :math:`G` is fixed in :math:`N` so it has no velocity in :math:`N`:
+
+.. math::
+
+   {}^N\bar{v}^{G} = 0
+
+Point :math:`C` is fixed in :math:`B`. To determine its velocity, take
+:math:`B_o` to be the wheel center which is also fixed in :math:`B`. Since both
+points are fixed in :math:`B` we can apply the two point velocity theorem.
+
+.. math::
+
+   {}^N\bar{v}^{C} = {}^N\bar{v}^{B_o} + {}^N\bar{\omega}^B \times \bar{r}^{C/B_o}
+
+We can then use two generalized coordinates to describe the position
+:math:`q_1` (from :math:`O` fixed in :math:`N`) and rotation :math:`q_2` of the
+wheel. The velocity of the wheel center is then:
+
+.. math::
+
+   {}^N\bar{v}^{B_o} = \dot{q}_1\hat{n}_x
+
+The cross product terms are found with the radius of the wheel with :math:`r`
+and the angular velocity to give the velocity of :math:`C`:
+
+.. math::
+
+   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 \hat{n}_z \times -r\hat{n}_y \\
+   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 r \hat{n}_x
+
+Applying the nonholonomic constraint and knowing that  :math:`{}^N\bar{v}^{G} =
+0` gives us this scalar constraint equation:
+
+.. math::
+
+   \dot{q}_1 - \dot{q}_2 r = 0
+
+This is a scalar nonholonomic constraint equation that ensures rolling without
+slip. Take care to calculate the relative velocities of the two points fixed in
+each of the bodies in rolling contact that are located at the contact point at
+that *instance of time*.
+
+.. todo:: Exercise to calculate the constraint if the plane has a horizontal
+   velocity.
+
 Kinematical Differential Equations
 ==================================
 
@@ -778,3 +875,4 @@ If you have a holonomic system (no nonholonomic constraints) the degrees of
 freedom are equal to the number of generalized coordinates. Nonholonomic
 systems (those with non-integrable motion constraints) have fewer degrees of
 freedom than the number of generalized coordinates.
+
