@@ -834,7 +834,7 @@ system:
 
 We now have the :math:`m=2` dependent generalized speeds
 :math:`\bar{u}_r=\left[u_1,u_2\right]^T` written as functions of the `n=1`
-independent generalized speeds :math:`\bar{u}_s`=\left[u_3\right]:
+independent generalized speeds :math:`\bar{u}_s=\left[u_3\right]`:
 
 .. jupyter-execute::
 
