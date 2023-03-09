@@ -651,20 +651,23 @@ These nonholonomic constraints take this form:
 
    \bar{f}_n(u_1, u_2, u_3, q_3, q_4, q_5) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^2
 
-We now have two equations with three unknown generalized speeds. We can solve
-for two of the generalized speeds in terms of the third. So we select two as
-dependent generalized speeds and one as an independent generalized speed.
-Because nonholonomic constraints are derived from measure numbers of velocity
-vectors, the nonholonomic constraints are always linear in the generalized
-speeds. If we introduce :math:`\bar{u}_s` as a vector of independent
-generalized speeds and :math:`\bar{u}_r` as a vector of dependent generalized
-speeds, the nonholonomic constraints can be written as:
+We now have two equations with three unknown generalized speeds. Note that all
+of the generalized coordinates are not present in these constraints which is
+common. We can solve for two of the generalized speeds in terms of the third.
+So we select two as dependent generalized speeds and one as an independent
+generalized speed.  Because nonholonomic constraints are derived from measure
+numbers of velocity vectors, the nonholonomic constraints are always linear in
+the generalized speeds. If we introduce :math:`\bar{u}_s` as a vector of
+independent generalized speeds and :math:`\bar{u}_r` as a vector of dependent
+generalized speeds, the nonholonomic constraints can be written as:
 
 .. math::
    :label: eq-contraint-linear-form
 
    \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) =
-   \mathbf{A}_r \bar{u}_r + \mathbf{A}_s \bar{u}_s + \bar{b}_{rs} = 0
+   \mathbf{A}_r(\bar{q}, t) \bar{u}_r +
+   \mathbf{A}_s(\bar{q}, t) \bar{u}_s +
+   \bar{b}_{rs}(\bar{q}, t) = 0
 
 or
 
