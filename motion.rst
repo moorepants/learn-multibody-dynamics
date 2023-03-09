@@ -36,6 +36,22 @@ Nonholonomic Constraints
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Formulate nonholonomic constraints to constrain motion.
+- Determine if a nonholonomic constraint is essential and not simply a
+  differentiated holonomic constraint.
+- Formulate a nonholonomic constraint for rolling without slip.
+- Define kinematical differential equations and solve them to put in first
+  order form.
+- Select different choices of generalized speeds.
+- Solve for the dependent generalized speeds in terms of the independent
+  generalized speeds.
+- Calculate the degrees of freedom of a multibody system.
+
 Motion Constraints
 ==================
 
