@@ -272,10 +272,10 @@ slip. A wheel best provides its beneficial properties of rolling and propulsion
 by ensuring that the friction between the wheel and the surface it rolls on is
 sufficiently high. This avoids relative motion between a point fixed on the
 wheel and a point fixed on the surface located at the wheel-surface contact
-location at any given time. This nature can be modeled by a nonholonomic
-constraint. The key to developing the constraint to ensure there is no relative
-slip velocity is to identify the correct two points, calculate the velocity of
-those points, and specify that the relative velocity is zero.
+location at any given time. This nature can be modeled by a motion constraint.
+The key to developing the constraint to ensure there is no relative slip
+velocity is to identify the correct two points, calculate the velocity of those
+points, and specify that the relative velocity is zero.
 
 .. _fig-motion-wheel:
 .. figure:: figures/motion-wheel.svg
@@ -309,8 +309,8 @@ location. You may consider these points, for example:
 
 .. _cycloid: https://en.wikipedia.org/wiki/Cycloid
 
-A nonholonomic constraint that ensures rolling without slip, can only be formed
-by considering the last two points. The vector constraint equation is:
+A motion constraint that ensures rolling without slip, can only be formed by
+considering the last two points. The vector constraint equation is:
 
 .. math::
 
@@ -346,17 +346,20 @@ and the angular velocity to give the velocity of :math:`C`:
    {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 \hat{n}_z \times -r\hat{n}_y \\
    {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 r \hat{n}_x
 
-Applying the nonholonomic constraint and knowing that  :math:`{}^N\bar{v}^{G} =
-0` gives us this scalar constraint equation:
+Applying the motion constraint and knowing that :math:`{}^N\bar{v}^{G} = 0`
+gives us this scalar constraint equation:
 
 .. math::
 
    \dot{q}_1 - \dot{q}_2 r = 0
 
-This is a scalar nonholonomic constraint equation that ensures rolling without
-slip. Take care to calculate the relative velocities of the two points fixed in
-each of the bodies in rolling contact that are located at the contact point at
-that *instance of time*.
+This is a scalar constraint equation that ensures rolling without slip and
+involves the time derivatives of the coordinates. It is integrable and thus
+actually a holonomic constraint, i.e. :math:`q_1 - q_2 r = 0`. General rolling
+without slip in three dimensions will be nonholonomic. Take care to calculate
+the relative velocities of the two points fixed in each of the bodies in
+rolling contact that are located at the contact point at that *instance of
+time*.
 
 .. todo:: Exercise to calculate the constraint if the plane has a horizontal
    velocity.
