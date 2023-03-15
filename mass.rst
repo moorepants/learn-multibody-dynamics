@@ -10,6 +10,11 @@ Mass Distribution
    :jupyter-download-script:`mass` or Jupyter Notebook:
    :jupyter-download-notebook:`mass`.
 
+Learning Objectives
+===================
+
+.. todo:: Add learning objectives.
+
 .. jupyter-execute::
 
    import sympy as sm
@@ -82,6 +87,21 @@ total mass, or *zeroth moment of mass*, of the set is defined as:
 
    m := \sum_{i=1}^\nu m_i
 
+.. admonition:: Exercise
+
+   What is the mass of an object made up of two particles of mass :math:`m` and
+   a rigid body with mass :math:`m/2`?
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      m = sm.symbols('m')
+
+      m_total = m + m + m/2
+      m_total
+
 For a solid body with a density :math:`\rho` defined at each point within its
 volumetric :math:`V` boundary, the total mass becomes an integral of the
 general form:
@@ -91,35 +111,60 @@ general form:
 
    m := \int_{\textrm{solid}} \rho dV
 
+.. admonition:: Exercise
+
+   What is the mass of a cone with uniform density :math:`\rho`, radius
+   :math:`r`, and height :math:`h`?
+
+.. admonition:: Solution
+   :class: dropdown
+
+   Using cylindrical coordinates to write :math:`dV=r \mathrm{d}z
+   \mathrm{d}\theta \mathrm{d}r`,
+   :external:py:func:`~sympy.integrals.integrals.integrate` function can solve
+   the triple integral:
+
+   .. math::
+
+      \int_0^h  \int_0^{2\pi} \int_0^{\frac{r}{h}z} \rho r \mathrm{d}{z} \mathrm{d}{\theta} \mathrm{d}r
+
+   .. jupyter-execute::
+
+      p, r, h, z, theta = sm.symbols('rho, r, h, z, theta')
+
+      sm.integrate(p*r, (r, 0, r/h*z), (theta, 0, 2*sm.pi), (z, 0, h))
+
 Mass Center
 ===========
 
 If each particle in a set of :math:`S` particles is located at positions
-:math:`\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}` the *first moment of mass* can
-be defined as:
+:math:`\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}` the *first moment of mass* is
+defined as:
 
 .. math::
    :label: eq-first-moment
 
-   \sum_{i=1}^\nu m_i \bar{r}^{P_i/O}
+   \sum_{i=1}^\nu m_i \bar{r}^{P_i/O}\textrm{.}
 
-There is then a point :math:`S_o` in which the first mass moment equal to zero:
+There is then a point :math:`S_o` in which the first mass moment is equal to
+zero; fulfilling the following equation:
 
 .. math::
    :label: eq-first-moment-zero
 
-   \sum_{i=1}^\nu m_i \bar{r}^{P_i/S_o} = 0
+   \sum_{i=1}^\nu m_i \bar{r}^{P_i/S_o} = 0\textrm{.}
 
-This point is referred to as the *mass center* (or *center of mass*) of the set
-of particles. The mass center can be found with:
+This point :math:`S_o` is referred to as the *mass center* (or *center of
+mass*) of the set of particles. The mass center's position can be found by
+dividing the first moment of mass by the zeroth moment of mass:
 
 .. math::
    :label: mass-center-particles
 
-   \bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} }{\sum_{i=1}^\nu m_i}
+   \bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} }{\sum_{i=1}^\nu m_i}\textrm{.}
 
 which is the first moment divided by the zeroth moment. For a solid body, this
-takes on the integral form:
+takes the integral form:
 
 .. math::
    :label: mass-center-rigid-body
@@ -132,23 +177,36 @@ particles each at an arbitrary location relative to :math:`O`:
 
 .. jupyter-execute::
 
-   m1, m2, m3 = sm.symbols("m1, m2, m3")
+   m1, m2, m3 = sm.symbols('m1, m2, m3')
    x1, x2, x3 = me.dynamicsymbols('x1, x2, x3')
    y1, y2, y3 = me.dynamicsymbols('y1, y2, y3')
    z1, z2, z3 = me.dynamicsymbols('z1, z2, z3')
 
    A = me.ReferenceFrame('A')
 
-   r_O_So = (m1*(x1*A.x + y1*A.y + z1*A.z) +
-             m2*(x2*A.x + y2*A.y + z2*A.z) +
-             m3*(x3*A.x + y3*A.y + z3*A.z)) / (m1 + m2 + m3)
-   r_O_So
+   zeroth_moment = (m1 + m2 + m3)
 
-Then, for example, if :math:`m_2=2m_1` and :math:`m_3=3m_1`:
+   first_moment = (m1*(x1*A.x + y1*A.y + z1*A.z) +
+                   m2*(x2*A.x + y2*A.y + z2*A.z) +
+                   m3*(x3*A.x + y3*A.y + z3*A.z))
+   first_moment
 
 .. jupyter-execute::
 
-   r_O_So.xreplace({m2: 2*m1, m3: 3*m1}).simplify()
+   r_O_So =  first_moment/zeroth_moment
+   r_O_So
+
+.. admonition:: Exercise
+
+   If :math:`m_2=2m_1` and :math:`m_3=3m_1` in the above example, find the mass
+   center.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      r_O_So.xreplace({m2: 2*m1, m3: 3*m1}).simplify()
 
 Distribution of Mass
 ====================
@@ -170,19 +228,19 @@ is defined as ([Kane1985]_, pg. 61):
 .. todo:: Add the rigid body form of the inertia vector.
 
 This vector describes the sum of each mass's contribution to the mass
-distribution of the set about a line that is parallel to :math:`\hat{n}_a` and
-passes through :math:`O`. Figure :numref:`fig-mass-inertia-vector` shows a
-visual representation of this vector for a single particle :math:`P` with mass
+distribution about a line that is parallel to :math:`\hat{n}_a` and passes
+through :math:`O`. Figure :numref:`fig-mass-inertia-vector` shows a visual
+representation of this vector for a single particle :math:`P` with mass
 :math:`m`.
 
 .. _fig-mass-inertia-vector:
 .. figure:: figures/mass-inertia-vector.svg
    :align: center
 
-   Inertia vector for a single particle :math:`P` and its relationship to
-   :math:`\hat{n}_a`.
+   Inertia vector for a single particle :math:`P` of mass :math:`m` and its
+   relationship to :math:`\hat{n}_a`.
 
-For this single particle the magnitude of :math:`\bar{I}_a` is:
+For this single particle, the magnitude of :math:`\bar{I}_a` is:
 
 .. math::
    :label: inertia-vector-magnitude
@@ -192,11 +250,10 @@ For this single particle the magnitude of :math:`\bar{I}_a` is:
 where :math:`\theta` is angle between :math:`\bar{r}^{P/O}` and
 :math:`\hat{n}_a`. We see that :math:`\bar{I}_a` is always perpendicular to
 :math:`\bar{r}^{P/O}` and scales with :math:`m`, :math:`| \bar{r}^{P/O} |^2`,
-and :math:`\sin\theta`.
-
-If :math:`\hat{n}_a` happens to be parallel to :math:`\bar{r}^{P/O}` then the
-magnitude of :math:`\bar{I}_a` is zero. If :math:`\hat{n}_a` is perpendicular
-to :math:`\bar{r}^{P/O}` then the magnitude is:
+and :math:`\sin\theta`. If :math:`\hat{n}_a` happens to be parallel to
+:math:`\bar{r}^{P/O}` then the magnitude of :math:`\bar{I}_a` is zero. If
+:math:`\hat{n}_a` is perpendicular to :math:`\bar{r}^{P/O}` then the magnitude
+is:
 
 .. math::
    :label: intertia-vector-magnitude-perp
@@ -215,7 +272,7 @@ an *inertia scalar* and is defined as ([Kane1985]_, pg. 62):
    I_{ab} := \bar{I}_{a} \cdot \hat{n}_b
 
 The inertia scalar can be rewritten using Eq.
-:math:numref:`inertia-vector-particles`:
+:math:numref:`inertia-vector-particles` as:
 
 .. math::
    :label: eq-product-of-inertia
@@ -224,7 +281,7 @@ The inertia scalar can be rewritten using Eq.
    \sum_{i=1}^\nu m_i
    \left( \bar{r}^{P_i/O} \times \hat{n}_a \right)
    \cdot
-   \left( \bar{r}^{P_i/O} \times \hat{n}_b \right)
+   \left( \bar{r}^{P_i/O} \times \hat{n}_b \right)\textrm{.}
 
 This form implies that:
 
@@ -258,13 +315,66 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    k_{aa} := \sqrt{\frac{I_{aa}}{m}}
 
+.. admonition:: Exercise
+
+   Three masses of 3m, 2m, and m slide on a ring of radius r. Mass 3m lies pi/6
+   anitclockwise from m and mass 2m lies pi/7 clockwise from m. Find the acute
+   angle from m to a line tangent to the ring which minimizes the total radius
+   of gyration of all three masses about the line tangent to the ring.
+
+   .. todo:: Add a figure for this.
+
+.. admonition:: Exercise
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      m, r, theta = sm.symbols('m, r, theta')
+      A = me.ReferenceFrame('A')
+
+   Create position vectors to each of the masses:
+
+   .. jupyter-execute::
+
+      r_O_m = (r*sm.cos(theta) + r)*A.x + r*sm.sin(theta)*A.y
+      r_O_2m = (r*sm.cos(theta - sm.pi/7) + r)*A.x + r*sm.sin(theta - sm.pi/7)*A.y
+      r_O_3m = (r*sm.cos(theta + sm.pi/6) + r)*A.x + r*sm.sin(theta + sm.pi/6)*A.y
+
+   Create the inertia scalar for a moment of inertia about the point O and A.x
+
+   .. jupyter-execute::
+
+      I = (m*me.dot(r_O_m.cross(A.x), r_O_m.cross(A.x)) +
+           2*m*me.dot(r_O_2m.cross(A.x), r_O_2m.cross(A.x)) +
+           3*m*me.dot(r_O_3m.cross(A.x), r_O_3m.cross(A.x)))
+      I
+
+   .. jupyter-execute::
+
+      dIdtheta = sm.trigsimp(I.diff(theta))
+      dIdtheta
+
+   .. jupyter-execute::
+
+      sm.nsolve((dIdtheta/m/r**2).evalf(), theta, 3.14/4)
+
+   .. jupyter-execute::
+
+      _*180/3.14
+
+
+   .. jupyter-execute::
+
+      sm.plot(dIdtheta/m/r**2)
+
 Inertia Matrix
 ==============
 
 For mutually perpendicular unit vectors fixed in reference frame :math:`A`, the
 moments of inertia with respect to :math:`O` about each unit vector and the
 products of inertia among the pairs of perpendicular unit vectors can be
-computed. This, in general, results in nine inertia scalars that describe the
+computed using the inertia vector expressions in the prior section. This, in
+general, results in nine inertia scalars (6 unique scalars) that describe the
 mass distribution of a set of particles or a rigid body in 3D space. These
 scalars are typically presented as a symmetric *inertia matrix* (also called an
 *inertia tensor*) that takes this form:
@@ -308,6 +418,9 @@ There also exists an analogous form for second order tensors that are
 associated with different reference frames called a dyadic_.
 
 .. _dyadic: https://en.wikipedia.org/wiki/Dyadics
+
+.. todo:: Create the inertia matrix using inertia vectors for a set of
+   particles that are symmetric about one plane.
 
 Dyadics
 =======
