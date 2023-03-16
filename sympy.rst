@@ -616,7 +616,7 @@ More on NumPy arrays of floats will be introduced in a later chapter.
    This distinction between SymPy ``Float`` objects and regular Python and
    NumPy ``float`` objects is important. In this case, the Python float and the
    NumPy float are equivalent. The later will compute much faster because
-   arbitrary precision is not required. In this course, you will almost always
+   arbitrary precision is not required. In this book, you will almost always
    want to convert SymPy expressions to machine precision floating point
    numbers, so use ``lambdify()``.
 
@@ -777,7 +777,7 @@ respect to a vector (or sequence) of variables.
 Solving Linear Systems
 ======================
 
-You'll need to solve `linear systems of equations`_ often in this course. SymPy
+You'll need to solve `linear systems of equations`_ often in this book. SymPy
 offers `a number of ways to do this`_, but the best way to do so if you know a
 set of equations are linear in specific variables is the method described
 below. First, you should know you have equations of this form:
@@ -902,7 +902,7 @@ especially as the dimension of :math:`\mathbf{A}` grows:
    :external:py:func:`~sympy.solvers.solveset.linsolve` can also solve linear
    systems and they check for linearity and properties of the A matrix.  The
    cost is that they can be extremely slow for large expressions (which we will
-   have in this course).
+   have in this book).
 
 .. admonition:: Exercise
 
@@ -996,7 +996,7 @@ trigonometric simplifications, for example:
 
    Only attempt simplification on expressions that are several lines of text.
    Larger expressions become increasingly computationally intensive to simplify
-   and there is generally no need to do so in these materials.
+   and there is generally no need to do so.
 
 As mentioned earlier, SymPy represents expressions as trees. Symbolic
 expressions can also be represented as `directed acyclic graphs`_ that contain
@@ -1109,7 +1109,7 @@ Learn more
 ==========
 
 This section only scratches the surface of what SymPy can do. The presented
-concepts are the basic ones needed for this course, but getting more familiar
+concepts are the basic ones needed for this book, but getting more familiar
 with SymPy and what it can do will help. I recommend doing the `SymPy
 Tutorial`_. The "Gotchas" section is particularly helpful for common mistakes
 when using SymPy. The tutorial is part of the SymPy documentation

@@ -939,7 +939,7 @@ In the previous section, Euler-angles were used to encode the orientation of a
 frame or body.
 There are `many alternative approaches to representing orientations
 <https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions>`_.
-Three such representations, which will be used throughout these materials, were
+Three such representations, which will be used throughout this book, were
 already introduced:
 
 * **Euler-angles** themselves, which provides a minimal representation (only 3
@@ -1026,7 +1026,7 @@ The theory of Lie-groups has further applications to the mechanics and control
 of multibody systems.
 An example application is finding a general method for simplifying the
 equations for symmetric systems, so this can be done more easily and to more
-systems. The Lie-group theory is not used in these materials.
+systems. The Lie-group theory is not used in this book.
 Instead, the interested reader can look up the `3D rotation group`_ as a
 starting point for further study.
 

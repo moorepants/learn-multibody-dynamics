@@ -25,7 +25,7 @@ content that is linked and driven by code. It allows you to edit the code
 interactively. Each page of this book is a Jupyter Notebook and can be
 downloaded and executed on your computer. Jupyter can execute code from many
 programming languages. Different :term:`kernels<kernel>` are used for each
-language and a notebook can, in general, only have a single kernel. This course
+language and a notebook can, in general, only have a single kernel. This book
 will use the Python 3 kernel.
 
 .. _Jupyter Notebook: https://www.jupyter.org
