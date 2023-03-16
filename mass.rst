@@ -315,17 +315,28 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    k_{aa} := \sqrt{\frac{I_{aa}}{m}}
 
-.. admonition:: Exercise
-
-   Three masses of 3m, 2m, and m slide on a ring of radius r. Mass 3m lies pi/6
-   anitclockwise from m and mass 2m lies pi/7 clockwise from m. Find the acute
-   angle from m to a line tangent to the ring which minimizes the total radius
-   of gyration of all three masses about the line tangent to the ring.
-
-   .. todo:: Add a figure for this.
+.. todo:: Double check the solution to this exercise!
 
 .. admonition:: Exercise
+
+   Three masses of :math:`m`, :math:`2m`, and :math:`m` slide on a ring of
+   radius :math:`r`. Mass :math:`3m` always lies :math:`\pi/6` anitclockwise
+   from :math:`m` and mass :math:`2m` always lies :math:`\pi/7` clockwise from
+   :math:`m`. Find the acute angle from the line from the ring center to
+   :math:`m` to a line tangent to the ring at point :math:`O` which minimizes
+   the total radius of gyration of all three masses about the line tangent to
+   the ring.
+
+   .. _fig-mass-ring:
+   .. figure:: figures/mass-ring.svg
+      :align: center
+      :width: 50%
+
+.. admonition:: Solution
    :class: dropdown
+
+   Define the necessary variables, including :math:`\theta` to locate mass
+   :math:`m`.
 
    .. jupyter-execute::
 
@@ -336,36 +347,51 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    .. jupyter-execute::
 
-      r_O_m = (r*sm.cos(theta) + r)*A.x + r*sm.sin(theta)*A.y
-      r_O_2m = (r*sm.cos(theta - sm.pi/7) + r)*A.x + r*sm.sin(theta - sm.pi/7)*A.y
-      r_O_3m = (r*sm.cos(theta + sm.pi/6) + r)*A.x + r*sm.sin(theta + sm.pi/6)*A.y
+      r_O_m = (r + r*sm.sin(theta))*A.x + r*sm.cos(theta)*A.y
+      r_O_2m = (r + r*sm.sin(theta + sm.pi/7))*A.x + r*sm.cos(theta + sm.pi/7)*A.y
+      r_O_3m = (r + r*sm.sin(theta - sm.pi/6))*A.x + r*sm.cos(theta - sm.pi/6)*A.y
 
-   Create the inertia scalar for a moment of inertia about the point O and A.x
-
-   .. jupyter-execute::
-
-      I = (m*me.dot(r_O_m.cross(A.x), r_O_m.cross(A.x)) +
-           2*m*me.dot(r_O_2m.cross(A.x), r_O_2m.cross(A.x)) +
-           3*m*me.dot(r_O_3m.cross(A.x), r_O_3m.cross(A.x)))
-      I
+   Create the inertia scalar for a moment of inertia about the point :math:`O`
+   and :math:`\hat{a}_y`.
 
    .. jupyter-execute::
 
-      dIdtheta = sm.trigsimp(I.diff(theta))
+      Iyy = (m*me.dot(r_O_m.cross(A.y), r_O_m.cross(A.y)) +
+             2*m*me.dot(r_O_2m.cross(A.y), r_O_2m.cross(A.y)) +
+             3*m*me.dot(r_O_3m.cross(A.y), r_O_3m.cross(A.y)))
+      Iyy
+
+   Recognizing that the radius of gyration is minimized when the moment of
+   inertia is minimized, we can take the derivative of the moment of inertia
+   with respect to :math:`\theta` and set that equal to zero.
+
+   .. jupyter-execute::
+
+      dIdtheta = sm.trigsimp(Iyy.diff(theta))
       dIdtheta
 
-   .. jupyter-execute::
-
-      sm.nsolve((dIdtheta/m/r**2).evalf(), theta, 3.14/4)
-
-   .. jupyter-execute::
-
-      _*180/3.14
-
+   We can divide through by :math:`mr^2` and solve numerically for
+   :math:`\theta since it is the only variable present in the expression.
 
    .. jupyter-execute::
 
-      sm.plot(dIdtheta/m/r**2)
+      theta_sol = sm.nsolve((dIdtheta/m/r**2).evalf(), theta, -1/10)
+      theta_sol
+
+   In degrees that is:
+
+   .. jupyter-execute::
+
+      import math
+
+      theta_sol*180/math.pi
+
+   The :external:py:func:`~sympy.plotting.plot.plot` function can make quick
+   plots of single variate functions.
+
+   .. jupyter-execute::
+
+      sm.plot(dIdtheta/m/r**2);
 
 Inertia Matrix
 ==============
