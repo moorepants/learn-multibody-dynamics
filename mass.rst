@@ -2,13 +2,20 @@
 Mass Distribution
 =================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
    :jupyter-download-script:`mass` or Jupyter Notebook:
    :jupyter-download-notebook:`mass`.
+
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- calculate the mass, mass center, and inertia of a set of particles
+- use inertia vectors to find inertia scalars of a set of particles
+- formulate an inertia matrix for a set of particles
 
 .. jupyter-execute::
 
@@ -58,11 +65,12 @@ Particles and Rigid Bodies
 
 We will introduce and use the concepts of particles and rigid bodies in this
 chapter. Both are abstractions of real translating and rotating objects.
-Particles are points, that have a location in Euclidean space, which have a
-volumetrically infinitesimal mass associated with them. Rigid bodies are made
-up of a reference frame, that have orientation, which have an associated
-continuous distribution of mass. Each point in the distribution of mass can
-translate.
+Particles are points that have a location in Euclidean space which have a
+volumetrically infinitesimal mass. Rigid bodies are reference frames that have
+orientation which have an associated continuous distribution of mass. The
+distribution of mass can be thought of as a infinite collection of points
+distributed in a finite volumetric boundary. All of the points distributed in
+the volume are fixed to one another and translate together.
 
 For example, an airplane can be modeled as a rigid body when one is concerned
 with both its translation and orientation. This could be useful when
@@ -82,7 +90,22 @@ total mass, or *zeroth moment of mass*, of the set is defined as:
 
    m := \sum_{i=1}^\nu m_i
 
-For a solid body with a density :math:`\rho` defined at each point within its
+.. admonition:: Exercise
+
+   What is the mass of an object made up of two particles of mass :math:`m` and
+   a rigid body with mass :math:`m/2`?
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      m = sm.symbols('m')
+
+      m_total = m + m + m/2
+      m_total
+
+For a rigid body with a density :math:`\rho` defined at each point within its
 volumetric :math:`V` boundary, the total mass becomes an integral of the
 general form:
 
@@ -91,35 +114,60 @@ general form:
 
    m := \int_{\textrm{solid}} \rho dV
 
+.. admonition:: Exercise
+
+   What is the mass of a cone with uniform density :math:`\rho`, radius
+   :math:`r`, and height :math:`h`?
+
+.. admonition:: Solution
+   :class: dropdown
+
+   Using cylindrical coordinates to write :math:`dV=r \mathrm{d}z
+   \mathrm{d}\theta \mathrm{d}r`,
+   :external:py:func:`~sympy.integrals.integrals.integrate` function can solve
+   the triple integral:
+
+   .. math::
+
+      \int_0^h  \int_0^{2\pi} \int_0^{\frac{r}{h}z} \rho r \mathrm{d}{z} \mathrm{d}{\theta} \mathrm{d}r
+
+   .. jupyter-execute::
+
+      p, r, h, z, theta = sm.symbols('rho, r, h, z, theta')
+
+      sm.integrate(p*r, (r, 0, r/h*z), (theta, 0, 2*sm.pi), (z, 0, h))
+
 Mass Center
 ===========
 
 If each particle in a set of :math:`S` particles is located at positions
-:math:`\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}` the *first moment of mass* can
-be defined as:
+:math:`\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}` the *first moment of mass* is
+defined as:
 
 .. math::
    :label: eq-first-moment
 
-   \sum_{i=1}^\nu m_i \bar{r}^{P_i/O}
+   \sum_{i=1}^\nu m_i \bar{r}^{P_i/O}\textrm{.}
 
-There is then a point :math:`S_o` in which the first mass moment equal to zero:
+There is then a point :math:`S_o` in which the first mass moment is equal to
+zero; fulfilling the following equation:
 
 .. math::
    :label: eq-first-moment-zero
 
-   \sum_{i=1}^\nu m_i \bar{r}^{P_i/S_o} = 0
+   \sum_{i=1}^\nu m_i \bar{r}^{P_i/S_o} = 0\textrm{.}
 
-This point is referred to as the *mass center* (or *center of mass*) of the set
-of particles. The mass center can be found with:
+This point :math:`S_o` is referred to as the *mass center* (or *center of
+mass*) of the set of particles. The mass center's position can be found by
+dividing the first moment of mass by the zeroth moment of mass:
 
 .. math::
    :label: mass-center-particles
 
-   \bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} }{\sum_{i=1}^\nu m_i}
+   \bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} }{\sum_{i=1}^\nu m_i}\textrm{.}
 
 which is the first moment divided by the zeroth moment. For a solid body, this
-takes on the integral form:
+takes the integral form:
 
 .. math::
    :label: mass-center-rigid-body
@@ -132,23 +180,36 @@ particles each at an arbitrary location relative to :math:`O`:
 
 .. jupyter-execute::
 
-   m1, m2, m3 = sm.symbols("m1, m2, m3")
+   m1, m2, m3 = sm.symbols('m1, m2, m3')
    x1, x2, x3 = me.dynamicsymbols('x1, x2, x3')
    y1, y2, y3 = me.dynamicsymbols('y1, y2, y3')
    z1, z2, z3 = me.dynamicsymbols('z1, z2, z3')
 
    A = me.ReferenceFrame('A')
 
-   r_O_So = (m1*(x1*A.x + y1*A.y + z1*A.z) +
-             m2*(x2*A.x + y2*A.y + z2*A.z) +
-             m3*(x3*A.x + y3*A.y + z3*A.z)) / (m1 + m2 + m3)
-   r_O_So
+   zeroth_moment = (m1 + m2 + m3)
 
-Then, for example, if :math:`m_2=2m_1` and :math:`m_3=3m_1`:
+   first_moment = (m1*(x1*A.x + y1*A.y + z1*A.z) +
+                   m2*(x2*A.x + y2*A.y + z2*A.z) +
+                   m3*(x3*A.x + y3*A.y + z3*A.z))
+   first_moment
 
 .. jupyter-execute::
 
-   r_O_So.xreplace({m2: 2*m1, m3: 3*m1}).simplify()
+   r_O_So =  first_moment/zeroth_moment
+   r_O_So
+
+.. admonition:: Exercise
+
+   If :math:`m_2=2m_1` and :math:`m_3=3m_1` in the above example, find the mass
+   center.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   .. jupyter-execute::
+
+      r_O_So.xreplace({m2: 2*m1, m3: 3*m1}).simplify()
 
 Distribution of Mass
 ====================
@@ -170,33 +231,32 @@ is defined as ([Kane1985]_, pg. 61):
 .. todo:: Add the rigid body form of the inertia vector.
 
 This vector describes the sum of each mass's contribution to the mass
-distribution of the set about a line that is parallel to :math:`\hat{n}_a` and
-passes through :math:`O`. Figure :numref:`fig-mass-inertia-vector` shows a
-visual representation of this vector for a single particle :math:`P` with mass
+distribution about a line that is parallel to :math:`\hat{n}_a` and passes
+through :math:`O`. Figure :numref:`fig-mass-inertia-vector` shows a visual
+representation of this vector for a single particle :math:`P` with mass
 :math:`m`.
 
 .. _fig-mass-inertia-vector:
 .. figure:: figures/mass-inertia-vector.svg
    :align: center
 
-   Inertia vector for a single particle :math:`P` and its relationship to
-   :math:`\hat{n}_a`.
+   Inertia vector for a single particle :math:`P` of mass :math:`m` and its
+   relationship to :math:`\hat{n}_a`.
 
-For this single particle the magnitude of :math:`\bar{I}_a` is:
+For this single particle, the magnitude of :math:`\bar{I}_a` is:
 
 .. math::
    :label: inertia-vector-magnitude
 
-   \left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2 \sin\theta
+   \left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2 | \sin\theta |
 
 where :math:`\theta` is angle between :math:`\bar{r}^{P/O}` and
 :math:`\hat{n}_a`. We see that :math:`\bar{I}_a` is always perpendicular to
 :math:`\bar{r}^{P/O}` and scales with :math:`m`, :math:`| \bar{r}^{P/O} |^2`,
-and :math:`\sin\theta`.
-
-If :math:`\hat{n}_a` happens to be parallel to :math:`\bar{r}^{P/O}` then the
-magnitude of :math:`\bar{I}_a` is zero. If :math:`\hat{n}_a` is perpendicular
-to :math:`\bar{r}^{P/O}` then the magnitude is:
+and :math:`\sin\theta`. If :math:`\hat{n}_a` happens to be parallel to
+:math:`\bar{r}^{P/O}` then the magnitude of :math:`\bar{I}_a` is zero. If
+:math:`\hat{n}_a` is perpendicular to :math:`\bar{r}^{P/O}` then the magnitude
+is:
 
 .. math::
    :label: intertia-vector-magnitude-perp
@@ -215,7 +275,7 @@ an *inertia scalar* and is defined as ([Kane1985]_, pg. 62):
    I_{ab} := \bar{I}_{a} \cdot \hat{n}_b
 
 The inertia scalar can be rewritten using Eq.
-:math:numref:`inertia-vector-particles`:
+:math:numref:`inertia-vector-particles` as:
 
 .. math::
    :label: eq-product-of-inertia
@@ -224,7 +284,7 @@ The inertia scalar can be rewritten using Eq.
    \sum_{i=1}^\nu m_i
    \left( \bar{r}^{P_i/O} \times \hat{n}_a \right)
    \cdot
-   \left( \bar{r}^{P_i/O} \times \hat{n}_b \right)
+   \left( \bar{r}^{P_i/O} \times \hat{n}_b \right)\textrm{.}
 
 This form implies that:
 
@@ -258,13 +318,92 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    k_{aa} := \sqrt{\frac{I_{aa}}{m}}
 
+.. admonition:: Exercise
+
+   Three masses of :math:`m`, :math:`2m`, and :math:`3m` slide on a ring of
+   radius :math:`r`. Mass :math:`3m` always lies :math:`\pi/6` anitclockwise
+   from :math:`m` and mass :math:`2m` always lies :math:`\pi/7` clockwise from
+   :math:`m`. Find the acute angle from the line from the ring center to
+   :math:`m` to a line tangent to the ring at point :math:`O` which minimizes
+   the total radius of gyration of all three masses about the line tangent to
+   the ring.
+
+   .. _fig-mass-ring:
+   .. figure:: figures/mass-ring.svg
+      :align: center
+      :width: 50%
+
+.. admonition:: Solution
+   :class: dropdown
+
+   Define the necessary variables, including :math:`\theta` to locate mass
+   :math:`m`.
+
+   .. jupyter-execute::
+
+      m, r, theta = sm.symbols('m, r, theta')
+      A = me.ReferenceFrame('A')
+
+   Create position vectors to each of the masses:
+
+   .. jupyter-execute::
+
+      r_O_m = (r + r*sm.sin(theta))*A.x + r*sm.cos(theta)*A.y
+      r_O_2m = (r + r*sm.sin(theta + sm.pi/7))*A.x + r*sm.cos(theta + sm.pi/7)*A.y
+      r_O_3m = (r + r*sm.sin(theta - sm.pi/6))*A.x + r*sm.cos(theta - sm.pi/6)*A.y
+
+   Create the inertia scalar for a moment of inertia about the point :math:`O`
+   and :math:`\hat{a}_y`.
+
+   .. jupyter-execute::
+
+      Iyy = (m*me.dot(r_O_m.cross(A.y), r_O_m.cross(A.y)) +
+             2*m*me.dot(r_O_2m.cross(A.y), r_O_2m.cross(A.y)) +
+             3*m*me.dot(r_O_3m.cross(A.y), r_O_3m.cross(A.y)))
+      Iyy
+
+   Recognizing that the radius of gyration is minimized when the moment of
+   inertia is minimized, we can take the derivative of the moment of inertia
+   with respect to :math:`\theta` and set that equal to zero.
+
+   .. jupyter-execute::
+
+      dIyydtheta = sm.trigsimp(Iyy.diff(theta))
+      dIyydtheta
+
+   We can divide through by :math:`mr^2` and solve numerically for
+   :math:`\theta since it is the only variable present in the expression.
+
+   .. jupyter-execute::
+
+      theta_sol = sm.nsolve((dIyydtheta/m/r**2).evalf(), theta, 0)
+      theta_sol
+
+   In degrees that is:
+
+   .. jupyter-execute::
+
+      import math
+
+      theta_sol*180/math.pi
+
+   The :external:py:func:`~sympy.plotting.plot.plot` function can make quick
+   plots of single variate functions. Here we see that rotating the set points
+   around the ring will maximimize and minimize the moment of inertia, and thus
+   similiarly the radius of gyration.
+
+   .. jupyter-execute::
+
+      sm.plot(dIyydtheta/m/r**2);
+
 Inertia Matrix
 ==============
 
 For mutually perpendicular unit vectors fixed in reference frame :math:`A`, the
 moments of inertia with respect to :math:`O` about each unit vector and the
 products of inertia among the pairs of perpendicular unit vectors can be
-computed. This, in general, results in nine inertia scalars that describe the
+computed using the inertia vector expressions in the prior section. This, in
+general, results in nine inertia scalars (6 unique scalars) that describe the
 mass distribution of a set of particles or a rigid body in 3D space. These
 scalars are typically presented as a symmetric *inertia matrix* (also called an
 *inertia tensor*) that takes this form:
@@ -308,6 +447,14 @@ There also exists an analogous form for second order tensors that are
 associated with different reference frames called a dyadic_.
 
 .. _dyadic: https://en.wikipedia.org/wiki/Dyadics
+
+.. todo:: Maybe a problem that asks them to balance an unbalanced inertia.
+   Place a point mass somewhere that results in no products of inertia. Could
+   ask to add a mass to the ring above that ensures all products of inertia are
+   zero.
+
+.. warning:: Below this point, this page as not yet been updated for the
+   2022-2023 course.
 
 Dyadics
 =======
