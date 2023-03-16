@@ -2,8 +2,6 @@
 Mass Distribution
 =================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -13,7 +11,11 @@ Mass Distribution
 Learning Objectives
 ===================
 
-.. todo:: Add learning objectives.
+After completing this chapter readers will be able to:
+
+- calculate the mass, mass center, and inertia of a set of particles
+- use inertia vectors to find inertia scalars of a set of particles
+- formulate an inertia matrix for a set of particles
 
 .. jupyter-execute::
 
@@ -63,11 +65,12 @@ Particles and Rigid Bodies
 
 We will introduce and use the concepts of particles and rigid bodies in this
 chapter. Both are abstractions of real translating and rotating objects.
-Particles are points, that have a location in Euclidean space, which have a
-volumetrically infinitesimal mass associated with them. Rigid bodies are made
-up of a reference frame, that have orientation, which have an associated
-continuous distribution of mass. Each point in the distribution of mass can
-translate.
+Particles are points that have a location in Euclidean space which have a
+volumetrically infinitesimal mass. Rigid bodies are reference frames that have
+orientation which have an associated continuous distribution of mass. The
+distribution of mass can be thought of as a infinite collection of points
+distributed in a finite volumetric boundary. All of the points distributed in
+the volume are fixed to one another and translate together.
 
 For example, an airplane can be modeled as a rigid body when one is concerned
 with both its translation and orientation. This could be useful when
@@ -102,7 +105,7 @@ total mass, or *zeroth moment of mass*, of the set is defined as:
       m_total = m + m + m/2
       m_total
 
-For a solid body with a density :math:`\rho` defined at each point within its
+For a rigid body with a density :math:`\rho` defined at each point within its
 volumetric :math:`V` boundary, the total mass becomes an integral of the
 general form:
 
@@ -245,7 +248,7 @@ For this single particle, the magnitude of :math:`\bar{I}_a` is:
 .. math::
    :label: inertia-vector-magnitude
 
-   \left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2 \sin\theta
+   \left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2 | \sin\theta |
 
 where :math:`\theta` is angle between :math:`\bar{r}^{P/O}` and
 :math:`\hat{n}_a`. We see that :math:`\bar{I}_a` is always perpendicular to
@@ -315,11 +318,9 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    k_{aa} := \sqrt{\frac{I_{aa}}{m}}
 
-.. todo:: Double check the solution to this exercise!
-
 .. admonition:: Exercise
 
-   Three masses of :math:`m`, :math:`2m`, and :math:`m` slide on a ring of
+   Three masses of :math:`m`, :math:`2m`, and :math:`3m` slide on a ring of
    radius :math:`r`. Mass :math:`3m` always lies :math:`\pi/6` anitclockwise
    from :math:`m` and mass :math:`2m` always lies :math:`\pi/7` clockwise from
    :math:`m`. Find the acute angle from the line from the ring center to
@@ -367,15 +368,15 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    .. jupyter-execute::
 
-      dIdtheta = sm.trigsimp(Iyy.diff(theta))
-      dIdtheta
+      dIyydtheta = sm.trigsimp(Iyy.diff(theta))
+      dIyydtheta
 
    We can divide through by :math:`mr^2` and solve numerically for
    :math:`\theta since it is the only variable present in the expression.
 
    .. jupyter-execute::
 
-      theta_sol = sm.nsolve((dIdtheta/m/r**2).evalf(), theta, -1/10)
+      theta_sol = sm.nsolve((dIyydtheta/m/r**2).evalf(), theta, 0)
       theta_sol
 
    In degrees that is:
@@ -387,11 +388,13 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
       theta_sol*180/math.pi
 
    The :external:py:func:`~sympy.plotting.plot.plot` function can make quick
-   plots of single variate functions.
+   plots of single variate functions. Here we see that rotating the set points
+   around the ring will maximimize and minimize the moment of inertia, and thus
+   similiarly the radius of gyration.
 
    .. jupyter-execute::
 
-      sm.plot(dIdtheta/m/r**2);
+      sm.plot(dIyydtheta/m/r**2);
 
 Inertia Matrix
 ==============
@@ -445,8 +448,13 @@ associated with different reference frames called a dyadic_.
 
 .. _dyadic: https://en.wikipedia.org/wiki/Dyadics
 
-.. todo:: Create the inertia matrix using inertia vectors for a set of
-   particles that are symmetric about one plane.
+.. todo:: Maybe a problem that asks them to balance an unbalanced inertia.
+   Place a point mass somewhere that results in no products of inertia. Could
+   ask to add a mass to the ring above that ensures all products of inertia are
+   zero.
+
+.. warning:: Below this point, this page as not yet been updated for the
+   2022-2023 course.
 
 Dyadics
 =======
