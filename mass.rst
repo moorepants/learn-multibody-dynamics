@@ -368,11 +368,11 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    .. jupyter-execute::
 
-      dIyydtheta = sm.trigsimp(Iyy.diff(theta))
+      dIyydtheta = sm.simplify(Iyy.diff(theta))
       dIyydtheta
 
    We can divide through by :math:`mr^2` and solve numerically for
-   :math:`\theta since it is the only variable present in the expression.
+   :math:`\theta` since it is the only variable present in the expression.
 
    .. jupyter-execute::
 
@@ -388,13 +388,23 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
       theta_sol*180/math.pi
 
    The :external:py:func:`~sympy.plotting.plot.plot` function can make quick
-   plots of single variate functions. Here we see that rotating the set points
-   around the ring will maximimize and minimize the moment of inertia, and thus
-   similiarly the radius of gyration.
+   plots of single variate functions. Here we see that rotating the set of
+   points around the ring will maximimize and minimize the radius of gyration
+   and that our solution is a minima. :math:`m=r=1` was selected so we could
+   plot only as a function of :math:`\theta`.
 
    .. jupyter-execute::
 
-      sm.plot(dIyydtheta/m/r**2);
+      kyy = sm.sqrt(Iyy/m)
+      kyy
+
+   .. jupyter-execute::
+
+      sm.plot(kyy.xreplace({m: 1, r: 1}));
+
+   .. jupyter-execute::
+
+      kyy.xreplace({m: 1, r: 1, theta: theta_sol}).evalf()
 
 Inertia Matrix
 ==============
