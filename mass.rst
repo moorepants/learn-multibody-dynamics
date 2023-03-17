@@ -105,9 +105,9 @@ total mass, or *zeroth moment of mass*, of the set is defined as:
       m_total = m + m + m/2
       m_total
 
-For a rigid body with a density :math:`\rho` defined at each point within its
-volumetric :math:`V` boundary, the total mass becomes an integral of the
-general form:
+For a rigid body consiting of a solid with a density :math:`\rho` defined at
+each point within its volumetric :math:`V` boundary, the total mass becomes an
+integral of the general form:
 
 .. math::
    :label: eq-zeroth-moment-rigid-body
