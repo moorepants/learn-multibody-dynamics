@@ -24,15 +24,15 @@ developed by Joseph-Louis Lagrange.
 Inertial forces from kinetic energy
 ===================================
 
-When learning about Kane's method, we learned that the negated inertial
+When learning about Kane's method, we learned that the negated generalized inertial
 forces equal the applied forces, see :ref:`Unconstrained Equations of Motion`.
 A large part of Kane's method of deriving the equations of motions for a 
-system is involved with finding the inertial forces.
+system is involved with finding the generalized inertial forces.
 
-As an alternative, the following equation also get the inertial forces of a
-system, now by starting from the `kinetic energy TODO`_ :math:`T(\bar{u}, \bar{q})`
+As an alternative, the following equation also get the generalized inertial forces of a
+system, now by starting from the `kinetic energy TODO`_ :math:`T(\dot{\bar{q}}, \bar{q})`
 expressed as function of the generalized coordinates :math:`\bar{q}`, and 
-their corresponding generalized speeds :math:`\bar{u}`
+their time derivatives.
 
 .. _`kinetic energy TODO`: https://en.wikipedia.org/wiki/Work_in_process
 
@@ -43,13 +43,21 @@ their corresponding generalized speeds :math:`\bar{u}`
     -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial u_r}
         \right) - \frac{\partial T}{\partial q_r}
 
-The derivation of this formula is discussed in the section
-:ref:`Lagrange equation from virtual work`.
  
 .. warning:: Note the two minus signs in the above equation
 
-Example: 3D body in outer space
+.. note::
 
+    In Kane's method, we are free to choose generalized speeds :math:`\bar{u}` that differ from
+    the time derivatives of the generalized coordinates, that is :math:`\dot{\bar{q}}`. This
+    freedom is not there when using the Lagrange method. Therefore we will consistently use
+    :math:`\dot{\bar{q}}` in this chapter.
+
+The generalized inertial forces computed in this manner are the same as when following
+Kane's method. This can be shown by carefully matching terms in both formulations, as
+is done for a system of point-masses in [Vallery2020]_.
+
+Example: 3D body in outer space
 
 .. jupyter-execute::
     # Setting up reference frames
@@ -81,7 +89,7 @@ Example: 3D body in outer space
 
 
 This gives the equations of motion, but the terms, particularly the terms
-involving :math:`\dot{u}_r` are mangled. It is common to extract the system
+involving :math:`\ddot{q}_r` are mangled. It is common to extract the system
 mass matrix and velocity forces vector like so:
 
 .. jupyter-execute::
@@ -109,9 +117,9 @@ known as the `potential energy`_ :math:`V(\bar{q})`:
 
 Some examples of conservative forces are:
 
-* linearized gravity on the surface of the earth, with potential :math:`m g h`,
-* gravity from Newton's universal gravitation, with potential :math:`-G \frac{m_1m_2}{r}`,
-* a linear spring, with potential :math:`\frac{1}{2}k(l - l_0)`.
+* linearized gravity on the surface of the earth, with potential :math:`m g h(\bar{q})`,
+* gravity from Newton's universal gravitation, with potential :math:`-G \frac{m_1m_2}{r(\bar{q})}`,
+* a linear spring, with potential :math:`\frac{1}{2}k(l(\bar{q}) - l_0)`.
 
 For conservative forces, it is often convenient to derive the applied forces via 
 the potential energy.
@@ -160,14 +168,88 @@ includes the conservative forces.
 Constrained equations of motion
 ===============================
 
-Compute the applied forces as before, add the constraint equation as before
+When using Kane's method, constraints are handled by dividing the generalized speeds into two sets:
+the dependent and independent generalized speeds. Then, the dependent generalized speeds are eliminated 
+by solving the (time derivative of the) constraint equation.
+
+In the Lagrange method, the generalized speeds should always mach the generalized coordinates.
+Therefore, to handle constraints, the generalized coordinates should be likewise eliminated. This
+is not possible for non-holonomic constraint (by definition), and requires to solve often difficult
+non-linear equations when considering holonomic constraints. This method of elimination is therefore
+not useful within the Lagrange method.
+
+Instead, we generalize the approach in :ref:`Exposing Noncontributing Forces`. We will first ommit the
+constraint, and add a constraint force, for which we can specify the direction, but not the magnitude. 
+The (second) time derivative of the constraint equation is then added to the equations found with the
+Euler-Lagrange equation.
+
+For example, a four bar linkage:
 
 
-Lagrange equation from virtual work
-===================================
 
-Show that the Euler-Lagrange equation leads to the same results as virtual work,
-for a system consisting of :math:`n` particles.
+
+
+
+It can be tricky to find the direction of the constraint force from the geometric of the system directly.
+There is a trick, called the method of the Lagrange multupliers, to quickly find the correct generalized
+forces associated with the constraint forces. 
+
+Given a constraint in the general form
+
+.. math::
+
+    \sum_r a_r(\bar{q}) \dot{q}_r = 0
+
+We find the generalized force as:
+
+.. math::
+
+    F_r = \lambda a_r(\bar{q})
+
+Here :math:`\lambda` is a variable encoding the magnitude of the constraint force. It is
+called  the Lagrange multiplier. The same :math:`lambda`` is used for each :math:`r`, that is, 
+one constraint has one associated Lagrange multiplier.
+
+
+**Example: turning the freely floating body discussed earlier into a rolling sphere.**
+
+The non-slip condition of the rolling sphere is split into three constraints: the velocity of
+the contact point (:math:`G`) is zero in both the :math:`\hat{n}_x`, :math:`\hat{n}_y` and :math:`\hat{n}_z`
+direction. These constraints are enforced by contact forces in their respective directions.
+
+The contact point can be found according by :math:`\bar{r}^{G/C} = -r \hat{n}_z`. We therefore get the
+constraint:
+
+.. math::
+
+    \begin{align*}
+        \bar{n}_x\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) &= 0 \\
+        \bar{n}_y\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) &= 0 \\
+        \bar{n}_z\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) &= 0 \\
+    \end{align*}
+
+These can be used in the Lagrange-multiplier method as follows:
+
+.. jupyter-execute:
+
+    1 + 1
+
+
+
+    
+The method of the Lagrange multiplier can of course also be used within Kane's method. However,
+this results in a larger system of equations, which is why the elimination approach is often
+preferred there. An exception being scenarios where the constraint force itself is a useful output,
+for instance to check no-slip conditions in case of limited friction.
+
+
+Lagrange's vs Kane's
+====================
+
+Why did we learn both methods?
+
+* Kane i
+
 
 (Learn more) Generalized momentum
 =================================
@@ -191,10 +273,26 @@ Practice problem: add a damping force or a coulomb friction force in the first j
 (the example and this problem are inspired by a talk by A. Ruina, https://www.youtube.com/watch?v=j-wHI764dWU)
 
 
+The generalized momenta are an invertable function of the generalized speeds. We can therefore replace the
+Lagrangian equation by:
+
+.. math::
+
+    \dot{p_r} = \frac{\partial L}{\partial q_r}
+
+.. math::
+
+    \dot{q_r} = \dot{q_r}(\bar{p})  
+
+which are equivalent to the equations obtained using Hamilton's method. Hamiltonian systems and their
+extension Port-Hamiltonian system are often used in physics and control theory respectively.
+
 
 
 (Learn more) Euler-Lagrange in optimization
 ===========================================
+
+There is an 
 
 Euler-Lagrange as key result in variational calculus.
 
