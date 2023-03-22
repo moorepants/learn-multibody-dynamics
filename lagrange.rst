@@ -54,7 +54,7 @@ their time derivatives.
     :math:`\dot{\bar{q}}` in this chapter.
 
 The generalized inertial forces computed in this manner are the same as when following
-Kane's method. This can be shown by carefully matching terms in both formulations, as
+the TMT method. This can be shown by carefully matching terms in both formulations, as
 is done for a system of point-masses in [Vallery2020]_.
 
 Example: 3D body in outer space
@@ -185,7 +185,26 @@ Euler-Lagrange equation.
 
 For example, a four bar linkage:
 
+Considere a four bar linkage, with point-masses located at the second and third joints. We use the
+positions of the first, second and third joints as generalized coordinates. This leaves two constraints:
 
+.. math::
+    \begin{align*}
+    &\bar{n}_x \cdot \bar{r}^{P4/O} - r_x = 0 
+    &\bar{n}_x \cdot \bar{r}^{P4/O} - r_y = 0
+    \end{align*}
+
+This means there are two constraint forces, both acting on the third body, at point :math:`P_4`. The
+forces act in :math:`\bar{n}_x` and :math:`\bar{n}_y` direction respectively.
+
+The following code derives the equations of motion for this system using the Lagrange method. The second
+derivative of the constraint equation, is used here so the second derivatives of the generalized
+coordinates appear. Note that the time derivative of the right hand side (0) is simply 0 again, so the time
+derivatives of the constraint should still equal 0.
+
+.. jupyter-execute::
+
+    1+1
 
 
 
@@ -228,7 +247,9 @@ constraint:
         \bar{n}_z\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) &= 0 \\
     \end{align*}
 
-These can be used in the Lagrange-multiplier method as follows:
+These can be used in the Lagrange-multiplier method as shown below. Note that here only the
+first time derivative of the constraint equation is used, again because the second time 
+derivatives of the generalized coordinates appear.
 
 .. jupyter-execute:
 
