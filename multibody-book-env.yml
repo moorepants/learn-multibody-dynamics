@@ -6,7 +6,6 @@ dependencies:
   - graphviz ==5.0.*
   - imagemagick ==7.1.*
   - ipython <8.9  # 8.9 introduced changes to the autocomplete
-  - ipywidgets <8.0.5
   - jupyter-sphinx ==0.4.0  # >=0.4.0 required for new directive names jupyter-download-script/notebook
   - matplotlib ==3.5.*
   - numpy ==1.22.*
