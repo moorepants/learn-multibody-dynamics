@@ -767,11 +767,12 @@ about this transform):
 
 .. admonition:: Exercise
 
-   The inertia dyadic of a bicycle's handlebar and fork assembly about its mass
-   center where :math:`\hat{n}_x` points from the center of the rear wheel to
-   the center of the front wheel and :math:`\hat{n}_z`. The head tube angle is
-   68 degrees. Find the moment of inertia about the tilted steer axie given the
-   inertia dyadic:
+   Gvine the inertia dyadic of a bicycle's handlebar and fork assembly about
+   its mass center where :math:`\hat{n}_x` points from the center of the rear
+   wheel to the center of the front wheel and :math:`\hat{n}_z` points
+   downward, normal to the ground, and the head tube angle is 68 degrees from
+   the ground plane, find the moment of inertia about the tilted steer axis
+   given the inertia dyadic:
 
    .. jupyter-execute::
 
@@ -801,7 +802,7 @@ about this transform):
 
       I.dot(H.z).dot(H.z).evalf()
 
-   Alternatively you can use the matrix transformation.
+   Alternatively, you can use the matrix transformation.
 
    .. jupyter-execute::
 
