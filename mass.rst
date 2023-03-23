@@ -615,7 +615,7 @@ Note that the unit dyadic is the same when expressed in any reference frame:
    U.express(B).simplify()
 
 .. todo:: ReferenceFrame should have an attribute that returns the unit dyadic
-   (or dyads).
+   (or dyads). See: https://github.com/sympy/sympy/issues/24965
 
 Properties of Dyadics
 =====================
@@ -708,8 +708,6 @@ where:
 
    \bar{I}_a = \hat{n}_a \cdot \breve{I}^{S/O}
 
-.. todo:: Add the rigid body form of the inertia dyadic equation.
-
 Note that we have now described the inertia of the set of particles without
 needing to specify a vector :math:`\hat{n}_a`. This inertia dyadic contains the
 complete description of inertia with respect to point :math:`O` about any axis.
@@ -771,7 +769,7 @@ about this transform):
 
    The inertia dyadic of a bicycle's handlebar and fork assembly about its mass
    center where :math:`\hat{n}_x` points from the center of the rear wheel to
-   the center of the front wheel and :math:`\hat{n}_z. The head tube angle is
+   the center of the front wheel and :math:`\hat{n}_z`. The head tube angle is
    68 degrees. Find the moment of inertia about the tilted steer axie given the
    inertia dyadic:
 
