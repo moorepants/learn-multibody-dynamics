@@ -307,7 +307,8 @@ reduces to the moment of inertia:
 
    I_{aa} =
    \sum_{i=1}^\nu m_i
-   \left( \bar{r}^{P_i/O} \times \hat{n}_a \right)^2
+   \left( \bar{r}^{P_i/O} \times \hat{n}_a \right) \cdot
+   \left( \bar{r}^{P_i/O} \times \hat{n}_a \right)
 
 It is common to define the *radius of gyration* :math:`k_{aa}`, which is the
 radius of a ring that has the same moment of inertia as the set of particles or
@@ -389,7 +390,7 @@ rigid body. The radius of gyration about a line through :math:`O` parallel to
 
    The :external:py:func:`~sympy.plotting.plot.plot` function can make quick
    plots of single variate functions. Here we see that rotating the set of
-   points around the ring will maximimize and minimize the radius of gyration
+   masses around the ring will maximize and minimize the radius of gyration
    and that our solution is a minima. :math:`m=r=1` was selected so we could
    plot only as a function of :math:`\theta`.
 
@@ -413,9 +414,10 @@ For mutually perpendicular unit vectors fixed in reference frame :math:`A`, the
 moments of inertia with respect to :math:`O` about each unit vector and the
 products of inertia among the pairs of perpendicular unit vectors can be
 computed using the inertia vector expressions in the prior section. This, in
-general, results in nine inertia scalars (6 unique scalars) that describe the
-mass distribution of a set of particles or a rigid body in 3D space. These
-scalars are typically presented as a symmetric *inertia matrix* (also called an
+general, results in nine inertia scalars (6 unique scalars because of
+:math:numref:`eq-product-of-inertia-equivalence`) that describe the mass
+distribution of a set of particles or a rigid body in 3D space. These scalars
+are typically presented as a symmetric *inertia matrix* (also called an
 *inertia tensor*) that takes this form:
 
 .. math::
@@ -531,7 +533,8 @@ Unit dyads correspond to unit entries in the 3x3 matrix:
 
    me.outer(A.x, A.x).to_matrix(A)
 
-Unit dyads are analogous to unit vectors. Here is another example:
+Unit dyads are analogous to unit vectors. There are nine unit dyads associated
+with the three orthogonal unit vectors. Here is another example:
 
 .. jupyter-execute::
 
@@ -615,6 +618,10 @@ Note that the unit dyadic is the same when expressed in any reference frame:
 Properties of Dyadics
 =====================
 
+.. todo:: Peter mentioned that some of these are definitions, like the
+   definition of a dyadic-vector dot product. I should probably make that
+   clearer what is a definition and what is a theorem that follows.
+
 Dyadics have similar properties as vectors but are not necessarily commutative.
 
 - Scalar multiplication: :math:`\alpha(\bar{u}\otimes\bar{v}) = \alpha\bar{u}\otimes\bar{v} = \bar{u}\otimes\alpha\bar{v}`
@@ -629,8 +636,9 @@ Dyadics have similar properties as vectors but are not necessarily commutative.
   - :math:`\bar{u}\times(\bar{v}\otimes\bar{w}) = (\bar{u}\times\bar{v})\otimes\bar{w}`
   - :math:`(\bar{u}\otimes\bar{v})\times\bar{w} = \bar{u}\otimes(\bar{v}\times\bar{w})`
 
-- Dot products between arbitrary vectors and arbitrary dyadics are not
-  commutative: :math:`\breve{V}\cdot\bar{u} \neq \bar{u}\cdot\breve{V}`
+- Dot products between arbitrary vectors :math:`\bar{u}` and arbitrary dyadics
+  :math:`\breve{V}` are not commutative: :math:`\breve{V}\cdot\bar{u} \neq
+  \bar{u}\cdot\breve{V}`
 - Dot products between arbitrary vectors and the unit dyadic are commutative
   and result in the vector itself: :math:`\breve{U}\cdot\bar{v} =
   \bar{v}\cdot\breve{U} = \bar{v}`
@@ -638,18 +646,24 @@ Dyadics have similar properties as vectors but are not necessarily commutative.
 Inertia Dyadic
 ==============
 
-Previously we defined the inertia vector. Using the `vector triple product`_
-identity: :math:`\bar{a}\times(\bar{b}\times\bar{c}) =
-\bar{b}(\bar{a}\cdot\bar{c}) - \bar{c}(\bar{a}\cdot\bar{b})`, the inertia
-vector can be written as ([Kane1985]_, pg. 68):
+Previously we defined the inertia vector as:
+
+.. math::
+   :label: eq-inertia-vector-again
+
+   \bar{I}_a = \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times \bar{r}^{P_i/O}  \right)
+
+Using the `vector triple product`_ identity:
+:math:`\bar{a}\times(\bar{b}\times\bar{c}) = \bar{b}(\bar{a}\cdot\bar{c}) -
+\bar{c}(\bar{a}\cdot\bar{b})`, the inertia vector can be written as
+([Kane1985]_, pg. 68):
 
 .. _vector triple product: https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product
 
 .. math::
    :label: eq-apply-triple-vec-product
 
-   \bar{I}_a & = \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times \bar{r}^{P_i/O}  \right) \\
-   \bar{I}_a & = \sum_{i=1}^\nu m_i
+   \bar{I}_a = \sum_{i=1}^\nu m_i
    \left[\hat{n}_a \left( \bar{r}^{P_i/O} \cdot \bar{r}^{P_i/O} \right) -
    \bar{r}^{P_i/O} \left( \bar{r}^{P_i/O} \cdot \hat{n}_a \right) \right]
 
@@ -717,7 +731,7 @@ single reference frame can quickly be generated with
    I.to_matrix(A)
 
 This inertia dyadic can easily be expressed relative to another reference frame
-if the orientation is defined:
+if the orientation is defined (demonstrated above in :ref:`Dyadics`):
 
 .. jupyter-execute::
 
@@ -734,41 +748,6 @@ other reference frame:
 .. jupyter-execute::
 
    sm.trigsimp(B.dcm(A)*I.to_matrix(A)*A.dcm(B))
-
-.. note:: Angular Momentum
-
-   The angular momentum of a rigid body :math:`B` in reference frame :math:`A`
-   about point :math:`O` is defined as:
-
-   .. math::
-      :label: eq-angular-momentum
-
-      {}^A \bar{H}^{B/O} := \breve{I}^{B/O} \cdot {}^A\bar{\omega}^B
-
-   If the point is instead the mass center of :math:`B`, point :math:`B_o`,
-   then the inertia dyadic is the *central inertia dyadic* and the result is
-   the *central angular momentum* in :math:`A` is:
-
-   .. math::
-      :label: eq-central-angular-momentum
-
-      {}^A \bar{H}^{B/B_o} = \breve{I}^{B/B_o} \cdot {}^A\bar{\omega}^B
-
-   Here is an example of calculating the angular momentum in SymPy Mechanics:
-
-   .. jupyter-execute::
-
-      Ixx, Iyy, Izz = sm.symbols('I_{xx}, I_{yy}, I_{zz}')
-      Ixy, Iyz, Ixz = sm.symbols('I_{xy}, I_{yz}, I_{xz}')
-      w1, w2, w3 = me.dynamicsymbols('omega1, omega2, omega3')
-
-      B = me.ReferenceFrame('B')
-
-      I = me.inertia(B, Ixx, Iyy, Izz, Ixy, Iyz, Ixz)
-
-      A_w_B = w1*B.x + w2*B.y + w3*B.z
-
-      I.dot(A_w_B)
 
 Parallel Axis Theorem
 =====================
@@ -886,3 +865,59 @@ multiplicity, eigenvector)``:
 .. jupyter-execute::
 
    I.eigenvects()
+
+Angular Momentum
+================
+
+The angular momentum vector of a rigid body :math:`B` in reference frame
+:math:`A` about point :math:`O` is defined as:
+
+.. math::
+   :label: eq-angular-momentum
+
+   {}^A \bar{H}^{B/O} := \breve{I}^{B/O} \cdot {}^A\bar{\omega}^B
+
+The dyadic-vector dot product makes this definition succinct.
+
+If the point is instead the mass center of :math:`B`, point :math:`B_o`,
+then the inertia dyadic is the *central inertia dyadic* and the result is
+the *central angular momentum* in :math:`A` is:
+
+.. math::
+   :label: eq-central-angular-momentum
+
+   {}^A \bar{H}^{B/B_o} = \breve{I}^{B/B_o} \cdot {}^A\bar{\omega}^B
+
+Here is an example of calculating the angular momentum expressed in the body
+fixed reference frame in SymPy Mechanics:
+
+.. jupyter-execute::
+
+   Ixx, Iyy, Izz = sm.symbols('I_{xx}, I_{yy}, I_{zz}')
+   Ixy, Iyz, Ixz = sm.symbols('I_{xy}, I_{yz}, I_{xz}')
+   w1, w2, w3 = me.dynamicsymbols('omega1, omega2, omega3')
+
+   B = me.ReferenceFrame('B')
+
+   I = me.inertia(B, Ixx, Iyy, Izz, Ixy, Iyz, Ixz)
+
+   A_w_B = w1*B.x + w2*B.y + w3*B.z
+
+   I.dot(A_w_B)
+
+If the body fixed unit vectors happen to be aligned with the principal axes of
+the rigid body, then the central angular momentum simplifies:
+
+.. jupyter-execute::
+
+   I1, I2, I3 = sm.symbols('I_1, I_2, I_3')
+   w1, w2, w3 = me.dynamicsymbols('omega1, omega2, omega3')
+
+   B = me.ReferenceFrame('B')
+
+   I = me.inertia(B, I1, I2, I3)
+
+   A_w_B = w1*B.x + w2*B.y + w3*B.z
+
+   I.dot(A_w_B)
+
