@@ -470,9 +470,6 @@ associated with different reference frames called a dyadic_.
    ask to add a mass to the ring above that ensures all products of inertia are
    zero.
 
-.. warning:: Below this point, this page as not yet been updated for the
-   2022-2023 course.
-
 Dyadics
 =======
 
