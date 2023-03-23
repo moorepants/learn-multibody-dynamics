@@ -106,8 +106,8 @@ Mass Distribution
 =================
 
 :math:`\bar{I}^{B/O}_a`, ``I_B_O_a``
-   Inertia vector of rigid body :math:`B` with respect to point :math:`O` about
-   the unit vector :math:`\hat{n}_a`.
+   Inertia vector of rigid body :math:`B` or set of particles :math:`B` with
+   respect to point :math:`O` about the unit vector :math:`\hat{n}_a`.
 :math:`\breve{Q}`, ``Q``
    Dyadics are indicated with a breve accent.
 :math:`\breve{I}^{B/O}`, ``I_B_O``
