@@ -22,3 +22,7 @@ dependencies:
   - css-html-js-minify
   - lxml
   - python-slugify
+  # The following are pinned because of https://github.com/jupyter-widgets/pythreejs/issues/389
+  - ipywidgets ==7.7.2
+  - jupyterlab_widgets ==1.1.1
+  - widgetsnbextension ==3.6.1
