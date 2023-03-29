@@ -36,17 +36,22 @@ Force, Moment, and Torque
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+.. todo:: Add these!
+
 Force
 =====
 
 A *force* is an abstraction we use to describe something that causes mass to
 move (i.e. accelerate from a stationary state). There are four `fundamental
 forces of nature`_ of which all other forces can be derived from. Moments and
-torques arise from forces and are abstractions useful in describing what causes
-distributed mass rotation. Forces, moments, and torques have magnitude and
-direction and thus we use vectors to describe them mathematically.
+torques arise from forces and are useful in describing what causes distributed
+mass rotation. Forces, moments, and torques have magnitude and direction and
+thus we use vectors to describe them mathematically.
 
-.. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_forces
+.. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_interactions
 
 Bound and Free Vectors
 ======================
@@ -81,15 +86,15 @@ The moment :math:`\bar{M}` of bound vector :math:`\bar{v}` about point
    \bar{M} := \bar{r}^{L/P} \times \bar{v}
 
 :math:`\bar{r}^{L/P}` is a position vector from :math:`P` to any point
-:math:`L` on the line of action of :math:`\bar{v}`.
+:math:`L_i` on the line of action :math:`L` of :math:`\bar{v}`.
 
 .. _fig-force-moment:
 .. figure:: figures/force-moment.svg
    :align: center
 
-   :math:`\bar{v}` is bound to a line that passes through point :math:`L`. The
-   moment can be calculated based on a position vector from :math:`P` to any
-   point on the line, for example :math:`L_1,L_2` or :math:`L_3` as shown.
+   :math:`\bar{v}` is bound to a line :math:`L`. The moment can be calculated
+   based on a position vector from :math:`P` to any point on the line, for
+   example :math:`L_1,L_2` or :math:`L_3` as shown.
 
 A moment can be the result of a set of vectors. The *resultant* of a set
 :math:`S` of vectors :math:`\bar{v}_1,\ldots,\bar{v}_\nu` is defined as:
@@ -178,8 +183,9 @@ examples of couples.
    Three couples: a) simple couple, b) & c) couples made up of multiple forces
 
 The *torque* of a couple, :math:`\bar{T}`, is the moment of the couple about a
-point. Because the resultant of a couple is zero, the torque of a couple is the
-same about all points. The torque, being a moment, is also a vector.
+point. Because the resultant of a couple is zero it follows from
+:math:numref:`eq-moment-another-point`, the torque of a couple is the same
+about all points. The torque, being a moment, is also a vector.
 
 Equivalence & Replacement
 =========================
@@ -302,8 +308,8 @@ describe the torque in SymPy Mechanics. For example:
 
 We will often refer to forces and torques collectively as *loads*.
 
-.. todo:: Open an issue in SymPy about these tuples not rendering as typeset
-   math.
+.. note:: The two cells above do not render the math nicely due to this SymPy
+   bug: https://github.com/sympy/sympy/issues/24967.
 
 Equal & Opposite
 ================
@@ -351,12 +357,13 @@ with equal and opposite torques applied to each body.
 .. warning::
 
    The sign conventions are really just a convention. It is also valid to
-   choose `(B, -Tm), (N, Tm)` or even `(B, Tm), (N, Tm)` and `(B, -Tm), (B,
-   -Tm)`. But it is useful to choose a sign convention such that when the signs
-   of angular velocity and torque are the same it corresponds to power into the
-   system. So, for example, `B.orient_axis(N, q, N.z)` corresponds to `(T*N.z,
-   B)` and power in. The key thing is that you know what your convention is so
-   that you can interpret numerical results and signs correctly.
+   choose ``(B, -Tm), (N, Tm)`` or even ``(B, Tm), (N, Tm)`` and ``(B, -Tm),
+   (B, -Tm)``. But it is useful to choose a sign convention such that when the
+   signs of angular velocity and torque are the same it corresponds to power
+   into the system. So, for example, ``B.orient_axis(N, q, N.z)`` corresponds
+   to ``(T*N.z, B)`` and power in. The key thing is that you know what your
+   convention is so that you can interpret numerical results and signs
+   correctly.
 
 Contributing and Noncontributing Forces
 =======================================
@@ -459,13 +466,11 @@ displacement is compression.
    Fs = -k*displacement*N.x
    Fs
 
-Friction
-========
-
 Dampers_ are often used in parallel or series with springs to provide an energy
 dissipation via viscous-like friction. Springs combined with dampers allow for
-classical second order under-, over-, and critically-damped motion. A linear
-viscous damper with damping coefficient :math:`c` can be defined like so:
+classical second order `under-, over-, and critically-damped motion
+<https://en.wikipedia.org/wiki/Damping>`_. A linear viscous damper with damping
+coefficient :math:`c` that resists motion can be defined like so:
 
 .. jupyter-execute::
 
@@ -476,6 +481,9 @@ viscous damper with damping coefficient :math:`c` can be defined like so:
    Fc
 
 .. _Dampers: https://en.wikipedia.org/wiki/Dashpot
+
+Coulomb Friction
+================
 
 Coulomb's Law provides simple model of dry friction_ between two objects. It
 takes the scalar form:
