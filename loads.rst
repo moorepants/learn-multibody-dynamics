@@ -617,9 +617,26 @@ Collision
 
 If two points, a point and a surface, or two surfaces collide the impact
 behavior depends on the material properties and mass of the colliding bodies.
-In general, elastic and inelastic momentum balances for just before and after
-impact can be solved for the multibody system. For a simpler but, as we will
-learn, often less favorable for numerical evaluation approach, impact can be
+There are two general approaches to modeling collision. The first is the
+Newtonion method in which you consider the momentum change, impulse, before and
+after collision. For a particle impacting a surface, this takes the basic form:
+
+.. math::
+
+   m v^{+} = -e m v^{-}
+
+where :math:`m` is the paricle's mass, :math:`v^{-}` is the speed before
+impact, "math:`v^{+}` is the speed after impact, and :math:`e` is the
+coefficient of restitution. The momentum after impact will be opposite and
+equal to the momentum before impact for a purely elastic collision :math:`e=1`
+and the magniutde of the momentum will be less after if the collision is
+inelastic :math:`0<e<1`. This approach can be extended to a multibody system,
+see [Flores2023]_ for an introduction to this approach.
+
+Here we will take an alternative approach by modeling the force explicitly.
+
+Most models buil
+
 captured by creating a stiff spring that only engages if one body penetrates
 the other body. Some viscous damping can be included to capture the inelastic
 aspects.
