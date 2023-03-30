@@ -571,13 +571,14 @@ summary of several other friction models that could be used [Flores2023]_.
 Aerodynamic Drag
 ================
 
-Aerodynamic drag_ of a blunt body is dominated by the frontal area drag and the
-magnitude of this drag force can be modeled with the following equation:
+Aerodynamic drag_ of a blunt body at low Reynolds numbers is dominated by the
+frontal area drag and the magnitude of this drag force can be modeled with the
+following equation:
 
 .. math::
    :label: eq-aerodynamic-drag
 
-   \frac{1}{2}\rho C_dAv^2
+   F_d = \frac{1}{2}\rho C_dAv^2
 
 where :math:`\rho` is the density of the air, :math:`C_d` is the drag
 coefficient, :math:`A` is the frontal area, and :math:`v` is the air speed
@@ -605,6 +606,11 @@ equation for the drag force vector reduces to:
 .. jupyter-execute::
 
    Fd.xreplace({uy: 0, uz:0})
+
+Managing the correct direction of the force, so that it opposes motion and is
+applied at the aerodynamic center, is important. The drag coefficient and
+frontal area can also change dynamically depending on the shape of the object
+and the direction the air is flowing over it.
 
 Collision
 =========
