@@ -767,7 +767,7 @@ about this transform):
 
 .. admonition:: Exercise
 
-   Gvine the inertia dyadic of a bicycle's handlebar and fork assembly about
+   Given the inertia dyadic of a bicycle's handlebar and fork assembly about
    its mass center where :math:`\hat{n}_x` points from the center of the rear
    wheel to the center of the front wheel and :math:`\hat{n}_z` points
    downward, normal to the ground, and the head tube angle is 68 degrees from
