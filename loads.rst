@@ -2,8 +2,6 @@
 Force, Moment, and Torque
 =========================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -36,17 +34,30 @@ Force, Moment, and Torque
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Calculate the resultant force acting on a set of particles or bodies.
+- Calculate the moment of a resultant about a point.
+- Find the equivalent couple of a torque and resultant to simplify forces
+  applied to bodies.
+- Determine if a force is noncontributing or not.
+- Define sign conventions for forces.
+- Define forces for gravity, springs, friction, air drag, and collisions.
+
 Force
 =====
 
 A *force* is an abstraction we use to describe something that causes mass to
 move (i.e. accelerate from a stationary state). There are four `fundamental
 forces of nature`_ of which all other forces can be derived from. Moments and
-torques arise from forces and are abstractions useful in describing what causes
-distributed mass rotation. Forces, moments, and torques have magnitude and
-direction and thus we use vectors to describe them mathematically.
+torques arise from forces and are useful in describing what causes distributed
+mass rotation. Forces, moments, and torques have magnitude and direction and
+thus we use vectors to describe them mathematically.
 
-.. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_forces
+.. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_interactions
 
 Bound and Free Vectors
 ======================
@@ -81,15 +92,15 @@ The moment :math:`\bar{M}` of bound vector :math:`\bar{v}` about point
    \bar{M} := \bar{r}^{L/P} \times \bar{v}
 
 :math:`\bar{r}^{L/P}` is a position vector from :math:`P` to any point
-:math:`L` on the line of action of :math:`\bar{v}`.
+:math:`L_i` on the line of action :math:`L` of :math:`\bar{v}`.
 
 .. _fig-force-moment:
 .. figure:: figures/force-moment.svg
    :align: center
 
-   :math:`\bar{v}` is bound to a line that passes through point :math:`L`. The
-   moment can be calculated based on a position vector from :math:`P` to any
-   point on the line, for example :math:`L_1,L_2` or :math:`L_3` as shown.
+   :math:`\bar{v}` is bound to a line :math:`L`. The moment can be calculated
+   based on a position vector from :math:`P` to any point on the line, for
+   example :math:`L_1,L_2` or :math:`L_3` as shown.
 
 A moment can be the result of a set of vectors. The *resultant* of a set
 :math:`S` of vectors :math:`\bar{v}_1,\ldots,\bar{v}_\nu` is defined as:
@@ -178,8 +189,9 @@ examples of couples.
    Three couples: a) simple couple, b) & c) couples made up of multiple forces
 
 The *torque* of a couple, :math:`\bar{T}`, is the moment of the couple about a
-point. Because the resultant of a couple is zero, the torque of a couple is the
-same about all points. The torque, being a moment, is also a vector.
+point. Because the resultant of a couple is zero it follows from
+:math:numref:`eq-moment-another-point`, the torque of a couple is the same
+about all points. The torque, being a moment, is also a vector.
 
 Equivalence & Replacement
 =========================
@@ -302,8 +314,8 @@ describe the torque in SymPy Mechanics. For example:
 
 We will often refer to forces and torques collectively as *loads*.
 
-.. todo:: Open an issue in SymPy about these tuples not rendering as typeset
-   math.
+.. note:: The two cells above do not render the math nicely due to this SymPy
+   bug: https://github.com/sympy/sympy/issues/24967.
 
 Equal & Opposite
 ================
@@ -351,12 +363,13 @@ with equal and opposite torques applied to each body.
 .. warning::
 
    The sign conventions are really just a convention. It is also valid to
-   choose `(B, -Tm), (N, Tm)` or even `(B, Tm), (N, Tm)` and `(B, -Tm), (B,
-   -Tm)`. But it is useful to choose a sign convention such that when the signs
-   of angular velocity and torque are the same it corresponds to power into the
-   system. So, for example, `B.orient_axis(N, q, N.z)` corresponds to `(T*N.z,
-   B)` and power in. The key thing is that you know what your convention is so
-   that you can interpret numerical results and signs correctly.
+   choose ``(B, -Tm), (N, Tm)`` or even ``(B, Tm), (N, Tm)`` and ``(B, -Tm),
+   (B, -Tm)``. But it is useful to choose a sign convention such that when the
+   signs of angular velocity and torque are the same it corresponds to power
+   into the system. So, for example, ``B.orient_axis(N, q, N.z)`` corresponds
+   to ``(T*N.z, B)`` and power in. The key thing is that you know what your
+   convention is so that you can interpret numerical results and signs
+   correctly.
 
 Contributing and Noncontributing Forces
 =======================================
@@ -459,13 +472,11 @@ displacement is compression.
    Fs = -k*displacement*N.x
    Fs
 
-Friction
-========
-
 Dampers_ are often used in parallel or series with springs to provide an energy
 dissipation via viscous-like friction. Springs combined with dampers allow for
-classical second order under-, over-, and critically-damped motion. A linear
-viscous damper with damping coefficient :math:`c` can be defined like so:
+classical second order `under-, over-, and critically-damped motion
+<https://en.wikipedia.org/wiki/Damping>`_. A linear viscous damper with damping
+coefficient :math:`c` that resists motion can be defined like so:
 
 .. jupyter-execute::
 
@@ -477,27 +488,52 @@ viscous damper with damping coefficient :math:`c` can be defined like so:
 
 .. _Dampers: https://en.wikipedia.org/wiki/Dashpot
 
-Coulomb's Law provides simple model of dry friction_ between two objects. It
-takes the scalar form:
+Friction
+========
+
+.. todo:: Add a figure showing two objects sliding on each other with force and
+   motion sign conventions.
+
+Coulomb's Law of Friction provides simple model of dry friction_ between two
+objects. When the two objects are in motion with respect to each other, there
+is a constant magnitude force that resists the motion. The force is independent
+of contact area and is proportional to the normal force between the objects.
+Coulomb's kinetic friction model takes the scalar form:
+
+.. math::
+   :label: eq-coulomb-kinetic-friction
+
+   F_f =
+   \begin{cases}
+   \mu_k F_n & v < 0 \\
+   0 & v = 0 \\
+   -\mu_k F_n & v > 0
+   \end{cases}
+
+where :math:`F_N` is the normal force between the two objects, :math:`v` is the
+relative speed between the two objects, and :math:`\mu_k` is the coefficient of
+kinetic friction. At :math:`v=0` kinetic friction is zero, but two objects in
+contact with a normal force can resist moving through static friction. When
+:math:`v=0` any force perpendicular to the normal force can be generated up to
+a magnitude of :math:`F_f=\mu_s F_n` where :math:`\mu_s` is the coefficient of
+static friction and :math:`\mu_s > \mu_k`.  Eq.
+:math:numref:`eq-coulomb-kinetic-friction` leaves this static case ambiguous,
+but it can be extended to:
 
 .. math::
    :label: eq-coulomb-friction
 
    F_f =
    \begin{cases}
-   \mu F_N & v < 0 \\
-   0 & v = 0 \\
-   -\mu F_N & v > 0
+   \mu_k F_n & v < 0 \\
+   \left[-\mu_s F_n, \mu_s F_n\right] & v = 0 \\
+   -\mu_k F_n & v > 0
    \end{cases}
-
-where :math:`F_N` is the normal force between the two objects, :math:`v` is the
-relative speed between the two objects, and :math:`\mu` is the coefficient of
-friction.
 
 .. _friction: https://en.wikipedia.org/wiki/Friction
 
 SymPy's :external:py:class:`~sympy.functions.elementary.piecewise.Piecewise` is
-one way to create a symbolic representation of this function:
+one way to create a symbolic representation of kinetic friction:
 
 .. jupyter-execute::
 
@@ -523,16 +559,32 @@ used in a similar and simpler form:
    Ff = -mu*Fn*sm.sign(displacement.diff(t))*N.x
    Ff
 
+Eq. :math:numref:`eq-coulomb-friction` is a sufficient model for many use
+cases, but it does not necessarily capture all observed effects.
+:numref:`fig-friction-models` shows a modification of Coulomb model that
+includes the `Stribeck effect`_ and viscous friction. Flores et. al have a nice
+summary of several other friction models that could be used [Flores2023]_.
+
+.. _fig-friction-models:
+.. figure:: https://ars.els-cdn.com/content/image/1-s2.0-S0094114X23000782-gr18_lrg.jpg
+
+   Extensions to the (a) Coulomb Dry Friction model: (b) Stribeck effect and
+   (c) Stribeck and viscous effects. Taken from [Flores2023]_ (Creative Commons
+   BY-NC-ND 4.0).
+
+.. _Stribeck effect: https://en.wikipedia.org/wiki/Stribeck_curve
+
 Aerodynamic Drag
 ================
 
-Aerodynamic drag_ of a blunt body is dominated by the frontal area drag and the
-magnitude of this drag force can be modeled with the following equation:
+Aerodynamic drag_ of a blunt body at low Reynolds numbers is dominated by the
+frontal area drag and the magnitude of this drag force can be modeled with the
+following equation:
 
 .. math::
    :label: eq-aerodynamic-drag
 
-   \frac{1}{2}\rho C_dAv^2
+   F_d = \frac{1}{2}\rho C_dAv^2
 
 where :math:`\rho` is the density of the air, :math:`C_d` is the drag
 coefficient, :math:`A` is the frontal area, and :math:`v` is the air speed
@@ -560,6 +612,13 @@ equation for the drag force vector reduces to:
 .. jupyter-execute::
 
    Fd.xreplace({uy: 0, uz:0})
+
+Managing the correct direction of the force, so that it opposes motion and is
+applied at the aerodynamic center, is important. The drag coefficient and
+frontal area can also change dynamically depending on the shape of the object
+and the direction the air is flowing over it.
+
+.. warning:: The following section has not yet been updated for the 2022-2023 course.
 
 Collision
 =========
