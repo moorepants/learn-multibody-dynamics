@@ -482,30 +482,52 @@ coefficient :math:`c` that resists motion can be defined like so:
 
 .. _Dampers: https://en.wikipedia.org/wiki/Dashpot
 
-Coulomb Friction
-================
+Friction
+========
 
-Coulomb's Law provides simple model of dry friction_ between two objects. It
-takes the scalar form:
+.. todo:: Add a figure showing two objects sliding on each other with force and
+   motion sign conventions.
+
+Coulomb's Law of Friction provides simple model of dry friction_ between two
+objects. When the two objects are in motion with respect to each other, there
+is a constant magnitude force that resists the motion. The force is independent
+of contact area and is proportional to the normal force between the objects.
+Coulomb's kinetic friction model takes the scalar form:
+
+.. math::
+   :label: eq-coulomb-kinetic-friction
+
+   F_f =
+   \begin{cases}
+   \mu_k F_n & v < 0 \\
+   0 & v = 0 \\
+   -\mu_k F_n & v > 0
+   \end{cases}
+
+where :math:`F_N` is the normal force between the two objects, :math:`v` is the
+relative speed between the two objects, and :math:`\mu_k` is the coefficient of
+kinetic friction. At :math:`v=0` kinetic friction is zero, but two objects in
+contact with a normal force can resist moving through static friction. When
+:math:`v=0` any force perpendicular to the normal force can be generated up to
+a magnitude of :math:`F_f=\mu_s F_n` where :math:`\mu_s` is the coefficient of
+static friction and :math:`\mu_s > \mu_k`.  Eq.
+:math:numref:`eq-coulomb-kinetic-friction` leaves this static case ambiguous,
+but it can be extended to:
 
 .. math::
    :label: eq-coulomb-friction
 
    F_f =
    \begin{cases}
-   \mu F_N & v < 0 \\
-   0 & v = 0 \\
-   -\mu F_N & v > 0
+   \mu_k F_n & v < 0 \\
+   \left[-\mu_s F_n, \mu_s F_n\right] & v = 0 \\
+   -\mu_k F_n & v > 0
    \end{cases}
-
-where :math:`F_N` is the normal force between the two objects, :math:`v` is the
-relative speed between the two objects, and :math:`\mu` is the coefficient of
-friction.
 
 .. _friction: https://en.wikipedia.org/wiki/Friction
 
 SymPy's :external:py:class:`~sympy.functions.elementary.piecewise.Piecewise` is
-one way to create a symbolic representation of this function:
+one way to create a symbolic representation of kinetic friction:
 
 .. jupyter-execute::
 
@@ -530,6 +552,21 @@ used in a similar and simpler form:
 
    Ff = -mu*Fn*sm.sign(displacement.diff(t))*N.x
    Ff
+
+Eq. :math:numref:`eq-coulomb-friction` is a sufficient model for many use
+cases, but it does not necessarily capture all observed effects.
+:numref:`fig-friction-models` shows a modification of Coulomb model that
+includes the `Stribeck effect`_ and viscous friction. Flores et. al have a nice
+summary of several other friction models that could be used [Flores2023]_.
+
+.. _fig-friction-models:
+.. figure:: https://ars.els-cdn.com/content/image/1-s2.0-S0094114X23000782-gr18_lrg.jpg
+
+   Extensions to the (a) Coulomb Dry Friction model: (b) Stribeck effect and
+   (c) Stribeck and viscous effects. Taken from [Flores2023]_ (Creative Commons
+   BY-NC-ND 4.0).
+
+.. _Stribeck effect: https://en.wikipedia.org/wiki/Stribeck_curve
 
 Aerodynamic Drag
 ================
