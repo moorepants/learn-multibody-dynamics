@@ -6,6 +6,9 @@ References
    "Contact-impact events with friction in mulitbody dynamics: Back to basics",
    Mechanism and Machine Theory, vol. 184, 2023.
    https://doi.org/10.1016/j.mechmachtheory.2023.105305
+.. [Hunt1975] K. H. Hunt, F. R. E. Crossley, "Coefficient of restitution
+   interpreted as damping in vibroimpact", J. Appl. Mech., 42 (2) (1975), pp.
+   440-445.
 .. [Kane1985] Thomas R. Kane, and David A. Levinson. Dynamics, Theory and
    Application.  McGraw Hill, 1985. http://hdl.handle.net/1813/638.
 .. [Meijaard2007] J. P. Meijaard, J. M. Papadopoulos, A. Ruina, and A. L.
