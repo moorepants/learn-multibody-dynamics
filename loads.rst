@@ -2,8 +2,6 @@
 Force, Moment, and Torque
 =========================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -39,7 +37,15 @@ Force, Moment, and Torque
 Learning Objectives
 ===================
 
-.. todo:: Add these!
+After completing this chapter readers will be able to:
+
+- Calculate the resultant force acting on a set of particles or bodies.
+- Calculate the moment of a resultant about a point.
+- Find the equivalent couple of a torque and resultant to simplify forces
+  applied to bodies.
+- Determine if a force is noncontributing or not.
+- Define sign conventions for forces.
+- Define forces for gravity, springs, friction, air drag, and collisions.
 
 Force
 =====
@@ -611,6 +617,8 @@ Managing the correct direction of the force, so that it opposes motion and is
 applied at the aerodynamic center, is important. The drag coefficient and
 frontal area can also change dynamically depending on the shape of the object
 and the direction the air is flowing over it.
+
+.. warning:: The following section has not yet been updated for the 2022-2023 course.
 
 Collision
 =========
