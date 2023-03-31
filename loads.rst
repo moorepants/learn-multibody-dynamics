@@ -618,36 +618,51 @@ applied at the aerodynamic center, is important. The drag coefficient and
 frontal area can also change dynamically depending on the shape of the object
 and the direction the air is flowing over it.
 
-.. warning:: The following section has not yet been updated for the 2022-2023 course.
-
 Collision
 =========
 
 If two points, a point and a surface, or two surfaces collide the impact
-behavior depends on the material properties and mass of the colliding bodies.
-There are two general approaches to modeling collision. The first is the
-Newtonion method in which you consider the momentum change, impulse, before and
-after collision. For a particle impacting a surface, this takes the basic form:
+behavior depends on the material properties, mass, and kinematics of the
+colliding bodies. There are two general approaches to modeling collision. The
+first is the Newtonion method in which you consider the momentum change,
+impulse, before and after collision. For a particle impacting a surface, this
+takes the basic form:
 
 .. math::
 
    m v^{+} = -e m v^{-}
 
-where :math:`m` is the paricle's mass, :math:`v^{-}` is the speed before
-impact, "math:`v^{+}` is the speed after impact, and :math:`e` is the
-coefficient of restitution. The momentum after impact will be opposite and
+where :math:`m` is the particle's mass, :math:`v^{-}` is the speed before
+impact, :math:`v^{+}` is the speed after impact, and :math:`e` is the
+`coefficient of restitution`_. The momentum after impact will be opposite and
 equal to the momentum before impact for a purely elastic collision :math:`e=1`
-and the magniutde of the momentum will be less after if the collision is
-inelastic :math:`0<e<1`. This approach can be extended to a multibody system,
-see [Flores2023]_ for an introduction to this approach.
+and the magnitude of the momentum will be less if the collision is inelastic
+:math:`0<e<1`. This approach can be extended to a multibody system, see
+[Flores2023]_ for an introduction to this approach.
 
-Here we will take an alternative approach by modeling the force explicitly.
+.. _coefficient of restitution: https://en.wikipedia.org/wiki/Coefficient_of_restitution
 
-Most models buil
+The Newtonian model does not consider the explicit behavior of the force that
+generates the impulse at collision. Here we will take an alternative approach
+by modeling the force explicitly. Most impact force models build upon Hunt and
+Crossley's seminal model [Hunt1975]_  which is based on `Hertzian contact
+theory`_. Hunt and Crossley model the impact as a nonlinear function of
+penetration depth and its rate. The force is made up of a nonlinear stiffness
+and a damping term that take this form:
 
-captured by creating a stiff spring that only engages if one body penetrates
-the other body. Some viscous damping can be included to capture the inelastic
-aspects.
+.. math::
+   :label: eq-hunt-crossley
+
+   f_c = k z^n + cz^n \dot{z}
+
+:math:`k` is the nonlinear contact stiffness, :math:`n` is the stiffness
+exponent, :math:`z` the contact penetration, :math:`\dot{z}` is the penetration
+velocity, and :math:`c` is the hysterias damping factor. The damping scales
+with the penetration depth. :math:`k` and :math:`c` can be determined from the
+material properties and the shape of the colliding objects and can be related
+to the coefficient of restitution. :math:`n` is typically :math:`3/2`.
+
+.. _Hertzian contact theory: https://en.wikipedia.org/wiki/Contact_mechanics
 
 .. _fig-force-collision:
 .. figure:: figures/force-collision.svg
@@ -680,7 +695,7 @@ In SymPy, this can be defined like so:
 
 .. jupyter-execute::
 
-   x, y, z = me.dynamicsymbols('x, y, z', real=True)
+   x, y, z, zd = me.dynamicsymbols('x, y, z, \dot{z}', real=True)
 
    r_O_P = x*N.x + y*N.y + z*N.z
 
@@ -689,18 +704,34 @@ In SymPy, this can be defined like so:
    zp = (sm.Abs(zh) - zh)/2
    zp
 
-A nonlinear spring that is proportional to :math:`z_p^3` will give more
-stiffness the more penetration. Combining with some viscous damping the
-vertical force on :math:`P` is:
+The force can now be formulated according to :math:numref:`eq-hunt-crossley`:
 
 .. jupyter-execute::
 
    k, c = sm.symbols('k, c')
 
-   Fz = (k*zp**3 + c*sm.Piecewise((zh.diff(), zh < 0), (0, True)))*N.z
+   Fz = (k*zp**(sm.S(3)/2) + c*zp**(sm.S(3)/2)*sm.Piecewise((zd, zh < 0), (0, True)))*N.z
    Fz
 
-A Coulomb friction force can slow the particle's sliding on the surface:
+We can check whether the force is correct for positive and negative :math:`z`:
+
+.. jupyter-execute::
+
+   Fz.xreplace({z: sm.Symbol('z', positive=True)})
+
+.. jupyter-execute::
+
+   Fz.xreplace({z: sm.Symbol('z', negative=True)})
+
+More on the Hunt-Crossley model and alterations on the model are summarized in
+[Flores2023]_.
+
+The impact force model is often combined with a friction model to generate a
+friction force for impacts that are not perfectly normal to the contacting
+surfaces. For example, Coulomb friction force can slow the particle's sliding
+on the surface if we know the tangential velocity components :math:`v_x` and
+:math:`v_y` at the contact location. This lets us write to tangential friction
+force components:
 
 .. jupyter-execute::
 
@@ -726,25 +757,21 @@ penetration:
 
    vz = me.dynamicsymbols('v_z', negative=True)
 
-   repl = {z.diff(): vz, z: 0}
+   repl = {zd: vz, z: sm.Symbol('z', positive=True)}
 
    Fx.xreplace(repl), Fy.xreplace(repl), Fz.xreplace(repl)
 
 .. jupyter-execute::
 
-   repl = {z.diff(): vz, z: 2}
+   vz = me.dynamicsymbols('v_z', negative=True)
+
+   repl = {zd: vz, z: sm.Symbol('z', negative=True)}
 
    Fx.xreplace(repl), Fy.xreplace(repl), Fz.xreplace(repl)
 
-.. jupyter-execute::
-
-   repl = {z.diff(): vz, z: -2}
-
-   Fx.xreplace(repl), Fy.xreplace(repl), Fz.xreplace(repl)
-
-Finally, the total force on the particle can be fully described:
+Finally, the total force on the particle contacting the surface can be fully
+described:
 
 .. jupyter-execute::
 
-   Fc = Fx + Fy + Fz
-   Fc
+   Fx + Fy + Fz
