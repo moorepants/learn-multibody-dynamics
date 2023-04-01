@@ -51,7 +51,7 @@ Force
 =====
 
 A *force* is an abstraction we use to describe something that causes mass to
-move (i.e. accelerate from a stationary state). There are four `fundamental
+move (e.g. accelerate from a stationary state). There are four `fundamental
 forces of nature`_ of which all other forces can be derived from. Moments and
 torques arise from forces and are useful in describing what causes distributed
 mass rotation. Forces, moments, and torques have magnitude and direction and
@@ -68,11 +68,13 @@ said to be *bound* to its line of action. If a vector is not bound to a line of
 action it is said to be *free*.
 
 Angular velocity is an example of a free vector. It has a direction and
-magnitude, but is not associated with any line of action. A force vector, on
-the other hand, is bound. If a force is applied to a rigid body, we must know
-where on the body it is applied to resolve the force's effect. A force vector
-acting on rigid body :math:`B` at point :math:`P` has a line of action through
-:math:`P` and parallel to the force vector.
+magnitude, but is not associated with any line of action. For example, if a
+disc can rotate around a fixed point, you can place a body anywhere on this
+disc and the body will always have the same angular velocity. A force vector,
+on the other hand, is bound. If a force is applied to a rigid body, we must
+know where on the body it is applied to resolve the force's effect. A force
+vector acting on rigid body :math:`B` at point :math:`P` has a line of action
+through :math:`P` and parallel to the force vector.
 
 .. figure:: figures/force-bound-free.svg
    :align: center
@@ -92,7 +94,9 @@ The moment :math:`\bar{M}` of bound vector :math:`\bar{v}` about point
    \bar{M} := \bar{r}^{L/P} \times \bar{v}
 
 :math:`\bar{r}^{L/P}` is a position vector from :math:`P` to any point
-:math:`L_i` on the line of action :math:`L` of :math:`\bar{v}`.
+:math:`L_i` on the line of action :math:`L` of :math:`\bar{v}`. The cross
+product definition ensures that the the moment does not depend on the choice of
+the point on the line.
 
 .. _fig-force-moment:
 .. figure:: figures/force-moment.svg
@@ -111,8 +115,8 @@ A moment can be the result of a set of vectors. The *resultant* of a set
    \bar{R}^{S} := \sum_{i=1}^{\nu} \bar{v}_i
 
 If each vector in the resultant is bound, the sum of the moments due to each
-vector about :math:`P` is call the moment of :math:`\bar{R}^{S}` about
-:math:`P`.  This summation can be written as:
+vector about :math:`P` is called the moment of :math:`\bar{R}^{S}` about
+:math:`P`. This summation can be written as:
 
 .. math::
    :label: eq-sum-moments
@@ -225,6 +229,8 @@ Take for example the birds eye view of a four wheeled car which has front
 steering and motors at each wheel allowing for precise control of the
 propulsion forces at each wheel. A diagram of the forces acting at each wheel
 is shown in :numref:`fig-force-car-replacement`.
+
+.. todo:: Add the unit vectors for the W frame in the figure.
 
 .. _fig-force-car-replacement:
 .. figure:: figures/force-car-replacement.svg
