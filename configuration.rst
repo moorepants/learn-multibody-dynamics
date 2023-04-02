@@ -65,7 +65,7 @@ Consider the linkage shown below:
    a) Shows four links in a plane :math:`A`, :math:`B`, :math:`C`, and
    :math:`N` with respective lengths :math:`l_a,l_b,l_c,l_n` connected in a
    closed loop at points :math:`P_1,P_2,P_3,P_4`. b) Shows the same linkage
-   that has been seperated at point :math:`P_4` to make it an open chain of
+   that has been separated at point :math:`P_4` to make it an open chain of
    links.
 
 This is a planar `four-bar linkage`_ with reference frames :math:`N,A,B,C`
