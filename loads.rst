@@ -381,7 +381,8 @@ Contributing and Noncontributing Forces
 =======================================
 
 *Contributing forces* are those that do work on the multibody system. Work_ of
-a force :math:`\bar{F}` acting over path :math:`S` is defined as:
+a force :math:`\bar{F}` acting over path :math:`S` is defined as the following
+`line integral`_:
 
 .. math::
    :label: eq-work-definition
@@ -392,6 +393,7 @@ where :math:`d\bar{s}` is the differential vector tangent to the path at the
 point the force is applied.
 
 .. _work: https://en.wikipedia.org/wiki/Work_(physics)
+.. _line integral: https://en.wikipedia.org/wiki/Line_integral
 
 For example, the gravitational force acting on a particle moving through a
 unidirectional constant gravitational field (i.e. where the gravitational force
