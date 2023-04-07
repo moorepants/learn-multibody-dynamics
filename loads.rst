@@ -295,10 +295,11 @@ simpler form for constructing models.
 Specifying Forces and Torques
 =============================
 
-Forces are bound vectors that can be considered acting on specific points, thus
-we will always need a vector and a point to fully describe the force. Methods
-and functions in SymPy Mechanics that make use of forces will typically require
-a tuple containing a point and a vector, for example the resultant force
+Forces are bound vectors, so we have to define their lines of action. This is
+best done by specifying the points on which each force acts, thus we will
+always use a vector and a point to fully describe the force. Methods and
+functions in SymPy Mechanics that make use of forces will typically require a
+tuple containing a point and a vector, for example the resultant force
 :math:`R^{S/B_o}` acting on the mass center of the car would be specified like
 so:
 
@@ -380,9 +381,9 @@ with equal and opposite torques applied to each body.
 Contributing and Noncontributing Forces
 =======================================
 
-*Contributing forces* are those that do work on the multibody system. Work_ of
-a force :math:`\bar{F}` acting over path :math:`S` is defined as the following
-`line integral`_:
+*Contributing forces* are those that can do work on the multibody system. Work_
+of a force :math:`\bar{F}` acting over path :math:`S` is defined as the
+following `line integral`_:
 
 .. math::
    :label: eq-work-definition
@@ -400,7 +401,7 @@ unidirectional constant gravitational field (i.e. where the gravitational force
 is equal in magnitude, doesn't change, and always the same direction) does work
 on the system.
 
-*Noncontributing forces* do no work on the system. For example, when a force
+*Noncontributing forces* never do work on the system. For example, when a force
 acts between two points that have no relative motion, no work is done. Examples
 of noncontributing forces:
 
@@ -408,8 +409,7 @@ of noncontributing forces:
    bodies
 2. any internal contact and body (distance) forces between any two points in a
    rigid body
-3. contact forces between bodies rolling without slipping on each other which
-   is a special case of 1.
+3. contact forces between bodies rolling without slipping on each other
 
 In the next chapter, we will see how the use of generalized coordinates relieve
 us from having to specify any noncontributing forces.
@@ -632,7 +632,7 @@ Collision
 If two points, a point and a surface, or two surfaces collide the impact
 behavior depends on the material properties, mass, and kinematics of the
 colliding bodies. There are two general approaches to modeling collision. The
-first is the Newtonion method in which you consider the momentum change,
+first is the Newtonian method in which you consider the momentum change,
 impulse, before and after collision. For a particle impacting a surface, this
 takes the basic form:
 
@@ -645,18 +645,19 @@ impact, :math:`v^{+}` is the speed after impact, and :math:`e` is the
 `coefficient of restitution`_. The momentum after impact will be opposite and
 equal to the momentum before impact for a purely elastic collision :math:`e=1`
 and the magnitude of the momentum will be less if the collision is inelastic
-:math:`0<e<1`. This approach can be extended to a multibody system, see
+:math:`0<e<1`. This approach can be extended to a multibody system; see
 [Flores2023]_ for an introduction to this approach.
 
 .. _coefficient of restitution: https://en.wikipedia.org/wiki/Coefficient_of_restitution
 
 The Newtonian model does not consider the explicit behavior of the force that
 generates the impulse at collision. Here we will take an alternative approach
-by modeling the force explicitly. Most impact force models build upon Hunt and
-Crossley's seminal model [Hunt1975]_  which is based on `Hertzian contact
-theory`_. Hunt and Crossley model the impact as a nonlinear function of
-penetration depth and its rate. The force is made up of a nonlinear stiffness
-and a damping term that take this form:
+by modeling the force explicitly. Such contact force models can provide more
+accurate results, at the cost of longer computation times. Most impact force
+models build upon Hunt and Crossley's seminal model [Hunt1975]_ which is based
+on `Hertzian contact theory`_. Hunt and Crossley model the impact as a
+nonlinear function of penetration depth and its rate. The force is made up of a
+nonlinear stiffness and a damping term that take this form:
 
 .. math::
    :label: eq-hunt-crossley
@@ -665,10 +666,11 @@ and a damping term that take this form:
 
 :math:`k` is the nonlinear contact stiffness, :math:`n` is the stiffness
 exponent, :math:`z` the contact penetration, :math:`\dot{z}` is the penetration
-velocity, and :math:`c` is the hysterias damping factor. The damping scales
+velocity, and :math:`c` is the hysteresis damping factor. The damping scales
 with the penetration depth. :math:`k` and :math:`c` can be determined from the
 material properties and the shape of the colliding objects and can be related
-to the coefficient of restitution. :math:`n` is typically :math:`3/2`.
+to the coefficient of restitution. :math:`n` is :math:`3/2` based on the
+Hertzian contact theory.
 
 .. _Hertzian contact theory: https://en.wikipedia.org/wiki/Contact_mechanics
 
@@ -688,7 +690,8 @@ the particle into the surface (if positive :math:`z` is out and negative
 
    z_p = \frac{| \bar{r}^{P/O} \cdot \hat{n}_z | - \bar{r}^{P/O} \cdot \hat{n}_z}{2}
 
-This is equivalent to this piecewise function:
+This difference between the absolute value and the value itself is equivalent
+to this piecewise function:
 
 .. math::
    :label: eq-penetration-piecewise
@@ -718,7 +721,7 @@ The force can now be formulated according to :math:numref:`eq-hunt-crossley`:
 
    k, c = sm.symbols('k, c')
 
-   Fz = (k*zp**(sm.S(3)/2) + c*zp**(sm.S(3)/2)*sm.Piecewise((zd, zh < 0), (0, True)))*N.z
+   Fz = (k*zp**(sm.S(3)/2) + c*zp**(sm.S(3)/2)*zd)*N.z
    Fz
 
 We can check whether the force is correct for positive and negative :math:`z`:
