@@ -36,12 +36,25 @@ Generalized Forces
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+.. todo:: Add
+
+Introduction
+============
+
 At this point we have developed the three primary ingredients to formulate the
 equations of motion of a multibody system:
 
 1. Angular and Translational Kinematics
 2. Mass and Mass Distribution
 3. Forces, Moments, and Torques
+
+.. todo:: If we have the resultant and the torque acting on the body, should
+   Euler's equation be the torque equals the change in angular momentum? I
+   think it can be, regardless of the point which the inertia is defined with
+   respect to.
 
 For a single rigid body :math:`B` with mass :math:`m_B`, mass center
 :math:`B_o`, and central inertia dyadic :math:`\breve{I}^{B/B_o}` having a
@@ -56,13 +69,13 @@ frame :math:`N` can be written as follows:
    \bar{M} = & \frac{{}^N d\bar{H}}{dt} \quad \textrm{ where }
    \bar{H} = \breve{I}^{B/B_o} \cdot {}^N\bar{\omega}^{B}
 
-The left hand side contains the forces, moments, and torques (3.) acting on the
-rigid body and the right hand side contains the kinematics (1.) and the mass
-distribution (2.).
+The left hand side of the above equations describes the forces, moments, and
+torques (3.) acting on the rigid body and the right hand side describes the
+kinematics (1.) and the mass distribution (2.).
 
 .. _Newton-Euler Equations of Motion: https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations
 
-For a set of particles and rigid bodies that make up a multibody system,
+For a set of particles and rigid bodies that make up a multibody system
 defined with generalized coordinates, generalized speeds, and constraints, the
 generalized speeds characterize completely the motion of the system. The
 velocities and angular velocities of every particle and rigid body in the
@@ -73,7 +86,7 @@ of motion.
 
 Take for example the multibody system shown in
 :numref:`fig-generalized-forces-multi-pendulum`. A force :math:`\bar{F}`
-applied at point :math:`Q` will cause all three of the lower particles to move.
+applied at point :math:`Q` may cause all three of the lower particles to move.
 The motion of the particles are described by the velocities, which are
 functions of the generalized speeds. Thus :math:`\bar{F}` will, in general,
 cause all of the generalized speeds to change. But how much does each
@@ -97,8 +110,9 @@ Recall that all translational and angular velocities of a multibody system can
 be written in terms of the generalized speeds. By definition (Eq.
 :math:numref:`eq-generalized-speeds`), these velocities can be expressed
 uniquely as linear functions of the generalized speeds. For a holonomic system
-with :math:`n` degrees of freedom in a single reference frame any translational
-velocity or angular velocity can be written as ([Kane1985]_, pg.  45):
+with :math:`n` degrees of freedom any translational velocity or angular
+velocity observed from a single reference frame can be written as ([Kane1985]_,
+pg. 45):
 
 .. math::
    :label: eq-holonomic-partial-velocities
@@ -116,17 +130,15 @@ partial derivatives with respect to the generalized speeds:
 .. math::
    :label: eq-partial-vel-partial-deriv
 
-   \bar{v}_r = \frac{\partial \bar{v}}{\partial u_r} \quad
-   \bar{v}_t = \frac{\partial \bar{v}}{\partial t} \\
-   \bar{\omega}_r = \frac{\partial \bar{\omega}}{\partial u_r} \quad
-   \bar{\omega}_t = \frac{\partial \bar{\omega}}{\partial t}
+   \bar{v}_r = \frac{\partial \bar{v}}{\partial u_r} \\
+   \bar{\omega}_r = \frac{\partial \bar{\omega}}{\partial u_r}
 
 .. note::
 
    The reference frame these partials are taken with respect to should match
    that which the velocities are with respect to.
 
-Given that the partial velocities are partial derivative, means that we may
+Given that the partial velocities are partial derivatives, means that we may
 interpret the partial velocities as the sensitivities of translational and
 angular velocities to changes in :math:`u_r`. The partial velocities give an
 idea of how any given velocity or angular velocity will change if one of the
@@ -164,7 +176,7 @@ for :math:`{}^N\bar{v}^A`, :math:`{}^N\bar{v}^B`, and
 
 First calculate the velocities and ensure they are only in terms of the
 generalized speeds and generalized coordinates. In this case, we have chosen
-:math:`u_1=\dot{q}_1` and :math:`u2=\dot{q}_2`.
+:math:`u_1=\dot{q}_1` and :math:`u_2=\dot{q}_2`.
 
 .. jupyter-execute::
 
@@ -194,7 +206,9 @@ generalized speeds and generalized coordinates. In this case, we have chosen
    N_v_B.express(N)
 
 Now, take the partial derivatives with respect to the generalized speeds to
-find the six partial velocities:
+find the six partial velocities. The sensitivity of point :math:`A`'s linear
+motion is only a function of the first generalized speed, i.e. change in
+:math:`u_1` will cause accelerations in the :math:`\hat{n}_x` direction.
 
 .. jupyter-execute::
 
@@ -203,12 +217,21 @@ find the six partial velocities:
 
    v_A_1, v_A_2
 
+The sensitivity of point :math:`B`'s linear motion is a function of both
+generalized speeds, showing that acceleration in the :math:`\hat{n}_x`
+direction is caused by change in both generalized speeds. In the
+:math:`\hat{n}_y` direction motion change is only caused by change in
+:math:`u_2`.
+
 .. jupyter-execute::
 
    v_B_1 = N_v_B.diff(u1, N)
    v_B_2 = N_v_B.diff(u2, N)
 
    v_B_1, v_B_2
+
+Lastly, the sensitivity of the body :math:`R`'s angular velocity to the two
+generalized speeds is only from :math:`u_2` in the :math:`\hat{n}_z` direction.
 
 .. jupyter-execute::
 
@@ -235,11 +258,23 @@ angular velocities* :math:`\tilde{\omega}_r` as per ([Kane1985]_, pg. 46):
 .. math::
    :label: eq-nonholonomic-partial-velocities
 
-   \bar{v} = \sum_{r=1}^p \tilde{v}_r u_r + \tilde{v}_t \\
-   \bar{\omega} = \sum_{r=1}^p \tilde{\omega}_r u_r + \tilde{\omega}_t
+   \bar{v} = & \sum_{r=1}^p \tilde{v}_r u_r + \tilde{v}_t \\
+   \bar{\omega} = & \sum_{r=1}^p \tilde{\omega}_r u_r + \tilde{\omega}_t
 
-See [Kane1985]_ pg. 48 for the relationship between holonomic and nonholonomic
-partial velocities.
+If you have found the :math:`n` holonomic parital velocities, then you can use
+:math:`\mathbf{A}_n` from :math:numref:`eq-contraint-linear-form-solve` to find
+the nonholonomic partial velocities with:
+
+.. math::
+
+   \tilde{v}_r = & \bar{v}_r + \left[\bar{v}_{p+1} \ldots \bar{v}_{n}\right]
+   \mathbf{A}_n \hat{e}_r \\
+   \tilde{\omega}_r = & \bar{\omega}_r + \left[\bar{\omega}_{p+1} \ldots \bar{\omega}_{n}\right]
+   \mathbf{A}_n \hat{e}_r \quad \textrm{for } r=1\ldots p
+
+where :math:`\hat{e}_r` is a unit vector in the dependent speed
+:math:`\bar{u}_r` vector space, e.g. :math:`\hat{e}_2=\left[0, 1, 0\right]^T`. See
+[Kane1985]_ pg. 48 for more explanation.
 
 Generalized Active Forces
 =========================
