@@ -776,7 +776,7 @@ inertia forces can be calculated from the holonomic generalized inertia forces
 and :math:`\mathbf{A}_n`:
 
 .. math::
-   :label: eq-non-hol-fr
+   :label: eq-non-hol-frstar
 
    \tilde{F}^*_r = F_r^* + \left[ F^*_{p+1} \ldots F^*_n \right]
      \mathbf{A}_n \hat{e}_r \textrm{ for } r=1\ldots p
