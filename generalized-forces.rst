@@ -2,8 +2,6 @@
 Generalized Forces
 ==================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -39,7 +37,13 @@ Generalized Forces
 Learning Objectives
 ===================
 
-.. todo:: Add
+After completing this chapter readers will be able to:
+
+- Calculate partial velocities given generalized speeds
+- Calculate generalized active forces for a system of particles and rigid
+  bodies
+- Calculate generalized inertia forces for a system of particles and rigid
+  bodies
 
 Introduction
 ============
@@ -261,20 +265,21 @@ angular velocities* :math:`\tilde{\omega}_r` as per ([Kane1985]_, pg. 46):
    \bar{v} = & \sum_{r=1}^p \tilde{v}_r u_r + \tilde{v}_t \\
    \bar{\omega} = & \sum_{r=1}^p \tilde{\omega}_r u_r + \tilde{\omega}_t
 
-If you have found the :math:`n` holonomic parital velocities, then you can use
+If you have found the :math:`n` holonomic partial velocities, then you can use
 :math:`\mathbf{A}_n` from :math:numref:`eq-contraint-linear-form-solve` to find
 the nonholonomic partial velocities with:
 
 .. math::
+   :label: eq-non-hol-partial
 
    \tilde{v}_r = & \bar{v}_r + \left[\bar{v}_{p+1} \ldots \bar{v}_{n}\right]
    \mathbf{A}_n \hat{e}_r \\
    \tilde{\omega}_r = & \bar{\omega}_r + \left[\bar{\omega}_{p+1} \ldots \bar{\omega}_{n}\right]
    \mathbf{A}_n \hat{e}_r \quad \textrm{for } r=1\ldots p
 
-where :math:`\hat{e}_r` is a unit vector in the dependent speed
-:math:`\bar{u}_r` vector space, e.g. :math:`\hat{e}_2=\left[0, 1, 0\right]^T`. See
-[Kane1985]_ pg. 48 for more explanation.
+where :math:`\hat{e}_r` is a unit vector in the independent speed
+:math:`\bar{u}_s` vector space, e.g. :math:`\hat{e}_2=\left[0, 1, 0,
+0\right]^T` if :math:`p=4`. See [Kane1985]_ pg. 48 for more explanation.
 
 Generalized Active Forces
 =========================
@@ -331,6 +336,7 @@ and :math:`m_2` respectively.
 .. _fig-generalized-forces-double-pendulum:
 .. figure:: figures/generalized-forces-double-pendulum.svg
    :align: center
+   :width: 80%
 
    Double simple pendulum a) kinematic schematic, b) free body diagram of
    :math:`P_1`, c) free body diagram of :math:`P_2`.
@@ -425,7 +431,7 @@ active forces (nor the full equations of motion we eventually arrive at).
 Noncontributing forces need not be considered in the resultants, in general,
 and we will not include them in further examples.
 
-Notice also that the generalized forces have units of :math:`\textrm{force}
+Notice also that these generalized forces have units of :math:`\textrm{force}
 \times \textrm{length}`. This is because our generalized speeds are angular
 rates. If our generalized speeds were linear rates, the generalized forces
 would have units of :math:`\textrm{force}`.
@@ -435,10 +441,10 @@ Generalized Active Forces on a Rigid Body
 
 If a holonomic multibody system with :math:`n` degrees of freedom in reference
 frame :math:`A` includes a rigid body :math:`B` then the loads acting on
-:math:`B` can be described by a resultant force :math:`\bar{R}` bound to an
-arbitrary point :math:`Q` in :math:`B` and a couple with torque
-:math:`\bar{T}`. The generalized active force then for a single rigid body in a
-multibody system is defined as ([Kane1985]_, pg. 106):
+:math:`B` can be described by a resultant force :math:`\bar{R}` bound to line
+through an arbitrary point :math:`Q` in :math:`B` and a couple with torque
+:math:`\bar{T}`. The generalized active force in :math:`A` for a single rigid
+body in a multibody system is then defined as ([Kane1985]_, pg. 106):
 
 .. math::
    :label: eq-gaf-rigid-body
@@ -459,7 +465,7 @@ and :math:`B_o`.
    :width: 400px
 
    A multibody system comprised of two uniformly dense thin rods of length
-   :math:`L` and mass :math:`m`. Rod :math:`A` is pinned at :math:`O` and can
+   :math:`l` and mass :math:`m`. Rod :math:`A` is pinned at :math:`O` and can
    rotate about :math:`\hat{n}_z` through :math:`q_1`. Rod :math:`B` is pinned
    to :math:`A` and can rotate relative to :math:`A` about :math:`\hat{a}_x`
    through :math:`q_2`. Linear torisional springs of stiffnes :math:`k` with a
@@ -542,7 +548,7 @@ torques acting on each body are:
    T_A, T_B
 
 Note that :math:`k q_2\hat{a}_x` in :math:`\bar{T}_A` is the reaction torque of
-of body :math:`B` on :math:`A` via the torsional spring.
+body :math:`B` on :math:`A` via the torsional spring.
 
 Now, a generalized active force component can be found for each body and each
 generalized speed using :math:numref:`eq-gaf-rigid-body`:
@@ -578,8 +584,18 @@ and rigid body :math:`B` are:
    (\tilde{F}_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
    (\tilde{F}_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
 
-See [Kane1985]_ pg. 99 for the relationship between holonomic and nonholonomic
-generalized active forces.
+As a corollary to :math:numref:`eq-non-hol-partial`, if the holonomic
+generalized active forces are known and nonholonomic constraints are introduced
+the nonholonomic generalized active forces can be found with
+
+.. math::
+   :label: eq-non-hol-fr
+
+   \tilde{F}_r = F_r + \bar{F}_{p+1\ldots n}^T \mathbf{A}_n \hat{e}_r \textrm{ for } r=1\ldots p
+
+where :math:`\bar{F}_{p+1\ldots n}` are the :math:`p+1` to :math:`n` holonomic
+generalized active forces associated with the :math:`m` dependent generalized
+speeds. See [Kane1985]_ pg. 99 for more information.
 
 Generalized Inertia Forces
 ==========================
@@ -748,5 +764,14 @@ and rigid body :math:`B` are:
    (\tilde{F}^*_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
    (\tilde{F}^*_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
 
-The relationship between the nonholonomic and holonomic generalized inertia
-forces is give in [Kane1985]_ pg. 124.
+Similar to Eq. :math:numref:`eq-non-hol-fr`, the nonholonomic generalized
+inertia forces can be calculated from the holonomic generalized inertia forces
+and :math:`\mathbf{A}_n`:
+
+.. math::
+   :label: eq-non-hol-fr
+
+   \tilde{F}^*_r = F_r^* + (\bar{F}^*_{p+1\ldots n})^T \mathbf{A}_n \hat{e}_r \textrm{ for } r=1\ldots p
+
+More information about the relation between the nonholonomic and holonomic
+generalized inertia forces is give in [Kane1985]_ pg. 124.
