@@ -139,8 +139,8 @@ partial derivatives with respect to the generalized speeds:
 
 .. note::
 
-   The reference frame these partials are taken with respect to should match
-   that which the velocities are with respect to.
+   The reference frame these partials are taken with respect to must match that
+   which the velocities are with respect to.
 
 Given that the partial velocities are partial derivatives, means that we may
 interpret the partial velocities as the sensitivities of translational and
