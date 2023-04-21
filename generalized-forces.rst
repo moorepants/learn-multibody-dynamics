@@ -594,11 +594,12 @@ the nonholonomic generalized active forces can be found with
 .. math::
    :label: eq-non-hol-fr
 
-   \tilde{F}_r = F_r + \bar{F}_{p+1\ldots n}^T \mathbf{A}_n \hat{e}_r \textrm{ for } r=1\ldots p
+   \tilde{F}_r = F_r + \left[F_{p+1} \ldots F_n \right]
+     \mathbf{A}_n \hat{e}_r \textrm{ for } r=1\ldots p
 
-where :math:`\bar{F}_{p+1\ldots n}` are the :math:`p+1` to :math:`n` holonomic
-generalized active forces associated with the :math:`m` dependent generalized
-speeds. See [Kane1985]_ pg. 99 for more information.
+where :math:`\left[F_{p+1} \ldots F_n \right]` are the :math:`m` holonomic
+generalized active forces associated with the dependent generalized speeds. See
+[Kane1985]_ pg. 99 for more information.
 
 Generalized Inertia Forces
 ==========================
@@ -777,7 +778,8 @@ and :math:`\mathbf{A}_n`:
 .. math::
    :label: eq-non-hol-fr
 
-   \tilde{F}^*_r = F_r^* + (\bar{F}^*_{p+1\ldots n})^T \mathbf{A}_n \hat{e}_r \textrm{ for } r=1\ldots p
+   \tilde{F}^*_r = F_r^* + \left[ F^*_{p+1} \ldots F^*_n \right]
+     \mathbf{A}_n \hat{e}_r \textrm{ for } r=1\ldots p
 
 More information about the relation between the nonholonomic and holonomic
 generalized inertia forces is give in [Kane1985]_ pg. 124.
