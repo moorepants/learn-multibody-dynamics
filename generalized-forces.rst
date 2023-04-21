@@ -573,6 +573,9 @@ column vector gives the generalized active forces for the system:
    Fr = sm.Matrix([F1, F2])
    Fr
 
+Nonholonomic Generalized Active Forces
+======================================
+
 For a nonholonomic system with :math:`p` degrees of freedom in reference frame
 :math:`A`, the :math:`p` generalized active forces can be formed instead. The
 nonholonomic generalized active force contributions from a particle :math:`P`
@@ -752,6 +755,9 @@ We then sum for each generalized speed and then stack them in a column vector
 
    Frs = sm.Matrix([F1s, F2s])
    Frs
+
+Nonholonomic Generalized Inertia Forces
+=======================================
 
 For a nonholonomic system with :math:`p` degrees of freedom in reference frame
 :math:`A`, the :math:`p` generalized active forces can be formed instead. The
