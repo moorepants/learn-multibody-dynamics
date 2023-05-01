@@ -67,7 +67,7 @@ These are the `Newton-Euler equations`_ for a multibody system in the form
 presented in [Kane1985]_ pg. 158, thus we also call these equations *Kane's
 Equations*. The dynamical differential equations can only be formed with when
 motion is viewed from an `inertial reference frame`_, because an inertial
-reference frame is one, where Newton's First Law holds, i.e. objects at rest
+reference frame is one where Newton's First Law holds, i.e. objects at rest
 stay at rest unless an external force acts on them. An inertial reference frame
 is one that is not accelerating, or can be assumed not to be with respect to
 the motion of the bodies of interest.
@@ -480,7 +480,8 @@ The inertia dyadics of the two rods are:
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
 
 To form the equations of motion, start by finding all of the partial velocities
-of the two mass centers, one particle, and two bodies:
+of the two mass centers :math:`A_o,B_o`, one particle :math:`Q`, and two bodies
+:math:`A,B`:
 
 .. jupyter-execute::
 
@@ -555,69 +556,6 @@ varying variables :math:`\dot{\bar{u}},\bar{u},\bar{q}`:
 .. jupyter-execute::
 
    me.find_dynamicsymbols(Frs)
-
-.. admonition:: Exercise
-
-   Note that forming Kane's Equations involves a lot of reptitive code. Make
-   use of Python loops to simplify the code.
-
-.. admonition:: Solution
-   :class: dropdown
-
-   .. jupyter-execute::
-
-      points = [Ao, Bo, Q]
-      forces = [R_Ao, R_Bo, R_Q]
-      masses = [m, m, m/4]
-
-      frames = [A, B]
-      torques = [T_A, T_B]
-      inertias = [I_A_Ao, I_B_Bo]
-
-      Fr_bar = []
-      Frs_bar = []
-
-      # loop over the three generalized speeds
-      for ur in [u1, u2, u3]:
-
-          # initialize the rth GAF and GIF
-          Fr = 0
-          Frs = 0
-
-          # for the rth generalized speed, loop though each point to find it's
-          # contribution to the generalized forces
-          for Pi, Ri, mi in zip(points, forces, masses):
-              vr = Pi.vel(N).diff(ur, N)  # rth partial velocity
-              Fr += vr.dot(Ri)  # sum in Pi's contribution to GAF
-              Rs = -mi*Pi.acc(N)  # rth inertia force
-              Frs += vr.dot(Rs)  # sum in Pi's contribution to GIF
-
-          # for the rth generalized speed, loop though each reference frame to find
-          # it's contribution to the generalized forces
-          for Bi, Ti, Ii in zip(frames, torques, inertias):
-              wr = Bi.ang_vel_in(N).diff(ur, N)  # rth partial velocity
-              Fr += wr.dot(Ti)  # sum in Bi's contribution to the GIF
-              Ts = -(Bi.ang_acc_in(N).dot(Ii) +  # rth inertia torque
-                     me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
-              Frs += wr.dot(Ts)  # sum in Bi's contribution to the GAF
-
-          Fr_bar.append(Fr)
-          Frs_bar.append(Frs)
-
-   With all of the necessary elements present for forming :math:`\bar{F}_r` and
-   :math:`\bar{F}_r^*` The generalized forces :math:`\bar{F}_r` are:
-
-   .. jupyter-execute::
-
-      Fr = sm.Matrix(Fr_bar)
-      Fr
-
-   The generalized inertia forces :math:`\bar{F}_r^*` are:
-
-   .. jupyter-execute::
-
-      Frs = sm.Matrix(Frs_bar)
-      Frs
 
 Implicit and Explicit Form
 ==========================
