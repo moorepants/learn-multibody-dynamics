@@ -2,8 +2,6 @@
 Unconstrained Equations of Motion
 =================================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -36,6 +34,18 @@ Unconstrained Equations of Motion
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Form the dynamical differential equations for a multibody system where
+  :math:`n=p`.
+- Calculate the dynamical differential equations of motion for a single rigid
+  body.
+- Form the equations of motion for a multibody system where :math:`n=p`.
+- Write the equations of motion in implicit and explicit forms.
+
 Dynamical Differential Equations
 ================================
 
@@ -55,12 +65,12 @@ form:
 
 These are the `Newton-Euler equations`_ for a multibody system in the form
 presented in [Kane1985]_ pg. 158, thus we also call these equations *Kane's
-Equations*.  The dynamical differential equations can only be formed with
-respect to an `inertial reference frame`_, because an inertial reference frame
-is one, where Newton's First Law holds, i.e. objects at rest stay at rest
-unless an external force acts on them. An inertial reference frame is one that
-is not accelerating, or can be assumed not to be with respect to the motion of
-the bodies of interest.
+Equations*. The dynamical differential equations can only be formed with when
+motion is viewed from an `inertial reference frame`_, because an inertial
+reference frame is one where Newton's First Law holds, i.e. objects at rest
+stay at rest unless an external force acts on them. An inertial reference frame
+is one that is not accelerating, or can be assumed not to be with respect to
+the motion of the bodies of interest.
 
 .. _Newton-Euler equations: https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations
 .. _inertial reference frame: https://en.wikipedia.org/wiki/Inertial_frame_of_reference
@@ -83,7 +93,7 @@ present the dynamical differential equations in this form:
 
 where :math:`\mathbf{M}` is called the *mass matrix*,  :math:`\bar{C}` is are
 the forces due to the various velocity effects, and :math:`\bar{F}` are the
-externally applied forces.
+contributing externally applied forces.
 
 .. todo:: Same something about how M is always invertible and positive definite
    (I think).
@@ -469,63 +479,71 @@ The inertia dyadics of the two rods are:
    I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
 
-With all of the necessary elements present for forming :math:`\bar{F}_r` and
-:math:`\bar{F}_r^*` we can take advantage of Python for loops to systematically
-formulate the generalized forces and inertia forces. Inline comments are added
-to help explain the loop.
+To form the equations of motion, start by finding all of the partial velocities
+of the two mass centers :math:`A_o,B_o`, one particle :math:`Q`, and two bodies
+:math:`A,B`:
 
 .. jupyter-execute::
 
-   points = [Ao, Bo, Q]
-   forces = [R_Ao, R_Bo, R_Q]
-   masses = [m, m, m/4]
+   v_Ao_1 = Ao.vel(N).diff(u1, N)
+   v_Bo_1 = Bo.vel(N).diff(u1, N)
+   v_Q_1 = Q.vel(N).diff(u1, N)
 
-   frames = [A, B]
-   torques = [T_A, T_B]
-   inertias = [I_A_Ao, I_B_Bo]
+   v_Ao_2 = Ao.vel(N).diff(u2, N)
+   v_Bo_2 = Bo.vel(N).diff(u2, N)
+   v_Q_2 = Q.vel(N).diff(u2, N)
 
-   Fr_bar = []
-   Frs_bar = []
+   v_Ao_3 = Ao.vel(N).diff(u3, N)
+   v_Bo_3 = Bo.vel(N).diff(u3, N)
+   v_Q_3 = Q.vel(N).diff(u3, N)
 
-   # loop over the three generalized speeds
-   for ur in [u1, u2, u3]:
+   w_A_1 = A.ang_vel_in(N).diff(u1, N)
+   w_B_1 = B.ang_vel_in(N).diff(u1, N)
 
-       # initialize the rth GAF and GIF
-       Fr = 0
-       Frs = 0
+   w_A_2 = A.ang_vel_in(N).diff(u2, N)
+   w_B_2 = B.ang_vel_in(N).diff(u2, N)
 
-       # for the rth generalized speed, loop though each point to find it's
-       # contribution to the generalized forces
-       for Pi, Ri, mi in zip(points, forces, masses):
-           vr = Pi.vel(N).diff(ur, N)  # rth partial velocity
-           Fr += vr.dot(Ri)  # sum in Pi's contribution to GAF
-           Rs = -mi*Pi.acc(N)  # rth inertia force
-           Frs += vr.dot(Rs)  # sum in Pi's contribution to GIF
+   w_A_3 = A.ang_vel_in(N).diff(u3, N)
+   w_B_3 = B.ang_vel_in(N).diff(u3, N)
 
-       # for the rth generalized speed, loop though each reference frame to find
-       # it's contribution to the generalized forces
-       for Bi, Ti, Ii in zip(frames, torques, inertias):
-           wr = Bi.ang_vel_in(N).diff(ur, N)  # rth partial velocity
-           Fr += wr.dot(Ti)  # sum in Bi's contribution to the GIF
-           Ts = -(Bi.ang_acc_in(N).dot(Ii) +  # rth inertia torque
-                  me.cross(Bi.ang_vel_in(N), Ii).dot(Bi.ang_vel_in(N)))
-           Frs += wr.dot(Ts)  # sum in Bi's contribution to the GAF
-
-       Fr_bar.append(Fr)
-       Frs_bar.append(Frs)
-
-The generalized forces :math:`\bar{F}_r` are:
+The three generalized active forces are then formed by dotting the partial
+velocities with the associated load:
 
 .. jupyter-execute::
 
-   Fr = sm.Matrix(Fr_bar)
+   F1 = v_Ao_1.dot(R_Ao) + v_Bo_1.dot(R_Bo) + v_Q_1.dot(R_Q) + w_A_1.dot(T_A) + w_B_1.dot(T_B)
+   F2 = v_Ao_2.dot(R_Ao) + v_Bo_2.dot(R_Bo) + v_Q_2.dot(R_Q) + w_A_2.dot(T_A) + w_B_2.dot(T_B)
+   F3 = v_Ao_3.dot(R_Ao) + v_Bo_3.dot(R_Bo) + v_Q_3.dot(R_Q) + w_A_3.dot(T_A) + w_B_3.dot(T_B)
+
+The generalized force vector :math:`\bar{F}_r` is then:
+
+.. jupyter-execute::
+
+   Fr = sm.Matrix([F1, F2, F3])
    Fr
 
-The generalized inertia forces :math:`\bar{F}_r^*` are:
+The three generalized inertia forces are similarly formed but with the
+resultant inertial forces:
 
 .. jupyter-execute::
 
-   Frs = sm.Matrix(Frs_bar)
+   TAs = -(A.ang_acc_in(N).dot(I_A_Ao) + me.cross(A.ang_vel_in(N), I_A_Ao).dot(A.ang_vel_in(N)))
+   TBs = -(B.ang_acc_in(N).dot(I_B_Bo) + me.cross(B.ang_vel_in(N), I_B_Bo).dot(B.ang_vel_in(N)))
+
+   F1s = v_Ao_1.dot(-m*Ao.acc(N)) + v_Bo_1.dot(-m*Bo.acc(N)) + v_Q_1.dot(-m/4*Q.acc(N))
+   F1s += w_A_1.dot(TAs) + w_B_1.dot(TBs)
+
+   F2s = v_Ao_2.dot(-m*Ao.acc(N)) + v_Bo_2.dot(-m*Bo.acc(N)) + v_Q_2.dot(-m/4*Q.acc(N))
+   F2s += w_A_2.dot(TAs) + w_B_2.dot(TBs)
+
+   F3s = v_Ao_3.dot(-m*Ao.acc(N)) + v_Bo_3.dot(-m*Bo.acc(N)) + v_Q_3.dot(-m/4*Q.acc(N))
+   F3s += w_A_3.dot(TAs) + w_B_3.dot(TBs)
+
+Finally the generalized inertia force vector is:
+
+.. jupyter-execute::
+
+   Frs = sm.Matrix([F1s, F2s, F3s])
    Frs
 
 Notice that the dynamical differential equations are only functions of the time

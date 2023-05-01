@@ -167,6 +167,33 @@ Generalized Forces
 :math:`\bar{F}^*_r`, ``Frs``
    Column vector of all generalized active forces (holonomic or nonholonomic).
 
+Unconstrained Equations of Motion
+=================================
+
+:math:`\bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t)  = 0`
+   Kinematical differential equations.
+:math:`\mathbf{M}_k`
+   Linear coefficient matrix for :math:`\dot{\bar{q}}` in the kinematical
+   differential equations.
+:math:`\bar{g}_k`
+   Terms not linear in :math:`\dot{\bar{q}}` in the kinematical differential
+   equations.
+:math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t) = 0`
+   Dynamical differential equations.
+:math:`\mathbf{M}_d`
+   Linear coefficient matrix for :math:`\dot{\bar{u}}` in the dynamical
+   differential equations, often called the "mass matrix".
+:math:`\bar{g}_d`
+   Terms not linear in :math:`\dot{\bar{u}}` in the dynamical differential
+   equations.
+:math:`\bar{x}=[\bar{q} \quad \bar{u}]^T`
+   State of a multibody system.
+:math:`\mathbf{M}_m`
+   Linear coefficient matrix for :math:`\dot{\bar{x}}` in the equations of
+   motion.
+:math:`\bar{g}_m`
+   Terms not linear in :math:`\dot{\bar{x}}` in the equations of motion.
+
 .. |notation-scalar| image:: figures/notation-scalar.svg
    :height: 10px
 
