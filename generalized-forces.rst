@@ -252,6 +252,9 @@ calculate a set of partial velocities for a set of generalized speeds:
 
    me.partial_velocity((N_v_A, N_v_B, N_w_R), (u1, u2), N)
 
+Nonholonomic Partial Velocities
+===============================
+
 If a system is nonholonomic, it is also true that every translational and
 angular velocity can be expressed uniquely in terms of the :math:`p`
 independent generalized speeds (see Eq.
