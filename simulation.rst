@@ -2,8 +2,6 @@
 Simulation and Visualization
 ============================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -35,6 +33,18 @@ Simulation and Visualization
                                                            tex.format(lab, 'z')),
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
+
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- evaluate equations of motion numerically
+- numerically integrate the ordinary differential equations of a multibody
+  system
+- plot the system's state trajectories versus time
+- compare integration methods to observe integration error
+- create a simple animation of the motion of the multibody system
 
 Numerical Integration
 =====================
