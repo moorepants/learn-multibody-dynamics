@@ -90,6 +90,8 @@ Angular and Translational Kinematics
 Constraints
 ===========
 
+.. todo:: Add Y_k, kin diff eqs.
+
 :math:`N,M,n,m,p`
    :math:`N` coordinates, :math:`M` holonomic constraints, :math:`n`
    generalized coordinates and generalized speeds, :math:`m` nonholonomic
@@ -101,6 +103,21 @@ Constraints
 :math:`\bar{f}_n(u_1, \ldots, u_n, q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^m`, ``fn``
    Vector function of :math:`m` nonholonomic constraint equations among the
    :math:`n` generalized speeds and generalized coordinates.
+:math:`\mathbf{A}_r`
+   Linear coefficient matrix for :math:`\bar{u}_r` in the nonholonomic
+   constraint equations.
+:math:`\mathbf{A}_s`
+   Linear coefficient matrix for :math:`\bar{u}_s` in the nonholonomic
+   constraint equations.
+:math:`\bar{b}_{rs}`
+   Terms not linear in :math:`\bar{u}_s` or :math:`\bar{u}_r` in the
+   nonholonomic constraint equations.
+:math:`\mathbf{A}_n`
+   Linear coefficient matrix for :math:`\bar{u}_s` in the equation for
+   :math:`\bar{u}_r=\mathbf{A}_n\bar{u}_s + \bar{b}_n`.
+:math:`\bar{b}_n`
+   Terms not linear in :math:`\bar{u}_s` in the equation for
+   :math:`\bar{u}_r=\mathbf{A}_n\bar{u}_s + \bar{b}_n`.
 
 Mass Distribution
 =================
@@ -193,6 +210,26 @@ Unconstrained Equations of Motion
    motion.
 :math:`\bar{g}_m`
    Terms not linear in :math:`\dot{\bar{x}}` in the equations of motion.
+
+Equations of Motion with Nonholonomic Constraints
+=================================================
+
+:math:`\bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = 0`
+   Nonholonomic constraint equations.
+:math:`\mathbf{M}_n=\mathbf{A}_r`
+   Linear coefficient matrix for :math:`\bar{u}_r` in the nonholonomic
+   constraint equations.
+:math:`\bar{g}_n=\mathbf{A}_s\bar{u}_s+\bar{b}_{rs}`
+   Terms not linear in :math:`\bar{u}_r` in the nonholonomic constraint
+   equations.
+:math:`\dot{\bar{f}}_n(\dot{\bar{u}}_s, \dot{\bar{u}}_r, \bar{u}_s, \bar{u}_r, \bar{q}, t) = 0`
+   Time derivative of the nonholonomic constraint equations.
+:math:`\mathbf{M}_{nd}`
+   Linear coefficient matrix for :math:`\dot{\bar{u}}_r` in the time
+   differentiated nonholonomic constraint equations.
+:math:`\bar{g}_{nd}`
+   Terms not linear in :math:`\dot{\bar{u}}_r` in the time differentiated
+   nonholonomic constraint equations.
 
 Equations of Motion with Holonomic Constraints
 ==============================================
