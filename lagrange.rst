@@ -172,7 +172,7 @@ simplify the code for computing the kinetic energy:
 
 We can then go on to define the relevant variables, constants and frames:
 
-.. jupyer-execute::
+.. jupyter-execute::
 
    m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
    q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
@@ -435,7 +435,7 @@ extension Port-Hamiltonian system are often used in physics and control theory r
 
 For the system described above, the following derives these equations:
 
-.. jupyer-execute::
+.. jupyter-execute::
 
    p1, p2, p3 = me.dynamicsymbols('p1, p2, p3')
    p_sym = sm.Matrix([p1, p2, p3])
@@ -445,7 +445,7 @@ For the system described above, the following derives these equations:
 
 There are two important realizations:
 
-.. jupyer-execute::
+.. jupyter-execute::
 
    p_dot
 
