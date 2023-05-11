@@ -5,14 +5,46 @@ Equations of Motion with the Lagrange Method
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download-script:`tmt` or Jupyter Notebook:
-   :jupyter-download-notebook:`lagrange`.
+   :jupyter-download-script:`generalized-forces` or Jupyter Notebook:
+   :jupyter-download-notebook:`generalized-forces`.
 
 .. jupyter-execute::
 
    import sympy as sm
    import sympy.physics.mechanics as me
    me.init_vprinting(use_latex='mathjax')
+
+.. container:: invisible
+
+   .. jupyter-execute::
+
+      class ReferenceFrame(me.ReferenceFrame):
+
+          def __init__(self, *args, **kwargs):
+
+              kwargs.pop('latexs', None)
+
+              lab = args[0].lower()
+              tex = r'\hat{{{}}}_{}'
+
+              super(ReferenceFrame, self).__init__(*args,
+                                                   latexs=(tex.format(lab, 'x'),
+                                                           tex.format(lab, 'y'),
+                                                           tex.format(lab, 'z')),
+                                                   **kwargs)
+      me.ReferenceFrame = ReferenceFrame
+
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Derive the Lagrangian for a system of particles and rigid bodies
+- Use the Euler-Lagrange equation to derive equations of motions given a Lagrangian
+- Use the method of Lagrange multipliers to add constraints to the equations of motions
+
+Introduction
+============
 
 This book has already discussed three methods to derive the equations
 of motion of multibody systems: Newton-Euler, Kane's method and the TMT
@@ -243,21 +275,24 @@ constraint, and add a constraint force, for which we can specify the direction, 
 The (second) time derivative of the constraint equation is then added to the equations found with the
 Euler-Lagrange equation.
 
-For example, a four bar linkage:
-
-Considere a four bar linkage, with point-masses located at the second and third joints. We use the
-positions of the first, second and third joints as generalized coordinates. This leaves two constraints:
+For a particle of mass :math:`m` and position :math:`\bar{r}_{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z` on a 
+slope :math:`q_1 = q_2`, we take the second time derivative of the constraint equation :math:`\ddot{q_1} - \ddot{q_2} = 0`,
+and a constraint force :math:`\bar{F} = F\hat{n}_x - F\hat{n}_y`. Using the Lagrangian 
+:math:`V = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 + \dot{q}_3^2) - mgq_3`, we can then derive:
 
 .. math::
     \begin{align*}
-    &\bar{n}_x \cdot \bar{r}^{P4/O} - r_x = 0 
-    &\bar{n}_x \cdot \bar{r}^{P4/O} - r_y = 0
+    m\ddot{q}_1 &= F\\
+    m\ddot{q}_2 &= -F\\
+    m\ddot{q}_3 + mg &= 0
+    \ddot{q}_1 - \ddot{q}_2 = 0 
     \end{align*}
 
-This means there are two constraint forces, both acting on the third body, at point :math:`P_4`. The
-forces act in :math:`\bar{n}_x` and :math:`\bar{n}_y` direction respectively.
+This can be put in matrix-form, by extracting the unknown acceleration and force magnitude;
 
-
+.. math::
+    \begin{bmatrix} m & 0 & 0 &-1 \\ 0 & m & 0 & 1 \\ 0 & 0 & m & 0 \\ 1 & -1 & 0 & 0\end{bmatrix}
+    \begin{bmatrix} \ddot{q}_1 \\ \ddot{q}_2 \\ \ddot{q}_3 \\ F \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ -mg \\ 0\end{bmatrix}
 
 
 It can be tricky to find the direction of the constraint force from the geometric of the system directly.
@@ -277,8 +312,18 @@ We find the generalized force as:
     F_r = \lambda a_r(\bar{q})
 
 Here :math:`\lambda` is a variable encoding the magnitude of the constraint force. It is
-called  the Lagrange multiplier. The same :math:`lambda`` is used for each :math:`r`, that is, 
-one constraint has one associated Lagrange multiplier.
+called  the Lagrange multiplier. The same :math:`\lambda`` is used for each :math:`r`, that is, 
+each constraint has a single associated Lagrange multiplier.
+
+Due to how it is constructed, the power produced by the constraint force is always zero, as expected.
+
+.. math::
+
+    P = \sum_r F_r\dot{q}_r = \sum \lambda a_r\dot{q}_r  = \lambda \sum a_r\dot{q}_r = \lambda \cdot 0
+
+For example, consider the pointmass to be constrained to move in a bowl :math:`x^2 + y^2 + z^2 -1 = 0`.
+Taking the time derivative, we find: :math:`a_1 = 2q_1` :math:`a_2 = 2q_2` and :math:`a_3 = 2q_3`.
+We would find :math:`F_1 = 2\lambda q_1`, :math:`F_2 = 2\lambda q_2` and :math:`F_3 = 2\lambda q_3`.
 
 
 **Example: turning the freely floating body discussed earlier into a rolling sphere.**
@@ -302,9 +347,76 @@ These can be used to derive the constraint force and the additional equations us
 method as shown below. Note that here only the first time derivative of the constraint equation is used, 
 again because the second time derivatives of the generalized coordinates appear.
 
+.. container:: invisible
+
+    .. jupyter-execute::
+
+        # Setting up reference frames
+        psi,theta, phi, x, y, z = me.dynamicsymbols('psi theta phi x y z')
+        N = me.ReferenceFrame('N')
+        B = me.ReferenceFrame('B')
+        B.orient_body_fixed(N, (psi, theta, phi), 'zxy')
+
+        # Mass and inertia
+        m, Ixx, Iyy, Izz = sm.symbols('M, I_{xx}, I_{yy}, I_{zz}')
+        I_B = me.inertia(B, Ixx, Iyy, Izz)
+
+        # Kinematics and kinetic energy
+
+        omega_B = B.ang_vel_in(N)
+        r_com = x*N.x + y*N.y + z*N.z
+        v_com = r_com.dt(N)
+        T = omega_B.dot(I_B.dot(omega_B))/2 + m*v_com.dot(v_com)/2
+
+        # Euler-Lagrange equation
+
+        t = me.dynamicsymbols._t
+        q = sm.Matrix([psi, theta, phi, x, y, z])
+        qdot = q.diff(t)
+        qddot = qdot.diff(t)
+        p = sm.Matrix([T]).jacobian(qdot).transpose()
+        g = -sm.Matrix([T]).jacobian(q).transpose()
+        left_hand_side = p.diff(t) + g
+        mass_matrix = left_hand_side.jacobian(qddot)
+        dynamic_bias = left_hand_side - mass_matrix*qddot
+
+To make these free floating body a rolling wheel, three constraints are needed: the
+velocity of the contact point should be zero in :math:`\hat{n}_x`, :math:`\hat{n}_y`
+and :math:`\hat{n}_x` direction.
+
 .. jupyter-execute::
 
-    1  +1
+    lambda1, lambda2, lambda3 = me.dynamicsymbols('lambda1, lambda2, lambda3') 
+    constraint = (v_com + B.ang_vel_in(N).cross(-N.z)).to_matrix(N)
+    A = constraint.jacobian(qdot)
+    diff_constraint = constraint.diff(t)
+
+This constraint information must then be added to the original equations. To do
+so, we make use of a useful fact, which is true for all systems and constraints:
+
+.. jupyter-execute::
+
+    diff_constraint.jacobian(qddot) - A
+
+This allows us to create our equations in a block matrix form:
+
+.. math::
+        \begin{bmatrix} M & A^T \\ A & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \lambda \end{bmatrix} = 
+        \begin{bmatrix} F_r - g \\ - \frac{\partial A\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
+
+where :math:`A` is the jacobian of the constraints, as used above,  :math:`g` is the dynamic bias, and the last term on the right hand side can be computed as;
+
+.. jupyter-execute::
+
+    constraint_bias = diff_constraint - diff_constraint.jacobian(qddot)*qddot
+
+
+
+
+
+    
+    
+
     
 
 
@@ -350,10 +462,11 @@ generalized momentum is conserved.
 
 Some ideas behind generalized momentum will be discussed with the following example,
 which is a simplified version of the falling cat example:
- * body A is a cylinder that can rotate wrt ground around same axis as gravity: :math:`\hat{n}_z``
- * body B is a cylinder that can rotate wrt body A around same axis as gravity
- * body C is a cylinder that can rotate wrt body C around a (body fixed) axis perpendicular to gravity :math:`\hat{b}_x`
- * There are two actuators providing a torque on the joints between bodies A and B and bodies B and C respectively
+* body A is a cylinder that can rotate wrt ground around same axis as gravity: :math:`\hat{n}_z``
+* body B is a cylinder that can rotate wrt body A around same axis as gravity
+* body C is a cylinder that can rotate wrt body C around a (body fixed) axis perpendicular to gravity :math:`\hat{b}_x`
+* There are two actuators providing a torque on the joints between bodies A and B and bodies B and C respectively.
+
 This example will also show how to apply motor torques at joints.
 
 .. jupyter-execute::
@@ -456,7 +569,7 @@ so called Noether's theorem.
 
 .. jupyter-execute::
 
-   J_p_wrt_qdot -- M
+   J_p_wrt_qdot - M
 
 The jacobian of the generalized momenta with respect to the generalized coordinates is the mass matrix. This is always
 true. As a result, we have:
@@ -477,7 +590,7 @@ a function $f$ over its arguments $q$, we have the well known necessary conditio
 
 .. math::
 
-    \frac{\partial f}{\frac{\partial q} = 0
+    \frac{\partial f}{\partial q} = 0
 
 It is also possible to consider optimizing not over variables, but over functions of one variable. 
 To do so, there must then be a function-like thing that turns possible function into a value which we want to
@@ -486,27 +599,27 @@ optimization problem then takes the following form:
 
 .. math::
 
-    \min_{q(t)} \integral_{0}^{T} L(t, q, \dot{q})\text{d}t \quad \text{s.t.} q(0) = 0, q(T) = q_T  
+    \min_{q(t)} \int_{0}^{T} L(t, q, \dot{q})\text{d}t \quad \text{s.t.} q(0) = 0, q(T) = q_T  
 
 Examples of such optimizations are:
 
-  * The shortest path problem, where $L = |\dot{q}|$
-  * The brachistochrone problem, that tries to find the shape of a slope, such that a ball rolling off it
-    reaches the bottom in minimal time
-  * Various optimal control problem, in which the integral over the torque squared plus the position error squared
-    should be minimized.
+* The shortest path problem, where :math:`L = |\dot{q}|`
+* The brachistochrone problem, that tries to find the shape of a slope, such that a ball rolling off it
+  reaches the bottom in minimal time
+* Various optimal control problem, in which the integral over the torque squared plus the position error squared
+  should be minimized.
 
 For the functional optimization problem, there is again a necessary condition:
 
 .. math::
 
-    \frac{\text{d}}{\text{\text{d}t}\frac{\partial L}\frac{\partial \dot{q}} - \frac{\partial L}\frac{\partial q}= 0,
+    \frac{\text{d}}{\text{d}t}\frac{\partial L}{\partial \dot{q}} - \frac{\partial L}{\partial q}= 0,
 
 which we recognize as the Euler-Lagrange equations.
 
 This means that the laws of nature governing rigid body motions result in motions that minimize the integral of the
 Lagrangian.  This is called Hamilton's principle. It turns out that many physical laws take such a form of minimizing
- the value of a function. A key example is Fermat's principle, which states that light takes the path of minimum time.
+the value of a function. One example is Fermat's principle, which states that light takes the path of minimum time.
 
 The optimization point-of-view of the Lagrange method also gives an interpretation for the Lagrange multipliers. They
 are the same as the Lagrange multipliers used in optimization.
