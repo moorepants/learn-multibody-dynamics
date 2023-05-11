@@ -2,8 +2,6 @@
 Equations of Motion with Holonomic Constraints
 ==============================================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -42,6 +40,19 @@ Equations of Motion with Holonomic Constraints
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- formulate the differential algebraic equations of motion for a multibody
+  system that includes additional holonomic constraints
+- simulate a system with additional constraints using a differential algebraic
+  equation integrator
+- compare simulation results that do and do not manage constraint drift
+
+Introduction
+============
 
 When there are holonomic constraints present the equations of motion are
 comprised of the kinematical differential equations :math:`\bar{f}_k=0`,
