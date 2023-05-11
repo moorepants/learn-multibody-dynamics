@@ -281,12 +281,12 @@ and a constraint force :math:`\bar{F} = F\hat{n}_x - F\hat{n}_y`. Using the Lagr
 :math:`V = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 + \dot{q}_3^2) - mgq_3`, we can then derive:
 
 .. math::
-    \begin{align*}
-    m\ddot{q}_1 &= F\\
-    m\ddot{q}_2 &= -F\\
-    m\ddot{q}_3 + mg &= 0
-    \ddot{q}_1 - \ddot{q}_2 = 0 
-    \end{align*}
+    \begin{array}{r}
+    m\ddot{q}_1= \phantom{-}F\\
+    m\ddot{q}_2= -F\\
+    m\ddot{q}_3 + mg = \phantom{-}0\\
+    \ddot{q}_1 - \ddot{q}_2\!\! = \phantom{-}0 
+    \end{array}
 
 This can be put in matrix-form, by extracting the unknown acceleration and force magnitude;
 
@@ -337,11 +337,11 @@ constraint:
 
 .. math::
 
-    \begin{align*}
-        \bar{n}_x\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) &= 0 \\
-        \bar{n}_y\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) &= 0 \\
-        \bar{n}_z\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) &= 0 \\
-    \end{align*}
+    \begin{array}{l}
+    \bar{n}_x\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) = 0 \\
+    \bar{n}_y\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) = 0 \\
+    \bar{n}_z\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) = 0 \\
+    \end{array}
 
 These can be used to derive the constraint force and the additional equations using the Lagrange-multiplier
 method as shown below. Note that here only the first time derivative of the constraint equation is used, 
