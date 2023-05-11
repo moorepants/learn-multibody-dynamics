@@ -2,8 +2,6 @@
 Equations of Motion with Nonholonomic Constraints
 =================================================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -42,6 +40,18 @@ Equations of Motion with Nonholonomic Constraints
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- formulate the :math:`p` dynamical differential equations for a nonholonomic system
+- simulate a nonholonomic multibody system
+- calculate trajectories of dependent speeds
+
+Introduction
+============
+
 In chapters, :ref:`Holonomic Constraints` and :ref:`Nonholonomic Constraints`,
 I introduced two types of constraints: holonomic (configuration) constraints
 and nonholonomic (motion) constraints. Holonomic constraints are nonlinear
@@ -51,9 +61,6 @@ of motion first, as they are slightly easier to deal with.
 
 .. [#] They can be linear in the coordinates, but then there is little reason
    not to solve for the depedendent coordinates and eliminate them.
-
-Nonholonomic Equations of Motion
-================================
 
 Nonholonomic constraint equations are linear in both the independent and
 dependent generalized speeds (see Sec. :ref:`Snakeboard`). We have shown that
@@ -73,7 +80,15 @@ and :math:`u_r` can be solved for as so:
 .. math::
    :label: eq-dep-speeds-solve
 
-   \bar{u}_r = -\mathbf{M}_n(\bar{q}, t)^{-1}\bar{g}_n(\bar{u}_s, \bar{q}, t) \\
+   \bar{u}_r = -\mathbf{M}_n(\bar{q}, t)^{-1}\bar{g}_n(\bar{u}_s, \bar{q}, t)
+
+which is the same as Eq. :math:numref:`eq-contraint-linear-form-solve` we
+originally developed:
+
+.. math::
+   :label: eq-dep-speeds-repeat
+
+   \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n\\
 
 Using Eq. :math:numref:`eq-dep-speeds-solve` equation we can now write our
 equations of motion as :math:`n` kinematical differential equations and
@@ -93,6 +108,11 @@ and these can be written in explicit form:
    \dot{\bar{q}} = -\mathbf{M}_k(\bar{q}, t)^{-1} \bar{g}_k(\bar{u}_s, \bar{q}, t) \\
    \dot{\bar{u}}_s = -\mathbf{M}_d(\bar{q}, t)^{-1} \bar{g}_d(\bar{u}_s, \bar{q}, t) \\
 
+This leaves us with :math:`n+p` equations of motion, instead of :math:`2n`
+equations seen in a holonomic system. Nonholonomic constraints reduce the
+number of degrees of freedom and thus fewer dynamical differential equations
+are necessary to fully describe the motion.
+
 Snakeboard Equations of Motion
 ==============================
 
@@ -104,6 +124,7 @@ inertia of the three bodies are the same.
 
 .. figure:: figures/motion-snakeboard.svg
    :align: center
+   :width: 80%
 
    Configuration diagram of a planar Snakeboard model.
 
@@ -150,7 +171,11 @@ expressions we create.
    urd_zero = {udi: 0 for udi in urd}
    usd_zero = {udi: 0 for udi in usd}
 
-   qd_zero, ur_zero, us_zero, urd_zero, usd_zero
+   qd_zero, ur_zero, us_zero
+
+.. jupyter-execute::
+
+   urd_zero, usd_zero
 
 2. Establish the kinematics
 ---------------------------
@@ -477,19 +502,19 @@ coordinates.
 We now have :math:`\mathbf{M}_k, \bar{g}_k, \mathbf{M}_d` and :math:`\bar{g}_d`
 and can proceed to numerical evaluation.
 
+.. todo:: Also show how Fr and Frs can be formed using An.
+
 Simulate the Snakeboard
 =======================
 
 We now move to numerical evaluation for the simulation. First, create a
 function that evaluates the matrices of the equations of motion.
 
-.. todo:: lambdify(cse=True) fail for this. Open an issue on SymPy.
-
 .. todo:: sm.Matrix.count_ops() doesn't seem like it exists. Open an issue.
 
 .. jupyter-execute::
 
-   eval_kd = sm.lambdify((q, us, p), (Mk, gk, Md, gd))
+   eval_kd = sm.lambdify((q, us, p), (Mk, gk, Md, gd), cse=True)
 
 Now create a function that evaluates the right hand side of the explicit
 ordinary differential equations for use with ``solve_ivp()``.
@@ -563,7 +588,7 @@ later use in the animation of the motion.
 
 .. jupyter-execute::
 
-   t0, tf = 0.0, 10.0
+   t0, tf = 0.0, 1.0
 
 .. jupyter-execute::
 
