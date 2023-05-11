@@ -588,7 +588,7 @@ later use in the animation of the motion.
 
 .. jupyter-execute::
 
-   t0, tf = 0.0, 1.0
+   t0, tf = 0.0, 8.0
 
 .. jupyter-execute::
 
