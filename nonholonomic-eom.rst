@@ -663,7 +663,7 @@ the points we want to plot given the generalized coordinates.
    for point in [Co, Cr, Co, Ao, Bo, Bl, Br]:
        coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
 
-   eval_point_coords = sm.lambdify((q, p), coordinates)
+   eval_point_coords = sm.lambdify((q, p), coordinates, cse=True)
    eval_point_coords(q0, p_vals)
 
 Now create a plot of the initial configuration:
@@ -724,7 +724,7 @@ the constraint equations. Here I loop through time to calculate
 .. jupyter-execute::
 
    x = sm.Matrix([q1, q2, q3, q4, q5, u3, u4, u5])
-   eval_ur = sm.lambdify((x, p), ur_sol)
+   eval_ur = sm.lambdify((x, p), ur_sol, cse=True)
 
    ur_vals = []
    for xi in xs:
