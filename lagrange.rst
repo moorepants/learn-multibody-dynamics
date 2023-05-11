@@ -172,7 +172,7 @@ simplify the code for computing the kinetic energy:
 
 We can then go on to define the relevant variables, constants and frames:
 
-.. jupyer-executre::
+.. jupyer-execute::
 
    m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
    q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
