@@ -5,8 +5,8 @@ Equations of Motion with the Lagrange Method
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download-script:`generalized-forces` or Jupyter Notebook:
-   :jupyter-download-notebook:`generalized-forces`.
+   :jupyter-download-script:`lagrange` or Jupyter Notebook:
+   :jupyter-download-notebook:`lagrange`.
 
 .. jupyter-execute::
 
@@ -61,7 +61,7 @@ forces equal the applied forces, see :ref:`Unconstrained Equations of Motion`.
 A large part of Kane's method of deriving the equations of motions for a 
 system is involved with finding the generalized inertial forces.
 
-As an alternative, the following equation also get the generalized inertial forces of a
+As an alternative, the following equation also calculates the generalized inertial forces of a
 system, now by starting from the `kinetic energy TODO`_ :math:`T(\dot{\bar{q}}, \bar{q})`
 expressed as function of the generalized coordinates :math:`\bar{q}`, and 
 their time derivatives.
@@ -72,7 +72,7 @@ their time derivatives.
 .. math::
   :label: eq-lagrange-inertial
 
-   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial u_r}
+   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial u}
         \right) - \frac{\partial T}{\partial q_r}
 
 .. warning:: Note the two minus signs in the above equation
@@ -157,13 +157,13 @@ For conservative forces, it is often convenient to derive the applied forces via
 the potential energy.
 
 
-The Lagrange-method
+The Lagrange Method
 ===================
 
 Both the equation for computing the inertial forces from the kinetic energy, and 
 the equation for computing the applied forces from a potential energy have a term
 in them with the partial derivative with respect to the generalized coordinate. 
-Furtermore, the potential energy does not depend on the generalized speeds. 
+Furthermore, the potential energy does not depend on the generalized speeds. 
 Therefore, we can derive the resulting (inertial and conservative applied) forces
 in one go, by combining the two equations.
 
@@ -275,7 +275,7 @@ constraint, and add a constraint force, for which we can specify the direction, 
 The (second) time derivative of the constraint equation is then added to the equations found with the
 Euler-Lagrange equation.
 
-For a particle of mass :math:`m` and position :math:`\bar{r}_{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z` on a 
+For a particle of mass :math:`m` and position :math:`\bar{r}^{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z` on a 
 slope :math:`q_1 = q_2`, we take the second time derivative of the constraint equation :math:`\ddot{q_1} - \ddot{q_2} = 0`,
 and a constraint force :math:`\bar{F} = F\hat{n}_x - F\hat{n}_y`. Using the Lagrangian 
 :math:`V = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 + \dot{q}_3^2) - mgq_3`, we can then derive:
@@ -295,7 +295,7 @@ This can be put in matrix-form, by extracting the unknown acceleration and force
     \begin{bmatrix} \ddot{q}_1 \\ \ddot{q}_2 \\ \ddot{q}_3 \\ F \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ -mg \\ 0\end{bmatrix}
 
 
-It can be tricky to find the direction of the constraint force from the geometric of the system directly.
+It can be difficult to find the direction of the constraint force from the geometric of the system directly.
 There is a trick, called the method of the Lagrange multupliers, to quickly find the correct generalized
 forces associated with the constraint forces. 
 
@@ -312,7 +312,7 @@ We find the generalized force as:
     F_r = \lambda a_r(\bar{q})
 
 Here :math:`\lambda` is a variable encoding the magnitude of the constraint force. It is
-called  the Lagrange multiplier. The same :math:`\lambda`` is used for each :math:`r`, that is, 
+called  the Lagrange multiplier. The same :math:`\lambda` is used for each :math:`r`, that is, 
 each constraint has a single associated Lagrange multiplier.
 
 Due to how it is constructed, the power produced by the constraint force is always zero, as expected.
