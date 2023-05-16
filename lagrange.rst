@@ -274,9 +274,10 @@ Finally, set up the Lagrangian and derive the equations of motion:
 
    me.find_dynamicsymbols(Md), me.find_dynamicsymbols(gd)
 
-The mass matrix :math:`M` only depends on :math:`\bar{q}`, and the dynamic bias :math:`\bar{g}` depends
-on :math:`\dot{\bar{q}}` and :math:`\bar{q}`, just as in Kane's method. Note that the dynamic
-bias combines the effect of the velocity force vector and the conservative forces.
+The mass matrix :math:`M` only depends on :math:`\bar{q}`, and :math:`\bar{g}` depends
+on :math:`\dot{\bar{q}}` and :math:`\bar{q}`, just as in Kane's method. Note that :math:`\bar{g}_d` now
+combines the effects of the velocity force vector and the conservative forces. In this setting, 
+:math:`\bar{g}_d` is often called the dynamic bias. 
 
 
 Constrained equations of motion
