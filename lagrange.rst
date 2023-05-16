@@ -46,17 +46,21 @@ After completing this chapter readers will be able to:
 Introduction
 ============
 
-This book has already discussed three methods to derive the equations
-of motion of multibody systems: Newton-Euler, Kane's method and the TMT
-method. This chapter will add a third: the Lagrange method, originally 
-developed by Joseph-Louis Lagrange.
+This book has already discussed two methods to derive the equations
+of motion of multibody systems: Newton-Euler and Kane's method. This
+chapter will add a third: the `Lagrange method`_, originally 
+developed by Joseph-Louis Lagrange. These materials focus on Engineering
+applications for multi-body systems, for an in-depth study of the physical
+and mathematical background of the Lagrange approach see [Lanczos1970]_. 
+
+.. _`Lagrange method`: https://en.wikipedia.org/wiki/Lagrangian_mechanics
 
 
 
 Inertial forces from kinetic energy
 ===================================
 
-When learning about Kane's method, we learned that the negated generalized inertial
+In Kane's method the negated generalized inertial
 forces equal the applied forces, see :ref:`Unconstrained Equations of Motion`.
 A large part of Kane's method of deriving the equations of motions for a 
 system is involved with finding the generalized inertial forces.
@@ -72,62 +76,76 @@ their time derivatives.
 .. math::
   :label: eq-lagrange-inertial
 
-   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial u}
+   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial q_r}
         \right) - \frac{\partial T}{\partial q_r}
 
 .. warning:: Note the two minus signs in the above equation
 
 .. note::
 
-   In Kane's method, we are free to choose generalized speeds :math:`\bar{u}` that differ from
-   the time derivatives of the generalized coordinates, that is :math:`\dot{\bar{q}}`. This
-   freedom is not readily there when using the Lagrange method. Therefore we will consistently use
-   :math:`\dot{\bar{q}}` in this chapter.
+   In Kane's method, it is possible to choose generalized speeds :math:`\bar{u}` that differ from
+   the time derivatives of the generalized coordinates :math:`\dot{\bar{q}}`. By convention
+   :math:`\bar{u} = \dot{\bar{q}}` is assumed when using the Lagrange method. Therefore, throughout
+   this chapter :math:`\dot{\bar{q}}` is used.
 
 The generalized inertial forces computed in this manner are the same as when following
-the TMT method. This can be shown by carefully matching terms in both formulations, as
-is done for a system of point-masses in [Vallery2020]_.
+Kane's method, or the TMT method used in the next chapter. This can be shown by carefully
+matching terms in these formulations, as is done for a a system of point-masses in [Vallery2020]_.
 
-Example: 3D body in outer space
+Example: freely moving 3D body
+
+This example is largely the same as the example in `Body Fixed Newton-Euler Equations`_. A key difference
+is a difference between the generalized speeds describing the rotation. In the calculation with Kane's method,
+they were body-fixed angular velocities, whereas here they are the rates of change of the Euler angles. 
+
+First, set up the generalized coordinates, reference frames and mass properties:
 
 .. jupyter-execute::
 
-   # Setting up reference frames
+   t = me.dynamicsymbols._t
    psi,theta, phi, x, y, z = me.dynamicsymbols('psi theta phi x y z')
+   q = sm.Matrix([psi, theta, phi, x, y, z])
+   qd = q.diff(t)
+   qdd = qd.diff(t)
    N = me.ReferenceFrame('N')
    B = me.ReferenceFrame('B')
    B.orient_body_fixed(N, (psi, theta, phi), 'zxy')
-
-   # Mass and inertia
    m, Ixx, Iyy, Izz = sm.symbols('M, I_{xx}, I_{yy}, I_{zz}')
    I_B = me.inertia(B, Ixx, Iyy, Izz)
+   q
 
-   # Kinematics and kinetic energy
-
-   omega_B = B.ang_vel_in(N)
-   r_com = x*N.x + y*N.y + z*N.z
-   v_com = r_com.dt(N)
-   T = omega_B.dot(I_B.dot(omega_B))/2 + m*v_com.dot(v_com)/2
-
-   # Euler-Lagrange equation
-
-   t = me.dynamicsymbols._t
-   q = sm.Matrix([psi, theta, phi, x, y, z])
-   qdot = q.diff(t)
-   qddot = qdot.diff(t)
-   p = sm.Matrix([T]).jacobian(qdot).transpose()
-   g = -sm.Matrix([T]).jacobian(q).transpose()
-   left_hand_side = p.diff(t) + g
-
-
-This gives the equations of motion, but the terms, particularly the terms
-involving :math:`\ddot{q}_r` are mangled. It is common to extract the system
-mass matrix and velocity forces vector like so:
+Then compute the kinetic energy: 
 
 .. jupyter-execute::
 
-   mass_matrix = left_hand_side.jacobian(qddot)
-   dynamic_bias = left_hand_side - mass_matrix*qddot
+   N_w_B = B.ang_vel_in(N)
+   r_O_P = x*N.x + y*N.y + z*N.z
+   N_v_C = r_O_P.dt(N)
+   T = N_w_B.dot(I_B.dot(N_w_B))/2 + m*N_v_C.dot(N_v_C)/2
+   T
+
+Use the kinetic energy to find the equations of motion:
+
+.. jupyter-execute::
+
+   T_as_matrix = sm.Matrix([T])
+   left_hand_side = T_as_matrix.jacobian(qd).diff(t) - T_as_matrix.jacobian(q)
+   left_hand_side = left_hand_side.transpose()
+   left_hand_side
+
+
+While these are correct equations of motion, the terms, particularly the terms
+involving :math:`\ddot{q}_r` are mangled. It is common to extract the system
+mass matrix :math:`\boldysmbol{M}_d` and velocity forces vector :math:`\bar{g}_d` like before:
+
+.. jupyter-execute::
+
+   qdd_zerod = {qddr: 0 for qddr in qdd}
+   Md = left_hand_side.jacobian(qdd)
+   gd = left_hand_side.xreplace(qdd_zerod)
+   Md.simplify()
+   gd.simplify()
+   Md, gd
 
 
 Conservative Forces
@@ -149,9 +167,9 @@ known as the `potential energy`_ :math:`V(\bar{q})`:
 
 Some examples of conservative forces are:
 
-* linearized gravity on the surface of the earth, with potential :math:`m g h(\bar{q})`,
-* gravity from Newton's universal gravitation, with potential :math:`-G \frac{m_1m_2}{r(\bar{q})}`,
-* a linear spring, with potential :math:`\frac{1}{2}k(l(\bar{q}) - l_0)`.
+* a uniform gravitational field, for example on the surface of the earth, with potential :math:`V = m g h(\bar{q})`,
+* gravity from Newton's universal gravitation, with potential :math:`V = -G \frac{m_1m_2}{r(\bar{q})}`,
+* a linear spring, with potential :math:`V = \frac{1}{2}k(l(\bar{q}) - l_0)^2`.
 
 For conservative forces, it is often convenient to derive the applied forces via 
 the potential energy.
@@ -163,17 +181,19 @@ The Lagrange Method
 Both the equation for computing the inertial forces from the kinetic energy, and 
 the equation for computing the applied forces from a potential energy have a term
 in them with the partial derivative with respect to the generalized coordinate. 
-Furthermore, the potential energy does not depend on the generalized speeds. 
-Therefore, we can derive the resulting (inertial and conservative applied) forces
+Furtermore, the potential energy does not depend on the generalized speeds. 
+Therefore, the resulting (inertial and conservative applied) forces can be derived
 in one go, by combining the two equations.
 
-Step 1. Compute the so called Lagrangian :math:`L`, the difference between the 
+Step 1. Compute the so called `Lagrangian`_ :math:`L`, the difference between the 
 kinetic energy and potential energy:
 
 .. math::
    :label: eq-lagrangian
 
    L = T - V
+
+.. _`Lagrangian`: https://en.wikipedia.org/wiki/Lagrangian
 
 Step 2. Use the Euler-Lagrange equations (the name for the equation 
 :ref:`eq-lagrange-inertial`) to find the equations of motion:
@@ -189,9 +209,9 @@ while being careful to include a force either in the applied forces
 in both.
 
 
-Example: 2D double pendulum with springs and sliding pointmass
+Example: Double pendulum with springs and sliding pointmass
 
-Because further examples include multiple bodies, we introduce two convenience functions to
+Because further examples include multiple bodies, two convenience functions are introduced to
 simplify the code for computing the kinetic energy:
 
 .. jupyter-execute::
@@ -202,7 +222,7 @@ simplify the code for computing the kinetic energy:
    def quadraticform(I, v):
        return v.dot(I.dot(v))
 
-We can then go on to define the relevant variables, constants and frames:
+The next step is to define the relevant variables, constants and frames:
 
 .. jupyter-execute::
 
@@ -231,14 +251,14 @@ We can then go on to define the relevant variables, constants and frames:
    I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
 
-Finally, we setup the Lagrangian and derive the equations of motion:
+Finally, set up the Lagrangian and derive the equations of motion:
 
 .. jupyter-execute::
 
    t = sm.symbols('t')
    q = sm.Matrix([q1, q2, q3])
-   qdot = q.diff(t)
-   qddot = qdot.diff(t)
+   qd = q.diff(t)
+   qdd = qd.diff(t)
 
    T = m/2*(squarednorm(Ao.vel(N)) + squarednorm(Bo.vel(N)) + squarednorm(Q.vel(N))) + 1/2*(
        quadraticform(I_A_Ao, A.ang_vel_in(N)) + quadraticform(I_B_Bo, A.ang_vel_in(N))
@@ -246,15 +266,17 @@ Finally, we setup the Lagrangian and derive the equations of motion:
    V = m*g*(Ao.pos_from(O).dot(-N.x) + Bo.pos_from(O).dot(-N.x)) + kt/2*(q1**2) + kt/2*q2**2 + kl/2*q3**2
 
    L = sm.Matrix([T - V])
-   lhs = L.jacobian(qdot).diff(t) - L.jacobian(q)
-   M = lhs.transpose().jacobian(qddot)
-   G = lhs.transpose() - M*qddot
+   left_hand_side = L.jacobian(qd).diff(t) - L.jacobian(q)
 
+   qdd_zerod = {qddr: 0 for qddr in qdd}
+   Md = left_hand_side.jacobian(qdd)
+   gd = left_hand_side.xreplace(qdd_zerod)
 
-Note that when we extracted the mass matrix from the left hand side of these
-equations, the residual is not just the velocity force vector, but also
-includes the conservative forces.
+   me.find_dynamicsymbols(Md), me.find_dynamicsymbols(gd)
 
+The mass matrix :math:`M` only depends on :math:`\bar{q}`, and the dynamic bias :math:`\bar{g}` depends
+on :math:`\dot{\bar{q}}` and :math:`\bar{q}`, just as in Kane's method. Note that the dynamic
+bias combines the effect of the velocity force vector and the conservative forces.
 
 
 Constrained equations of motion
@@ -264,21 +286,25 @@ When using Kane's method, constraints are handled by dividing the generalized sp
 the dependent and independent generalized speeds. Then, the dependent generalized speeds are eliminated 
 by solving the (time derivative of the) constraint equation.
 
-In the Lagrange method, the generalized speeds should always mach the generalized coordinates.
+In the Lagrange method, the generalized speeds should always match the generalized coordinates.
 Therefore, to handle constraints, the generalized coordinates should be likewise eliminated. This
 is not possible for non-holonomic constraint (by definition), and requires to solve often difficult
 non-linear equations when considering holonomic constraints. This method of elimination is therefore
 not useful within the Lagrange method.
 
-Instead, we generalize the approach in :ref:`Exposing Noncontributing Forces`. We will first ommit the
-constraint, and add a constraint force, for which we can specify the direction, but not the magnitude. 
-The (second) time derivative of the constraint equation is then added to the equations found with the
-Euler-Lagrange equation.
+Instead, constraints are handled using a generalized version of the approach in 
+:ref:`Exposing Noncontributing Forces`. First the constraints are omitted. Then a constraint force is added,
+with a known direction, but unknown magnitude. Finally, the (second) time derivative of the constraint 
+equation is then appended to the equations found with the Euler-Lagrange equation.
 
-For a particle of mass :math:`m` and position :math:`\bar{r}^{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z` on a 
-slope :math:`q_1 = q_2`, we take the second time derivative of the constraint equation :math:`\ddot{q_1} - \ddot{q_2} = 0`,
-and a constraint force :math:`\bar{F} = F\hat{n}_x - F\hat{n}_y`. Using the Lagrangian 
-:math:`V = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 + \dot{q}_3^2) - mgq_3`, we can then derive:
+For example, consider a particle of mass :math:`m` and position 
+:math:`\bar{r}_{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z`
+on a slope :math:`q_1 = q_2`.  The unconstrained Lagrangian is 
+:math:`V = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 + \dot{q}_3^2) - mgq_3`.
+The constraint force is perpendicular to the slope, so is described
+as :math:`\bar{F} = F\hat{n}_x - F\hat{n}_y`. The appended equation is
+the second time derivative of the constraint equation :math:`\ddot{q_1} - \ddot{q_2} = 0`.
+Combining all, gives:
 
 .. math::
     \begin{array}{r}
@@ -295,7 +321,7 @@ This can be put in matrix-form, by extracting the unknown acceleration and force
     \begin{bmatrix} \ddot{q}_1 \\ \ddot{q}_2 \\ \ddot{q}_3 \\ F \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ -mg \\ 0\end{bmatrix}
 
 
-It can be difficult to find the direction of the constraint force from the geometric of the system directly.
+It can be challenging to find the direction of the constraint force from the geometry of the system directly.
 There is a trick, called the method of the Lagrange multupliers, to quickly find the correct generalized
 forces associated with the constraint forces. 
 
@@ -305,7 +331,7 @@ Given a constraint in the general form
 
     \sum_r a_r(\bar{q}) \dot{q}_r = 0
 
-We find the generalized force as:
+The generalized force is found as:
 
 .. math::
 
@@ -319,28 +345,28 @@ Due to how it is constructed, the power produced by the constraint force is alwa
 
 .. math::
 
-    P = \sum_r F_r\dot{q}_r = \sum \lambda a_r\dot{q}_r  = \lambda \sum a_r\dot{q}_r = \lambda \cdot 0
+    P = \sum_r F_r\dot{q}_r = \sum \lambda a_r(\bar{q})\dot{q}_r  = \lambda \sum a_r(\bar{q})\dot{q}_r = \lambda \cdot 0
 
 For example, consider the pointmass to be constrained to move in a bowl :math:`x^2 + y^2 + z^2 -1 = 0`.
-Taking the time derivative, we find: :math:`a_1 = 2q_1` :math:`a_2 = 2q_2` and :math:`a_3 = 2q_3`.
-We would find :math:`F_1 = 2\lambda q_1`, :math:`F_2 = 2\lambda q_2` and :math:`F_3 = 2\lambda q_3`.
+Taking the time derivative gives: :math:`a_1 = 2q_1` :math:`a_2 = 2q_2` and :math:`a_3 = 2q_3`.
+This results in generalized reaction forces :math:`F_1 = 2\lambda q_1`, :math:`F_2 = 2\lambda q_2` and :math:`F_3 = 2\lambda q_3`.
 
 
-**Example: turning the freely floating body discussed earlier into a rolling sphere.**
+Example: turning the freely floating body discussed earlier into a rolling sphere.**
 
 The non-slip condition of the rolling sphere is split into three constraints: the velocity of
-the contact point (:math:`G`) is zero in both the :math:`\hat{n}_x`, :math:`\hat{n}_y` and :math:`\hat{n}_z`
+the contact point (:math:`G`) is zero in the :math:`\hat{n}_x`, the :math:`\hat{n}_y` and  the :math:`\hat{n}_z`
 direction. These constraints are enforced by contact forces in their respective directions.
 
-The contact point can be found according by :math:`\bar{r}^{G/C} = -r \hat{n}_z`. We therefore get the
-constraint:
+The contact point can be found according by :math:`\bar{r}^{G/C} = -r \hat{n}_z`. By using the velocity
+two point theorem, the following constraints are found.
 
 .. math::
 
     \begin{array}{l}
-    \bar{n}_x\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) = 0 \\
-    \bar{n}_y\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) = 0 \\
-    \bar{n}_z\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times -r\hat{n}_z) = 0 \\
+    \bar{n}_x\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times (-r\hat{n}_z)) = 0 \\
+    \bar{n}_y\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times (-r\hat{n}_z)) = 0 \\
+    \bar{n}_z\cdot ({}^N\bar{v}^C + {}^N\bar{\omega}^B \times (-r\hat{n}_z)) = 0 \\
     \end{array}
 
 These can be used to derive the constraint force and the additional equations using the Lagrange-multiplier
@@ -372,13 +398,15 @@ again because the second time derivatives of the generalized coordinates appear.
 
         t = me.dynamicsymbols._t
         q = sm.Matrix([psi, theta, phi, x, y, z])
-        qdot = q.diff(t)
-        qddot = qdot.diff(t)
-        p = sm.Matrix([T]).jacobian(qdot).transpose()
-        g = -sm.Matrix([T]).jacobian(q).transpose()
-        left_hand_side = p.diff(t) + g
-        mass_matrix = left_hand_side.jacobian(qddot)
-        dynamic_bias = left_hand_side - mass_matrix*qddot
+        qd = q.diff(t)
+        qdd = qd.diff(t)
+
+        L = sm.Matrix([T])
+        left_hand_side = L.jacobian(qd).diff(t) - L.jacobian(q)
+
+        qdd_zerod = {qddr: 0 for qddr in qdd}
+        Md = left_hand_side.jacobian(qdd)
+        gd = left_hand_side.xreplace(qdd_zerod)
 
 To make these free floating body a rolling wheel, three constraints are needed: the
 velocity of the contact point should be zero in :math:`\hat{n}_x`, :math:`\hat{n}_y`
@@ -388,42 +416,38 @@ and :math:`\hat{n}_x` direction.
 
     lambda1, lambda2, lambda3 = me.dynamicsymbols('lambda1, lambda2, lambda3') 
     constraint = (v_com + B.ang_vel_in(N).cross(-N.z)).to_matrix(N)
-    A = constraint.jacobian(qdot)
+    A = constraint.jacobian(qd)
     diff_constraint = constraint.diff(t)
+    constraint
 
 This constraint information must then be added to the original equations. To do
-so, we make use of a useful fact, which is true for all systems and constraints:
+so, we make use of a useful fact. 
 
 .. jupyter-execute::
 
-    diff_constraint.jacobian(qddot) - A
+    diff_constraint.jacobian(qdd) - A
 
-This allows us to create our equations in a block matrix form:
+This equality is true for all constraints, as can easily be shown by taking the time
+derivative of the constraint equation, using the chain rule.
+
+The combined equations can now be written in a block matrix form:
 
 .. math::
-        \begin{bmatrix} M & A^T \\ A & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \lambda \end{bmatrix} = 
-        \begin{bmatrix} F_r - g \\ - \frac{\partial A\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
+        \begin{bmatrix} \mathbf{M}_d & \mathbf{A}^T \\ \mathbf{A} & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \bar{\lambda} \end{bmatrix} = 
+        \begin{bmatrix} \bar{F}_r - \bar{g}_d \\ - \frac{\partial \mathbf{A}\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
 
-where :math:`A` is the jacobian of the constraints, as used above,  :math:`g` is the dynamic bias, and the last term on the right hand side can be computed as;
+where :math:`A` is the jacobian of the constraints, as used above,  :math:`\bar{g}` is the dynamic bias, and 
+the last term on the right hand side can be computed as;
 
 .. jupyter-execute::
 
-    constraint_bias = diff_constraint - diff_constraint.jacobian(qddot)*qddot
+    constraint_bias = diff_constraint - diff_constraint.jacobian(qdd)*qdd
 
 
 
 
-
-    
-    
-
-    
-
-
-
-    
 The method of the Lagrange multiplier can of course also be used within Kane's method. However,
-this results in a larger system of equations, which is why the elimination approach is often
+it results in a larger system of equations, which is why the elimination approach is often
 preferred there. An exception being scenarios where the constraint force itself is a useful output,
 for instance to check no-slip conditions in case of limited friction.
 
@@ -431,18 +455,22 @@ for instance to check no-slip conditions in case of limited friction.
 Lagrange's vs Kane's
 ====================
 
-The Lagrangian method is the  second method to deriving the equations of motion presented in this book,
-after Kane's method. This raises the questions: when should each
-method be used.
+The is book has now thought to alternatives to the Newton-Euler method: Kane's method and Lagrange's method. 
+This raises the questions: when should each alternative method be used?
 
 For constrained systems, Kane's method has the advantage that the equations of motion are given for a set of
 independent generalized velocities only. This can give rise to simplified equations, additional insight, and
-numerically more efficient simulation.
+numerically more efficient simulation. This also gives the benefit that Lagrange multipliers are not needed
+when solving constrained systems with Kane's method.
 
 Furthermore, the connection from Kane's method to vector mechanics, that is, Newton's law's, is clearer, which
 can provide additional insight, and make it easier to encorporate non-conservative forces such as friction.
 
-On the other hand, the Lagrange-method results in a set of equations with well understood structures and properties.
+On the other hand, the Lagrange method only requires energies velocities as input, for which only the velocities
+of the bodies are needed. This is can be simpler to derive than the accelerations which are needed for Kane's
+method.
+
+Furthermore, the Lagrange method results in a set of equations with well understood structures and properties.
 These structures and properties are not studied further in these materials, other than the following "learn more" section.
 With further study, these aspects can make it easier to generalize results across multiple systems, for example
 when designing control algorithms.
@@ -454,11 +482,9 @@ when designing control algorithms.
 The partial derivative of the Lagrangian with respect to generalized speed is
 called the generalized momentum.
 
-Examples showing that this matches to momentum and angular momentum in relevant 
-particle cases.
+.. math::
 
-If the Lagrangian does not depend on a generalized coordinates, its associated
-generalized momentum is conserved.
+    p = \frac{\partial L}{\partial \dot{\bar{q}}}
 
 Some ideas behind generalized momentum will be discussed with the following example,
 which is a simplified version of the falling cat example:
@@ -508,75 +534,81 @@ and :math:`T_c` are used to represent.
 
 .. jupyter-execute::
 
-   T = m/2*(squarednorm(Ao.vel(N)) + squarednorm(Bo.vel(N)) + squarednorm(Co.vel(N))) + 1/2*(
-           quadraticform(I_A_Ao, A.ang_vel_in(N)) + quadraticform(I_B_Bo, B.ang_vel_in(N)) + quadraticform(I_C_Co, C.ang_vel_in(N)))
-   V = m*g*N.z.dot(Co.pos_from(O))
-   L = sm.Matrix([T - V])
+    T = m/2*(squarednorm(Ao.vel(N)) + squarednorm(Bo.vel(N)) + squarednorm(Co.vel(N))) + 1/2*(
+            quadraticform(I_A_Ao, A.ang_vel_in(N)) + quadraticform(I_B_Bo, B.ang_vel_in(N)) + quadraticform(I_C_Co, C.ang_vel_in(N)))
+    V = m*g*N.z.dot(Co.pos_from(O))
+    L = sm.Matrix([T - V])
 
-   q = sm.Matrix([q1, q2, q3])
-   q_dot = q.diff(t)
-   q_ddot = q_dot.diff(t)
+    q = sm.Matrix([q1, q2, q3])
+    qd = q.diff(t)
+    qdd = qd.diff(t)
 
-   p = L.jacobian(q_dot)
-   p.simplify()
-   lhs = p.diff(t) - L.jacobian(q)
-   rhs = sm.Matrix([0.0, T_b, T_c])
+    p = L.jacobian(qd)
+    p.simplify()
+    left_hand_side = (p.diff(t) - L.jacobian(q)).transpose()
 
-   M = lhs.transpose().jacobian(q_ddot)
-   G = lhs.transpose() - M*q_ddot
+    qdd_zerod = {qddr: 0 for qddr in qdd}
+    Md = left_hand_side.jacobian(qdd)
+    gd = left_hand_side.xreplace(qdd_zerod)
 
-   q_ddot_sol = M.solve(rhs - G)
+    F_r = sm.Matrix([0.0, T_b, T_c])
+    qdd_sol = Md.solve(F_r - gd)
 
 
 .. Practice problem: add a damping force or a coulomb friction force in the first joint 
 .. (the example and this problem are inspired by a talk by A. Ruina, https://www.youtube.com/watch?v=j-wHI764dWU)
 
 
-The generalized momenta are an invertable function of the generalized speeds. We can therefore replace the
-Lagrangian equation by:
+The generalized momenta are an invertable function of the generalized speeds. The Euler-Lagrange
+equation can therefore be rewritten in the form:
 
 .. math::
 
-    \dot{p_r} = \frac{\partial L}{\partial q_r}
+    \dot{p_r} = \frac{\partial L}{\partial q_r} + \bar{F}_r
 
 .. math::
 
     \dot{q_r} = \dot{q_r}(\bar{p})  
 
-which are equivalent to the equations obtained using Hamilton's method. Hamiltonian systems and their
-extension Port-Hamiltonian system are often used in physics and control theory respectively.
+which forms a `Hamiltonian System`_. Hamiltonian systems and their
+extension Port-Hamiltonian systems are often used in physics and control theory respectively.
 
-For the system described above, the following derives these equations:
+.. _`Hamiltonian System`: https://en.wikipedia.org/wiki/Hamiltonian_system
+
+For the system described above, the following code derives these equations:
 
 .. jupyter-execute::
 
    p1, p2, p3 = me.dynamicsymbols('p1, p2, p3')
    p_sym = sm.Matrix([p1, p2, p3])
-   J_p_wrt_qdot = p.transpose().jacobian(q_dot)
-   p_dot = rhs - L.jacobian(q).transpose()
-   q_dot_solve = J_p_wrt_qdot.solve(p_sym)
+   qd_repl = sm.solve(p_sym - p.transpose(), qd)
+   pd = F_r - L.jacobian(q).transpose()
+   qd_solve = qd.xreplace(qd_repl)
 
 There are two important realizations:
 
 .. jupyter-execute::
 
-   p_dot
+   pd
 
-Here we see t that the time derivative of the first generalized momentum is zero. That means the generalized momentum
+The time derivative of the first generalized momentum is zero. That means the generalized momentum
 is conserved. This is always the case when the Lagrangian does not depend on a given generalized coordinate, and there
-are no non-conservative active forces acting on that coordinate either. This statement is a particular case of the
-so called Noether's theorem.
+are no non-conservative active forces acting on that coordinate either. This statement is a particular case of
+`Noether's theorem`_.
+
+.. _`Noether's theorem`: https://en.wikipedia.org/wiki/Noether%27s_theorem_
 
 .. jupyter-execute::
 
-   J_p_wrt_qdot - M
+   p.transpose().jacobian(qd) - Md
 
-The jacobian of the generalized momenta with respect to the generalized coordinates is the mass matrix. This is always
-true. As a result, we have:
+The Jacobian of the generalized momenta with respect to the generalized velocities is the mass matrix. This is always
+true, because the kinetic energy can be written as :math:`\frac{1}{2}\dot{\bar{q}}^\text{T}\mathbf{M}_d\dot{\bar{q}}`. 
+As a result
 
 .. math::
 
-    p = M(q)\dot{q},
+    \bar{p} = \mathbf{M}_d(q)\dot{\bar{q}},
 
 which explains the name generalized momentum, as this matches the definitions of momentum and angular momentum in the case
 of pointmasses.
@@ -586,20 +618,23 @@ of pointmasses.
 ===========================================
 
 The Euler-Lagrange equation also appears in a different setting: optimization. When optimizing
-a function $f$ over its arguments $q$, we have the well known necessary condition for an optimum:
+a function :math:`f` over its arguments :math:`q`, we have the well known necessary condition for an optimum:
 
 .. math::
 
     \frac{\partial f}{\partial q} = 0
 
-It is also possible to consider optimizing not over variables, but over functions of one variable. 
+It is also possible to consider optimizing not over variables, but over functions of one variable. This problem
+is considered in the mathematical field `Calculus of Variations`_
 To do so, there must then be a function-like thing that turns possible function into a value which we want to
 optimize. Such a function-like thing is called a functional, and is often given as an integral. The
 optimization problem then takes the following form:
 
+.. _`Calculus of Variations`: https://en.wikipedia.org/wiki/Calculus_of_variations
+
 .. math::
 
-    \min_{q(t)} \int_{0}^{T} L(t, q, \dot{q})\text{d}t \quad \text{s.t.} q(0) = 0, q(T) = q_T  
+    \min_{q(t)} \int_{0}^{T} L(t, q, \dot{q})\text{d}t \quad \text{subject to} \quad q(0) = 0, q(T) = q_T  
 
 Examples of such optimizations are:
 
@@ -618,8 +653,11 @@ For the functional optimization problem, there is again a necessary condition:
 which we recognize as the Euler-Lagrange equations.
 
 This means that the laws of nature governing rigid body motions result in motions that minimize the integral of the
-Lagrangian.  This is called Hamilton's principle. It turns out that many physical laws take such a form of minimizing
+Lagrangian.  This is called Hamilton's principle. It turns out that 
+`many physical laws_` take such a form of minimizing
 the value of a function. One example is Fermat's principle, which states that light takes the path of minimum time.
+
+.. _`many physical laws`: https://en.wikipedia.org/wiki/Variational_principle
 
 The optimization point-of-view of the Lagrange method also gives an interpretation for the Lagrange multipliers. They
 are the same as the Lagrange multipliers used in optimization.
