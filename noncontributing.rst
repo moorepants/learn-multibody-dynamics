@@ -2,8 +2,6 @@
 Exposing Noncontributing Forces
 ===============================
 
-.. warning:: This page as not yet been updated for the 2022-2023 course.
-
 .. note::
 
    You can download this example as a Python script:
@@ -36,6 +34,19 @@ Exposing Noncontributing Forces
                                                            tex.format(lab, 'z')),
                                                    **kwargs)
       me.ReferenceFrame = ReferenceFrame
+
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- apply Newton's Second Law to write equations of motion with maximal
+  coordinates, which naturally expose noncontributing forces
+- use the auxiliary generalized speed method to expose noncontributing forces
+  in Kane's minimal coordinate formulation
+
+Introduction
+============
 
 Kane's formulation relieves us from having to consider noncontributing forces
 (See Sec. :ref:`Contributing and Noncontributing Forces`), but often we are
