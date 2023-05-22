@@ -771,8 +771,8 @@ and rigid body :math:`B` are:
 .. math::
    :label: eq-nonholonomic-gif
 
-   (\tilde{F}^*_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
-   (\tilde{F}^*_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
+   (\tilde{F}^*_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R}^* \\
+   (\tilde{F}^*_r)_B = {}^A\tilde{v}^Q \cdot \bar{R}^* + {}^A\tilde{\omega}^B \cdot \bar{T}^*
 
 Similar to Eq. :math:numref:`eq-non-hol-fr`, the nonholonomic generalized
 inertia forces can be calculated from the holonomic generalized inertia forces
