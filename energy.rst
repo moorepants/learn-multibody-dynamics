@@ -228,10 +228,12 @@ Jumping
 
        if t < 1.0:
            r = [30.0]
+       elif t > 1.2:
+           r = [30.0]
        elif t > 1.5:
            r = [0.0]
        else:
-           r = [-500.0]
+           r = [-1500.0]
 
        residual[0] = -q1d + u1
        residual[1] = -q3d + u3
@@ -249,8 +251,8 @@ Jumping
    p_vals = np.array([
      0.101,  # Ic,
      0.282,  # It,
-     0.85,  # cc,
-     40.0,  # ck,
+     0.95,  # cc,
+     50.0,  # ck,
      0.387,  # dc,
      0.193,  # dt,
      9.81,  # g,
@@ -295,15 +297,15 @@ Jumping
 
    solver = dae('ida',
                 eval_eom,
-                rtol=1e-6,
-                atol=1e-6,
+                rtol=1e-8,
+                atol=1e-8,
                 algebraic_vars_idx=[4],
                 user_data=p_vals,
                 old_api=False)
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 5.0, 20
+   t0, tf, fps = 0.0, 5.0, 60
    ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
    solution = solver.solve(ts, x0, xd0)
@@ -395,5 +397,4 @@ Jumping
        # create and return the animation
        return FuncAnimation(fig, update, len(ts))
 
-   fps = 20
    HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
