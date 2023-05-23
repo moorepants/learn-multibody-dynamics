@@ -10,10 +10,13 @@ Energy and Power
 
 .. jupyter-execute::
 
+   from IPython.display import HTML
+   from matplotlib.animation import FuncAnimation
+   from scipy.optimize import fsolve
+   import matplotlib.pyplot as plt
+   import numpy as np
    import sympy as sm
    import sympy.physics.mechanics as me
-   import numpy as np
-   from scipy.optimize import fsolve
    me.init_vprinting(use_latex='mathjax')
 
 .. container:: invisible
@@ -185,8 +188,10 @@ Jumping
    kane_eq = Fr + Frs
 
    q = sm.Matrix([q1, q2, q3])
-   u = sm.Matrix([u1, u3])
+   u = sm.Matrix([u1, u2, u3])
    ud = u.diff(t)
+   us = sm.Matrix([u1, u3])
+   usd = us.diff(t)
    p = sm.Matrix([Ic, It, cc, ck, dc, dt, g, kc, kk, lc, lt, mc, mf, mt, mu])
    r = sm.Matrix([Tk])
 
@@ -194,9 +199,10 @@ Jumping
 
 .. jupyter-execute::
 
-   eval_kane = sm.lambdify((q, ud, u, r, p), kane_eq) #, cse=True)
+   eval_kane = sm.lambdify((q, usd, us, r, p), kane_eq) #, cse=True)
    eval_holo = sm.lambdify((q, p), holonomic) #, cse=True)
    eval_vel_con = sm.lambdify((q, u, p), vel_con) #, cse=True)
+   eval_acc_con = sm.lambdify((q, ud, u, p), acc_con) #, cse=True)
 
 
    def eval_eom(t, x, xd, residual, p):
@@ -220,9 +226,16 @@ Jumping
        q1, q2, q3, u1, u3 = x
        q1d, _, q3d, u1d, u3d = xd  # ignore the q2d value
 
+       if t < 1.0:
+           r = [30.0]
+       elif t > 1.5:
+           r = [0.0]
+       else:
+           r = [-500.0]
+
        residual[0] = -q1d + u1
        residual[1] = -q3d + u3
-       residual[2:4] = eval_kane([q1, q2, q3], [u1d, u3d], [u1, u3], [0], p).squeeze()
+       residual[2:4] = eval_kane([q1, q2, q3], [u1d, u3d], [u1, u3], r, p).squeeze()
        residual[4] = eval_holo([q1, q2, q3], p)
 
 .. jupyter-execute::
@@ -236,13 +249,13 @@ Jumping
    p_vals = np.array([
      0.101,  # Ic,
      0.282,  # It,
-     0.0,  # cc,
-     0.0,  # ck,
+     0.85,  # cc,
+     40.0,  # ck,
      0.387,  # dc,
      0.193,  # dt,
      9.81,  # g,
-     1000.0,  # kc,
-     10.0,  # kk,
+     5e7,  # kc,
+     75.0,  # kk,
      0.611,  # lc,
      0.424,  # lt,
      6.769,  # mc,
@@ -252,36 +265,37 @@ Jumping
    ])
 
    q0 = np.array([
-       0.1,
+       0.0,
        np.nan,
-       np.deg2rad(60.0),
+       np.deg2rad(-60.0),
    ])
 
-   q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(-5.0))
+   q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(-45.0))
 
    u0 = np.array([
        0.0,
-       np.nan,
        0.0,
    ])
 
-   u0[1] = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[2]], p_vals),  np.deg2rad(-5.0))
+   u20 = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[1]], p_vals),  np.deg2rad(0.0))
 
    x0 = np.hstack((q0, u0))
 
    ud0 = np.array([
-   0.0,
-   0.0,
-   0.0])
+       0.0,
+       0.0,
+   ])
 
-   xd0 = np.hstack((u0, ud0))
-
+   xd0 = np.hstack(([u0[0], u20, u0[1]], ud0))
+   x0, xd0
 
 .. jupyter-execute::
 
+   from scikits.odes import dae
+
    solver = dae('ida',
                 eval_eom,
-                rtol=1e-3,
+                rtol=1e-6,
                 atol=1e-6,
                 algebraic_vars_idx=[4],
                 user_data=p_vals,
@@ -289,9 +303,97 @@ Jumping
 
 .. jupyter-execute::
 
-   ts = np.linspace(0.0, 5.0, num=101)
+   t0, tf, fps = 0.0, 5.0, 20
+   ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
    solution = solver.solve(ts, x0, xd0)
 
    ts_dae = solution.values.t
    xs_dae = solution.values.y
+
+.. jupyter-execute::
+
+   import matplotlib.pyplot as plt
+   plt.plot(ts_dae, xs_dae[:, 0])
+   plt.grid()
+
+.. jupyter-execute::
+
+   coordinates = Pf.pos_from(O).to_matrix(N)
+   for point in [Pk, Pu]:
+      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
+   eval_point_coords = sm.lambdify((q, p), coordinates)
+
+.. jupyter-execute::
+
+   def setup_animation_plot(ts, xs, p):
+       """Returns objects needed for the animation.
+
+       Parameters
+       ==========
+       ts : array_like, shape(n,)
+          Values of time.
+       xs : array_like, shape(n, 4)
+          Values of the state trajectories corresponding to ``ts`` in order
+          [q1, q2, q3, u1].
+       p : array_like, shape(?,)
+
+       """
+
+       x, y, z = eval_point_coords(xs[0, :3], p)
+
+       fig, ax = plt.subplots()
+       fig.set_size_inches((10.0, 10.0))
+       ax.set_aspect('equal')
+       ax.grid()
+
+       lines, = ax.plot(y, x, color='black',
+                        marker='o', markerfacecolor='blue', markersize=10)
+
+       title_text = ax.set_title('Time = {:1.1f} s'.format(ts[0]))
+       ax.set_xlim((-0.5, 0.5))
+       ax.set_ylim((0.0, 1.5))
+       ax.set_xlabel('$x$ [m]')
+       ax.set_ylabel('$y$ [m]')
+       ax.set_aspect('equal')
+
+       return fig, ax, title_text, lines
+
+   setup_animation_plot(ts_dae, xs_dae, p_vals);
+
+.. jupyter-execute::
+
+   def animate_linkage(ts, xs, p):
+       """Returns an animation object.
+
+       Parameters
+       ==========
+       ts : array_like, shape(n,)
+       xs : array_like, shape(n, 4)
+          x = [q1, q2, q3, u1]
+       p : array_like, shape(6,)
+          p = [la, lb, lc, ln, m, g]
+
+       """
+       # setup the initial figure and axes
+       fig, ax, title_text, lines = setup_animation_plot(ts, xs, p)
+
+       # precalculate all of the point coordinates
+       coords = []
+       for xi in xs:
+           coords.append(eval_point_coords(xi[:3], p))
+       coords = np.array(coords)
+
+       # define the animation update function
+       def update(i):
+           title_text.set_text('Time = {:1.1f} s'.format(ts[i]))
+           lines.set_data(coords[i, 1, :], coords[i, 0, :])
+
+       # close figure to prevent premature display
+       plt.close()
+
+       # create and return the animation
+       return FuncAnimation(fig, update, len(ts))
+
+   fps = 20
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
