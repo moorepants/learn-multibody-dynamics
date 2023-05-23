@@ -42,6 +42,7 @@ After completing this chapter readers will be able to:
 - Derive the Lagrangian for a system of particles and rigid bodies
 - Use the Euler-Lagrange equation to derive equations of motions given a Lagrangian
 - Use the method of Lagrange multipliers to add constraints to the equations of motions
+- Know how to determine the generalized momenta of a system.
 
 Introduction
 ============
@@ -50,9 +51,12 @@ This book has already discussed two methods to derive the equations
 of motion of multibody systems: Newton-Euler and Kane's method. This
 chapter will add a third: the `Lagrange method`_, originally 
 developed by Joseph-Louis Lagrange. These materials focus on Engineering
-applications for multi-body systems, for an in-depth study of the physical
-and mathematical background of the Lagrange approach see [Lanczos1970]_. 
+applications for multi-body systems build the Lagrange method around
+the terms found earlie in Kane's equations. Good starting points for study of the physical
+and mathematical background of the Lagrange approach are  `Variational principles`_
+or [Lanczos1970]_. 
 
+.. _`Variational principles`: https://en.wikipedia.org/wiki/Variational_principle
 .. _`Lagrange method`: https://en.wikipedia.org/wiki/Lagrangian_mechanics
 
 
@@ -124,25 +128,36 @@ Then compute the kinetic energy:
    T = N_w_B.dot(I_B.dot(N_w_B))/2 + m*N_v_C.dot(N_v_C)/2
    T
 
-Use the kinetic energy to find the equations of motion:
+Use the kinetic energy to find the generalized inertial forces. Here we start with 
+the generalized coordinate :math:`\psi`
+
+.. jupyter-execute::
+
+    psid = psi.diff(t)
+    F_psi_s = T.diff(psid).diff(t) - T.diff(psi)
+
+A similar derivation should be made for all generalized coordinates. We could write
+a loop, but there there is a method to derive all the equations in one go.
+The vector of partial derivatives of a function, that is the gradient, can be created
+using the jacobian method. The generalized inertial forces can then be find like this: 
 
 .. jupyter-execute::
 
    T_as_matrix = sm.Matrix([T])
-   left_hand_side = T_as_matrix.jacobian(qd).diff(t) - T_as_matrix.jacobian(q)
-   left_hand_side = left_hand_side.transpose()
-   left_hand_side
+   Fs_transposed = T_as_matrix.jacobian(qd).diff(t) - T_as_matrix.jacobian(q)
+   Fs = Fs_transposed.transpose()
+   Fs
 
 
 While these are correct equations of motion, the terms, particularly the terms
 involving :math:`\ddot{q}_r` are mangled. It is common to extract the system
-mass matrix :math:`\boldysmbol{M}_d` and velocity forces vector :math:`\bar{g}_d` like before:
+mass matrix :math:`\mathbf{M}_d` and velocity forces vector :math:`\bar{g}_d` like before:
 
 .. jupyter-execute::
 
    qdd_zerod = {qddr: 0 for qddr in qdd}
-   Md = left_hand_side.jacobian(qdd)
-   gd = left_hand_side.xreplace(qdd_zerod)
+   Md = Fs.jacobian(qdd)
+   gd = Fs.xreplace(qdd_zerod)
    Md.simplify()
    gd.simplify()
    Md, gd
@@ -211,17 +226,6 @@ in both.
 
 Example: Double pendulum with springs and sliding pointmass
 
-Because further examples include multiple bodies, two convenience functions are introduced to
-simplify the code for computing the kinetic energy:
-
-.. jupyter-execute::
-
-   def squarednorm(a):
-       return a.dot(a)
-
-   def quadraticform(I, v):
-       return v.dot(I.dot(v))
-
 The next step is to define the relevant variables, constants and frames:
 
 .. jupyter-execute::
@@ -260,8 +264,8 @@ Finally, set up the Lagrangian and derive the equations of motion:
    qd = q.diff(t)
    qdd = qd.diff(t)
 
-   T = m/2*(squarednorm(Ao.vel(N)) + squarednorm(Bo.vel(N)) + squarednorm(Q.vel(N))) + 1/2*(
-       quadraticform(I_A_Ao, A.ang_vel_in(N)) + quadraticform(I_B_Bo, A.ang_vel_in(N))
+   T = m/2*(Ao.vel(N).dot(Ao.vel(N)) + Bo.vel(N).dot(Bo.vel(N)) + Q.vel(N).dot(Q.vel(N))) + 1/2*(
+       A.ang_vel_in(N).dot(I_A_Ao.dot(A.ang_vel_in(N))) + A.ang_vel_in(N).dot(I_B_Bo.dot(A.ang_vel_in(N)))
    )
    V = m*g*(Ao.pos_from(O).dot(-N.x) + Bo.pos_from(O).dot(-N.x)) + kt/2*(q1**2) + kt/2*q2**2 + kl/2*q3**2
 
@@ -278,6 +282,23 @@ The mass matrix :math:`M` only depends on :math:`\bar{q}`, and :math:`\bar{g}` d
 on :math:`\dot{\bar{q}}` and :math:`\bar{q}`, just as in Kane's method. Note that :math:`\bar{g}_d` now
 combines the effects of the velocity force vector and the conservative forces. In this setting, 
 :math:`\bar{g}_d` is often called the dynamic bias. 
+
+It is often useful to use a vector of intermediate variables when finding the Euler-Lagrange equations. The variables
+are defined as:
+
+.. math::
+
+    p_r = \frac{\partial L}{\partial \dot{q_r}}
+
+The variables are collected in a vector :math:`\bar{p}`. They are called the generalized momenta, 
+as they coincide with linear momentum in the
+case of a Lagrangian describing a particle. Similar to the situation in the dynamics of particles, there can 
+be conservation of generalized momentum. This is the case for the generalized momentum associated with ignorable
+coordinates, as defined in `Equations of Motion with Nonholonomic Constraints`_. For more information about conserved
+quantitie in the context of the Lagrange method, see `Noether's theorem`.
+
+.. _`Noether's theorem`: https://en.wikipedia.org/wiki/Noether%27s_theorem_
+
 
 
 Constrained equations of motion
@@ -444,7 +465,7 @@ the last term on the right hand side can be computed as;
 
     constraint_bias = diff_constraint - diff_constraint.jacobian(qdd)*qdd
 
-
+We call the block matrix called the extended mass matrix, and the vector on the right hand side the extended dynamic bias. 
 
 
 The method of the Lagrange multiplier can of course also be used within Kane's method. However,
@@ -477,191 +498,191 @@ With further study, these aspects can make it easier to generalize results acros
 when designing control algorithms.
 
 
-(Learn more) Generalized momentum
-=================================
+.. (Learn more) Generalized momentum
+.. =================================
 
-The partial derivative of the Lagrangian with respect to generalized speed is
-called the generalized momentum.
+.. The partial derivative of the Lagrangian with respect to generalized speed is
+.. called the generalized momentum.
 
-.. math::
+.. .. math::
 
-    p = \frac{\partial L}{\partial \dot{\bar{q}}}
+..     p = \frac{\partial L}{\partial \dot{\bar{q}}}
 
-Some ideas behind generalized momentum will be discussed with the following example,
-which is a simplified version of the falling cat example:
-* body A is a cylinder that can rotate wrt ground around same axis as gravity: :math:`\hat{n}_z``
-* body B is a cylinder that can rotate wrt body A around same axis as gravity
-* body C is a cylinder that can rotate wrt body C around a (body fixed) axis perpendicular to gravity :math:`\hat{b}_x`
-* There are two actuators providing a torque on the joints between bodies A and B and bodies B and C respectively.
+.. Some ideas behind generalized momentum will be discussed with the following example,
+.. which is a simplified version of the falling cat example:
+.. * body A is a cylinder that can rotate wrt ground around same axis as gravity: :math:`\hat{n}_z``
+.. * body B is a cylinder that can rotate wrt body A around same axis as gravity
+.. * body C is a cylinder that can rotate wrt body C around a (body fixed) axis perpendicular to gravity :math:`\hat{b}_x`
+.. * There are two actuators providing a torque on the joints between bodies A and B and bodies B and C respectively.
 
-This example will also show how to apply motor torques at joints.
+.. This example will also show how to apply motor torques at joints.
 
-.. jupyter-execute::
+.. .. jupyter-execute::
 
-   t, l, r, T_b, T_c = sm.symbols('t, l, r, T_b, T_c')
-   q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
+..    t, l, r, T_b, T_c = sm.symbols('t, l, r, T_b, T_c')
+..    q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
 
-   N = me.ReferenceFrame('N')
-   A = me.ReferenceFrame('A')
-   B = me.ReferenceFrame('B')
-   C = me.ReferenceFrame('C')
+..    N = me.ReferenceFrame('N')
+..    A = me.ReferenceFrame('A')
+..    B = me.ReferenceFrame('B')
+..    C = me.ReferenceFrame('C')
 
-   A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.z)
-   C.orient_axis(B, q3, B.x) 
+..    A.orient_axis(N, q1, N.z)
+..    B.orient_axis(A, q2, A.z)
+..    C.orient_axis(B, q3, B.x) 
 
-   g = 1
-   rho = 1
-   m = rho*l*sm.pi*r**2
-   I_xx_or_yy = m/12*(3*r**2 + l**2)
-   I_zz= m/2*r**2
-   I_A_Ao = me.inertia(A, I_xx_or_yy , I_xx_or_yy, I_zz)
-   I_B_Bo = me.inertia(B, I_xx_or_yy , I_xx_or_yy, I_zz)
-   I_C_Co = me.inertia(C, I_xx_or_yy , I_xx_or_yy, I_zz)
+..    g = 1
+..    rho = 1
+..    m = rho*l*sm.pi*r**2
+..    I_xx_or_yy = m/12*(3*r**2 + l**2)
+..    I_zz= m/2*r**2
+..    I_A_Ao = me.inertia(A, I_xx_or_yy , I_xx_or_yy, I_zz)
+..    I_B_Bo = me.inertia(B, I_xx_or_yy , I_xx_or_yy, I_zz)
+..    I_C_Co = me.inertia(C, I_xx_or_yy , I_xx_or_yy, I_zz)
 
-   O = me.Point('O')
-   O.set_vel(N, 0.0)
-   Ao = me.Point("A_c")
-   Ao.set_pos(O, -0.5*l*A.z)
-   Bo = me.Point("B_c")
-   Bo.set_pos(Ao, -0.5*l*A.z - 0.5*l*B.z)
-   Co = me.Point("C_c")
-   Co.set_pos(Bo, -0.5*l*B.z -0.5*l*C.z)
+..    O = me.Point('O')
+..    O.set_vel(N, 0.0)
+..    Ao = me.Point("A_c")
+..    Ao.set_pos(O, -0.5*l*A.z)
+..    Bo = me.Point("B_c")
+..    Bo.set_pos(Ao, -0.5*l*A.z - 0.5*l*B.z)
+..    Co = me.Point("C_c")
+..    Co.set_pos(Bo, -0.5*l*B.z -0.5*l*C.z)
 
-The next step is again to form the Lagrangian and find the equations of motion. As the system has no further constraints, 
-the Lagrange multiplier method is not needed. The actuator torques are added to the right hand side of the equation, in
-the same way as active forces are added to Kane's equations. Here the torques are represented by the variables :math:`T_b`
-and :math:`T_c` are used to represent.
+.. The next step is again to form the Lagrangian and find the equations of motion. As the system has no further constraints, 
+.. the Lagrange multiplier method is not needed. The actuator torques are added to the right hand side of the equation, in
+.. the same way as active forces are added to Kane's equations. Here the torques are represented by the variables :math:`T_b`
+.. and :math:`T_c` are used to represent.
 
-.. jupyter-execute::
+.. .. jupyter-execute::
 
-    T = m/2*(squarednorm(Ao.vel(N)) + squarednorm(Bo.vel(N)) + squarednorm(Co.vel(N))) + 1/2*(
-            quadraticform(I_A_Ao, A.ang_vel_in(N)) + quadraticform(I_B_Bo, B.ang_vel_in(N)) + quadraticform(I_C_Co, C.ang_vel_in(N)))
-    V = m*g*N.z.dot(Co.pos_from(O))
-    L = sm.Matrix([T - V])
+..     T = m/2*(squarednorm(Ao.vel(N)) + squarednorm(Bo.vel(N)) + squarednorm(Co.vel(N))) + 1/2*(
+..             quadraticform(I_A_Ao, A.ang_vel_in(N)) + quadraticform(I_B_Bo, B.ang_vel_in(N)) + quadraticform(I_C_Co, C.ang_vel_in(N)))
+..     V = m*g*N.z.dot(Co.pos_from(O))
+..     L = sm.Matrix([T - V])
 
-    q = sm.Matrix([q1, q2, q3])
-    qd = q.diff(t)
-    qdd = qd.diff(t)
+..     q = sm.Matrix([q1, q2, q3])
+..     qd = q.diff(t)
+..     qdd = qd.diff(t)
 
-    p = L.jacobian(qd)
-    p.simplify()
-    left_hand_side = (p.diff(t) - L.jacobian(q)).transpose()
+..     p = L.jacobian(qd)
+..     p.simplify()
+..     left_hand_side = (p.diff(t) - L.jacobian(q)).transpose()
 
-    qdd_zerod = {qddr: 0 for qddr in qdd}
-    Md = left_hand_side.jacobian(qdd)
-    gd = left_hand_side.xreplace(qdd_zerod)
+..     qdd_zerod = {qddr: 0 for qddr in qdd}
+..     Md = left_hand_side.jacobian(qdd)
+..     gd = left_hand_side.xreplace(qdd_zerod)
 
-    F_r = sm.Matrix([0.0, T_b, T_c])
-    qdd_sol = Md.solve(F_r - gd)
-
-
-.. Practice problem: add a damping force or a coulomb friction force in the first joint 
-.. (the example and this problem are inspired by a talk by A. Ruina, https://www.youtube.com/watch?v=j-wHI764dWU)
+..     F_r = sm.Matrix([0.0, T_b, T_c])
+..     qdd_sol = Md.solve(F_r - gd)
 
 
-The generalized momenta are an invertable function of the generalized speeds. The Euler-Lagrange
-equation can therefore be rewritten in the form:
-
-.. math::
-
-    \dot{p_r} = \frac{\partial L}{\partial q_r} + \bar{F}_r
-
-.. math::
-
-    \dot{q_r} = \dot{q_r}(\bar{p})  
-
-which forms a `Hamiltonian System`_. Hamiltonian systems and their
-extension Port-Hamiltonian systems are often used in physics and control theory respectively.
-
-.. _`Hamiltonian System`: https://en.wikipedia.org/wiki/Hamiltonian_system
-
-For the system described above, the following code derives these equations:
-
-.. jupyter-execute::
-
-   p1, p2, p3 = me.dynamicsymbols('p1, p2, p3')
-   p_sym = sm.Matrix([p1, p2, p3])
-   qd_repl = sm.solve(p_sym - p.transpose(), qd)
-   pd = F_r - L.jacobian(q).transpose()
-   qd_solve = qd.xreplace(qd_repl)
-
-There are two important realizations:
-
-.. jupyter-execute::
-
-   pd
-
-The time derivative of the first generalized momentum is zero. That means the generalized momentum
-is conserved. This is always the case when the Lagrangian does not depend on a given generalized coordinate, and there
-are no non-conservative active forces acting on that coordinate either. This statement is a particular case of
-`Noether's theorem`_.
-
-.. _`Noether's theorem`: https://en.wikipedia.org/wiki/Noether%27s_theorem_
-
-.. jupyter-execute::
-
-   p.transpose().jacobian(qd) - Md
-
-The Jacobian of the generalized momenta with respect to the generalized velocities is the mass matrix. This is always
-true, because the kinetic energy can be written as :math:`\frac{1}{2}\dot{\bar{q}}^\text{T}\mathbf{M}_d\dot{\bar{q}}`. 
-As a result
-
-.. math::
-
-    \bar{p} = \mathbf{M}_d(q)\dot{\bar{q}},
-
-which explains the name generalized momentum, as this matches the definitions of momentum and angular momentum in the case
-of pointmasses.
+.. .. Practice problem: add a damping force or a coulomb friction force in the first joint 
+.. .. (the example and this problem are inspired by a talk by A. Ruina, https://www.youtube.com/watch?v=j-wHI764dWU)
 
 
-(Learn more) Euler-Lagrange in optimization
-===========================================
+.. The generalized momenta are an invertable function of the generalized speeds. The Euler-Lagrange
+.. equation can therefore be rewritten in the form:
 
-The Euler-Lagrange equation also appears in a different setting: optimization. When optimizing
-a function :math:`f` over its arguments :math:`q`, we have the well known necessary condition for an optimum:
+.. .. math::
 
-.. math::
+..     \dot{p_r} = \frac{\partial L}{\partial q_r} + \bar{F}_r
 
-    \frac{\partial f}{\partial q} = 0
+.. .. math::
 
-It is also possible to consider optimizing not over variables, but over functions of one variable. This problem
-is considered in the mathematical field `Calculus of Variations`_
-To do so, there must then be a function-like thing that turns possible function into a value which we want to
-optimize. Such a function-like thing is called a functional, and is often given as an integral. The
-optimization problem then takes the following form:
+..     \dot{q_r} = \dot{q_r}(\bar{p})  
 
-.. _`Calculus of Variations`: https://en.wikipedia.org/wiki/Calculus_of_variations
+.. which forms a `Hamiltonian System`_. Hamiltonian systems and their
+.. extension Port-Hamiltonian systems are often used in physics and control theory respectively.
 
-.. math::
+.. .. _`Hamiltonian System`: https://en.wikipedia.org/wiki/Hamiltonian_system
 
-    \min_{q(t)} \int_{0}^{T} L(t, q, \dot{q})\text{d}t \quad \text{subject to} \quad q(0) = 0, q(T) = q_T  
+.. For the system described above, the following code derives these equations:
 
-Examples of such optimizations are:
+.. .. jupyter-execute::
 
-* The shortest path problem, where :math:`L = |\dot{q}|`
-* The brachistochrone problem, that tries to find the shape of a slope, such that a ball rolling off it
-  reaches the bottom in minimal time
-* Various optimal control problem, in which the integral over the torque squared plus the position error squared
-  should be minimized.
+..    p1, p2, p3 = me.dynamicsymbols('p1, p2, p3')
+..    p_sym = sm.Matrix([p1, p2, p3])
+..    qd_repl = sm.solve(p_sym - p.transpose(), qd)
+..    pd = F_r - L.jacobian(q).transpose()
+..    qd_solve = qd.xreplace(qd_repl)
 
-For the functional optimization problem, there is again a necessary condition:
+.. There are two important realizations:
 
-.. math::
+.. .. jupyter-execute::
 
-    \frac{\text{d}}{\text{d}t}\frac{\partial L}{\partial \dot{q}} - \frac{\partial L}{\partial q}= 0,
+..    pd
 
-which we recognize as the Euler-Lagrange equations.
+.. The time derivative of the first generalized momentum is zero. That means the generalized momentum
+.. is conserved. This is always the case when the Lagrangian does not depend on a given generalized coordinate, and there
+.. are no non-conservative active forces acting on that coordinate either. This statement is a particular case of
+.. `Noether's theorem`_.
 
-This means that the laws of nature governing rigid body motions result in motions that minimize the integral of the
-Lagrangian.  This is called Hamilton's principle. It turns out that 
-`many physical laws_` take such a form of minimizing
-the value of a function. One example is Fermat's principle, which states that light takes the path of minimum time.
+.. .. _`Noether's theorem`: https://en.wikipedia.org/wiki/Noether%27s_theorem_
 
-.. _`many physical laws`: https://en.wikipedia.org/wiki/Variational_principle
+.. .. jupyter-execute::
 
-The optimization point-of-view of the Lagrange method also gives an interpretation for the Lagrange multipliers. They
-are the same as the Lagrange multipliers used in optimization.
+..    p.transpose().jacobian(qd) - Md
+
+.. The Jacobian of the generalized momenta with respect to the generalized velocities is the mass matrix. This is always
+.. true, because the kinetic energy can be written as :math:`\frac{1}{2}\dot{\bar{q}}^\text{T}\mathbf{M}_d\dot{\bar{q}}`. 
+.. As a result
+
+.. .. math::
+
+..     \bar{p} = \mathbf{M}_d(q)\dot{\bar{q}},
+
+.. which explains the name generalized momentum, as this matches the definitions of momentum and angular momentum in the case
+.. of pointmasses.
+
+
+.. (Learn more) Euler-Lagrange in optimization
+.. ===========================================
+
+.. The Euler-Lagrange equation also appears in a different setting: optimization. When optimizing
+.. a function :math:`f` over its arguments :math:`q`, we have the well known necessary condition for an optimum:
+
+.. .. math::
+
+..     \frac{\partial f}{\partial q} = 0
+
+.. It is also possible to consider optimizing not over variables, but over functions of one variable. This problem
+.. is considered in the mathematical field `Calculus of Variations`_
+.. To do so, there must then be a function-like thing that turns possible function into a value which we want to
+.. optimize. Such a function-like thing is called a functional, and is often given as an integral. The
+.. optimization problem then takes the following form:
+
+.. .. _`Calculus of Variations`: https://en.wikipedia.org/wiki/Calculus_of_variations
+
+.. .. math::
+
+..     \min_{q(t)} \int_{0}^{T} L(t, q, \dot{q})\text{d}t \quad \text{subject to} \quad q(0) = 0, q(T) = q_T  
+
+.. Examples of such optimizations are:
+
+.. * The shortest path problem, where :math:`L = |\dot{q}|`
+.. * The brachistochrone problem, that tries to find the shape of a slope, such that a ball rolling off it
+..   reaches the bottom in minimal time
+.. * Various optimal control problem, in which the integral over the torque squared plus the position error squared
+..   should be minimized.
+
+.. For the functional optimization problem, there is again a necessary condition:
+
+.. .. math::
+
+..     \frac{\text{d}}{\text{d}t}\frac{\partial L}{\partial \dot{q}} - \frac{\partial L}{\partial q}= 0,
+
+.. which we recognize as the Euler-Lagrange equations.
+
+.. This means that the laws of nature governing rigid body motions result in motions that minimize the integral of the
+.. Lagrangian.  This is called Hamilton's principle. It turns out that 
+.. `many physical laws_` take such a form of minimizing
+.. the value of a function. One example is Fermat's principle, which states that light takes the path of minimum time.
+
+.. .. _`many physical laws`: https://en.wikipedia.org/wiki/Variational_principle
+
+.. The optimization point-of-view of the Lagrange method also gives an interpretation for the Lagrange multipliers. They
+.. are the same as the Lagrange multipliers used in optimization.
 
 
 
