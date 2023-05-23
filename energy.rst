@@ -58,7 +58,7 @@ written as a force dotted with a velocity.
 
 .. math::
 
-   P = \bar[F} \cdot \bar{v}
+   P = \bar{F} \cdot \bar{v}
 
 Power can enter into a system, exit a system, or be exhanged within a system.
 
@@ -73,4 +73,11 @@ be classified as kinetic, potential (conservative), or non-conservative.
 
    E_p = 
 
+Jumping
+=======
 
+.. jupyter-execute::
+
+   mu, mt, mc, mf = sm.symbols('m_u, m_t, m_c, m_f')
+   It, Ic = sm.symbols('I_t, I_c')
+   kc, cc = sm.symbols('k_c, c_c')
