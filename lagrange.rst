@@ -80,7 +80,7 @@ their time derivatives.
 .. math::
   :label: eq-lagrange-inertial
 
-   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial q_r}
+   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial \dot{q}_r}
         \right) - \frac{\partial T}{\partial q_r}
 
 .. warning:: Note the two minus signs in the above equation
