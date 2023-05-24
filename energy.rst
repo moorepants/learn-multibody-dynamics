@@ -50,7 +50,7 @@ Introduction
 So far we have invesitaged multibody systems from the perspect of forces and
 their relationship to motion. It is also useful to understand these systems
 from a power and energy perspective. Power is the time rate of change in work
-done. Work is the eenrgy gained, disspated, or exchanged in a system.
+done. Work is the energy gained, dissipated, or exchanged in a system.
 
 .. power:: https://en.wikipedia.org/wiki/Power_(physics)
 
@@ -58,25 +58,79 @@ done. Work is the eenrgy gained, disspated, or exchanged in a system.
 
    P = \frac{dW}{dt}
 
-Knowing that work is a force dotted with a change in position, power can be
-written as a force dotted with a velocity.
-
-.. math::
-
-   P = \bar{F} \cdot \bar{v}
-
-Power can enter into a system, exit a system, or be exhanged within a system.
-
 The time integral of power is work or energy. Energy of a multibody system can
 be classified as kinetic, potential (conservative), or non-conservative.
 
+Kinetic Energy
+==============
+
+Kinetic energy is an instanteous measure of the energy due to motion of all of
+the particles and rigid bodies in a system. A rigid body will, in general, have
+a translational and rotational component of kinetic energy. A particle cannot
+rotate so it only has translational kinetic energy. Kinetic energy is connected
+to :math:`\bar{F}^*_r`.
+
+Translational kinetic energy of a particle :math:`P` of mass :math:`m` in
+reference frame :math:`N` is:
+
 .. math::
 
-   E_k = m \bar{v} \cdot \bar{v} / 2  + \bar{\omega} \cdot \breve{I} \cdot \bar{\omega} / 2
+   K_P := \frac{1}{2}m|{}^N\bar{v}^{P}|^2 = \frac{1}{2}m {}^N\bar{v}^{P} \cdot {}^N\bar{v}^{P}
+
+If :math:`P` is the mass center of a rigid body, the equation represents the
+translational kinetic energy of the rigid body.
+
+The rotational kinetic energy of a rigid body :math:`B` with mass center
+:math:`B_o` in :math:`N` is added to its translational kinetic energy and is
+defined as:
 
 .. math::
 
-   E_p = 
+   K_B := \frac{1}{2} m {}^N\bar{v}^{B_o} \cdot {}^N\bar{v}^{B_o} +
+   \frac{1}{2} {}^N\bar{\omega}^B \cdot \breve{I}^{B/B_o} \cdot {}^N\bar{\omega}^B
+
+The total kinetic energy in a multibody system is the sum of kinetic energy for
+all particles and rigid bodies.
+
+Potential Energy
+================
+
+Some generalized active force contributions in inertial reference frame
+:math:`N` can be written as
+
+.. math::
+
+   F_r = -\frac{\partial V}{\partial q_r}
+
+where :math:`V` is strictly a function of the generalized coordinates and time,
+i.e. :math:`V(\bar{q}, t)`. These functions :math:`V` are potential energies in
+:math:`N`. The associated generalized active force contributions are
+conservative forces. The most common conservative forces seen in multibody
+systems are gravitational forces and ideal spring forces, but there are conservative
+forces realted to electrostic forces, magnetic forces, and other types.
+
+For small objects near Earth we model gravity as a uniform field and the
+potential energy of a particle or rigid body is:
+
+.. math::
+
+   V = mgh
+
+where :math:`m` is the body or particle's mass, :math:`g` is the acceleration
+due to gravity at the Earth's surface, and :math:`h(\bar{q}, t)` is the
+distance parallel to the gravitaional field direction of the particle or body
+with respect to an arbitrary reference.
+
+A linear spring generates a conservative force :math:`F=kx` between two points
+:math:`P` and :math:`Q` and its potential energy is:
+
+.. math::
+
+   V_s = \frac{1}{2} k \bar{r}^{P/Q} \cdot \bar{r}^{P/Q}
+
+
+
+.. _conservative forces: https://en.wikipedia.org/wiki/Conservative_force
 
 Jumping
 =======
@@ -111,11 +165,11 @@ Jumping
    Pu, Pk, Pf = me.Point('P_u'), me.Point('P_k'), me.Point('P_f')
    Ao, Bo = me.Point('A_o'), me.Point('B_o')
 
-   Pf.set_pos(O, q1*N.x)
-   Ao.set_pos(Pf, dc*A.y)
-   Pk.set_pos(Pf, lc*A.y)
-   Bo.set_pos(Pk, dt*B.y)
-   Pu.set_pos(Pk, lt*B.y)
+   Pf.set_pos(O, q1*N.y)
+   Ao.set_pos(Pf, dc*A.x)
+   Pk.set_pos(Pf, lc*A.x)
+   Bo.set_pos(Pk, dt*B.x)
+   Pu.set_pos(Pk, lt*B.x)
 
    O.set_vel(N, 0)
    Pf.set_vel(N, u1*N.x)
@@ -125,7 +179,7 @@ Jumping
    qd_repl = {q1.diff(t): u1, q2.diff(t): u2, q3.diff(t): u3}
    qdd_repl = {q1.diff(t, 2): u1.diff(t), q2.diff(t, 2): u2.diff(t), q3.diff(t, 2): u3.diff(t)}
 
-   holonomic = Pu.pos_from(O).dot(N.y)
+   holonomic = Pu.pos_from(O).dot(N.x)
    vel_con = holonomic.diff(t).xreplace(qd_repl)
    acc_con = vel_con.diff(t).xreplace(qdd_repl).xreplace(qd_repl)
 
@@ -134,15 +188,15 @@ Jumping
    u2_repl = {u2: sm.solve(vel_con, u2)[0]}
    u2d_repl = {u2.diff(t): sm.solve(acc_con, u2.diff(t))[0].xreplace(u2_repl)}
 
-   R_Pu = -mu*g*N.x
-   R_Ao = -mt*g*N.x
-   R_Bo = -mc*g*N.x
+   R_Pu = -mu*g*N.y
+   R_Ao = -mt*g*N.y
+   R_Bo = -mc*g*N.y
    zp = (sm.Abs(q1) - q1)/2
    zd = zp.diff(t).xreplace(qd_repl)
-   Fc = (kc*zp**(sm.S(3)/2) + cc*zp**(sm.S(3)/2)*zd)*N.x
-   R_Pf = -mf*g*N.x + Fc
-
-   T_A = (kk*q3 + ck*u3 + Tk)*N.z
+   Fc = (kc*zp**(sm.S(3)/2) + cc*zp**(sm.S(3)/2)*zd)*N.y
+   R_Pf = -mf*g*N.y + Fc
+   sm.tan(q3 - sm.pi/2)
+   T_A = -(kk*(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
    T_B = -T_A
 
    I_A_Ao = It*me.outer(N.z, N.z)
@@ -195,6 +249,16 @@ Jumping
    p = sm.Matrix([Ic, It, cc, ck, dc, dt, g, kc, kk, lc, lt, mc, mf, mt, mu])
    r = sm.Matrix([Tk])
 
+.. jupyter-execute::
+
+   Ep = (mf*Pf.pos_from(O) + mc*Ao.pos_from(O) + mt*Bo.pos_from(O) + mu*Pu.pos_from(O)).dot(N.y) + kk*q3**2/2 + kc*zp**2/2
+   Ep
+
+.. jupyter-execute::
+
+   Ek = mc*Ao.vel(N).dot(Ao.vel(N))/2 + mt*Bo.vel(N).dot(Bo.vel(N))/2# + I_A_Ao.dot(A.ang_vel_in(N)).dot(I_A_Ao)
+   Ek
+
 .. todo:: cse fails
 
 .. jupyter-execute::
@@ -227,13 +291,15 @@ Jumping
        q1d, _, q3d, u1d, u3d = xd  # ignore the q2d value
 
        if t < 1.0:
-           r = [30.0]
+           r = [-30.0]
        elif t > 1.2:
-           r = [30.0]
+           r = [-30.0]
        elif t > 1.5:
            r = [0.0]
        else:
-           r = [-1500.0]
+           r = [1500.0]
+
+       r = [0.0]
 
        residual[0] = -q1d + u1
        residual[1] = -q3d + u3
@@ -251,13 +317,13 @@ Jumping
    p_vals = np.array([
      0.101,  # Ic,
      0.282,  # It,
-     0.95,  # cc,
-     50.0,  # ck,
+     0.0, #0.95,  # cc,
+     0.0,  # ck,
      0.387,  # dc,
      0.193,  # dt,
      9.81,  # g,
-     5e7,  # kc,
-     75.0,  # kk,
+     0., #5e7,  # kc,
+     1.0,  # kk,
      0.611,  # lc,
      0.424,  # lt,
      6.769,  # mc,
@@ -267,12 +333,12 @@ Jumping
    ])
 
    q0 = np.array([
-       0.0,
+       0.5,
        np.nan,
-       np.deg2rad(-60.0),
+       np.deg2rad(60.0),
    ])
 
-   q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(-45.0))
+   q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(45.0))
 
    u0 = np.array([
        0.0,
@@ -305,7 +371,7 @@ Jumping
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 5.0, 60
+   t0, tf, fps = 0.0, 3.0, 10
    ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
    solution = solver.solve(ts, x0, xd0)
@@ -342,14 +408,14 @@ Jumping
 
        """
 
-       x, y, z = eval_point_coords(xs[0, :3], p)
+       x, y, _ = eval_point_coords(xs[0, :3], p)
 
        fig, ax = plt.subplots()
        fig.set_size_inches((10.0, 10.0))
        ax.set_aspect('equal')
        ax.grid()
 
-       lines, = ax.plot(y, x, color='black',
+       lines, = ax.plot(x, y, color='black',
                         marker='o', markerfacecolor='blue', markersize=10)
 
        title_text = ax.set_title('Time = {:1.1f} s'.format(ts[0]))
@@ -389,7 +455,7 @@ Jumping
        # define the animation update function
        def update(i):
            title_text.set_text('Time = {:1.1f} s'.format(ts[i]))
-           lines.set_data(coords[i, 1, :], coords[i, 0, :])
+           lines.set_data(coords[i, 0, :], coords[i, 1, :])
 
        # close figure to prevent premature display
        plt.close()
@@ -398,3 +464,13 @@ Jumping
        return FuncAnimation(fig, update, len(ts))
 
    HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+
+
+Knowing that work is a force dotted with a change in position, power can be
+written as a force dotted with a velocity.
+
+.. math::
+
+   P = \bar{F} \cdot \bar{v}
+
+Power can enter into a system, exit a system, or be exhanged within a system.
