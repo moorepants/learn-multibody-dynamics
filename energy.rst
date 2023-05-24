@@ -173,7 +173,7 @@ muscles attached between the two leg segments.
 
 .. _fig-energy-jumper-fbd:
 .. figure:: figures/energy-jumper-fbd.svg
-   :width: 25%
+   :width: 50%
    :align: center
 
 .. jupyter-execute::
@@ -203,8 +203,8 @@ muscles attached between the two leg segments.
    B.set_ang_vel(A, u3*N.z)
 
    O = me.Point('O')
-   Pu, Pk, Pf = me.Point('P_u'), me.Point('P_k'), me.Point('P_f')
    Ao, Bo = me.Point('A_o'), me.Point('B_o')
+   Pu, Pk, Pf = me.Point('P_u'), me.Point('P_k'), me.Point('P_f')
 
    Pf.set_pos(O, q1*N.y)
    Ao.set_pos(Pf, da*A.x)
@@ -213,7 +213,7 @@ muscles attached between the two leg segments.
    Pu.set_pos(Pk, lb*B.x)
 
    O.set_vel(N, 0)
-   Pf.set_vel(N, u1*N.x)
+   Pf.set_vel(N, u1*N.y)
    Pk.v2pt_theory(Pf, N, A)
    Pu.v2pt_theory(Pk, N, B)
 
@@ -232,10 +232,14 @@ muscles attached between the two leg segments.
    R_Pu = -mu*g*N.y
    R_Ao = -ma*g*N.y
    R_Bo = -mb*g*N.y
+
    zp = (sm.Abs(q1) - q1)/2
    zd = zp.diff(t).xreplace(qd_repl)
    Ff = (kf*zp**(sm.S(3)/2) + cf*zp**(sm.S(3)/2)*zd)*N.y
+
    R_Pf = -mf*g*N.y + Ff
+   R_Pf
+
    T_A = -(kk*(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
    T_B = -T_A
 
@@ -307,13 +311,25 @@ muscles attached between the two leg segments.
 
 .. jupyter-execute::
 
-   V = (mf*Pf.pos_from(O) + ma*Ao.pos_from(O) + mb*Bo.pos_from(O) + mu*Pu.pos_from(O)).dot(N.y) + kk*q3**2/2 + kf*zp**2/2
+   V = (
+       (mf*Pf.pos_from(O) +
+        ma*Ao.pos_from(O) +
+        mb*Bo.pos_from(O) +
+        mu*Pu.pos_from(O)).dot(N.y) +
+       kk*q3**2/2 +
+       kf*zp**2/2
+   )
    V
 
 .. jupyter-execute::
 
-   K = ma*Ao.vel(N).dot(Ao.vel(N))/2 + mb*Bo.vel(N).dot(Bo.vel(N))/2# + I_A_Ao.dot(A.ang_vel_in(N)).dot(I_A_Ao)
-   K
+   K = (
+       ma*me.dot(Ao.vel(N), Ao.vel(N))/2 +
+       me.dot(me.dot(A.ang_vel_in(N), I_A_Ao), A.ang_vel_in(N))/2 +
+       mb*me.dot(Bo.vel(N), Bo.vel(N))/2 +
+       me.dot(me.dot(B.ang_vel_in(N), I_B_Bo), B.ang_vel_in(N))/2
+   )
+   sm.simplify(K)
 
 .. todo:: cse fails
 
@@ -323,7 +339,9 @@ muscles attached between the two leg segments.
    eval_holo = sm.lambdify((q, p), holonomic) #, cse=True)
    eval_vel_con = sm.lambdify((q, u, p), vel_con) #, cse=True)
    eval_acc_con = sm.lambdify((q, ud, u, p), acc_con) #, cse=True)
+   eval_energy = sm.lambdify((q, u, p), (K, V))
 
+.. jupyter-execute::
 
    def eval_eom(t, x, xd, residual, p):
        """Returns the residual vector of the equations of motion.
@@ -370,26 +388,44 @@ muscles attached between the two leg segments.
 
 .. jupyter-execute::
 
+   p__ = sm.Matrix([
+       Ia,
+       Ib,
+       cf,
+       ck,
+       da,
+       db,
+       g,
+       kf,
+       kk,
+       la,
+       lb,
+       ma,
+       mb,
+       mf,
+       mu,
+   ])
+
    p_vals = np.array([
      0.101,  # Ia,
      0.282,  # Ib,
-     0.0, #0.95,  # cf,
+     0.95,  # cf,
      0.0,  # ck,
      0.387,  # da,
      0.193,  # db,
      9.81,  # g,
-     0., #5e7,  # kf,
-     1.0,  # kk,
+     5e7,  # kf,
+     0.0,  # kk,
      0.611,  # la,
      0.424,  # lb,
      6.769,  # ma,
      17.01,  # mb,
-     3.0,  # mf,
+     3.0,  # mf,  # guess
      32.44,  # mu
    ])
 
    q0 = np.array([
-       0.2,
+       0.0,
        np.nan,
        np.deg2rad(60.0),
    ])
@@ -427,7 +463,7 @@ muscles attached between the two leg segments.
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 3.0, 10
+   t0, tf, fps = 0.0, 3.0, 60
    ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
    solution = solver.solve(ts, x0, xd0)
@@ -444,7 +480,7 @@ muscles attached between the two leg segments.
 .. jupyter-execute::
 
    coordinates = Pf.pos_from(O).to_matrix(N)
-   for point in [Pk, Pu]:
+   for point in [Ao, Pk, Bo, Pu]:
       coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
    eval_point_coords = sm.lambdify((q, p), coordinates)
 
