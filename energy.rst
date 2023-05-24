@@ -5,8 +5,8 @@ Energy and Power
 .. note::
 
    You can download this example as a Python script:
-   :jupyter-download-script:`loads` or Jupyter Notebook:
-   :jupyter-download-notebook:`loads`.
+   :jupyter-download-script:`energy` or Jupyter Notebook:
+   :jupyter-download-notebook:`energy`.
 
 .. jupyter-execute::
 
@@ -128,20 +128,61 @@ A linear spring generates a conservative force :math:`F=kx` between two points
 
    V_s = \frac{1}{2} k \bar{r}^{P/Q} \cdot \bar{r}^{P/Q}
 
-
+The sum of all potential energies in a system give the total potential energy
+of the system.
 
 .. _conservative forces: https://en.wikipedia.org/wiki/Conservative_force
 
-Jumping
-=======
+If :math:`\bar{F}_r` is only made up of conservative forces, then the system is
+conservative and will not lose energy as it moves, it simply exchanges kinetic
+for potential and vice versa. The total energy of the system is:
+
+.. math::
+
+   E := K + V
+
+:math:`E` is constant for conservative systems.
+
+Energetics of Jumping
+=====================
+
+Let's create a simple multibody model of a person doing a vertical jump like
+shown in the video below so that we can calculate the kinetic and potential
+energy.
+
+.. raw:: html
+
+   <center>
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/MediHtXeVH0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+   </center>
+
+We can model the jumper in a single plane with two rigid bodies representing
+the thigh :math:`B` and the calf :math:`A` of the legs lumping the left and
+right leg segments together. The mass centers of the leg segments lie on the
+line connecting the segments end points but at a realistic distance from the
+ends. To avoid having to stabilize the jumper, we can assume that particles
+representing the foot :math:`P_f` and the upper body :math:`P_u` can only move
+vertically and are alway aligned over one another. The foot :math:`P_f`, knee
+:math:`P_k`, and hip :math:`P_u` are all modeled as pin joints. The mass of teh
+foot :math:`m_f` and the mass of the upper body are modeled as particles at
+:math:`P_f` and :math:`P_u`, respectively. We will model a collision force
+:math:`F_f` from the ground :math:`N` acting on the foot :math:`P_f` using the
+Hunt-Crossley formulation. We will actuate the jumper using only a torque
+acting between the thigh and the calf that represents the combine forces of the
+muscles attached between the two leg segments.
+
+.. _fig-energy-jumper-fbd:
+.. figure:: figures/energy-jumper-fbd.svg
+   :width: 25%
+   :align: center
 
 .. jupyter-execute::
 
    g = sm.symbols('g')
-   mu, mt, mc, mf = sm.symbols('m_u, m_t, m_c, m_f')
-   It, Ic = sm.symbols('I_t, I_c')
-   kc, cc, kk, ck = sm.symbols('k_c, c_c, k_k, c_k')
-   lt, lc, dt, dc = sm.symbols('l_t, l_c, d_t, d_c')
+   mu, ma, mb, mf = sm.symbols('m_u, m_a, m_b, m_f')
+   Ia, Ib = sm.symbols('I_a, I_b')
+   kf, cf, kk, ck = sm.symbols('k_f, c_f, k_k, c_k')
+   la, lb, da, db = sm.symbols('l_a, l_b, d_a, d_b')
 
    q1, q2, q3 = me.dynamicsymbols('q1, q2, q3', real=True)
    u1, u2, u3 = me.dynamicsymbols('u1, u2, u3', real=True)
@@ -166,10 +207,10 @@ Jumping
    Ao, Bo = me.Point('A_o'), me.Point('B_o')
 
    Pf.set_pos(O, q1*N.y)
-   Ao.set_pos(Pf, dc*A.x)
-   Pk.set_pos(Pf, lc*A.x)
-   Bo.set_pos(Pk, dt*B.x)
-   Pu.set_pos(Pk, lt*B.x)
+   Ao.set_pos(Pf, da*A.x)
+   Pk.set_pos(Pf, la*A.x)
+   Bo.set_pos(Pk, db*B.x)
+   Pu.set_pos(Pk, lb*B.x)
 
    O.set_vel(N, 0)
    Pf.set_vel(N, u1*N.x)
@@ -189,22 +230,21 @@ Jumping
    u2d_repl = {u2.diff(t): sm.solve(acc_con, u2.diff(t))[0].xreplace(u2_repl)}
 
    R_Pu = -mu*g*N.y
-   R_Ao = -mt*g*N.y
-   R_Bo = -mc*g*N.y
+   R_Ao = -ma*g*N.y
+   R_Bo = -mb*g*N.y
    zp = (sm.Abs(q1) - q1)/2
    zd = zp.diff(t).xreplace(qd_repl)
-   Fc = (kc*zp**(sm.S(3)/2) + cc*zp**(sm.S(3)/2)*zd)*N.y
-   R_Pf = -mf*g*N.y + Fc
-   sm.tan(q3 - sm.pi/2)
+   Ff = (kf*zp**(sm.S(3)/2) + cf*zp**(sm.S(3)/2)*zd)*N.y
+   R_Pf = -mf*g*N.y + Ff
    T_A = -(kk*(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
    T_B = -T_A
 
-   I_A_Ao = It*me.outer(N.z, N.z)
-   I_B_Bo = Ic*me.outer(N.z, N.z)
+   I_A_Ao = Ia*me.outer(N.z, N.z)
+   I_B_Bo = Ib*me.outer(N.z, N.z)
 
    points = [Pu, Ao, Bo, Pf]
    forces = [R_Pu, R_Ao, R_Bo, R_Pf]
-   masses = [mu, mt, mc, 0]
+   masses = [mu, ma, mb, mf]
 
    frames = [A, B]
    torques = [T_A, T_B]
@@ -246,18 +286,34 @@ Jumping
    ud = u.diff(t)
    us = sm.Matrix([u1, u3])
    usd = us.diff(t)
-   p = sm.Matrix([Ic, It, cc, ck, dc, dt, g, kc, kk, lc, lt, mc, mf, mt, mu])
+   p = sm.Matrix([
+       Ia,
+       Ib,
+       cf,
+       ck,
+       da,
+       db,
+       g,
+       kf,
+       kk,
+       la,
+       lb,
+       ma,
+       mb,
+       mf,
+       mu,
+   ])
    r = sm.Matrix([Tk])
 
 .. jupyter-execute::
 
-   Ep = (mf*Pf.pos_from(O) + mc*Ao.pos_from(O) + mt*Bo.pos_from(O) + mu*Pu.pos_from(O)).dot(N.y) + kk*q3**2/2 + kc*zp**2/2
-   Ep
+   V = (mf*Pf.pos_from(O) + ma*Ao.pos_from(O) + mb*Bo.pos_from(O) + mu*Pu.pos_from(O)).dot(N.y) + kk*q3**2/2 + kf*zp**2/2
+   V
 
 .. jupyter-execute::
 
-   Ek = mc*Ao.vel(N).dot(Ao.vel(N))/2 + mt*Bo.vel(N).dot(Bo.vel(N))/2# + I_A_Ao.dot(A.ang_vel_in(N)).dot(I_A_Ao)
-   Ek
+   K = ma*Ao.vel(N).dot(Ao.vel(N))/2 + mb*Bo.vel(N).dot(Bo.vel(N))/2# + I_A_Ao.dot(A.ang_vel_in(N)).dot(I_A_Ao)
+   K
 
 .. todo:: cse fails
 
@@ -315,25 +371,25 @@ Jumping
 .. jupyter-execute::
 
    p_vals = np.array([
-     0.101,  # Ic,
-     0.282,  # It,
-     0.0, #0.95,  # cc,
+     0.101,  # Ia,
+     0.282,  # Ib,
+     0.0, #0.95,  # cf,
      0.0,  # ck,
-     0.387,  # dc,
-     0.193,  # dt,
+     0.387,  # da,
+     0.193,  # db,
      9.81,  # g,
-     0., #5e7,  # kc,
+     0., #5e7,  # kf,
      1.0,  # kk,
-     0.611,  # lc,
-     0.424,  # lt,
-     6.769,  # mc,
+     0.611,  # la,
+     0.424,  # lb,
+     6.769,  # ma,
+     17.01,  # mb,
      3.0,  # mf,
-     17.01,  # mt,
      32.44,  # mu
    ])
 
    q0 = np.array([
-       0.5,
+       0.2,
        np.nan,
        np.deg2rad(60.0),
    ])
