@@ -12,6 +12,7 @@ Energy and Power
 
    from IPython.display import HTML
    from matplotlib.animation import FuncAnimation
+   from scikits.odes import dae
    from scipy.optimize import fsolve
    import matplotlib.pyplot as plt
    import numpy as np
@@ -44,6 +45,8 @@ Learning Objectives
 
 After completing this chapter readers will be able to:
 
+- calculate the kinetic and potential energy of a multibody system
+
 Introduction
 ============
 
@@ -75,7 +78,9 @@ reference frame :math:`N` is:
 
 .. math::
 
-   K_P := \frac{1}{2}m|{}^N\bar{v}^{P}|^2 = \frac{1}{2}m {}^N\bar{v}^{P} \cdot {}^N\bar{v}^{P}
+   K_P :=
+     \frac{1}{2}m\left|{}^N\bar{v}^{P}\right|^2 =
+     \frac{1}{2}m {}^N\bar{v}^{P} \cdot {}^N\bar{v}^{P}
 
 If :math:`P` is the mass center of a rigid body, the equation represents the
 translational kinetic energy of the rigid body.
@@ -240,7 +245,7 @@ muscles attached between the two leg segments.
    R_Pf = -mf*g*N.y + Ff
    R_Pf
 
-   T_A = -(kk*(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
+   T_A = -(kk*sm.tan(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
    T_B = -T_A
 
    I_A_Ao = Ia*me.outer(N.z, N.z)
@@ -339,7 +344,7 @@ muscles attached between the two leg segments.
    eval_holo = sm.lambdify((q, p), holonomic) #, cse=True)
    eval_vel_con = sm.lambdify((q, u, p), vel_con) #, cse=True)
    eval_acc_con = sm.lambdify((q, ud, u, p), acc_con) #, cse=True)
-   eval_energy = sm.lambdify((q, u, p), (K, V))
+   eval_energy = sm.lambdify((q, us, p), (K.xreplace(u2_repl), V.xreplace(u2_repl)))
 
 .. jupyter-execute::
 
@@ -355,7 +360,7 @@ muscles attached between the two leg segments.
        xd : ndarray, shape(5,)
           Time derivative of the state vector at time t: xd = [q1d, q2d, q3d, u1d, u3d].
        residual : ndarray, shape(5,)
-          Vector to store the residuals in: residuals = [fk, fd, fh1, fh2].
+          Vector to store the residuals in: residuals = [fk, fd, fh].
        p : ndarray, shape(6,)
           Constant parameters: p = [la, lb, lc, ln, m, g]
 
@@ -382,30 +387,6 @@ muscles attached between the two leg segments.
 
 .. jupyter-execute::
 
-   residual = np.empty(5)
-   eval_eom(1.0, np.random.random(5), np.random.random(5), residual, np.random.random(15))
-   residual
-
-.. jupyter-execute::
-
-   p__ = sm.Matrix([
-       Ia,
-       Ib,
-       cf,
-       ck,
-       da,
-       db,
-       g,
-       kf,
-       kk,
-       la,
-       lb,
-       ma,
-       mb,
-       mf,
-       mu,
-   ])
-
    p_vals = np.array([
      0.101,  # Ia,
      0.282,  # Ib,
@@ -425,7 +406,7 @@ muscles attached between the two leg segments.
    ])
 
    q0 = np.array([
-       0.0,
+       0.5,
        np.nan,
        np.deg2rad(60.0),
    ])
@@ -451,31 +432,83 @@ muscles attached between the two leg segments.
 
 .. jupyter-execute::
 
-   from scikits.odes import dae
+   def simulate(t0, tf, fps, x0, xd0, p_vals):
 
-   solver = dae('ida',
-                eval_eom,
-                rtol=1e-8,
-                atol=1e-8,
-                algebraic_vars_idx=[4],
-                user_data=p_vals,
-                old_api=False)
+      t0, tf, fps = 0.0, 0.3, 60
+      ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
+
+      solver = dae('ida',
+                   eval_eom,
+                   rtol=1e-8,
+                   atol=1e-8,
+                   algebraic_vars_idx=[4],
+                   user_data=p_vals,
+                   old_api=False)
+
+      solution = solver.solve(ts, x0, xd0)
+
+      ts_dae = solution.values.t
+      xs_dae = solution.values.y
+
+      Ks, Vs = eval_energy(xs_dae[:, :3].T, xs_dae[:, 3:].T, p_vals)
+      Es = Ks + Vs
+
+      return ts_dae, xs_dae, Ks, Vs, Es
+
+   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals)
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 3.0, 60
-   ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
+   def plot_results(ts, xs, Ks, Vs, Es):
+       """Returns the array of axes of a 4 panel plot of the state trajectory
+       versus time.
 
-   solution = solver.solve(ts, x0, xd0)
+       Parameters
+       ==========
+       ts : array_like, shape(n,)
+          Values of time.
+       xs : array_like, shape(n, 4)
+          Values of the state trajectories corresponding to ``ts`` in order
+          [q1, q2, q3, u1, u3].
 
-   ts_dae = solution.values.t
-   xs_dae = solution.values.y
+       Returns
+       =======
+       axes : ndarray, shape(3,)
+          Matplotlib axes for each panel.
+
+       """
+       fig, axes = plt.subplots(5, 1, sharex=True)
+
+       fig.set_size_inches((10.0, 6.0))
+
+       axes[0].plot(ts, xs[:, 0])  # q1(t)
+       axes[1].plot(ts, np.rad2deg(xs[:, 1:3]))  # q2(t), q3(t)
+       axes[2].plot(ts, xs[:, 3])  # u1(t)
+       axes[3].plot(ts, np.rad2deg(xs[:, 4]))  # u3(t)
+       axes[4].plot(ts, Ks)
+       axes[4].plot(ts, Vs)
+       axes[4].plot(ts, Es)
+
+       axes[0].legend(['$q_1$'])
+       axes[1].legend(['$q_2$', '$q_3$'])
+       axes[2].legend(['$u_1$'])
+       axes[3].legend(['$u_3$'])
+       axes[4].legend(['$K$', '$V$', '$E$'])
+
+       axes[0].set_ylabel('Distance [m]')
+       axes[1].set_ylabel('Angle [deg]')
+       axes[2].set_ylabel('Speed [m/s]')
+       axes[3].set_ylabel('Angular Rate [deg/s]')
+       axes[4].set_ylabel('Energy [J]')
+       axes[4].set_xlabel('Time [s]')
+
+       fig.tight_layout()
+
+       return axes
 
 .. jupyter-execute::
 
-   import matplotlib.pyplot as plt
-   plt.plot(ts_dae, xs_dae[:, 0])
-   plt.grid()
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
 
 .. jupyter-execute::
 
