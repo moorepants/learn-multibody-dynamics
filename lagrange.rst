@@ -51,10 +51,11 @@ This book has already discussed two methods to derive the equations
 of motion of multibody systems: Newton-Euler and Kane's method. This
 chapter will add a third: the `Lagrange method`_, originally 
 developed by Joseph-Louis Lagrange. These materials focus on Engineering
-applications for multi-body systems build the Lagrange method around
-the terms found earlie in Kane's equations. Good starting points for study of the physical
-and mathematical background of the Lagrange approach are  `Variational principles`_
-or [Lanczos1970]_. 
+applications for multi-body systems, and therefore build the Lagrange method around
+the terms found earlier in Kane's equations. In other textbooks, the Lagrange method
+is often derived from the `Variational principles`, such as virtual work or the principle
+of least action. A good starting point for studying the physical
+and mathematical background of the Lagrange approach is [Lanczos1970]_. 
 
 .. _`Variational principles`: https://en.wikipedia.org/wiki/Variational_principle
 .. _`Lagrange method`: https://en.wikipedia.org/wiki/Lagrangian_mechanics
@@ -294,12 +295,7 @@ The variables are collected in a vector :math:`\bar{p}`. They are called the gen
 as they coincide with linear momentum in the
 case of a Lagrangian describing a particle. Similar to the situation in the dynamics of particles, there can 
 be conservation of generalized momentum. This is the case for the generalized momentum associated with ignorable
-coordinates, as defined in `Equations of Motion with Nonholonomic Constraints`_. For more information about conserved
-quantitie in the context of the Lagrange method, see `Noether's theorem`.
-
-.. _`Noether's theorem`: https://en.wikipedia.org/wiki/Noether%27s_theorem_
-
-
+coordinates, as defined in `Equations of Motion with Nonholonomic Constraints`_. 
 
 Constrained equations of motion
 ===============================
@@ -493,9 +489,14 @@ of the bodies are needed. This is can be simpler to derive than the acceleration
 method.
 
 Furthermore, the Lagrange method results in a set of equations with well understood structures and properties.
-These structures and properties are not studied further in these materials, other than the following "learn more" section.
-With further study, these aspects can make it easier to generalize results across multiple systems, for example
-when designing control algorithms.
+These structures and properties are not studied further in these materials. A starting point for further study
+is `Noether's theorem`, which extends the idea of ignorable coordinates to find conserved quantities like
+momentum and energy. 
+
+.. _`Noether's theorem`: https://en.wikipedia.org/wiki/Noether%27s_theorem_
+
+
+
 
 
 .. (Learn more) Generalized momentum
