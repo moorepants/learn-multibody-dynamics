@@ -271,8 +271,13 @@ muscles attached between the two leg segments.
    R_Pf = -mf*g*N.y + Ff
    R_Pf
 
-   T_A = -(kk*sm.tan(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
+.. jupyter-execute::
+
+   T_A = -(kk*(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
    T_B = -T_A
+   T_A
+
+.. jupyter-execute::
 
    I_A_Ao = Ia*me.outer(N.z, N.z)
    I_B_Bo = Ib*me.outer(N.z, N.z)
@@ -581,50 +586,162 @@ Conservative Simulation
    p_vals = np.array([
      0.101,  # Ia,
      0.282,  # Ib,
-     0., #0.95,  # cf,
-     0.0,  # ck,
+     0.0,    # cf,
+     0.0,    # ck,
      0.387,  # da,
      0.193,  # db,
-     9.81,  # g,
-     0.0, #5e7,  # kf,
-     0.0,  # kk,
+     9.81,   # g,
+     0.0,    # kf,
+     0.0,    # kk,
      0.611,  # la,
      0.424,  # lb,
      6.769,  # ma,
      17.01,  # mb,
-     3.0,  # mf,  # guess
+     3.0,    # mf,  # guess
      32.44,  # mu
    ])
 
-   x0, xd0 = setup_initial_conditions(0.5, np.deg2rad(10.0), 0.0, 0.0)
-
-.. jupyter-execute::
+   x0, xd0 = setup_initial_conditions(0.2, np.deg2rad(10.0), 0.0, 0.0)
 
    def eval_r(t, x, p):
       return [0.0]
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 3.0, 60
+   t0, tf, fps = 0.0, 0.5, 100
    ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
-
-.. jupyter-execute::
-
-   _ = plot_results(ts_dae, xs_dae, Ks, Vs, Es);
 
 .. jupyter-execute::
 
    HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
 
-Knowing that work is a force dotted with a change in position, power can be
-written as a force dotted with a velocity.
+.. jupyter-execute::
 
-.. math::
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
 
-   P = \bar{F} \cdot \bar{v}
+Conservative Simulation with Ground Spring
+==========================================
 
-Power can enter into a system, exit a system, or be exhanged within a system.
+For the first simulation of this model we will simply drop the person from some
+height about the ground and set the ground damping to zero as well as any
+torques acting between the thigh and the calf. All forces (gravity and the
+foot-ground spring) are conservative we should that the total energy is
+constant throughout the simulation.
 
+.. jupyter-execute::
+
+   p_vals = np.array([
+     0.101,  # Ia,
+     0.282,  # Ib,
+     0.0,    # cf,
+     0.0,    # ck,
+     0.387,  # da,
+     0.193,  # db,
+     9.81,   # g,
+     5e7,    # kf,
+     0.0,    # kk,
+     0.611,  # la,
+     0.424,  # lb,
+     6.769,  # ma,
+     17.01,  # mb,
+     3.0,    # mf,  # guess
+     32.44,  # mu
+   ])
+
+.. jupyter-execute::
+
+   t0, tf, fps = 0.0, 0.5, 100
+   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+
+.. jupyter-execute::
+
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+
+.. jupyter-execute::
+
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+
+Nonconservative Simulation
+==========================
+
+Now we will give some damping to the Hunt-Crossely model by setting
+:math:`c_f=0.85`.
+
+.. jupyter-execute::
+
+   p_vals = np.array([
+     0.101,  # Ia,
+     0.282,  # Ib,
+     0.85,    # cf,
+     0.0,    # ck,
+     0.387,  # da,
+     0.193,  # db,
+     9.81,   # g,
+     5e7,    # kf,
+     0.0,    # kk,
+     0.611,  # la,
+     0.424,  # lb,
+     6.769,  # ma,
+     17.01,  # mb,
+     3.0,    # mf,  # guess
+     32.44,  # mu
+   ])
+
+.. jupyter-execute::
+
+   t0, tf, fps = 0.0, 0.5, 100
+   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+
+.. jupyter-execute::
+
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+
+.. jupyter-execute::
+
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+
+Simulation with Passive Knee Torques
+====================================
+
+.. jupyter-execute::
+
+   p_vals = np.array([
+     0.101,  # Ia,
+     0.282,  # Ib,
+     0.95,   # cf,
+     0.5,    # ck,
+     0.387,  # da,
+     0.193,  # db,
+     9.81,   # g,
+     5e7,    # kf,
+     3.0,    # kk,
+     0.611,  # la,
+     0.424,  # lb,
+     6.769,  # ma,
+     17.01,  # mb,
+     3.0,    # mf,  # guess
+     32.44,  # mu
+   ])
+
+.. jupyter-execute::
+
+   t0, tf, fps = 0.0, 0.5, 100
+   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+
+.. jupyter-execute::
+
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+
+.. jupyter-execute::
+
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+
+Simulation with Active Knee Torques
+===================================
+
+.. jupyter-execute::
+
+   def eval_r(t, x, p):
 
        if t < 1.0:
            r = [-30.0]
@@ -635,5 +752,15 @@ Power can enter into a system, exit a system, or be exhanged within a system.
        else:
            r = [1500.0]
 
-       r = [0.0]
+       return r
 
+written as a force dotted with a velocity.
+
+Power
+=====
+
+.. math::
+
+   P = \bar{F} \cdot \bar{v}
+
+Power can enter into a system, exit a system, or be exhanged within a system.
