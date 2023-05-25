@@ -195,6 +195,30 @@ muscles attached between the two leg segments.
 
    t = me.dynamicsymbols._t
 
+   q = sm.Matrix([q1, q2, q3])
+   u = sm.Matrix([u1, u2, u3])
+   ud = u.diff(t)
+   us = sm.Matrix([u1, u3])
+   usd = us.diff(t)
+   p = sm.Matrix([
+       Ia,
+       Ib,
+       cf,
+       ck,
+       da,
+       db,
+       g,
+       kf,
+       kk,
+       la,
+       lb,
+       ma,
+       mb,
+       mf,
+       mu,
+   ])
+   r = sm.Matrix([Tk])
+
 .. jupyter-execute::
 
    N = me.ReferenceFrame('N')
@@ -234,6 +258,8 @@ muscles attached between the two leg segments.
    u2_repl = {u2: sm.solve(vel_con, u2)[0]}
    u2d_repl = {u2.diff(t): sm.solve(acc_con, u2.diff(t))[0].xreplace(u2_repl)}
 
+.. jupyter-execute::
+
    R_Pu = -mu*g*N.y
    R_Ao = -ma*g*N.y
    R_Bo = -mb*g*N.y
@@ -250,6 +276,8 @@ muscles attached between the two leg segments.
 
    I_A_Ao = Ia*me.outer(N.z, N.z)
    I_B_Bo = Ib*me.outer(N.z, N.z)
+
+.. jupyter-execute::
 
    points = [Pu, Ao, Bo, Pf]
    forces = [R_Pu, R_Ao, R_Bo, R_Pf]
@@ -290,53 +318,51 @@ muscles attached between the two leg segments.
    Frs = sm.Matrix(Frs_bar)
    kane_eq = Fr + Frs
 
-   q = sm.Matrix([q1, q2, q3])
-   u = sm.Matrix([u1, u2, u3])
-   ud = u.diff(t)
-   us = sm.Matrix([u1, u3])
-   usd = us.diff(t)
-   p = sm.Matrix([
-       Ia,
-       Ib,
-       cf,
-       ck,
-       da,
-       db,
-       g,
-       kf,
-       kk,
-       la,
-       lb,
-       ma,
-       mb,
-       mf,
-       mu,
-   ])
-   r = sm.Matrix([Tk])
 
 .. jupyter-execute::
 
    V = (
-       (mf*Pf.pos_from(O) +
-        ma*Ao.pos_from(O) +
-        mb*Bo.pos_from(O) +
-        mu*Pu.pos_from(O)).dot(N.y) +
+       (mf*g*Pf.pos_from(O) +
+        ma*g*Ao.pos_from(O) +
+        mb*g*Bo.pos_from(O) +
+        mu*g*Pu.pos_from(O)).dot(N.y) +
        kk*q3**2/2 +
        kf*zp**2/2
    )
    V
 
+The kinetic energy is made up of the translational kinetic enegery of the foot
+and upper body particles :math:`K_f` and :math:`K_u`:
+
 .. jupyter-execute::
 
-   K = (
-       ma*me.dot(Ao.vel(N), Ao.vel(N))/2 +
-       me.dot(me.dot(A.ang_vel_in(N), I_A_Ao), A.ang_vel_in(N))/2 +
-       mb*me.dot(Bo.vel(N), Bo.vel(N))/2 +
-       me.dot(me.dot(B.ang_vel_in(N), I_B_Bo), B.ang_vel_in(N))/2
-   )
-   sm.simplify(K)
+   Kf = mf*me.dot(Pf.vel(N), Pf.vel(N))/2
+   Ku = mu*me.dot(Pu.vel(N), Pu.vel(N))/2
+   Kf, sm.simplify(Ku)
+
+and the translational and rotational kinetic energies of the calf and thigh
+:math:`K_A` and :math:`K_B`:
+
+.. jupyter-execute::
+
+   KA = ma*me.dot(Ao.vel(N), Ao.vel(N))/2 + me.dot(me.dot(A.ang_vel_in(N), I_A_Ao), A.ang_vel_in(N))/2
+   KA
+
+.. jupyter-execute::
+
+   KB = mb*me.dot(Bo.vel(N), Bo.vel(N))/2 + me.dot(me.dot(B.ang_vel_in(N), I_B_Bo), B.ang_vel_in(N))/2
+   sm.simplify(KB)
+
+The total kinetic energy of the system is then :math:`K=K_f+K_u+K_A+K_B`:
+
+.. jupyter-execute::
+
+   K = Kf + Ku + KA + KB
 
 .. todo:: cse fails
+
+Simulation Setup
+================
 
 .. jupyter-execute::
 
@@ -346,9 +372,14 @@ muscles attached between the two leg segments.
    eval_acc_con = sm.lambdify((q, ud, u, p), acc_con) #, cse=True)
    eval_energy = sm.lambdify((q, us, p), (K.xreplace(u2_repl), V.xreplace(u2_repl)))
 
+   coordinates = Pf.pos_from(O).to_matrix(N)
+   for point in [Ao, Pk, Bo, Pu]:
+      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
+   eval_point_coords = sm.lambdify((q, p), coordinates)
+
 .. jupyter-execute::
 
-   def eval_eom(t, x, xd, residual, p):
+   def eval_eom(t, x, xd, residual, p_r):
        """Returns the residual vector of the equations of motion.
 
        Parameters
@@ -361,80 +392,49 @@ muscles attached between the two leg segments.
           Time derivative of the state vector at time t: xd = [q1d, q2d, q3d, u1d, u3d].
        residual : ndarray, shape(5,)
           Vector to store the residuals in: residuals = [fk, fd, fh].
-       p : ndarray, shape(6,)
-          Constant parameters: p = [la, lb, lc, ln, m, g]
+       r : function
+         Function of [Tk] = r(t, x) that evaluates the input Tk.
+       p : ndarray, shape(15,)
+          Constant parameters: p = [Ia, Ib, cf, ck, da, db, g, kf, kk, la, lb,
+          ma, mb, mf, mu]
 
        """
+
+       p, r = p_r
 
        q1, q2, q3, u1, u3 = x
        q1d, _, q3d, u1d, u3d = xd  # ignore the q2d value
 
-       if t < 1.0:
-           r = [-30.0]
-       elif t > 1.2:
-           r = [-30.0]
-       elif t > 1.5:
-           r = [0.0]
-       else:
-           r = [1500.0]
-
-       r = [0.0]
-
        residual[0] = -q1d + u1
        residual[1] = -q3d + u3
-       residual[2:4] = eval_kane([q1, q2, q3], [u1d, u3d], [u1, u3], r, p).squeeze()
+       residual[2:4] = eval_kane([q1, q2, q3], [u1d, u3d], [u1, u3], r(t, x, p), p).squeeze()
        residual[4] = eval_holo([q1, q2, q3], p)
 
 .. jupyter-execute::
 
-   p_vals = np.array([
-     0.101,  # Ia,
-     0.282,  # Ib,
-     0.95,  # cf,
-     0.0,  # ck,
-     0.387,  # da,
-     0.193,  # db,
-     9.81,  # g,
-     5e7,  # kf,
-     0.0,  # kk,
-     0.611,  # la,
-     0.424,  # lb,
-     6.769,  # ma,
-     17.01,  # mb,
-     3.0,  # mf,  # guess
-     32.44,  # mu
-   ])
+   def setup_initial_conditions(q1, q3, u1, u3):
 
-   q0 = np.array([
-       0.5,
-       np.nan,
-       np.deg2rad(60.0),
-   ])
+      q0 = np.array([q1, np.nan, q3])
 
-   q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(45.0))
+      q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(45.0))
 
-   u0 = np.array([
-       0.0,
-       0.0,
-   ])
+      u0 = np.array([u1, u3])
 
-   u20 = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[1]], p_vals),  np.deg2rad(0.0))
+      u20 = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[1]], p_vals),  np.deg2rad(0.0))
 
-   x0 = np.hstack((q0, u0))
+      x0 = np.hstack((q0, u0))
 
-   ud0 = np.array([
-       0.0,
-       0.0,
-   ])
+      # TODO : use equations to set these
+      ud0 = np.array([0.0, 0.0])
 
-   xd0 = np.hstack(([u0[0], u20, u0[1]], ud0))
-   x0, xd0
+      xd0 = np.hstack(([u0[0], u20, u0[1]], ud0))
+
+      return x0, xd0
 
 .. jupyter-execute::
 
-   def simulate(t0, tf, fps, x0, xd0, p_vals):
+   def simulate(t0, tf, fps, x0, xd0, p_vals, eval_r):
 
-      t0, tf, fps = 0.0, 0.3, 60
       ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
       solver = dae('ida',
@@ -442,20 +442,18 @@ muscles attached between the two leg segments.
                    rtol=1e-8,
                    atol=1e-8,
                    algebraic_vars_idx=[4],
-                   user_data=p_vals,
+                   user_data=(p_vals, eval_r),
                    old_api=False)
 
       solution = solver.solve(ts, x0, xd0)
 
-      ts_dae = solution.values.t
-      xs_dae = solution.values.y
+      ts = solution.values.t
+      xs = solution.values.y
 
-      Ks, Vs = eval_energy(xs_dae[:, :3].T, xs_dae[:, 3:].T, p_vals)
+      Ks, Vs = eval_energy(xs[:, :3].T, xs[:, 3:].T, p_vals)
       Es = Ks + Vs
 
-      return ts_dae, xs_dae, Ks, Vs, Es
-
-   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals)
+      return ts, xs, Ks, Vs, Es
 
 .. jupyter-execute::
 
@@ -508,17 +506,6 @@ muscles attached between the two leg segments.
 
 .. jupyter-execute::
 
-   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
-
-.. jupyter-execute::
-
-   coordinates = Pf.pos_from(O).to_matrix(N)
-   for point in [Ao, Pk, Bo, Pu]:
-      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
-   eval_point_coords = sm.lambdify((q, p), coordinates)
-
-.. jupyter-execute::
-
    def setup_animation_plot(ts, xs, p):
        """Returns objects needed for the animation.
 
@@ -551,8 +538,6 @@ muscles attached between the two leg segments.
        ax.set_aspect('equal')
 
        return fig, ax, title_text, lines
-
-   setup_animation_plot(ts_dae, xs_dae, p_vals);
 
 .. jupyter-execute::
 
@@ -588,8 +573,48 @@ muscles attached between the two leg segments.
        # create and return the animation
        return FuncAnimation(fig, update, len(ts))
 
-   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+Conservative Simulation
+=======================
 
+.. jupyter-execute::
+
+   p_vals = np.array([
+     0.101,  # Ia,
+     0.282,  # Ib,
+     0., #0.95,  # cf,
+     0.0,  # ck,
+     0.387,  # da,
+     0.193,  # db,
+     9.81,  # g,
+     0.0, #5e7,  # kf,
+     0.0,  # kk,
+     0.611,  # la,
+     0.424,  # lb,
+     6.769,  # ma,
+     17.01,  # mb,
+     3.0,  # mf,  # guess
+     32.44,  # mu
+   ])
+
+   x0, xd0 = setup_initial_conditions(0.5, np.deg2rad(10.0), 0.0, 0.0)
+
+.. jupyter-execute::
+
+   def eval_r(t, x, p):
+      return [0.0]
+
+.. jupyter-execute::
+
+   t0, tf, fps = 0.0, 3.0, 60
+   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+
+.. jupyter-execute::
+
+   _ = plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+
+.. jupyter-execute::
+
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
 
 Knowing that work is a force dotted with a change in position, power can be
 written as a force dotted with a velocity.
@@ -599,3 +624,16 @@ written as a force dotted with a velocity.
    P = \bar{F} \cdot \bar{v}
 
 Power can enter into a system, exit a system, or be exhanged within a system.
+
+
+       if t < 1.0:
+           r = [-30.0]
+       elif t > 1.2:
+           r = [-30.0]
+       elif t > 1.5:
+           r = [0.0]
+       else:
+           r = [1500.0]
+
+       r = [0.0]
+
