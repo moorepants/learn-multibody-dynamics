@@ -249,12 +249,12 @@ Auxiliary Generalized Speeds
 When we form Kane's equations, noncontributing forces will not be present in
 the equations of motion as they are above in the classical Newton formulation,
 but it is possible to expose select noncontributing forces by taking advantage
-of the role of the partial velocities. Forces and torques that are in the
-direction of a partial velocity will contribute to the equations of motion. It
-is then possible to introduce fictitious partial velocities via an auxiliary
+of the role of the partial velocities. Forces and torques that are not normal
+to the partial velocity will contribute to the equations of motion. It is then
+possible to introduce fictitious partial velocities via an auxiliary
 generalized speed, along with a force or torque that acts in the same direction
 of the fictitious motion to generate extra equations for the noncontributing
-forces. See [Kane1985]_ pg. 114 for more explanation of this idea.
+forces or torques. See [Kane1985]_ pg. 114 for more explanation of this idea.
 
 As an example , here I introduce two fictitious generalized speeds, :math:`u_3`
 and :math:`u_4` that lets each particle have motion relative to its fixed
@@ -266,6 +266,7 @@ without introducing any related generalized coordinates.
 .. _fig-noncontributing-pendulum-aux:
 .. figure:: figures/noncontributing-pendulum-aux.svg
    :align: center
+   :width: 50%
 
    Kinematic diagram of the double pendulum showing the fictitious auxiliarly
    generalized speeds :math:`u_3` and :math:`u_4` and the associated
@@ -396,6 +397,14 @@ And finally, :math:`\bar{F}_r^*` is formed for all four generalized speeds:
    Frs = sm.Matrix([F1s, F2s, F3s, F4s])
    Frs = sm.trigsimp(Frs)
    Frs
+
+.. warning::
+
+   In this example, :math:`u_3,u_4,\dot{u}_3,\dot{u}_4` are not present in the
+   auxiliary generalized inertia forces but you may end up with auxiliary
+   speeds and their derivatives in your auxiliary generalized inertia forces.
+   If you do, you need to set them all to zero to arrive at the desired
+   equations.
 
 Augmented Dynamical Differential Equations
 ==========================================
