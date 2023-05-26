@@ -892,3 +892,5 @@ bend.
 The final simulation works and gives a reasonably realistic looking jump. When
 examining the total energy :math:`E` you can see how the applied knee torque
 adds energy to the system to cause the jump.
+
+.. todo:: Add section on the power contributions from each force/torque.
