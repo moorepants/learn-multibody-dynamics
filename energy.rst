@@ -46,14 +46,16 @@ Learning Objectives
 After completing this chapter readers will be able to:
 
 - calculate the kinetic and potential energy of a multibody system
+- evaluate a simulation for energy gains and losses
 
 Introduction
 ============
 
-So far we have invesitaged multibody systems from the perspect of forces and
-their relationship to motion. It is also useful to understand these systems
-from a power and energy perspective. Power is the time rate of change in work
-done. Work is the energy gained, dissipated, or exchanged in a system.
+So far we have investigated multibody systems from the perspective of forces
+and their relationship to motion. It is also useful to understand these systems
+from a power and energy perspective. Power :math:`P` is the time rate of change
+in work :math:`W` done. Work is the energy gained, dissipated, or exchanged in
+a system.
 
 .. power:: https://en.wikipedia.org/wiki/Power_(physics)
 
@@ -61,46 +63,52 @@ done. Work is the energy gained, dissipated, or exchanged in a system.
 
    P = \frac{dW}{dt}
 
-The time integral of power is work or energy. Energy of a multibody system can
-be classified as kinetic, potential (conservative), or non-conservative.
+Conversely, energy is the integral of power:
+
+.. math::
+
+   E(t) = \int_{t_0}^{t_f} P(t) dt
+
+Energy in a multibody system can be classified as kinetic, potential
+(conservative), or non-conservative. Any energy that enters or leaves the
+system is non-conservative.
 
 Kinetic Energy
 ==============
 
-Kinetic energy is an instanteous measure of the energy due to motion of all of
-the particles and rigid bodies in a system. A rigid body will, in general, have
-a translational and rotational component of kinetic energy. A particle cannot
-rotate so it only has translational kinetic energy. Kinetic energy is connected
-to :math:`\bar{F}^*_r`.
+Kinetic energy :math:`K` is an instantaneous measure of the energy due to
+motion of all of the particles and rigid bodies in a system. A rigid body will,
+in general, have a translational and a rotational component of kinetic energy.
+A particle cannot rotate so it only has translational kinetic energy. Kinetic
+energy can be thought of as the work done by the generalized inertia forces
+:math:`\bar{F}^*_r`.
 
-Translational kinetic energy of a particle :math:`P` of mass :math:`m` in
+Translational kinetic energy of a particle :math:`Q` of mass :math:`m` in
 reference frame :math:`N` is:
 
 .. math::
 
-   K_P :=
-     \frac{1}{2}m\left|{}^N\bar{v}^{P}\right|^2 =
-     \frac{1}{2}m {}^N\bar{v}^{P} \cdot {}^N\bar{v}^{P}
+   K_Q :=
+     \frac{1}{2}m\left|{}^N\bar{v}^{Q}\right|^2 =
+     \frac{1}{2}m {}^N\bar{v}^{Q} \cdot {}^N\bar{v}^{Q}
 
-If :math:`P` is the mass center of a rigid body, the equation represents the
-translational kinetic energy of the rigid body.
-
-The rotational kinetic energy of a rigid body :math:`B` with mass center
-:math:`B_o` in :math:`N` is added to its translational kinetic energy and is
-defined as:
+If :math:`Q` is the mass center of a rigid body, the equation represents the
+translational kinetic energy of the rigid body. The rotational kinetic energy
+of a rigid body :math:`B` with mass center :math:`B_o` in :math:`N` is added to
+its translational kinetic energy and is defined as:
 
 .. math::
 
    K_B := \frac{1}{2} m {}^N\bar{v}^{B_o} \cdot {}^N\bar{v}^{B_o} +
    \frac{1}{2} {}^N\bar{\omega}^B \cdot \breve{I}^{B/B_o} \cdot {}^N\bar{\omega}^B
 
-The total kinetic energy in a multibody system is the sum of kinetic energy for
-all particles and rigid bodies.
+The total kinetic energy in a multibody system is the sum of the kinetic
+energies for all particles and rigid bodies.
 
 Potential Energy
 ================
 
-Some generalized active force contributions in inertial reference frame
+Some of the generalized active force contributions in inertial reference frame
 :math:`N` can be written as
 
 .. math::
@@ -112,11 +120,11 @@ of the generalized coordinates and time, i.e. :math:`V(\bar{q}, t)`. These
 functions :math:`V` are potential energies in :math:`N`. The associated
 generalized active force contributions are conservative forces. The most common
 conservative forces seen in multibody systems are gravitational forces and
-ideal spring forces, but there are conservative forces realted to electrostic
-forces, magnetic forces, and other types.
+ideal spring forces, but there are conservative forces related to electrostatic
+forces, magnetic forces, etc.
 
-For small objects near Earth we model gravity as a uniform field and the
-potential energy of a particle or rigid body is:
+For small objects at Earth's surface we model gravity as a uniform field and
+the potential energy of a particle or rigid body is:
 
 .. math::
 
@@ -124,8 +132,8 @@ potential energy of a particle or rigid body is:
 
 where :math:`m` is the body or particle's mass, :math:`g` is the acceleration
 due to gravity at the Earth's surface, and :math:`h(\bar{q}, t)` is the
-distance parallel to the gravitaional field direction of the particle or body
-with respect to an arbitrary reference.
+distance parallel to the gravitational field direction of the particle or body
+with respect to an arbitrary reference point.
 
 A linear spring generates a conservative force :math:`F=kx` between two points
 :math:`P` and :math:`Q` and its potential energy is:
@@ -138,6 +146,9 @@ The sum of all potential energies in a system give the total potential energy
 of the system.
 
 .. _conservative forces: https://en.wikipedia.org/wiki/Conservative_force
+
+Total Energy
+============
 
 If :math:`\bar{F}_r` is only made up of conservative forces, then the system is
 conservative and will not lose energy as it moves, it simply exchanges kinetic
@@ -165,22 +176,31 @@ energy.
 We can model the jumper in a single plane with two rigid bodies representing
 the thigh :math:`B` and the calf :math:`A` of the legs lumping the left and
 right leg segments together. The mass centers of the leg segments lie on the
-line connecting the segments end points but at a realistic distance from the
-ends. To avoid having to stabilize the jumper, we can assume that particles
-representing the foot :math:`P_f` and the upper body :math:`P_u` can only move
-vertically and are alway aligned over one another. The foot :math:`P_f`, knee
-:math:`P_k`, and hip :math:`P_u` are all modeled as pin joints. The mass of teh
-foot :math:`m_f` and the mass of the upper body are modeled as particles at
-:math:`P_f` and :math:`P_u`, respectively. We will model a collision force
-:math:`F_f` from the ground :math:`N` acting on the foot :math:`P_f` using the
-Hunt-Crossley formulation. We will actuate the jumper using only a torque
-acting between the thigh and the calf that represents the combine forces of the
-muscles attached between the two leg segments.
+line connecting the segment end points but at some distance from the ends
+:math:`d_a,d_b`. To avoid having to stabilize the jumper, we can assume that
+particles representing the foot :math:`P_f` and the upper body :math:`P_u` can
+only move vertically and are always aligned vertically over one another. The
+foot :math:`P_f`, knee :math:`P_k`, and hip :math:`P_u` are all modeled as pin
+joints. The mass of the foot :math:`m_f` and the mass of the upper body are
+modeled as particles at :math:`P_f` and :math:`P_u`, respectively. We will
+model a collision force :math:`F_f` from the ground :math:`N` acting on the
+foot :math:`P_f` using the Hunt-Crossley formulation described in
+:ref:`Collision`. We will actuate the jumper using only a torque acting between
+the thigh and the calf :math:`T_k` that represents the combine forces of the
+muscles attached between the two leg segments. :numref:`fig-energy-jumper-fbd`
+shows a free body diagram of the model.
 
 .. _fig-energy-jumper-fbd:
 .. figure:: figures/energy-jumper-fbd.svg
-   :width: 50%
+   :width: 60%
    :align: center
+
+   Free body diagram of a simple model of a human jumper.
+
+Equations of Motion
+-------------------
+
+We first define all of the necessary symbols:
 
 .. jupyter-execute::
 
@@ -219,6 +239,8 @@ muscles attached between the two leg segments.
        mu,
    ])
    r = sm.Matrix([Tk])
+
+Then we set up the kinematics:
 
 .. jupyter-execute::
 
@@ -259,28 +281,36 @@ muscles attached between the two leg segments.
    u2_repl = {u2: sm.solve(vel_con, u2)[0]}
    u2d_repl = {u2.diff(t): sm.solve(acc_con, u2.diff(t))[0].xreplace(u2_repl)}
 
+Gravity acts on all the masses and mass centers and we have a single force
+acting on the foot from the ground that includes the collision stiffness and
+damping terms with coefficients :math:`k_f` and :math:`c_f` respectively.
+
+.. todo::
+
+   # TODO : When I use the Hunt-Crossle damping equation the damping seems
+   absent!
+   #zp = (sm.Abs(q1) - q1)/2
+   #zd = zp.diff(t).xreplace(qd_repl)
+   #Ff = (kf*zp**(sm.S(3)/2) + cf*zp**(sm.S(3)/2)*zd)*N.y
+
 .. jupyter-execute::
 
    R_Pu = -mu*g*N.y
    R_Ao = -ma*g*N.y
    R_Bo = -mb*g*N.y
 
-   damping = sm.Piecewise((-cf*u1, q1<0), (0.0, True))
    zp = (sm.Abs(q1) - q1)/2
-   zd = zp.diff(t).xreplace(qd_repl)
-   # TODO : When I use this equation the damping seems absent!
-   #Ff = (kf*zp**(sm.S(3)/2) + cf*zp**(sm.S(3)/2)*zd)*N.y
-
-   Ff = (kf*zp**(sm.S(3)/2) + damping)*N.y # + cf*zp**(sm.S(3)/2)*zd)*N.y
+   damping = sm.Piecewise((-cf*u1, q1<0), (0.0, True))
+   Ff = (kf*zp**(sm.S(3)/2) + damping)*N.y
 
    R_Pf = -mf*g*N.y + Ff
    R_Pf
 
-   Ff.xreplace({q1: sm.Symbol('q1', positive=True)})
 
-.. jupyter-execute::
-
-   Ff.xreplace({q1: sm.Symbol('q1', negative=True)})
+The torques on the thigh and calf will include a passive stiffness an damping
+to represent muscle tendons and tissue effects with coefficients :math:`k_k`
+and :math:`c_k` respectively as well as the muscle actuation torque
+:math:`T_k`.
 
 .. jupyter-execute::
 
@@ -288,10 +318,14 @@ muscles attached between the two leg segments.
    T_B = -T_A
    T_A
 
+Define the inertia dyadics for the legs:
+
 .. jupyter-execute::
 
    I_A_Ao = Ia*me.outer(N.z, N.z)
    I_B_Bo = Ib*me.outer(N.z, N.z)
+
+Finally, formulate Kane's equations:
 
 .. jupyter-execute::
 
@@ -333,8 +367,13 @@ muscles attached between the two leg segments.
    Fr = sm.Matrix(Fr_bar)
    Frs = sm.Matrix(Frs_bar)
    kane_eq = Fr + Frs
-   Fr
 
+Energy
+------
+
+The total potential energy is derived based on the height of all the particles
+and rigid body mass centers above a reference point :math:`O` on the ground and
+the two springs: passive knee stiffness and the ground-foot stiffness.
 
 .. jupyter-execute::
 
@@ -348,7 +387,7 @@ muscles attached between the two leg segments.
    )
    V
 
-The kinetic energy is made up of the translational kinetic enegery of the foot
+The kinetic energy is made up of the translational kinetic energy of the foot
 and upper body particles :math:`K_f` and :math:`K_u`:
 
 .. jupyter-execute::
@@ -357,8 +396,8 @@ and upper body particles :math:`K_f` and :math:`K_u`:
    Ku = mu*me.dot(Pu.vel(N), Pu.vel(N))/2
    Kf, sm.simplify(Ku)
 
-and the translational and rotational kinetic energies of the calf and thigh
-:math:`K_A` and :math:`K_B`:
+as well as the translational and rotational kinetic energies of the calf and
+thigh :math:`K_A` and :math:`K_B`:
 
 .. jupyter-execute::
 
@@ -376,17 +415,22 @@ The total kinetic energy of the system is then :math:`K=K_f+K_u+K_A+K_B`:
 
    K = Kf + Ku + KA + KB
 
-.. todo:: cse fails
-
 Simulation Setup
 ================
 
+We will simulate the system to investigate the energy. Below are various
+functions that convert the symbolic equations to numerical functions, simulate
+the system with some initial conditions, and plot/animate the results. These
+are similar to prior chapters, so I leave them unexplained.
+
+.. todo:: CSE was failing on these lambdify calls.
+
 .. jupyter-execute::
 
-   eval_kane = sm.lambdify((q, usd, us, r, p), kane_eq) #, cse=True)
-   eval_holo = sm.lambdify((q, p), holonomic) #, cse=True)
-   eval_vel_con = sm.lambdify((q, u, p), vel_con) #, cse=True)
-   eval_acc_con = sm.lambdify((q, ud, u, p), acc_con) #, cse=True)
+   eval_kane = sm.lambdify((q, usd, us, r, p), kane_eq)
+   eval_holo = sm.lambdify((q, p), holonomic)
+   eval_vel_con = sm.lambdify((q, u, p), vel_con)
+   eval_acc_con = sm.lambdify((q, ud, u, p), acc_con)
    eval_energy = sm.lambdify((q, us, p), (K.xreplace(u2_repl), V.xreplace(u2_repl)))
 
    coordinates = Pf.pos_from(O).to_matrix(N)
@@ -471,14 +515,14 @@ Simulation Setup
       Es = Ks + Vs
 
       Tks = np.empty_like(ts)
-      for ti in ts:
-          Tks[i] = eval_r(ti, None, None)
+      for i, ti in enumerate(ts):
+          Tks[i] = eval_r(ti, None, None)[0]
 
-      return ts, xs, Ks, Vs, Es
+      return ts, xs, Ks, Vs, Es, Tks
 
 .. jupyter-execute::
 
-   def plot_results(ts, xs, Ks, Vs, Es):
+   def plot_results(ts, xs, Ks, Vs, Es, Tks):
        """Returns the array of axes of a 4 panel plot of the state trajectory
        versus time.
 
@@ -496,7 +540,7 @@ Simulation Setup
           Matplotlib axes for each panel.
 
        """
-       fig, axes = plt.subplots(5, 1, sharex=True)
+       fig, axes = plt.subplots(6, 1, sharex=True)
 
        fig.set_size_inches((10.0, 6.0))
 
@@ -507,19 +551,22 @@ Simulation Setup
        axes[4].plot(ts, Ks)
        axes[4].plot(ts, Vs)
        axes[4].plot(ts, Es)
+       axes[5].plot(ts, Tks)
 
        axes[0].legend(['$q_1$'])
        axes[1].legend(['$q_2$', '$q_3$'])
        axes[2].legend(['$u_1$'])
        axes[3].legend(['$u_3$'])
        axes[4].legend(['$K$', '$V$', '$E$'])
+       axes[5].legend(['$T_k$'])
 
        axes[0].set_ylabel('Distance [m]')
        axes[1].set_ylabel('Angle [deg]')
        axes[2].set_ylabel('Speed [m/s]')
        axes[3].set_ylabel('Angular Rate [deg/s]')
        axes[4].set_ylabel('Energy [J]')
-       axes[4].set_xlabel('Time [s]')
+       axes[5].set_ylabel('Torque [N-m]')
+       axes[5].set_xlabel('Time [s]')
 
        fig.tight_layout()
 
@@ -597,6 +644,9 @@ Simulation Setup
 Conservative Simulation
 =======================
 
+For the first simulation, let's disable the ground reaction force and the
+passive and active knee behavior and simply let the leg fall in space.
+
 .. jupyter-execute::
 
    p_vals = np.array([
@@ -613,36 +663,39 @@ Conservative Simulation
      0.424,  # lb,
      6.769,  # ma,
      17.01,  # mb,
-     3.0,    # mf,  # guess
+     3.0,    # mf,
      32.44,  # mu
    ])
 
-   x0, xd0 = setup_initial_conditions(0.1, np.deg2rad(1.0), -1.0, 0.0)
+   x0, xd0 = setup_initial_conditions(0.2, np.deg2rad(20.0), 0.0, 0.0)
 
    def eval_r(t, x, p):
-      return [0.0]
+      return [0.0]  # [Tk]
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 0.5, 100
-   #ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+   t0, tf, fps = 0.0, 0.5, 30
+   ts_dae, xs_dae, Ks, Vs, Es, Tks = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
 
 .. jupyter-execute::
 
-   #HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
 
 .. jupyter-execute::
 
-   #plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es, Tks);
+
+With no dissipation and only conservative forces acting on the system
+(gravity), the total energy :math:`E` should stay constant, which it does.
+Checking whether energy remains constant is a useful for sussing out whether
+your model is likely valid. So far so good for us.
 
 Conservative Simulation with Ground Spring
 ==========================================
 
-For the first simulation of this model we will simply drop the person from some
-height about the ground and set the ground damping to zero as well as any
-torques acting between the thigh and the calf. All forces (gravity and the
-foot-ground spring) are conservative we should that the total energy is
-constant throughout the simulation.
+For the second simulation of this model we will do the same thing but add only
+the conservative ground-foot stiffness force by setting
+:math:`k_f=5\times10^7`.
 
 .. jupyter-execute::
 
@@ -660,22 +713,27 @@ constant throughout the simulation.
      0.424,  # lb,
      6.769,  # ma,
      17.01,  # mb,
-     3.0,    # mf,  # guess
+     3.0,    # mf,
      32.44,  # mu
    ])
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 0.5, 100
-   #ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+   t0, tf, fps = 0.0, 0.3, 100
+   ts_dae, xs_dae, Ks, Vs, Es, Tks = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
 
 .. jupyter-execute::
 
-   #HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
 
 .. jupyter-execute::
 
-   #plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es, Tks);
+
+Now we get a bouncing jumper. This system should also still be conservative.
+The energy plot shows constant energy except at the exact moments of
+foot-ground contact. These variations in energy are due to numerical
+inaccuracies at the very rapid state change during collision.
 
 Nonconservative Simulation
 ==========================
@@ -688,7 +746,7 @@ Now we will give some damping to the Hunt-Crossely model by setting
    p_vals = np.array([
      0.101,  # Ia,
      0.282,  # Ib,
-     1e5,   # cf,
+     1e5,    # cf,
      0.0,    # ck,
      0.387,  # da,
      0.193,  # db,
@@ -699,12 +757,12 @@ Now we will give some damping to the Hunt-Crossely model by setting
      0.424,  # lb,
      6.769,  # ma,
      17.01,  # mb,
-     3.0,    # mf,  # guess
+     3.0,    # mf,
      32.44,  # mu
    ])
 
-   t0, tf, fps = 0.0, 0.5, 100
-   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+   t0, tf, fps = 0.0, 0.3, 100
+   ts_dae, xs_dae, Ks, Vs, Es, Tks = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
 
 .. jupyter-execute::
 
@@ -712,61 +770,16 @@ Now we will give some damping to the Hunt-Crossely model by setting
 
 .. jupyter-execute::
 
-   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es, Tks);
+
+Now we see a clear energy dissipation from the system due to the foot-ground
+collision, i.e. the drop in :math:`E`.
 
 Simulation with Passive Knee Torques
 ====================================
 
-.. jupyter-execute::
-
-   p_vals = np.array([
-     0.101,  # Ia,
-     0.282,  # Ib,
-     1e5,   # cf,
-     30.0,    # ck,
-     0.387,  # da,
-     0.193,  # db,
-     9.81,   # g,
-     5e7,    # kf,
-     10.0,    # kk,
-     0.611,  # la,
-     0.424,  # lb,
-     6.769,  # ma,
-     17.01,  # mb,
-     3.0,    # mf,  # guess
-     32.44,  # mu
-   ])
-
-.. jupyter-execute::
-
-   x0, xd0 = setup_initial_conditions(0.0, np.deg2rad(5.0), 0.0, 0.0)
-
-   t0, tf, fps = 0.0, 3.0, 60
-   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
-
-.. jupyter-execute::
-
-   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
-
-.. jupyter-execute::
-
-   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
-
-Simulation with Active Knee Torques
-===================================
-
-.. jupyter-execute::
-
-   def eval_r(t, x, p):
-
-       if t < 0.9:
-           r = [0.0]
-       elif t > 1.1:
-           r = [0.0]
-       else:
-           r = [900.0]
-
-       return r
+In this simulation, we include some passive stiffness and damping at the knee
+joint.
 
 .. jupyter-execute::
 
@@ -792,8 +805,8 @@ Simulation with Active Knee Torques
 
    x0, xd0 = setup_initial_conditions(0.0, np.deg2rad(5.0), 0.0, 0.0)
 
-   t0, tf, fps = 0.0, 2.0, 60
-   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+   t0, tf, fps = 0.0, 3.0, 60
+   ts_dae, xs_dae, Ks, Vs, Es, Tks = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
 
 .. jupyter-execute::
 
@@ -801,13 +814,73 @@ Simulation with Active Knee Torques
 
 .. jupyter-execute::
 
-   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es, Tks);
 
-Power
-=====
+Notice that the knee collapses more slowly due to the damping and in the totarl
+energy plot the energy loss due to the non-conservative knee damping can be
+clearly seen.
 
-.. math::
+Simulation with Active Knee Torques
+===================================
 
-   P = \bar{F} \cdot \bar{v}
+Now that we likely have a reasonable passive model of a jumper we can try to
+make it jump by added energy to the system through the knee torque :math:`T_k`.
+We have a symbol for the specified time varying quantity and the simulation
+code has been designed above to accept a function that calculates :math:`T_k`
+at any time instance. We'll let the thigh fall and then give a constant torque
+to drive the thigh back up for a just two tenths of a second.
 
-Power can enter into a system, exit a system, or be exhanged within a system.
+.. jupyter-execute::
+
+   def eval_r(t, x, p):
+
+       if t < 0.9:
+           Tk = [0.0]
+       elif t > 1.1:
+           Tk = [0.0]
+       else:
+           Tk = [900.0]
+
+       return Tk
+
+.. jupyter-execute::
+
+   p_vals = np.array([
+     0.101,  # Ia,
+     0.282,  # Ib,
+     1e5,    # cf,
+     30.0,   # ck,
+     0.387,  # da,
+     0.193,  # db,
+     9.81,   # g,
+     5e7,    # kf,
+     10.0,   # kk,
+     0.611,  # la,
+     0.424,  # lb,
+     6.769,  # ma,
+     17.01,  # mb,
+     3.0,    # mf,
+     32.44,  # mu
+   ])
+
+We'll start the simulation with the foot on the ground and with a slight knee
+bend.
+
+.. jupyter-execute::
+
+   x0, xd0 = setup_initial_conditions(0.0, np.deg2rad(5.0), 0.0, 0.0)
+
+   t0, tf, fps = 0.0, 2.0, 60
+   ts_dae, xs_dae, Ks, Vs, Es, Tks = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+
+.. jupyter-execute::
+
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+
+.. jupyter-execute::
+
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es, Tks);
+
+The final simulation works and gives a reasonably realistic looking jump. When
+examining the total energy :math:`E` you can see how the applied knee torque
+adds energy to the system to cause the jump.
