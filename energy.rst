@@ -61,13 +61,22 @@ a system.
 
 .. math::
 
-   P = \frac{dW}{dt}
+   P = \frac{\text{d}W}{\text{d}t}
 
 Conversely, energy is the integral of power:
 
 .. math::
 
-   E(t) = \int_{t_0}^{t_f} P(t) dt
+   E(t) = \int_{t_0}^{t_f} P(t) \text{d}t
+
+The work done by a force :math:`\bar{F}` with attachment point
+:math:`\bar{r}(t)` is calculated as:
+
+.. math::
+
+   W = \int_{\bar{r}(t_0)}^{\bar{r}(t_1)}\bar{F}\cdot \text{d}\bar{r} = \int_{t_0}^{t_1}\bar{F}\cdot \dot{\bar{r}} \text{d}t
+
+From which we also see :math:`P = \bar{F}\cdot \dot{\bar{r}}`.
 
 Energy in a multibody system can be classified as kinetic, potential
 (conservative), or non-conservative. Any energy that enters or leaves the
@@ -81,7 +90,7 @@ motion of all of the particles and rigid bodies in a system. A rigid body will,
 in general, have a translational and a rotational component of kinetic energy.
 A particle cannot rotate so it only has translational kinetic energy. Kinetic
 energy can be thought of as the work done by the generalized inertia forces
-:math:`\bar{F}^*_r`.
+:math:`\bar{F}^*_r` with going from the current state to rest.
 
 Translational kinetic energy of a particle :math:`Q` of mass :math:`m` in
 reference frame :math:`N` is:
@@ -118,10 +127,12 @@ Some of the generalized active force contributions in inertial reference frame
 when :math:`\bar{u}=\dot{\bar{q}}` and where :math:`V` is strictly a function
 of the generalized coordinates and time, i.e. :math:`V(\bar{q}, t)`. These
 functions :math:`V` are potential energies in :math:`N`. The associated
-generalized active force contributions are conservative forces. The most common
-conservative forces seen in multibody systems are gravitational forces and
-ideal spring forces, but there are conservative forces related to electrostatic
-forces, magnetic forces, etc.
+generalized active force contributions are conservative forces. Forces for
+which this is possible are called conservative. They are all forces for which
+the work done by the force for any path :math:`\bar{r}(t)` starting and ending
+at the same position equals 0. The most common conservative forces seen in
+multibody systems are gravitational forces and ideal spring forces, but there
+are conservative forces related to electrostatic forces, magnetic forces, etc.
 
 For small objects at Earth's surface we model gravity as a uniform field and
 the potential energy of a particle or rigid body is:
@@ -140,7 +151,7 @@ A linear spring generates a conservative force :math:`F=kx` between two points
 
 .. math::
 
-   V_s = \frac{1}{2} k \bar{r}^{P/Q} \cdot \bar{r}^{P/Q}
+   V_s = \frac{1}{2} k \left| \bar{r}^{P/Q} \right|^2 = \frac{1}{2} k \bar{r}^{P/Q} \cdot \bar{r}^{P/Q}
 
 The sum of all potential energies in a system give the total potential energy
 of the system.
@@ -150,15 +161,16 @@ of the system.
 Total Energy
 ============
 
-If :math:`\bar{F}_r` is only made up of conservative forces, then the system is
-conservative and will not lose energy as it moves, it simply exchanges kinetic
-for potential and vice versa. The total energy of the system is:
+ The total energy of the system is:
 
 .. math::
 
    E := K + V
 
-:math:`E` is constant for conservative systems.
+If :math:`\bar{F}_r` is only made up of conservative forces, then the system is
+conservative and will not lose energy as it moves, it simply exchanges kinetic
+for potential and vice versa, i.e. :math:`E` is constant for conservative
+systems.
 
 Energetics of Jumping
 =====================
@@ -737,11 +749,11 @@ Now we get a bouncing jumper. This system should also still be conservative.
 The energy plot shows constant energy except at the exact moments of
 foot-ground contact. The potential energy rapidly grows by storing energy in
 the spring, as it should, but the kinetic energy does decrease as rapidly.
-This mismatch in the energies are due to numerical inaccuracies at the very
-rapid state change during collision. If you tighten the simulation tolerances
-and simulate a small enough time steps, the total energy should come closer to
-constant over the collision. This is the nature of numerical simulation for
-very stiff systems.
+This mismatch in the energies are due to numerical inaccuracies associated with
+the foot penetration not aligning precisely with the integrator's time step. If
+you tighten the simulation tolerances and simulate a small enough time steps,
+the total energy should come closer to constant over the collision. This is the
+nature of numerical simulation for collision of very stiff systems.
 
 Nonconservative Simulation
 ==========================
