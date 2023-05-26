@@ -425,221 +425,224 @@ are similar to prior chapters, so I leave them unexplained.
 
 .. todo:: CSE was failing on these lambdify calls.
 
-.. jupyter-execute::
+.. admonition:: Simulation code
+   :class: dropdown
 
-   eval_kane = sm.lambdify((q, usd, us, r, p), kane_eq)
-   eval_holo = sm.lambdify((q, p), holonomic)
-   eval_vel_con = sm.lambdify((q, u, p), vel_con)
-   eval_acc_con = sm.lambdify((q, ud, u, p), acc_con)
-   eval_energy = sm.lambdify((q, us, p), (K.xreplace(u2_repl), V.xreplace(u2_repl)))
+   .. jupyter-execute::
 
-   coordinates = Pf.pos_from(O).to_matrix(N)
-   for point in [Ao, Pk, Bo, Pu]:
-      coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
-   eval_point_coords = sm.lambdify((q, p), coordinates)
+      eval_kane = sm.lambdify((q, usd, us, r, p), kane_eq)
+      eval_holo = sm.lambdify((q, p), holonomic)
+      eval_vel_con = sm.lambdify((q, u, p), vel_con)
+      eval_acc_con = sm.lambdify((q, ud, u, p), acc_con)
+      eval_energy = sm.lambdify((q, us, p), (K.xreplace(u2_repl), V.xreplace(u2_repl)))
 
-.. jupyter-execute::
+      coordinates = Pf.pos_from(O).to_matrix(N)
+      for point in [Ao, Pk, Bo, Pu]:
+         coordinates = coordinates.row_join(point.pos_from(O).to_matrix(N))
+      eval_point_coords = sm.lambdify((q, p), coordinates)
 
-   def eval_eom(t, x, xd, residual, p_r):
-       """Returns the residual vector of the equations of motion.
+   .. jupyter-execute::
 
-       Parameters
-       ==========
-       t : float
-          Time at evaluation.
-       x : ndarray, shape(5,)
-          State vector at time t: x = [q1, q2, q3, u1, u3].
-       xd : ndarray, shape(5,)
-          Time derivative of the state vector at time t: xd = [q1d, q2d, q3d, u1d, u3d].
-       residual : ndarray, shape(5,)
-          Vector to store the residuals in: residuals = [fk, fd, fh].
-       r : function
-         Function of [Tk] = r(t, x) that evaluates the input Tk.
-       p : ndarray, shape(15,)
-          Constant parameters: p = [Ia, Ib, cf, ck, da, db, g, kf, kk, la, lb,
-          ma, mb, mf, mu]
+      def eval_eom(t, x, xd, residual, p_r):
+          """Returns the residual vector of the equations of motion.
 
-       """
+          Parameters
+          ==========
+          t : float
+             Time at evaluation.
+          x : ndarray, shape(5,)
+             State vector at time t: x = [q1, q2, q3, u1, u3].
+          xd : ndarray, shape(5,)
+             Time derivative of the state vector at time t: xd = [q1d, q2d, q3d, u1d, u3d].
+          residual : ndarray, shape(5,)
+             Vector to store the residuals in: residuals = [fk, fd, fh].
+          r : function
+            Function of [Tk] = r(t, x) that evaluates the input Tk.
+          p : ndarray, shape(15,)
+             Constant parameters: p = [Ia, Ib, cf, ck, da, db, g, kf, kk, la, lb,
+             ma, mb, mf, mu]
 
-       p, r = p_r
+          """
 
-       q1, q2, q3, u1, u3 = x
-       q1d, _, q3d, u1d, u3d = xd  # ignore the q2d value
+          p, r = p_r
 
-       residual[0] = -q1d + u1
-       residual[1] = -q3d + u3
-       residual[2:4] = eval_kane([q1, q2, q3], [u1d, u3d], [u1, u3], r(t, x, p), p).squeeze()
-       residual[4] = eval_holo([q1, q2, q3], p)
+          q1, q2, q3, u1, u3 = x
+          q1d, _, q3d, u1d, u3d = xd  # ignore the q2d value
 
-.. jupyter-execute::
+          residual[0] = -q1d + u1
+          residual[1] = -q3d + u3
+          residual[2:4] = eval_kane([q1, q2, q3], [u1d, u3d], [u1, u3], r(t, x, p), p).squeeze()
+          residual[4] = eval_holo([q1, q2, q3], p)
 
-   def setup_initial_conditions(q1, q3, u1, u3):
+   .. jupyter-execute::
 
-      q0 = np.array([q1, np.nan, q3])
+      def setup_initial_conditions(q1, q3, u1, u3):
 
-      q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(45.0))
+         q0 = np.array([q1, np.nan, q3])
 
-      u0 = np.array([u1, u3])
+         q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(45.0))
 
-      u20 = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[1]], p_vals),  np.deg2rad(0.0))
+         u0 = np.array([u1, u3])
 
-      x0 = np.hstack((q0, u0))
+         u20 = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[1]], p_vals),  np.deg2rad(0.0))
 
-      # TODO : use equations to set these
-      ud0 = np.array([0.0, 0.0])
+         x0 = np.hstack((q0, u0))
 
-      xd0 = np.hstack(([u0[0], u20, u0[1]], ud0))
+         # TODO : use equations to set these
+         ud0 = np.array([0.0, 0.0])
 
-      return x0, xd0
+         xd0 = np.hstack(([u0[0], u20, u0[1]], ud0))
 
-.. jupyter-execute::
+         return x0, xd0
 
-   def simulate(t0, tf, fps, x0, xd0, p_vals, eval_r):
+   .. jupyter-execute::
 
-      ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
+      def simulate(t0, tf, fps, x0, xd0, p_vals, eval_r):
 
-      solver = dae('ida',
-                   eval_eom,
-                   rtol=1e-8,
-                   atol=1e-8,
-                   algebraic_vars_idx=[4],
-                   user_data=(p_vals, eval_r),
-                   old_api=False)
+         ts = np.linspace(t0, tf, num=int(fps*(tf - t0)))
 
-      solution = solver.solve(ts, x0, xd0)
+         solver = dae('ida',
+                      eval_eom,
+                      rtol=1e-8,
+                      atol=1e-8,
+                      algebraic_vars_idx=[4],
+                      user_data=(p_vals, eval_r),
+                      old_api=False)
 
-      ts = solution.values.t
-      xs = solution.values.y
+         solution = solver.solve(ts, x0, xd0)
 
-      Ks, Vs = eval_energy(xs[:, :3].T, xs[:, 3:].T, p_vals)
-      Es = Ks + Vs
+         ts = solution.values.t
+         xs = solution.values.y
 
-      Tks = np.empty_like(ts)
-      for i, ti in enumerate(ts):
-          Tks[i] = eval_r(ti, None, None)[0]
+         Ks, Vs = eval_energy(xs[:, :3].T, xs[:, 3:].T, p_vals)
+         Es = Ks + Vs
 
-      return ts, xs, Ks, Vs, Es, Tks
+         Tks = np.empty_like(ts)
+         for i, ti in enumerate(ts):
+             Tks[i] = eval_r(ti, None, None)[0]
 
-.. jupyter-execute::
+         return ts, xs, Ks, Vs, Es, Tks
 
-   def plot_results(ts, xs, Ks, Vs, Es, Tks):
-       """Returns the array of axes of a 4 panel plot of the state trajectory
-       versus time.
+   .. jupyter-execute::
 
-       Parameters
-       ==========
-       ts : array_like, shape(n,)
-          Values of time.
-       xs : array_like, shape(n, 4)
-          Values of the state trajectories corresponding to ``ts`` in order
-          [q1, q2, q3, u1, u3].
+      def plot_results(ts, xs, Ks, Vs, Es, Tks):
+          """Returns the array of axes of a 4 panel plot of the state trajectory
+          versus time.
 
-       Returns
-       =======
-       axes : ndarray, shape(3,)
-          Matplotlib axes for each panel.
+          Parameters
+          ==========
+          ts : array_like, shape(n,)
+             Values of time.
+          xs : array_like, shape(n, 4)
+             Values of the state trajectories corresponding to ``ts`` in order
+             [q1, q2, q3, u1, u3].
 
-       """
-       fig, axes = plt.subplots(6, 1, sharex=True)
+          Returns
+          =======
+          axes : ndarray, shape(3,)
+             Matplotlib axes for each panel.
 
-       fig.set_size_inches((10.0, 6.0))
+          """
+          fig, axes = plt.subplots(6, 1, sharex=True)
 
-       axes[0].plot(ts, xs[:, 0])  # q1(t)
-       axes[1].plot(ts, np.rad2deg(xs[:, 1:3]))  # q2(t), q3(t)
-       axes[2].plot(ts, xs[:, 3])  # u1(t)
-       axes[3].plot(ts, np.rad2deg(xs[:, 4]))  # u3(t)
-       axes[4].plot(ts, Ks)
-       axes[4].plot(ts, Vs)
-       axes[4].plot(ts, Es)
-       axes[5].plot(ts, Tks)
+          fig.set_size_inches((10.0, 6.0))
 
-       axes[0].legend(['$q_1$'])
-       axes[1].legend(['$q_2$', '$q_3$'])
-       axes[2].legend(['$u_1$'])
-       axes[3].legend(['$u_3$'])
-       axes[4].legend(['$K$', '$V$', '$E$'])
-       axes[5].legend(['$T_k$'])
+          axes[0].plot(ts, xs[:, 0])  # q1(t)
+          axes[1].plot(ts, np.rad2deg(xs[:, 1:3]))  # q2(t), q3(t)
+          axes[2].plot(ts, xs[:, 3])  # u1(t)
+          axes[3].plot(ts, np.rad2deg(xs[:, 4]))  # u3(t)
+          axes[4].plot(ts, Ks)
+          axes[4].plot(ts, Vs)
+          axes[4].plot(ts, Es)
+          axes[5].plot(ts, Tks)
 
-       axes[0].set_ylabel('Distance [m]')
-       axes[1].set_ylabel('Angle [deg]')
-       axes[2].set_ylabel('Speed [m/s]')
-       axes[3].set_ylabel('Angular Rate [deg/s]')
-       axes[4].set_ylabel('Energy [J]')
-       axes[5].set_ylabel('Torque [N-m]')
-       axes[5].set_xlabel('Time [s]')
+          axes[0].legend(['$q_1$'])
+          axes[1].legend(['$q_2$', '$q_3$'])
+          axes[2].legend(['$u_1$'])
+          axes[3].legend(['$u_3$'])
+          axes[4].legend(['$K$', '$V$', '$E$'])
+          axes[5].legend(['$T_k$'])
 
-       fig.tight_layout()
+          axes[0].set_ylabel('Distance [m]')
+          axes[1].set_ylabel('Angle [deg]')
+          axes[2].set_ylabel('Speed [m/s]')
+          axes[3].set_ylabel('Angular Rate [deg/s]')
+          axes[4].set_ylabel('Energy [J]')
+          axes[5].set_ylabel('Torque [N-m]')
+          axes[5].set_xlabel('Time [s]')
 
-       return axes
+          fig.tight_layout()
 
-.. jupyter-execute::
+          return axes
 
-   def setup_animation_plot(ts, xs, p):
-       """Returns objects needed for the animation.
+   .. jupyter-execute::
 
-       Parameters
-       ==========
-       ts : array_like, shape(n,)
-          Values of time.
-       xs : array_like, shape(n, 4)
-          Values of the state trajectories corresponding to ``ts`` in order
-          [q1, q2, q3, u1].
-       p : array_like, shape(?,)
+      def setup_animation_plot(ts, xs, p):
+          """Returns objects needed for the animation.
 
-       """
+          Parameters
+          ==========
+          ts : array_like, shape(n,)
+             Values of time.
+          xs : array_like, shape(n, 4)
+             Values of the state trajectories corresponding to ``ts`` in order
+             [q1, q2, q3, u1].
+          p : array_like, shape(?,)
 
-       x, y, _ = eval_point_coords(xs[0, :3], p)
+          """
 
-       fig, ax = plt.subplots()
-       fig.set_size_inches((10.0, 10.0))
-       ax.set_aspect('equal')
-       ax.grid()
+          x, y, _ = eval_point_coords(xs[0, :3], p)
 
-       lines, = ax.plot(x, y, color='black',
-                        marker='o', markerfacecolor='blue', markersize=10)
+          fig, ax = plt.subplots()
+          fig.set_size_inches((10.0, 10.0))
+          ax.set_aspect('equal')
+          ax.grid()
 
-       title_text = ax.set_title('Time = {:1.1f} s'.format(ts[0]))
-       ax.set_xlim((-0.5, 0.5))
-       ax.set_ylim((0.0, 1.5))
-       ax.set_xlabel('$x$ [m]')
-       ax.set_ylabel('$y$ [m]')
-       ax.set_aspect('equal')
+          lines, = ax.plot(x, y, color='black',
+                           marker='o', markerfacecolor='blue', markersize=10)
 
-       return fig, ax, title_text, lines
+          title_text = ax.set_title('Time = {:1.1f} s'.format(ts[0]))
+          ax.set_xlim((-0.5, 0.5))
+          ax.set_ylim((0.0, 1.5))
+          ax.set_xlabel('$x$ [m]')
+          ax.set_ylabel('$y$ [m]')
+          ax.set_aspect('equal')
 
-.. jupyter-execute::
+          return fig, ax, title_text, lines
 
-   def animate_linkage(ts, xs, p):
-       """Returns an animation object.
+   .. jupyter-execute::
 
-       Parameters
-       ==========
-       ts : array_like, shape(n,)
-       xs : array_like, shape(n, 4)
-          x = [q1, q2, q3, u1]
-       p : array_like, shape(6,)
-          p = [la, lb, lc, ln, m, g]
+      def animate_linkage(ts, xs, p):
+          """Returns an animation object.
 
-       """
-       # setup the initial figure and axes
-       fig, ax, title_text, lines = setup_animation_plot(ts, xs, p)
+          Parameters
+          ==========
+          ts : array_like, shape(n,)
+          xs : array_like, shape(n, 4)
+             x = [q1, q2, q3, u1]
+          p : array_like, shape(6,)
+             p = [la, lb, lc, ln, m, g]
 
-       # precalculate all of the point coordinates
-       coords = []
-       for xi in xs:
-           coords.append(eval_point_coords(xi[:3], p))
-       coords = np.array(coords)
+          """
+          # setup the initial figure and axes
+          fig, ax, title_text, lines = setup_animation_plot(ts, xs, p)
 
-       # define the animation update function
-       def update(i):
-           title_text.set_text('Time = {:1.1f} s'.format(ts[i]))
-           lines.set_data(coords[i, 0, :], coords[i, 1, :])
+          # precalculate all of the point coordinates
+          coords = []
+          for xi in xs:
+              coords.append(eval_point_coords(xi[:3], p))
+          coords = np.array(coords)
 
-       # close figure to prevent premature display
-       plt.close()
+          # define the animation update function
+          def update(i):
+              title_text.set_text('Time = {:1.1f} s'.format(ts[i]))
+              lines.set_data(coords[i, 0, :], coords[i, 1, :])
 
-       # create and return the animation
-       return FuncAnimation(fig, update, len(ts))
+          # close figure to prevent premature display
+          plt.close()
+
+          # create and return the animation
+          return FuncAnimation(fig, update, len(ts))
 
 Conservative Simulation
 =======================
@@ -732,8 +735,13 @@ the conservative ground-foot stiffness force by setting
 
 Now we get a bouncing jumper. This system should also still be conservative.
 The energy plot shows constant energy except at the exact moments of
-foot-ground contact. These variations in energy are due to numerical
-inaccuracies at the very rapid state change during collision.
+foot-ground contact. The potential energy rapidly grows by storing energy in
+the spring, as it should, but the kinetic energy does decrease as rapidly.
+This mismatch in the energies are due to numerical inaccuracies at the very
+rapid state change during collision. If you tighten the simulation tolerances
+and simulate a small enough time steps, the total energy should come closer to
+constant over the collision. This is the nature of numerical simulation for
+very stiff systems.
 
 Nonconservative Simulation
 ==========================
