@@ -107,12 +107,13 @@ Some generalized active force contributions in inertial reference frame
 
    F_r = -\frac{\partial V}{\partial q_r}
 
-where :math:`V` is strictly a function of the generalized coordinates and time,
-i.e. :math:`V(\bar{q}, t)`. These functions :math:`V` are potential energies in
-:math:`N`. The associated generalized active force contributions are
-conservative forces. The most common conservative forces seen in multibody
-systems are gravitational forces and ideal spring forces, but there are conservative
-forces realted to electrostic forces, magnetic forces, and other types.
+when :math:`\bar{u}=\dot{\bar{q}}` and where :math:`V` is strictly a function
+of the generalized coordinates and time, i.e. :math:`V(\bar{q}, t)`. These
+functions :math:`V` are potential energies in :math:`N`. The associated
+generalized active force contributions are conservative forces. The most common
+conservative forces seen in multibody systems are gravitational forces and
+ideal spring forces, but there are conservative forces realted to electrostic
+forces, magnetic forces, and other types.
 
 For small objects near Earth we model gravity as a uniform field and the
 potential energy of a particle or rigid body is:
@@ -264,16 +265,26 @@ muscles attached between the two leg segments.
    R_Ao = -ma*g*N.y
    R_Bo = -mb*g*N.y
 
+   damping = sm.Piecewise((-cf*u1, q1<0), (0.0, True))
    zp = (sm.Abs(q1) - q1)/2
    zd = zp.diff(t).xreplace(qd_repl)
-   Ff = (kf*zp**(sm.S(3)/2) + cf*zp**(sm.S(3)/2)*zd)*N.y
+   # TODO : When I use this equation the damping seems absent!
+   #Ff = (kf*zp**(sm.S(3)/2) + cf*zp**(sm.S(3)/2)*zd)*N.y
+
+   Ff = (kf*zp**(sm.S(3)/2) + damping)*N.y # + cf*zp**(sm.S(3)/2)*zd)*N.y
 
    R_Pf = -mf*g*N.y + Ff
    R_Pf
 
+   Ff.xreplace({q1: sm.Symbol('q1', positive=True)})
+
 .. jupyter-execute::
 
-   T_A = -(kk*(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
+   Ff.xreplace({q1: sm.Symbol('q1', negative=True)})
+
+.. jupyter-execute::
+
+   T_A = (kk*(q3 - sm.pi/2) + ck*u3 + Tk)*N.z
    T_B = -T_A
    T_A
 
@@ -322,6 +333,7 @@ muscles attached between the two leg segments.
    Fr = sm.Matrix(Fr_bar)
    Frs = sm.Matrix(Frs_bar)
    kane_eq = Fr + Frs
+   Fr
 
 
 .. jupyter-execute::
@@ -457,6 +469,10 @@ Simulation Setup
 
       Ks, Vs = eval_energy(xs[:, :3].T, xs[:, 3:].T, p_vals)
       Es = Ks + Vs
+
+      Tks = np.empty_like(ts)
+      for ti in ts:
+          Tks[i] = eval_r(ti, None, None)
 
       return ts, xs, Ks, Vs, Es
 
@@ -601,7 +617,7 @@ Conservative Simulation
      32.44,  # mu
    ])
 
-   x0, xd0 = setup_initial_conditions(0.2, np.deg2rad(10.0), 0.0, 0.0)
+   x0, xd0 = setup_initial_conditions(0.1, np.deg2rad(1.0), -1.0, 0.0)
 
    def eval_r(t, x, p):
       return [0.0]
@@ -609,15 +625,15 @@ Conservative Simulation
 .. jupyter-execute::
 
    t0, tf, fps = 0.0, 0.5, 100
-   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+   #ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
 
 .. jupyter-execute::
 
-   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+   #HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
 
 .. jupyter-execute::
 
-   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+   #plot_results(ts_dae, xs_dae, Ks, Vs, Es);
 
 Conservative Simulation with Ground Spring
 ==========================================
@@ -651,28 +667,28 @@ constant throughout the simulation.
 .. jupyter-execute::
 
    t0, tf, fps = 0.0, 0.5, 100
-   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+   #ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
 
 .. jupyter-execute::
 
-   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+   #HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
 
 .. jupyter-execute::
 
-   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
+   #plot_results(ts_dae, xs_dae, Ks, Vs, Es);
 
 Nonconservative Simulation
 ==========================
 
 Now we will give some damping to the Hunt-Crossely model by setting
-:math:`c_f=0.85`.
+:math:`c_f=1\times10^5`.
 
 .. jupyter-execute::
 
    p_vals = np.array([
      0.101,  # Ia,
      0.282,  # Ib,
-     0.85,    # cf,
+     1e5,   # cf,
      0.0,    # ck,
      0.387,  # da,
      0.193,  # db,
@@ -686,8 +702,6 @@ Now we will give some damping to the Hunt-Crossely model by setting
      3.0,    # mf,  # guess
      32.44,  # mu
    ])
-
-.. jupyter-execute::
 
    t0, tf, fps = 0.0, 0.5, 100
    ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
@@ -708,13 +722,13 @@ Simulation with Passive Knee Torques
    p_vals = np.array([
      0.101,  # Ia,
      0.282,  # Ib,
-     0.95,   # cf,
-     0.5,    # ck,
+     1e5,   # cf,
+     30.0,    # ck,
      0.387,  # da,
      0.193,  # db,
      9.81,   # g,
      5e7,    # kf,
-     3.0,    # kk,
+     10.0,    # kk,
      0.611,  # la,
      0.424,  # lb,
      6.769,  # ma,
@@ -725,7 +739,9 @@ Simulation with Passive Knee Torques
 
 .. jupyter-execute::
 
-   t0, tf, fps = 0.0, 0.5, 100
+   x0, xd0 = setup_initial_conditions(0.0, np.deg2rad(5.0), 0.0, 0.0)
+
+   t0, tf, fps = 0.0, 3.0, 60
    ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
 
 .. jupyter-execute::
@@ -743,18 +759,49 @@ Simulation with Active Knee Torques
 
    def eval_r(t, x, p):
 
-       if t < 1.0:
-           r = [-30.0]
-       elif t > 1.2:
-           r = [-30.0]
-       elif t > 1.5:
+       if t < 0.9:
+           r = [0.0]
+       elif t > 1.1:
            r = [0.0]
        else:
-           r = [1500.0]
+           r = [900.0]
 
        return r
 
-written as a force dotted with a velocity.
+.. jupyter-execute::
+
+   p_vals = np.array([
+     0.101,  # Ia,
+     0.282,  # Ib,
+     1e5,    # cf,
+     30.0,   # ck,
+     0.387,  # da,
+     0.193,  # db,
+     9.81,   # g,
+     5e7,    # kf,
+     10.0,   # kk,
+     0.611,  # la,
+     0.424,  # lb,
+     6.769,  # ma,
+     17.01,  # mb,
+     3.0,    # mf,
+     32.44,  # mu
+   ])
+
+.. jupyter-execute::
+
+   x0, xd0 = setup_initial_conditions(0.0, np.deg2rad(5.0), 0.0, 0.0)
+
+   t0, tf, fps = 0.0, 2.0, 60
+   ts_dae, xs_dae, Ks, Vs, Es = simulate(t0, tf, fps, x0, xd0, p_vals, eval_r)
+
+.. jupyter-execute::
+
+   HTML(animate_linkage(ts_dae, xs_dae, p_vals).to_jshtml(fps=fps))
+
+.. jupyter-execute::
+
+   plot_results(ts_dae, xs_dae, Ks, Vs, Es);
 
 Power
 =====
