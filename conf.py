@@ -98,6 +98,7 @@ chapters = [
     'angular',
     'configuration',
     'differentiation',
+    'energy',
     'eom',
     'generalized-forces',
     'holonomic-eom',

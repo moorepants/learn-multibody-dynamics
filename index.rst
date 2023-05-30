@@ -51,6 +51,7 @@ taught by `Jason K.  Moore`_ but it is designed to standalone from the course.
    nonholonomic-eom
    holonomic-eom
    noncontributing
+   energy
    lagrange
    tmt
    notation

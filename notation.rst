@@ -231,6 +231,33 @@ Equations of Motion with Nonholonomic Constraints
    Terms not linear in :math:`\dot{\bar{u}}_r` in the time differentiated
    nonholonomic constraint equations.
 
+Equations of Motion with Holonomic Constraints
+==============================================
+
+:math:`\dot{\bar{f}}_h(\bar{u}, \bar{u}_r, \bar{q}, \bar{q}_r, t) = 0`
+   Time derivative of the holonomic constraints.
+:math:`\mathbf{M}_{hd}`
+   Linear coefficient matrix for :math:`\bar{u}_r` in the time differentiated
+   holonomic constraints.
+:math:`\bar{g}_{hd}`
+   Terms not inear in :math:`\bar{u}_r` in the time differentiated holonomic
+   constraints.
+
+Energy and Power
+================
+
+:math:`P`, ``P``
+   Power
+:math:`W`, ``W``
+   Work
+:math:`K,K_Q,K_B`, ``K,KQ,KB``
+   Kinetic energy, kinetic energy of particle :math:`Q`, kinetic energy of body
+   :math:`B`
+:math:`V`, ``V``
+   Potential energy
+:math:`E`, ``E``
+   Total energy, i.e. :math:`E=K+V`
+
 .. |notation-scalar| image:: figures/notation-scalar.svg
    :height: 10px
 
