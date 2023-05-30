@@ -243,6 +243,21 @@ Equations of Motion with Holonomic Constraints
    Terms not inear in :math:`\bar{u}_r` in the time differentiated holonomic
    constraints.
 
+Energy and Power
+================
+
+:math:`P`, ``P``
+   Power
+:math:`W`, ``W``
+   Work
+:math:`K,K_Q,K_B`, ``K,KQ,KB``
+   Kinetic energy, kinetic energy of particle :math:`Q`, kinetic energy of body
+   :math:`B`
+:math:`V`, ``V``
+   Potential energy
+:math:`E`, ``E``
+   Total energy, i.e. :math:`E=K+V`
+
 .. |notation-scalar| image:: figures/notation-scalar.svg
    :height: 10px
 
