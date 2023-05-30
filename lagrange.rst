@@ -71,17 +71,14 @@ A large part of Kane's method of deriving the equations of motions for a
 system is involved with finding the generalized inertial forces.
 
 As an alternative, the following equation also calculates the generalized inertial forces of a
-system, now by starting from the `kinetic energy TODO`_ :math:`T(\dot{\bar{q}}, \bar{q})`
+system, now by starting from the kinetic energy :math:`K (\dot{\bar{q}}, \bar{q})`
 expressed as function of the generalized coordinates :math:`\bar{q}`, and 
-their time derivatives.
-
-.. _`kinetic energy TODO`: https://en.wikipedia.org/wiki/Work_in_process
-
+their time derivatives. See :ref:`Energy and Power` for the definition of kinetic energy.
 
 .. math::
   :label: eq-lagrange-inertial
 
-   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial T}{\partial \dot{q}_r}
+   -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial K}{\partial \dot{q}_r}
         \right) - \frac{\partial T}{\partial q_r}
 
 .. warning:: Note the two minus signs in the above equation
@@ -126,8 +123,8 @@ Then compute the kinetic energy:
    N_w_B = B.ang_vel_in(N)
    r_O_P = x*N.x + y*N.y + z*N.z
    N_v_C = r_O_P.dt(N)
-   T = N_w_B.dot(I_B.dot(N_w_B))/2 + m*N_v_C.dot(N_v_C)/2
-   T
+   K = N_w_B.dot(I_B.dot(N_w_B))/2 + m*N_v_C.dot(N_v_C)/2
+   K
 
 Use the kinetic energy to find the generalized inertial forces. Here we start with 
 the generalized coordinate :math:`\psi`
@@ -135,7 +132,7 @@ the generalized coordinate :math:`\psi`
 .. jupyter-execute::
 
     psid = psi.diff(t)
-    F_psi_s = T.diff(psid).diff(t) - T.diff(psi)
+    F_psi_s = K.diff(psid).diff(t) - K.diff(psi)
 
 A similar derivation should be made for all generalized coordinates. We could write
 a loop, but there there is a method to derive all the equations in one go.
@@ -144,8 +141,8 @@ using the :external:py:meth:`~sympy.matrices.matrices.MatrixCalculus.jacobian` m
 
 .. jupyter-execute::
 
-   T_as_matrix = sm.Matrix([T])
-   Fs_transposed = T_as_matrix.jacobian(qd).diff(t) - T_as_matrix.jacobian(q)
+   K_as_matrix = sm.Matrix([K])
+   Fs_transposed = K_as_matrix.jacobian(qd).diff(t) - K_as_matrix.jacobian(q)
    Fs = Fs_transposed.transpose()
    Fs
 
@@ -167,7 +164,7 @@ mass matrix :math:`\mathbf{M}_d` and velocity forces vector :math:`\bar{g}_d` li
 Conservative Forces
 ===================
 
-Some applied forces, known as `conservative forces`_, can
+Recall from :ref:`Energy and Power` that `conservative forces`_, can
 be expressed using the gradient of a scalar function of the generalized coordinates,
 known as the `potential energy`_ :math:`V(\bar{q})`:
 
@@ -265,12 +262,12 @@ Finally, set up the Lagrangian and derive the equations of motion:
    qd = q.diff(t)
    qdd = qd.diff(t)
 
-   T = m/2*(Ao.vel(N).dot(Ao.vel(N)) + Bo.vel(N).dot(Bo.vel(N)) + Q.vel(N).dot(Q.vel(N))) + 1/2*(
+   K = m/2*(Ao.vel(N).dot(Ao.vel(N)) + Bo.vel(N).dot(Bo.vel(N)) + Q.vel(N).dot(Q.vel(N))) + 1/2*(
        A.ang_vel_in(N).dot(I_A_Ao.dot(A.ang_vel_in(N))) + A.ang_vel_in(N).dot(I_B_Bo.dot(A.ang_vel_in(N)))
    )
    V = m*g*(Ao.pos_from(O).dot(-N.x) + Bo.pos_from(O).dot(-N.x)) + kt/2*(q1**2) + kt/2*q2**2 + kl/2*q3**2
 
-   L = sm.Matrix([T - V])
+   L = sm.Matrix([K - V])
    left_hand_side = L.jacobian(qd).diff(t) - L.jacobian(q)
 
    qdd_zerod = {qddr: 0 for qddr in qdd}
@@ -410,7 +407,7 @@ again because the second time derivatives of the generalized coordinates appear.
         omega_B = B.ang_vel_in(N)
         r_com = x*N.x + y*N.y + z*N.z
         v_com = r_com.dt(N)
-        T = omega_B.dot(I_B.dot(omega_B))/2 + m*v_com.dot(v_com)/2
+        K = omega_B.dot(I_B.dot(omega_B))/2 + m*v_com.dot(v_com)/2
 
         # Euler-Lagrange equation
 
@@ -419,7 +416,7 @@ again because the second time derivatives of the generalized coordinates appear.
         qd = q.diff(t)
         qdd = qd.diff(t)
 
-        L = sm.Matrix([T])
+        L = sm.Matrix([K])
         left_hand_side = L.jacobian(qd).diff(t) - L.jacobian(q)
 
         qdd_zerod = {qddr: 0 for qddr in qdd}
@@ -455,11 +452,11 @@ The combined equations can now be written in a block matrix form:
         \begin{bmatrix} \bar{F}_r - \bar{g}_d \\ - \frac{\partial \mathbf{A}\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
 
 where :math:`\mathbf{A}` is the jacobian of the constraints, as used above,  :math:`\bar{g}` is the dynamic bias, and 
-the last term on the right hand side can be computed as;
+the last term on the right hand side can be quickly computed as:
 
 .. jupyter-execute::
 
-    constraint_bias = diff_constraint - diff_constraint.jacobian(qdd)*qdd
+    constraint_bias = diff_constraint.xreplace({qddr : 0 for qddr in qdd})
 
 We call the block matrix called the extended mass matrix, and the vector on the right hand side the extended dynamic bias. 
 
