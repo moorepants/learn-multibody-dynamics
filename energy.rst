@@ -54,8 +54,8 @@ Introduction
 So far we have investigated multibody systems from the perspective of forces
 and their relationship to motion. It is also useful to understand these systems
 from a power and energy perspective. Power :math:`P` is the time rate of change
-in work :math:`W` done. Work is the energy gained, dissipated, or exchanged in
-a system.
+in work :math:`W` done where work is the energy gained, dissipated, or
+exchanged in a system.
 
 .. power:: https://en.wikipedia.org/wiki/Power_(physics)
 
@@ -63,14 +63,14 @@ a system.
 
    P = \frac{\text{d}W}{\text{d}t}
 
-Conversely, energy is the integral of power:
+Conversely, work is the integral of power:
 
 .. math::
 
-   E(t) = \int_{t_0}^{t_f} P(t) \text{d}t
+   W(t) = \int_{t_0}^{t_f} P(t) \text{d}t
 
-The work done by a force :math:`\bar{F}` with attachment point
-:math:`\bar{r}(t)` is calculated as:
+The work done by a force :math:`\bar{F}` acting on a point located by position
+vector :math:`\bar{r}(t)` is calculated as:
 
 .. math::
 
@@ -78,9 +78,9 @@ The work done by a force :math:`\bar{F}` with attachment point
 
 From which we also see :math:`P = \bar{F}\cdot \dot{\bar{r}}`.
 
-Energy in a multibody system can be classified as kinetic, potential
-(conservative), or non-conservative. Any energy that enters or leaves the
-system is non-conservative.
+Energy in a multibody system comes in many forms and can be classified as
+kinetic, potential (conservative), or non-conservative. Any energy that enters
+or leaves the system is non-conservative.
 
 Kinetic Energy
 ==============
@@ -104,7 +104,8 @@ reference frame :math:`N` is:
 If :math:`Q` is the mass center of a rigid body, the equation represents the
 translational kinetic energy of the rigid body. The rotational kinetic energy
 of a rigid body :math:`B` with mass center :math:`B_o` in :math:`N` is added to
-its translational kinetic energy and is defined as:
+its translational kinetic energy and the total kinetic energy of :math:`B` is
+defined as:
 
 .. math::
 
@@ -127,12 +128,14 @@ Some of the generalized active force contributions in inertial reference frame
 when :math:`\bar{u}=\dot{\bar{q}}` and where :math:`V` is strictly a function
 of the generalized coordinates and time, i.e. :math:`V(\bar{q}, t)`. These
 functions :math:`V` are potential energies in :math:`N`. The associated
-generalized active force contributions are conservative forces. Forces for
-which this is possible are called conservative. They are all forces for which
-the work done by the force for any path :math:`\bar{r}(t)` starting and ending
-at the same position equals 0. The most common conservative forces seen in
-multibody systems are gravitational forces and ideal spring forces, but there
-are conservative forces related to electrostatic forces, magnetic forces, etc.
+generalized active force contributions are from `conservative forces`_. They
+are forces for which the work done by the force for any path :math:`\bar{r}(t)`
+starting and ending at the same position equals zero. The most common
+conservative forces seen in multibody systems are gravitational forces and
+ideal spring forces, but there are conservative forces related to electrostatic
+forces, magnetic forces, etc.
+
+.. _conservative forces: https://en.wikipedia.org/wiki/Conservative_force
 
 For small objects at Earth's surface we model gravity as a uniform field and
 the potential energy of a particle or rigid body is:
@@ -151,12 +154,12 @@ A linear spring generates a conservative force :math:`F=kx` between two points
 
 .. math::
 
-   V_s = \frac{1}{2} k \left| \bar{r}^{P/Q} \right|^2 = \frac{1}{2} k \bar{r}^{P/Q} \cdot \bar{r}^{P/Q}
+   V_s =
+     \frac{1}{2} k \left| \bar{r}^{P/Q} \right|^2 =
+     \frac{1}{2} k \bar{r}^{P/Q} \cdot \bar{r}^{P/Q}
 
 The sum of all potential energies in a system give the total potential energy
 of the system.
-
-.. _conservative forces: https://en.wikipedia.org/wiki/Conservative_force
 
 Total Energy
 ============
@@ -319,7 +322,7 @@ damping terms with coefficients :math:`k_f` and :math:`c_f` respectively.
    R_Pf
 
 
-The torques on the thigh and calf will include a passive stiffness an damping
+The torques on the thigh and calf will include a passive stiffness and damping
 to represent muscle tendons and tissue effects with coefficients :math:`k_k`
 and :math:`c_k` respectively as well as the muscle actuation torque
 :math:`T_k`.
