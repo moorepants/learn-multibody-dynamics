@@ -95,6 +95,7 @@ Kane's method, or the TMT method used in the next chapter. This can be shown by 
 matching terms in these formulations, as is done for a a system of point-masses in [Vallery2020]_.
 
 Example: freely moving 3D body
+------------------------------
 
 This example is largely the same as the example in :ref:`Body Fixed Newton-Euler Equations`. A key difference
 is a difference between the generalized speeds describing the rotation. In the calculation with Kane's method,
@@ -223,6 +224,7 @@ in both.
 
 
 Example: Double pendulum with springs and sliding pointmass
+-----------------------------------------------------------
 
 The next step is to define the relevant variables, constants and frames:
 
@@ -298,13 +300,18 @@ Constrained equations of motion
 ===============================
 
 When using Kane's method, constraints are handled by dividing the generalized speeds into two sets:
-the dependent and independent generalized speeds. Then, the dependent generalized speeds are eliminated 
-by solving the (time derivative of the) constraint equation.
+the dependent and independent generalized speeds. Depending on the type of constraints, the 
+dependent generalized speeds are eliminated by solving the constraint equation (for non-holonomic 
+constraints) or the time derivative of the constraint equation (holonomic constraints). Kane's 
+method only gives rise to :math:`p = n - m` dynamical equations, one for each independent generalized
+speed.
 
-In the Lagrange method, the generalized speeds should always match the generalized coordinates.
-Therefore, to handle constraints, the generalized coordinates should be likewise eliminated. This
-is not possible for non-holonomic constraint (by definition), and requires to solve often difficult
-non-linear equations when considering holonomic constraints. This method of elimination is therefore
+The Lagrange method gives rise to :math:`n` dynamical equations, one for each generalized coordinate. 
+To eliminate the constraints, and end up with the right number of equations (:math:`n - m`, one for
+each degree of freedom), both the generalized speeds and the generalized coordinates should be solved 
+using the constraint equation. For non-holonomic constraints, this elimination is not possible (by the
+definition of non-holonomic), and for holonomic constraints this elimination requires solving often 
+difficult non-linear equations for the generalized coordinates. The method of elimination is therefore 
 not useful within the Lagrange method.
 
 Instead, constraints are handled using a generalized version of the approach in 
@@ -337,10 +344,12 @@ This can be put in matrix-form, by extracting the unknown acceleration and force
 
 
 It can be challenging to find the direction of the constraint force from the geometry of the system directly.
-There is a trick, called the method of the Lagrange multupliers, to quickly find the correct generalized
+There is a trick, called the method of the `Lagrange multipliers`_, to quickly find the correct generalized
 forces associated with the constraint forces. 
 
-Given a motion constraint (time derivative of a configuration constraint or a nonholonomic constraint) in the general form
+.. _`Lagrange multipliers`: https://en.wikipedia.org/wiki/Lagrange_multiplier 
+
+Given a motion constraint (time derivatives of configuration constraint or a nonholonomic constraint) in the general form
 
 .. math::
 
@@ -363,18 +372,36 @@ Due to how it is constructed, the power produced by the constraint force is alwa
     P = \sum_r F_r\dot{q}_r = \sum \lambda a_r(\bar{q})\dot{q}_r  = \lambda \sum a_r(\bar{q})\dot{q}_r = \lambda \cdot 0
 
 For example, consider the pointmass to be constrained to move in a bowl :math:`x^2 + y^2 + z^2 -1 = 0`.
-Taking the time derivative gives: :math:`a_1 = 2q_1` :math:`a_2 = 2q_2` and :math:`a_3 = 2q_3`.
+Taking the time derivative gives: :math:`a_1 = 2q_1`, :math:`a_2 = 2q_2`, and :math:`a_3 = 2q_3`.
 This results in generalized reaction forces :math:`F_1 = 2\lambda q_1`, :math:`F_2 = 2\lambda q_2` and :math:`F_3 = 2\lambda q_3`.
 
+Often, there are multiple constraints on the same system. For convenience, the handling of these constraints can be combined.
+Consider the :math:`m+M` dimensional general constraint equations consisting of the time derivatives of the holonomic constraints
+and/or the non-holonomic constraints:
 
-Example: turning the freely floating body discussed earlier into a rolling sphere.**
+.. math::
+
+    \bar{f}_{hn}(\bar{q}, \bar{\dot{q}}) = \mathbf{M}_{hn}\bar{\dot{q}} = 0,
+
+the combined constraint forces are given as:
+
+.. math::
+
+    \bar{F}_r = \mathbf{M}_{hn}^\text{T}\bar{\lambda},
+
+where :math:`\bar{\lambda}` is a vector of :math:`m + M`Lagrange multipliers, one for each constraint (row in :math:`\mathbf{M}_{hn}`).
+
+
+Example: turning the freely floating body discussed earlier into a rolling sphere.
+----------------------------------------------------------------------------------
 
 The non-slip condition of the rolling sphere is split into three constraints: the velocity of
 the contact point (:math:`G`) is zero in the :math:`\hat{n}_x`, the :math:`\hat{n}_y` and  the :math:`\hat{n}_z`
-direction. These constraints are enforced by contact forces in their respective directions.
+direction. The first two constraints are non-holonomic, the last constraint is the time derivative of
+a holonomic constraint. All three constraints are enforced by contact forces in their respective directions.
 
-The contact point can be found according by :math:`\bar{r}^{G/C} = -r \hat{n}_z`. By using the velocity
-two point theorem, the following constraints are found.
+The contact point can be found according by :math:`\bar{r}^{G/C} = -r \hat{n}_z`. By using the :ref:`Velocity
+Two Point Theorem`, the following constraints are found.
 
 .. math::
 
@@ -388,7 +415,8 @@ These can be used to derive the constraint force and the additional equations us
 method as shown below. Note that here only the first time derivative of the constraint equation is used, 
 again because the second time derivatives of the generalized coordinates appear.
 
-.. container:: invisible
+.. admonition:: Frames and Body Setup
+   :class: dropdown
 
     .. jupyter-execute::
 
@@ -431,7 +459,7 @@ and :math:`\hat{n}_x` direction.
 
     lambda1, lambda2, lambda3 = me.dynamicsymbols('lambda1, lambda2, lambda3') 
     constraint = (v_com + B.ang_vel_in(N).cross(-N.z)).to_matrix(N)
-    A = constraint.jacobian(qd)
+    M_hn = constraint.jacobian(qd)
     diff_constraint = constraint.diff(t)
     sm.trigsimp(constraint)
 
@@ -440,7 +468,7 @@ so, we make use of a useful fact.
 
 .. jupyter-execute::
 
-    diff_constraint.jacobian(qdd) - A
+    diff_constraint.jacobian(qdd) - M_hn
 
 This equality is true for all constraints, as can easily be shown by taking the time
 derivative of the constraint equation, using the chain rule.
@@ -448,11 +476,11 @@ derivative of the constraint equation, using the chain rule.
 The combined equations can now be written in a block matrix form:
 
 .. math::
-        \begin{bmatrix} \mathbf{M}_d & \mathbf{A}^T \\ \mathbf{A} & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \bar{\lambda} \end{bmatrix} = 
-        \begin{bmatrix} \bar{F}_r - \bar{g}_d \\ - \frac{\partial \mathbf{A}\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
+        \begin{bmatrix} \mathbf{M}_d & \mathbf{M}_{hn}^T \\ \mathbf{
+        M}_{hn} & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \bar{\lambda} \end{bmatrix} = 
+        \begin{bmatrix} \bar{F}_r - \bar{g}_d \\ - \frac{\partial \mathbf{M}_{hn}\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
 
-where :math:`\mathbf{A}` is the jacobian of the constraints, as used above,  :math:`\bar{g}` is the dynamic bias, and 
-the last term on the right hand side can be quickly computed as:
+where :math:`\bar{g}` is the dynamic bias, and the last term on the right hand side can be quickly computed as:
 
 .. jupyter-execute::
 
@@ -460,15 +488,17 @@ the last term on the right hand side can be quickly computed as:
 
 We call the block matrix called the extended mass matrix, and the vector on the right hand side the extended dynamic bias. 
 
-With these equations, it is possible to solve for :math:`\ddot{\bar{q}}` and :math:`\lambda`. It is therefore possible to
+With these `n + m + M` equations, it is possible to solve for :math:`\ddot{\bar{q}}` and :math:`\lambda`. It is therefore possible to
 integrate/simulate the system directly. However, because only the second derivative of the constraint is satisfied, numerical
-errors can build up, so the constraint is not satisfied. 
+errors can build up, so the constraint is not satisfied. It is better to use a differential algebraic solver, as discussed 
+in :ref:`Equations of Motion with Holonomic Constraints`. See `the scikit.ode documentation`_ for a worked example.
 
-It is better to use a differential algebraic solver, as discussed in `Equations of Motion with Holonomic Constraints`_.
+.. _`the scikit.ode documentation`: https://github.com/bmcage/odes/blob/master/ipython_examples/Planar%20Pendulum%20as%20DAE.ipynb
+
 
 
 The method of the Lagrange multiplier can of course also be used within Kane's method. However,
-it results in a larger system of equations, which is why the elimination approach is often
+it increases the number of equations, which is why the elimination approach is often
 preferred there. An exception being scenarios where the constraint force itself is a useful output,
 for instance to check no-slip conditions in case of limited friction.
 
@@ -480,14 +510,15 @@ The is book has now presented two alternatives to the Newton-Euler method: Kane'
 This raises the questions: when should each alternative method be used?
 
 For constrained systems, Kane's method has the advantage that the equations of motion are given for a set of
-independent generalized speeds only. This can give rise to simplified equations, additional insight, and
+independent generalized speeds only. In other words, Kane's method gives a minimal set of equations. This can
+give rise to simplified equations, additional insight, and
 numerically more efficient simulation. This also gives the benefit that Lagrange multipliers are not needed
 when solving constrained systems with Kane's method.
 
-Furthermore, the connection from Kane's method to vector mechanics, that is, Newton's law's, is clearer, which
+Furthermore, the connection from Kane's method to vector mechanics, that is, Newton's laws, is clearer, which
 can provide additional insight, and make it easier to encorporate non-conservative forces such as friction.
 
-On the other hand, the Lagrange method only requires energies velocities as input, for which only the velocities
+On the other hand, the Lagrange method only requires energies as input, for which only the velocities
 of the bodies are needed. This is can be simpler to derive than the accelerations which are needed for Kane's
 method.
 
