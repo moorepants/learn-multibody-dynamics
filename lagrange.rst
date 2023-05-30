@@ -463,6 +463,12 @@ the last term on the right hand side can be computed as;
 
 We call the block matrix called the extended mass matrix, and the vector on the right hand side the extended dynamic bias. 
 
+With these equations, it is possible to solve for :math:`\ddot{\bar{q}}` and :math:`\lambda`. It is therefore possible to
+integrate/simulate the system directly. However, because only the second derivative of the constraint is satisfied, numerical
+errors can build up, so the constraint is not satisfied. 
+
+It is better to use a differential algebraic solver, as discussed in `Equations of Motion with Holonomic Constraints`_.
+
 
 The method of the Lagrange multiplier can of course also be used within Kane's method. However,
 it results in a larger system of equations, which is why the elimination approach is often
