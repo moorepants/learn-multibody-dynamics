@@ -53,11 +53,11 @@ chapter will add a third: the `Lagrange method`_, originally
 developed by Joseph-Louis Lagrange. These materials focus on Engineering
 applications for multi-body systems, and therefore build the Lagrange method around
 the terms found earlier in Kane's equations. In other textbooks, the Lagrange method
-is often derived from the `Variational principles`, such as virtual work or the principle
+is often derived from the `Variational principles`_, such as virtual work or the principle
 of least action. A good starting point for studying the physical
 and mathematical background of the Lagrange approach is [Lanczos1970]_. 
 
-.. _`Variational principles`: https://en.wikipedia.org/wiki/Variational_principle
+.. _Variational principles: https://en.wikipedia.org/wiki/Variational_principle
 .. _`Lagrange method`: https://en.wikipedia.org/wiki/Lagrangian_mechanics
 
 
@@ -99,7 +99,7 @@ matching terms in these formulations, as is done for a a system of point-masses 
 
 Example: freely moving 3D body
 
-This example is largely the same as the example in `Body Fixed Newton-Euler Equations`_. A key difference
+This example is largely the same as the example in :ref:`Body Fixed Newton-Euler Equations`. A key difference
 is a difference between the generalized speeds describing the rotation. In the calculation with Kane's method,
 they were body-fixed angular velocities, whereas here they are the rates of change of the Euler angles. 
 
@@ -140,7 +140,7 @@ the generalized coordinate :math:`\psi`
 A similar derivation should be made for all generalized coordinates. We could write
 a loop, but there there is a method to derive all the equations in one go.
 The vector of partial derivatives of a function, that is the gradient, can be created
-using the jacobian method. The generalized inertial forces can then be find like this: 
+using the :external:py:meth:`~sympy.matrices.matrices.MatrixCalculus.jacobian` method. The generalized inertial forces can then be found like this: 
 
 .. jupyter-execute::
 
@@ -167,7 +167,7 @@ mass matrix :math:`\mathbf{M}_d` and velocity forces vector :math:`\bar{g}_d` li
 Conservative Forces
 ===================
 
-Some applied forces, known as conservative forces `conservative forces`_, can
+Some applied forces, known as `conservative forces`_, can
 be expressed using the gradient of a scalar function of the generalized coordinates,
 known as the `potential energy`_ :math:`V(\bar{q})`:
 
@@ -207,12 +207,12 @@ kinetic energy and potential energy:
 .. math::
    :label: eq-lagrangian
 
-   L = T - V
+   L = K - V
 
 .. _`Lagrangian`: https://en.wikipedia.org/wiki/Lagrangian
 
 Step 2. Use the Euler-Lagrange equations (the name for the equation 
-:ref:`eq-lagrange-inertial`) to find the equations of motion:
+:math:numref:`eq-lagrange-inertial`) to find the equations of motion:
 
 .. math::
    :label: eq-euler-lagrange
@@ -279,7 +279,7 @@ Finally, set up the Lagrangian and derive the equations of motion:
 
    me.find_dynamicsymbols(Md), me.find_dynamicsymbols(gd)
 
-The mass matrix :math:`M` only depends on :math:`\bar{q}`, and :math:`\bar{g}` depends
+The mass matrix :math:`\mathbf{M}_d` only depends on :math:`\bar{q}`, and :math:`\bar{g}_d` depends
 on :math:`\dot{\bar{q}}` and :math:`\bar{q}`, just as in Kane's method. Note that :math:`\bar{g}_d` now
 combines the effects of the velocity force vector and the conservative forces. In this setting, 
 :math:`\bar{g}_d` is often called the dynamic bias. 
@@ -295,7 +295,7 @@ The variables are collected in a vector :math:`\bar{p}`. They are called the gen
 as they coincide with linear momentum in the
 case of a Lagrangian describing a particle. Similar to the situation in the dynamics of particles, there can 
 be conservation of generalized momentum. This is the case for the generalized momentum associated with ignorable
-coordinates, as defined in `Equations of Motion with Nonholonomic Constraints`_. 
+coordinates, as defined in :ref:`Equations of Motion with Nonholonomic Constraints`. 
 
 Constrained equations of motion
 ===============================
@@ -316,9 +316,9 @@ with a known direction, but unknown magnitude. Finally, the (second) time deriva
 equation is then appended to the equations found with the Euler-Lagrange equation.
 
 For example, consider a particle of mass :math:`m` and position 
-:math:`\bar{r}_{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z`
+:math:`\bar{r}^{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z`
 on a slope :math:`q_1 = q_2`.  The unconstrained Lagrangian is 
-:math:`V = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 + \dot{q}_3^2) - mgq_3`.
+:math:`L = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 + \dot{q}_3^2) - mgq_3`.
 The constraint force is perpendicular to the slope, so is described
 as :math:`\bar{F} = F\hat{n}_x - F\hat{n}_y`. The appended equation is
 the second time derivative of the constraint equation :math:`\ddot{q_1} - \ddot{q_2} = 0`.
@@ -332,7 +332,7 @@ Combining all, gives:
     \ddot{q}_1 - \ddot{q}_2\!\! = \phantom{-}0 
     \end{array}
 
-This can be put in matrix-form, by extracting the unknown acceleration and force magnitude;
+This can be put in matrix-form, by extracting the unknown acceleration and force magnitude:
 
 .. math::
     \begin{bmatrix} m & 0 & 0 &-1 \\ 0 & m & 0 & 1 \\ 0 & 0 & m & 0 \\ 1 & -1 & 0 & 0\end{bmatrix}
@@ -343,7 +343,7 @@ It can be challenging to find the direction of the constraint force from the geo
 There is a trick, called the method of the Lagrange multupliers, to quickly find the correct generalized
 forces associated with the constraint forces. 
 
-Given a constraint in the general form
+Given a motion constraint (time derivative of a configuration constraint or a nonholonomic constraint) in the general form
 
 .. math::
 
@@ -426,7 +426,7 @@ again because the second time derivatives of the generalized coordinates appear.
         Md = left_hand_side.jacobian(qdd)
         gd = left_hand_side.xreplace(qdd_zerod)
 
-To make these free floating body a rolling wheel, three constraints are needed: the
+To make this free floating body a rolling wheel, three constraints are needed: the
 velocity of the contact point should be zero in :math:`\hat{n}_x`, :math:`\hat{n}_y`
 and :math:`\hat{n}_x` direction.
 
@@ -436,7 +436,7 @@ and :math:`\hat{n}_x` direction.
     constraint = (v_com + B.ang_vel_in(N).cross(-N.z)).to_matrix(N)
     A = constraint.jacobian(qd)
     diff_constraint = constraint.diff(t)
-    constraint
+    sm.trigsimp(constraint)
 
 This constraint information must then be added to the original equations. To do
 so, we make use of a useful fact. 
@@ -454,7 +454,7 @@ The combined equations can now be written in a block matrix form:
         \begin{bmatrix} \mathbf{M}_d & \mathbf{A}^T \\ \mathbf{A} & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \bar{\lambda} \end{bmatrix} = 
         \begin{bmatrix} \bar{F}_r - \bar{g}_d \\ - \frac{\partial \mathbf{A}\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
 
-where :math:`A` is the jacobian of the constraints, as used above,  :math:`\bar{g}` is the dynamic bias, and 
+where :math:`\mathbf{A}` is the jacobian of the constraints, as used above,  :math:`\bar{g}` is the dynamic bias, and 
 the last term on the right hand side can be computed as;
 
 .. jupyter-execute::
@@ -473,11 +473,11 @@ for instance to check no-slip conditions in case of limited friction.
 Lagrange's vs Kane's
 ====================
 
-The is book has now thought to alternatives to the Newton-Euler method: Kane's method and Lagrange's method. 
+The is book has now presented two alternatives to the Newton-Euler method: Kane's method and Lagrange's method. 
 This raises the questions: when should each alternative method be used?
 
 For constrained systems, Kane's method has the advantage that the equations of motion are given for a set of
-independent generalized velocities only. This can give rise to simplified equations, additional insight, and
+independent generalized speeds only. This can give rise to simplified equations, additional insight, and
 numerically more efficient simulation. This also gives the benefit that Lagrange multipliers are not needed
 when solving constrained systems with Kane's method.
 
@@ -490,7 +490,7 @@ method.
 
 Furthermore, the Lagrange method results in a set of equations with well understood structures and properties.
 These structures and properties are not studied further in these materials. A starting point for further study
-is `Noether's theorem`, which extends the idea of ignorable coordinates to find conserved quantities like
+is `Noether's theorem`_, which extends the idea of ignorable coordinates to find conserved quantities like
 momentum and energy. 
 
 .. _`Noether's theorem`: https://en.wikipedia.org/wiki/Noether%27s_theorem_
