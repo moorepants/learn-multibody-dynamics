@@ -241,7 +241,7 @@ is the same as for Kane's method.
    B = me.ReferenceFrame('B')
 
    A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.z)
+   B.orient_axis(A, q2, A.x)
 
    O = me.Point('O')
    Ao = me.Point('A_O')

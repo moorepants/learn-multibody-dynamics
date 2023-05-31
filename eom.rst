@@ -335,7 +335,7 @@ velocities and angular velocities of :math:`A_o`, :math:`B_o`, :math:`A`, and
    B = me.ReferenceFrame('B')
 
    A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.z)
+   B.orient_axis(A, q2, A.x)
 
    A.set_ang_vel(N, u1*N.z)
    B.set_ang_vel(A, u2*A.x)
