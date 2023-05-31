@@ -662,7 +662,7 @@ First, the velocities and partial velocities are found as before:
    B = me.ReferenceFrame('B')
 
    A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.x)
+   B.orient_axis(A, q2, A.z)
 
    A.set_ang_vel(N, u1*N.z)
    B.set_ang_vel(A, u2*A.x)

@@ -79,7 +79,7 @@ their time derivatives. See :ref:`Energy and Power` for the definition of kineti
   :label: eq-lagrange-inertial
 
    -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial K}{\partial \dot{q}_r}
-        \right) - \frac{\partial T}{\partial q_r}
+        \right) - \frac{\partial K}{\partial q_r}
 
 .. warning:: Note the two minus signs in the above equation
 
@@ -215,7 +215,7 @@ Step 2. Use the Euler-Lagrange equations (the name for the equation
 .. math::
    :label: eq-euler-lagrange
 
-   \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial L}{\partial u_r}
+   \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial L}{\partial \dot{q}_r}
        \right) - \frac{\partial L}{\partial q_r} = \bar{F}_r,
     
 while being careful to include a force either in the applied forces 
@@ -226,7 +226,10 @@ in both.
 Example: Double pendulum with springs and sliding pointmass
 -----------------------------------------------------------
 
-The next step is to define the relevant variables, constants and frames:
+This example will use the Lagrange method to derive the equations of motion 
+for the system introduced in :ref:`Example of Kane's Equations`. The first
+step is to define the relevant variables, constants and frames. This step
+is the same as for Kane's method.
 
 .. jupyter-execute::
 
@@ -238,7 +241,7 @@ The next step is to define the relevant variables, constants and frames:
    B = me.ReferenceFrame('B')
 
    A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.x)
+   B.orient_axis(A, q2, A.z)
 
    O = me.Point('O')
    Ao = me.Point('A_O')
@@ -265,7 +268,7 @@ Finally, set up the Lagrangian and derive the equations of motion:
    qdd = qd.diff(t)
 
    K = m/2*(Ao.vel(N).dot(Ao.vel(N)) + Bo.vel(N).dot(Bo.vel(N)) + Q.vel(N).dot(Q.vel(N))) + 1/2*(
-       A.ang_vel_in(N).dot(I_A_Ao.dot(A.ang_vel_in(N))) + A.ang_vel_in(N).dot(I_B_Bo.dot(A.ang_vel_in(N)))
+       A.ang_vel_in(N).dot(I_A_Ao.dot(A.ang_vel_in(N))) + B.ang_vel_in(N).dot(I_B_Bo.dot(B.ang_vel_in(N)))
    )
    V = m*g*(Ao.pos_from(O).dot(-N.x) + Bo.pos_from(O).dot(-N.x)) + kt/2*(q1**2) + kt/2*q2**2 + kl/2*q3**2
 
@@ -389,7 +392,7 @@ the combined constraint forces are given as:
 
     \bar{F}_r = \mathbf{M}_{hn}^\text{T}\bar{\lambda},
 
-where :math:`\bar{\lambda}` is a vector of :math:`m + M`Lagrange multipliers, one for each constraint (row in :math:`\mathbf{M}_{hn}`).
+where :math:`\bar{\lambda}` is a vector of :math:`m + M` Lagrange multipliers, one for each constraint (row in :math:`\mathbf{M}_{hn}`).
 
 
 Example: turning the freely floating body discussed earlier into a rolling sphere.
@@ -476,7 +479,7 @@ derivative of the constraint equation, using the chain rule.
 The combined equations can now be written in a block matrix form:
 
 .. math::
-        \begin{bmatrix} \mathbf{M}_d & \mathbf{M}_{hn}^T \\ \mathbf{
+        \begin{bmatrix} \mathbf{M}_d & -\mathbf{M}_{hn}^T \\ \mathbf{
         M}_{hn} & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \bar{\lambda} \end{bmatrix} = 
         \begin{bmatrix} \bar{F}_r - \bar{g}_d \\ - \frac{\partial \mathbf{M}_{hn}\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
 
