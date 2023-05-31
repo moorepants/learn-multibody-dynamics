@@ -374,9 +374,18 @@ Due to how it is constructed, the power produced by the constraint force is alwa
 
     P = \sum_r F_r\dot{q}_r = \sum \lambda a_r(\bar{q})\dot{q}_r  = \lambda \sum a_r(\bar{q})\dot{q}_r = \lambda \cdot 0
 
-For example, consider the pointmass to be constrained to move in a bowl :math:`x^2 + y^2 + z^2 -1 = 0`.
-Taking the time derivative gives: :math:`a_1 = 2q_1`, :math:`a_2 = 2q_2`, and :math:`a_3 = 2q_3`.
-This results in generalized reaction forces :math:`F_1 = 2\lambda q_1`, :math:`F_2 = 2\lambda q_2` and :math:`F_3 = 2\lambda q_3`.
+For example, consider the pointmass to be constrained to move in a bowl
+:math:`q_1^2 + q_2^2 + q_3^2 -1 = 0`, :numref:`fig-lagrange-bowl`.  Taking the
+time derivative gives: :math:`a_1 = 2q_1`, :math:`a_2 = 2q_2`, and :math:`a_3 =
+2q_3`.  This results in generalized reaction forces :math:`F_1 = 2\lambda q_1`,
+:math:`F_2 = 2\lambda q_2` and :math:`F_3 = 2\lambda q_3`.
+
+.. _fig-lagrange-bowl:
+.. figure:: figures/lagrange-bowl.svg
+   :align: center
+
+   Point mass :math:`P` constrained to the surface of a spherical bowl with
+   radius :math:`1` and constraint force measure numbers :math:`F_1,F_2,F_3`.
 
 Often, there are multiple constraints on the same system. For convenience, the handling of these constraints can be combined.
 Consider the :math:`m+M` dimensional general constraint equations consisting of the time derivatives of the holonomic constraints
