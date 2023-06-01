@@ -761,15 +761,9 @@ the conservative ground-foot stiffness force by setting
 
    plot_results(ts_dae, xs_dae, Ks, Vs, Es, Tks);
 
-Now we get a bouncing jumper. This system should also still be conservative.
-The energy plot shows constant energy except at the exact moments of
-foot-ground contact. The potential energy rapidly grows by storing energy in
-the spring, as it should, but the kinetic energy does decrease as rapidly.
-This mismatch in the energies are due to numerical inaccuracies associated with
-the foot penetration not aligning precisely with the integrator's time step. If
-you tighten the simulation tolerances and simulate a small enough time steps,
-the total energy should come closer to constant over the collision. This is the
-nature of numerical simulation for collision of very stiff systems.
+Now we get a bouncing jumper. This system should also still be conservative and
+we see that the energy stored in the foot spring is consumed from the loss of
+kinetic energy as the velocity goes to zero and that total energy is constant.
 
 Nonconservative Simulation
 ==========================
