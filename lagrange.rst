@@ -227,38 +227,53 @@ Example: Double pendulum with springs and sliding pointmass
 -----------------------------------------------------------
 
 This example will use the Lagrange method to derive the equations of motion 
-for the system introduced in :ref:`Example of Kane's Equations`. The first
-step is to define the relevant variables, constants and frames. This step
+for the system introduced in :ref:`Example of Kane's Equations`. The description
+of the system is shown again in :numref:`fig-eom-double-rod-pendulum-repeat`.
+
+.. _fig-eom-double-rod-pendulum-repeat:
+.. figure:: figures/eom-double-rod-pendulum.svg
+   :align: center
+   :width: 600px
+
+   Three dimensional pendulum made up of two pinned rods and a sliding mass on
+   rod :math:`B`. Each degree of freedom is resisted by a linear spring. When
+   the generalized coordinates are all zero, the two rods are perpendicular to
+   each other.
+
+The first step is to define the relevant variables, constants and frames. This step
 is the same as for Kane's method.
 
-.. jupyter-execute::
+.. admonition:: Frames and Bodies Setup
+   :class: dropdown
 
-   m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
-   q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
+    .. jupyter-execute::
 
-   N = me.ReferenceFrame('N')
-   A = me.ReferenceFrame('A')
-   B = me.ReferenceFrame('B')
+        m, g, kt, kl, l = sm.symbols('m, g, k_t, k_l, l')
+        q1, q2, q3 = me.dynamicsymbols('q1, q2, q3')
 
-   A.orient_axis(N, q1, N.z)
-   B.orient_axis(A, q2, A.x)
+        N = me.ReferenceFrame('N')
+        A = me.ReferenceFrame('A')
+        B = me.ReferenceFrame('B')
 
-   O = me.Point('O')
-   Ao = me.Point('A_O')
-   Bo = me.Point('B_O')
-   Q = me.Point('Q')
+        A.orient_axis(N, q1, N.z)
+        B.orient_axis(A, q2, A.x)
 
-   Ao.set_pos(O, l/2*A.x)
-   Bo.set_pos(O, l*A.x)
-   Q.set_pos(Bo, q3*B.y)
+        O = me.Point('O')
+        Ao = me.Point('A_O')
+        Bo = me.Point('B_O')
+        Q = me.Point('Q')
 
-   O.set_vel(N, 0)
+        Ao.set_pos(O, l/2*A.x)
+        Bo.set_pos(O, l*A.x)
+        Q.set_pos(Bo, q3*B.y)
 
-   I = m*l**2/12
-   I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
-   I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
+        O.set_vel(N, 0)
 
-Finally, set up the Lagrangian and derive the equations of motion:
+        I = m*l**2/12
+        I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
+        I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
+
+Then, set up the Lagrangian:
 
 .. jupyter-execute::
 
@@ -273,12 +288,16 @@ Finally, set up the Lagrangian and derive the equations of motion:
    V = m*g*(Ao.pos_from(O).dot(-N.x) + Bo.pos_from(O).dot(-N.x)) + kt/2*(q1**2) + kt/2*q2**2 + kl/2*q3**2
 
    L = sm.Matrix([K - V])
-   left_hand_side = L.jacobian(qd).diff(t) - L.jacobian(q)
+   sm.trigsimp(L)
 
+Finally, derive the equations of motion:
+
+.. jupyter-execute::
+
+   left_hand_side = L.jacobian(qd).diff(t) - L.jacobian(q)
    qdd_zerod = {qddr: 0 for qddr in qdd}
    Md = left_hand_side.jacobian(qdd)
    gd = left_hand_side.xreplace(qdd_zerod)
-
    me.find_dynamicsymbols(Md), me.find_dynamicsymbols(gd)
 
 The mass matrix :math:`\mathbf{M}_d` only depends on :math:`\bar{q}`, and :math:`\bar{g}_d` depends
@@ -293,11 +312,21 @@ are defined as:
 
     p_r = \frac{\partial L}{\partial \dot{q_r}}
 
-The variables are collected in a vector :math:`\bar{p}`. They are called the generalized momenta, 
-as they coincide with linear momentum in the
-case of a Lagrangian describing a particle. Similar to the situation in the dynamics of particles, there can 
-be conservation of generalized momentum. This is the case for the generalized momentum associated with ignorable
-coordinates, as defined in :ref:`Equations of Motion with Nonholonomic Constraints`. 
+The variables are collected in a vector :math:`\bar{p}`. 
+
+They are called the generalized momenta, 
+as they coincide with linear momentum in the case of a Lagrangian describing a particle. 
+Similar to the situation in the dynamics of particles, there can 
+be conservation of generalized momentum. This is the case for the generalized momentum 
+associated with ignorable coordinates, as defined in :ref:`Equations of Motion with Nonholonomic Constraints`. 
+
+For the example pendulum, the generalized momenta are calculated as:
+
+.. jupyter-execute::
+
+    p = L.jacobian(qd).transpose()
+    sm.trigsimp(p)
+
 
 Constrained equations of motion
 ===============================
@@ -430,9 +459,10 @@ again because the second time derivatives of the generalized coordinates appear.
 .. admonition:: Frames and Body Setup
    :class: dropdown
 
+    Setting up reference frames
+   
     .. jupyter-execute::
 
-        # Setting up reference frames
         psi,theta, phi, x, y, z = me.dynamicsymbols('psi theta phi x y z')
         N = me.ReferenceFrame('N')
         B = me.ReferenceFrame('B')
@@ -442,14 +472,18 @@ again because the second time derivatives of the generalized coordinates appear.
         m, Ixx, Iyy, Izz = sm.symbols('M, I_{xx}, I_{yy}, I_{zz}')
         I_B = me.inertia(B, Ixx, Iyy, Izz)
 
-        # Kinematics and kinetic energy
+    Finding the kinetic energy:
+
+    .. jupyter-execute::
 
         omega_B = B.ang_vel_in(N)
         r_com = x*N.x + y*N.y + z*N.z
         v_com = r_com.dt(N)
         K = omega_B.dot(I_B.dot(omega_B))/2 + m*v_com.dot(v_com)/2
 
-        # Euler-Lagrange equation
+    Deriving equations of motion:
+
+    .. jupyter-execute::
 
         t = me.dynamicsymbols._t
         q = sm.Matrix([psi, theta, phi, x, y, z])
@@ -492,7 +526,8 @@ The combined equations can now be written in a block matrix form:
         M}_{hn} & 0\end{bmatrix}\begin{bmatrix}\ddot{\bar{q}} \\ \bar{\lambda} \end{bmatrix} = 
         \begin{bmatrix} \bar{F}_r - \bar{g}_d \\ - \frac{\partial \mathbf{M}_{hn}\dot{\bar{q}}}{\partial \bar{q}}\dot{\bar{q}} \end{bmatrix},
 
-where :math:`\bar{g}` is the dynamic bias, and the last term on the right hand side can be quickly computed as:
+where :math:`\bar{g}` is the dynamic bias, and the last term on the right hand side, 
+called the constraint bias, can be quickly computed as:
 
 .. jupyter-execute::
 
@@ -531,7 +566,7 @@ Furthermore, the connection from Kane's method to vector mechanics, that is, New
 can provide additional insight, and make it easier to encorporate non-conservative forces such as friction.
 
 On the other hand, the Lagrange method only requires energies as input, for which only the velocities
-of the bodies are needed. This is can be simpler to derive than the accelerations which are needed for Kane's
+of the bodies are needed. Therefore, it can be simpler to derive than the accelerations which are needed for Kane's
 method.
 
 Furthermore, the Lagrange method results in a set of equations with well understood structures and properties.

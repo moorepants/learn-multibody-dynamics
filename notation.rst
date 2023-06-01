@@ -317,3 +317,9 @@ Lagrange's method
 
 :math:`\bar{p}`, ``p``
    Generalized momenta ssociated with the :math:`\bar{q}` generalized coordinates
+
+:math:`\bar{g}_d`
+   Dynamic bias, the sum of terms not linear
+   in $\ddot{\bar{q}}$ in the inertial forces and the generalized conservative forces
+   considered in the Lagrangian.
+
