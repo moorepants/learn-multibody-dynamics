@@ -388,7 +388,21 @@ Energy
 
 The total potential energy is derived based on the height of all the particles
 and rigid body mass centers above a reference point :math:`O` on the ground and
-the two springs: passive knee stiffness and the ground-foot stiffness.
+the two springs: passive knee stiffness and the ground-foot stiffness. The work
+done by these two springs can be found using
+:external:py:func:`~sympy.integrals.integrals.integrate`:
+
+.. todo:: Not sure why I need a negative sign on Vf.
+
+.. jupyter-execute::
+
+   Vf = -sm.integrate(kf*zp**(sm.S(3)/2), q1)
+   Vf
+
+.. jupyter-execute::
+
+   Vk = sm.integrate(kk*(q3 - sm.pi/2), q3)
+   Vk
 
 .. jupyter-execute::
 
@@ -397,8 +411,7 @@ the two springs: passive knee stiffness and the ground-foot stiffness.
         ma*g*Ao.pos_from(O) +
         mb*g*Bo.pos_from(O) +
         mu*g*Pu.pos_from(O)).dot(N.y) +
-       kk*q3**2/2 +
-       kf*zp**2/2
+       Vf + Vk
    )
    V
 
