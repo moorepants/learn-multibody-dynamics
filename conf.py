@@ -103,6 +103,7 @@ chapters = [
     'generalized-forces',
     'holonomic-eom',
     'jupyter-python',
+    'lagrange',
     'loads',
     'mass',
     'motion',

@@ -23,3 +23,5 @@ References
    Nonholonomic Mechanics and Locomotion: The Snakeboard Example. 1994
 .. [Vallery2020] Heike Vallery and Arend L. Schwab, "Advanced Dynamics", 3rd
    edition, Delft University of Technology, 2020, ISBN/EAN 978-90-8309-060-3
+.. [Lanczos1970] Cornelius Lanczos, "The Variational Principles of Mechanics",
+   4th edition, Dover Publications, 1970, ISBN/EAN 978-04-8665-067-8

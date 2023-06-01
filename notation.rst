@@ -296,3 +296,30 @@ Energy and Power
 
 .. |notation-vec-time-diff| image:: figures/notation-vec-time-diff.svg
    :height: 30px
+
+Lagrange's method
+=================
+
+:math:`L`, ``L``
+   Lagrangian the difference between the kinetic energy and the potential energy: :math:`L = K - V`
+
+:math:`a_r`
+   Multiplicative term associated with generalized speed :math:`q_r` in a constraint equation
+
+:math:`\lambda`
+   Lagrange multiplier, variable encoding the (scaled) magnitude of a constraint force
+
+:math:`\bar{f}_{hn}`
+   Combined time-derivatives of holonomic constraints and non-holonomic constraints
+
+:math:`\boldsymbol{M}_{hn}`, ``M_hn``
+   Jacobian of constraint equations with respect to :math:`\dot{\bar{q}}`
+
+:math:`\bar{p}`, ``p``
+   Generalized momenta ssociated with the :math:`\bar{q}` generalized coordinates
+
+:math:`\bar{g}_d`
+   Dynamic bias, the sum of terms not linear
+   in $\ddot{\bar{q}}$ in the inertial forces and the generalized conservative forces
+   considered in the Lagrangian.
+
