@@ -282,9 +282,9 @@ Then, set up the Lagrangian:
    qd = q.diff(t)
    qdd = qd.diff(t)
 
-   K = m/2*(Ao.vel(N).dot(Ao.vel(N)) + Bo.vel(N).dot(Bo.vel(N)) + Q.vel(N).dot(Q.vel(N))) + 1/2*(
+   K = m/2*(Ao.vel(N).dot(Ao.vel(N)) + Bo.vel(N).dot(Bo.vel(N)) + Q.vel(N).dot(Q.vel(N))) + (
        A.ang_vel_in(N).dot(I_A_Ao.dot(A.ang_vel_in(N))) + B.ang_vel_in(N).dot(I_B_Bo.dot(B.ang_vel_in(N)))
-   )
+   )/2
    V = m*g*(Ao.pos_from(O).dot(-N.x) + Bo.pos_from(O).dot(-N.x)) + kt/2*(q1**2) + kt/2*q2**2 + kl/2*q3**2
 
    L = sm.Matrix([K - V])
