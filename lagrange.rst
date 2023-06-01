@@ -216,8 +216,8 @@ Step 2. Use the Euler-Lagrange equations (the name for the equation
    :label: eq-euler-lagrange
 
    \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial L}{\partial \dot{q}_r}
-       \right) - \frac{\partial L}{\partial q_r} = \bar{F}_r,
-    
+     \right) - \frac{\partial L}{\partial q_r} = F_r,
+
 while being careful to include a force either in the applied forces 
 :math:`\bar{F}_r`, or in the potential energy :math:`V`, but never
 in both.
