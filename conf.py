@@ -52,7 +52,7 @@ ONGITHUB = "ONGITHUB" in os.environ
 
 if not ONGITHUB:
     # Display TODO notes.
-    todo_include_todos = True
+    todo_include_todos = False
 
 # This configures sphinx to number figures and allow referencing them, if
 # labeled, using :numref:`my_figure`.
@@ -60,7 +60,8 @@ numfig = True
 
 # Sphinx >=4 default to MathJax v3, but v3 does not support wrapping lines. So
 # force Sphinx to use v2 and config MathJax to wrap long lines.
-mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+#mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+mathjax_path = "js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 mathjax2_config = {
     "HTML-CSS": {
         "linebreaks": {"automatic": True}
