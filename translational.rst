@@ -571,7 +571,7 @@ is embedded, so this is equivalent to:
    2{}^N\bar{\omega}^B \times {}^B\bar{v}^R
 
 where :math:`T` is again the point fixed at :math:`R` in this instant of time.
-The term :math:`2{}^N\bar{\omega}^B \times {}^N\bar{v}^R` is the `Coriolis
+The term :math:`2{}^N\bar{\omega}^B \times {}^B\bar{v}^R` is the `Coriolis
 acceleration`_ that arises from :math:`R` moving in the rotating frame
 :math:`B`.
 

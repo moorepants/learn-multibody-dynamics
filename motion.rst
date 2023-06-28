@@ -116,7 +116,7 @@ above. This system is described by three generalized coordinates
 .. figure:: figures/motion-sleigh.svg
    :align: center
 
-   Configuration diagram of a Chaplygin Sleigh. The rectange :math:`A`
+   Configuration diagram of a Chaplygin Sleigh. The rectangle :math:`A`
    represents a sleigh moving on a plane. Point :math:`P` represents the center
    of the sleigh.
 
