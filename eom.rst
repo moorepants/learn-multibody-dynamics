@@ -78,9 +78,9 @@ the bodies of interest.
 :math:`\bar{F}^*_r` is always linear in the time derivatives of the generalized
 speeds and contains velocity dependent terms such as the centripetal and
 Coriolis forces and the rotational velocity coupling terms. These forces are
-sometimes call `fictitious forces`_. :math:`\bar{F}_r` are contributing forces
-due to body and environment interactions. Texts about dynamics will often
-present the dynamical differential equations in this form:
+sometimes called `fictitious forces`_. :math:`\bar{F}_r` are contributing
+forces due to body and environment interactions. Texts about dynamics will
+often present the dynamical differential equations in this form:
 
 .. math::
    :label: eq-canonical-eom-form
