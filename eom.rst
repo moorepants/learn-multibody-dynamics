@@ -65,12 +65,12 @@ form:
 
 These are the `Newton-Euler equations`_ for a multibody system in the form
 presented in [Kane1985]_ pg. 158, thus we also call these equations *Kane's
-Equations*. The dynamical differential equations can only be formed with when
-motion is viewed from an `inertial reference frame`_, because an inertial
-reference frame is one where Newton's First Law holds, i.e. objects at rest
-stay at rest unless an external force acts on them. An inertial reference frame
-is one that is not accelerating, or can be assumed not to be with respect to
-the motion of the bodies of interest.
+Equations*. The dynamical differential equations can only be formed when motion
+is viewed from an `inertial reference frame`_, because an inertial reference
+frame is one where Newton's First Law holds, i.e. objects at rest stay at rest
+unless an external force acts on them. An inertial reference frame is one that
+is not accelerating, or can be assumed not to be with respect to the motion of
+the bodies of interest.
 
 .. _Newton-Euler equations: https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations
 .. _inertial reference frame: https://en.wikipedia.org/wiki/Inertial_frame_of_reference
