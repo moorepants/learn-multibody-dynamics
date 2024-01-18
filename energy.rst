@@ -53,11 +53,11 @@ Introduction
 
 So far we have investigated multibody systems from the perspective of forces
 and their relationship to motion. It is also useful to understand these systems
-from a power and energy perspective. Power :math:`P` is the time rate of change
-in work :math:`W` done where work is the energy gained, dissipated, or
+from a power and energy perspective. Power_ :math:`P` is the time rate of
+change in work :math:`W` done where work is the energy gained, dissipated, or
 exchanged in a system.
 
-.. power:: https://en.wikipedia.org/wiki/Power_(physics)
+.. _Power: https://en.wikipedia.org/wiki/Power_(physics)
 
 .. math::
 
