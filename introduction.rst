@@ -138,6 +138,14 @@ of doing multibody dynamics with open source Python software tools.
 Acknowledgements
 ================
 
+Wouter Wolfslag contributed the "Equations of Motion with the Lagrange Method"
+chapter, "Alternatives for Representing Orientation" section, and reviewed
+updates for version 0.2. Peter Stahlecker and Jan Heinen provided page-by-page
+review of the text while drafting version 0.1. Peter did the same for version
+0.2. Arthur Ryman contributed edits to the first version. Their feedback has
+helped improve the text in many ways. We also thank the students of TU Delft's
+Multibody Dynamics course who test the materials while learning.
+
 These are the primary contributors to the SymPy Mechanics software presented in
 the text, in approximate order of first contribution:
 
@@ -154,6 +162,7 @@ the text, in approximate order of first contribution:
 - Sudeep Sidhu, 2020
 - Abhinav Kamath, 2020
 - Timo Stienstra, 2022
+- Dr. Sam Brockie, 2023
 
 SymPy Mechanics is built on top of SymPy, whose `1000+ contributors`_ have also
 greatly helped SymPy Mechanics be what it is. Furthermore, the software sits on
@@ -161,13 +170,6 @@ the top of a large ecosystem of open source software written by thousands and
 thousands of contributors who we owe for the solid foundation.
 
 .. _1000+ contributors: https://github.com/sympy/sympy/blob/master/AUTHORS
-
-For this text, Peter Stahlecker and Jan Heinen provided page-by-page review of
-the text while drafting the first version. Arthur Ryman also contributed
-numerous edits to the first version. Wouter Wolfslag contributed sections and
-chapters to the second version and also reviewed the text updates. Their
-feedback has helped improve the text in many ways. We also thank the students
-of TU Delft's Multibody Dynamics course who test the materials while learning.
 
 Tools Behind the Book
 =====================
