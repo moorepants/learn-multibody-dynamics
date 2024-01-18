@@ -8,9 +8,11 @@ This repository contains the source for the website `Learn Multibody Dynamics
 Authors and Contributors
 ========================
 
-Authors: Jason K. Moore
+Author: Jason K. Moore
 
-Contributors: Peter Stahlecker, Jan Heinen, @tamoora, Christopher Dembia, Arthur Ryman, Wouter Wolfslag
+Co-Authors: Wouter Wolfslag
+
+Contributors: Peter Stahlecker, Jan Heinen, @tamoora, Christopher Dembia, Arthur Ryman
 
 License
 =======
