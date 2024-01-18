@@ -380,7 +380,7 @@ not functions of the dependent speeds.
    ])
    me.find_dynamicsymbols(Frs)
 
-8. Equations of motion
+9. Equations of motion
 ----------------------
 
 Finally, the matrix form of dynamical differential equations is found as we
