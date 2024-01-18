@@ -15,17 +15,6 @@ taught by `Jason K.  Moore`_ but it is designed to standalone from the course.
 .. _Multibody Dynamics B: https://moorepants.github.io/me41055
 .. _Jason K. Moore: https://www.moorepants.info
 
-.. warning:: Check back weekly for updates!
-
-   This website is continously updated. Chapters will be updated, subtracted,
-   and added as the current TU Delft Multibody Dynamics course progresses from
-   February 2023 to July 2023. We release fixed versions each year after the
-   course concludes.
-
-   `Version 0.1`_: Final version from the 2022 course.
-
-.. _Version 0.1: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.1
-
 .. toctree::
    :maxdepth: 2
    :caption: Table of Contents
@@ -56,6 +45,13 @@ taught by `Jason K.  Moore`_ but it is designed to standalone from the course.
    tmt
    notation
    references
+
+Prior Versions
+==============
+
+- `Version 0.1`_: Final version from the 2022 course.
+
+.. _Version 0.1: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.1
 
 2023 Lecture Video Playlist
 ===========================
