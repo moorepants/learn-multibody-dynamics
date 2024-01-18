@@ -20,9 +20,8 @@ import os
 
 project = 'Learn Multibody Dynamics'
 html_title = project
-copyright = '2022-2023, Jason K. Moore'
+copyright = '2022-2024, Jason K. Moore'
 author = 'Jason K. Moore'
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -53,8 +52,6 @@ ONGITHUB = "ONGITHUB" in os.environ
 if not ONGITHUB:
     # Display TODO notes.
     todo_include_todos = True
-
-todo_include_todos = False
 
 # This configures sphinx to number figures and allow referencing them, if
 # labeled, using :numref:`my_figure`.
