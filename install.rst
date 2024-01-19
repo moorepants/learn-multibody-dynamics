@@ -34,7 +34,7 @@ Create the environment with:
 
 .. code-block:: bash
 
-   conda create -c conda-forge -n learn-multibody-dynamics python=3.8
+   conda create -c conda-forge -n learn-multibody-dynamics python=3.10
 
 The ``-c conda-forge`` flag installs the packages from `Conda Forge`_. Conda
 Forge is a community maintained collection of compatible software packages and
@@ -56,7 +56,7 @@ this book with this command:
 
 .. code-block:: bash
 
-   conda install -c conda-forge ipympl ipython jupyter matplotlib notebook numpy pythreejs "scikits.odes" scipy "sympy>=1.11"
+   conda install -c conda-forge ipympl ipython jupyter matplotlib numpy pythreejs "scikits.odes" scipy "sympy>=1.11"
 
 4) Open Jupyter Notebook
 ========================
@@ -89,11 +89,6 @@ This website was built with the following software versions:
 
    import matplotlib
    matplotlib.__version__
-
-.. jupyter-execute::
-
-   #import notebook
-   #notebook.__version__
 
 .. jupyter-execute::
 

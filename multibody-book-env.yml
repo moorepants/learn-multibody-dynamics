@@ -3,26 +3,22 @@ channels:
   - conda-forge
 dependencies:
   - ghp-import ==2.1.0
-  - graphviz ==5.0.*
+  - graphviz ==9.0.*
   - imagemagick ==7.1.*
-  - ipython <8.9  # 8.9 introduced changes to the autocomplete
-  - jupyter-sphinx ==0.4.0  # >=0.4.0 required for new directive names jupyter-download-script/notebook
-  - matplotlib ==3.5.*
-  - numpy ==1.22.*
-  - python ==3.8.*
-  - pythreejs ==2.3.0
-  - scikits.odes ==2.6.5
-  - scipy ==1.7.*
-  - sphinx ==5.1.1
+  - ipython ==8.15.*
+  - jupyter-sphinx ==0.5.3  # >=0.4.0 required for new directive names jupyter-download-script/notebook
+  - matplotlib ==3.7.*
+  - numpy ==1.24.*
+  - python ==3.10.*
+  - pythreejs ==2.4.2
+  - scikits.odes ==2.7.*
+  - scipy ==1.11.*
+  - sphinx ==7.2.*
   - sphinx-autobuild  # dev
-  - sphinx-togglebutton ==0.3.1
-  - sympy ==1.11.1
-  - sphinx-material ==0.0.35
+  - sphinx-togglebutton ==0.3.*
+  - sympy ==1.11.*
+  - sphinx-material ==0.0.36
   - beautifulsoup4
   - css-html-js-minify
   - lxml
   - python-slugify
-  # The following are pinned because of https://github.com/jupyter-widgets/pythreejs/issues/389
-  - ipywidgets ==7.7.2
-  - jupyterlab_widgets ==1.1.1
-  - widgetsnbextension ==3.6.1
