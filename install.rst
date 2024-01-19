@@ -92,8 +92,8 @@ This website was built with the following software versions:
 
 .. jupyter-execute::
 
-   import notebook
-   notebook.__version__
+   #import notebook
+   #notebook.__version__
 
 .. jupyter-execute::
 

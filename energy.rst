@@ -508,11 +508,13 @@ are similar to prior chapters, so I leave them unexplained.
 
          q0 = np.array([q1, np.nan, q3])
 
-         q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals), np.deg2rad(45.0))
+         q0[1] = fsolve(lambda q2: eval_holo([q0[0], q2, q0[2]], p_vals),
+                        np.deg2rad(45.0))[0]
 
          u0 = np.array([u1, u3])
 
-         u20 = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[1]], p_vals),  np.deg2rad(0.0))
+         u20 = fsolve(lambda u2: eval_vel_con(q0, [u0[0], u2, u0[1]], p_vals),
+                      np.deg2rad(0.0))[0]
 
          x0 = np.hstack((q0, u0))
 
