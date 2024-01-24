@@ -2,8 +2,8 @@
 README
 ======
 
-This repository contains the source for the website `Learn Multibody Dynamics
-<https://moorepants.github.io/learn-multibody-dynamics/>`_.
+This repository contains the source for the interactive textbook `Learn
+Multibody Dynamics <https://moorepants.github.io/learn-multibody-dynamics/>`_.
 
 Authors and Contributors
 ========================

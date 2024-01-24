@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -22,6 +23,10 @@ project = 'Learn Multibody Dynamics'
 html_title = project
 copyright = '2022-2024, Jason K. Moore'
 author = 'Jason K. Moore'
+version = '0.2.dev0'
+commit_id = subprocess.check_output(['git', 'rev-parse', '--short',
+                                     'HEAD']).strip().decode('ascii')
+version += '+' + commit_id
 
 # -- General configuration ---------------------------------------------------
 
