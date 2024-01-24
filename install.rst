@@ -56,7 +56,7 @@ this book with this command:
 
 .. code-block:: bash
 
-   conda install -c conda-forge ipympl ipython jupyter matplotlib numpy pythreejs "scikits.odes" scipy "sympy>=1.11"
+   conda install -c conda-forge ipympl ipython jupyter notebook matplotlib numpy pythreejs "scikits.odes" scipy "sympy>=1.11"
 
 4) Open Jupyter Notebook
 ========================
@@ -89,6 +89,11 @@ This website was built with the following software versions:
 
    import matplotlib
    matplotlib.__version__
+
+.. jupyter-execute::
+
+   import notebook
+   notebook.__version__
 
 .. jupyter-execute::
 
