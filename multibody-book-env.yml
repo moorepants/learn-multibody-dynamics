@@ -19,7 +19,3 @@ dependencies:
   - sphinx-material ==0.0.36
   - sphinx-togglebutton ==0.3.*
   - sympy ==1.11.*
-  - beautifulsoup4
-  - css-html-js-minify
-  - lxml
-  - python-slugify
