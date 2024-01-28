@@ -24,9 +24,6 @@ html_title = project
 copyright = '2022-2024, Jason K. Moore'
 author = 'Jason K. Moore'
 version = '0.2.dev0'
-commit_id = subprocess.check_output(['git', 'rev-parse', '--short',
-                                     'HEAD']).strip().decode('ascii')
-version += '+' + commit_id
 
 # -- General configuration ---------------------------------------------------
 
@@ -53,6 +50,11 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 ONGITHUB = "ONGITHUB" in os.environ
+
+if ONGITHUB:
+    commit_id = subprocess.check_output(['git', 'rev-parse', '--short',
+                                         'HEAD']).strip().decode('ascii')
+    version += '+' + commit_id
 
 if not ONGITHUB:
     # Display TODO notes.
