@@ -8,6 +8,20 @@ Jupyter and Python
    :jupyter-download-script:`jupyter-python` or Jupyter notebook:
    :jupyter-download-notebook:`jupyter-python`.
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Run Jupyter notebook
+- Use magic commands in the Jupyter notebook
+- Create basic data types in Python
+- Create and use Python functions
+- Import Python modules
+
+Introduction
+============
+
 The following is a brief introduction to Python and how to use Python from a
 Jupyter Notebook. There is much more to learn than what is covered here. This
 is just enough to get you started for the purposes of this book. You will need
