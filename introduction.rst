@@ -35,11 +35,11 @@ and paper or there are computational elements that are tacked on rather than
 integrated. I hope to weave the two much more fluidly here so that you can
 learn the principles of multibody dynamics through computing.
 
-This text is less about teaching deep theory in multibody dynamics, but is
-focused on application and doing. After following the text and practicing, you
+This text is less about teaching deep theory in multibody dynamics and more
+about application and doing. After following the text and practicing, you
 should be able to correctly model, simulate, and visualize multibody dynamic
-systems so that you can use them as a tool to answer engineering and scientific
-questions.
+systems so that you can use them as a tool to answer scientific questions and
+solve engineering problems.
 
 Choice of dynamics formalism
 ============================
@@ -100,7 +100,7 @@ When I took the UC Davis course in 2006 as a graduate student, I naively
 decided to derive and analyze the nonlinear and linear Carvallo-Whipple bicycle
 model [Meijaard2007]_ as my course project [#]_. Fortunately, another student
 visiting from Aachen University, Thomas Engelhardt, also choose the same model
-and his success finally helped me squash the bugs in my formulation.  Luke
+and his success finally helped me squash the bugs in my formulation. Luke
 Peterson, Gilbert Gede, and Angadh Nanjangud subsequently joined Hubbard and
 Eke's labs and with Luke's lead we were sucked into the world of open source
 scientific software. At that time, Python's use by scientists and engineers
