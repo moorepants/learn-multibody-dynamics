@@ -32,7 +32,7 @@ the bookkeeping becomes extremely tedious and error prone for systems with even
 a small number of bodies. SymPy lets a computer handle the tedious aspects
 (e.g. differentiation or solving linear systems of equations) and reduces the
 errors one would encounter with pencil and paper. This chapter introduces SymPy
-and the primary SymPy features needed we will be using.
+and the primary SymPy features we will be using.
 
 .. _SymPy: https://www.sympy.org
 .. _computer algebra system: https://en.wikipedia.org/wiki/Computer_algebra_system
@@ -51,7 +51,7 @@ a format that is similar to the math in a textbook. Executing
 :external:py:func:`~sympy.interactive.printing.init_printing` at the beginning
 of your Jupyter Notebook will ensure that SymPy objects render as typeset
 mathematics. I use the ``use_latex='mathjax'`` argument here to disable math
-image generation.
+png image generation, but that keyword argument is not necessary.
 
 .. jupyter-execute::
 
@@ -334,7 +334,7 @@ There is also a standard representation accessed with the ``repr()`` function:
 
    repr(expr3)
 
-This form matches what you typically would type to create the function and it
+This form matches what you typically would type to create the expression and it
 returns a string. The ``print()`` function will display that string:
 
 .. jupyter-execute::
@@ -780,7 +780,7 @@ Solving Linear Systems
 You'll need to solve `linear systems of equations`_ often in this book. SymPy
 offers `a number of ways to do this`_, but the best way to do so if you know a
 set of equations are linear in specific variables is the method described
-below. First, you should know you have equations of this form:
+below. First, you should confirm you have equations of this form:
 
 .. math::
 
@@ -1133,8 +1133,6 @@ else has asked your question), you can do so at the following places:
   email.
 - `SymPy Github Discussions <https://github.com/sympy/sympy/discussions>`_: Ask
   questions via Github.
-- `SymPy Gitter <https://gitter.im/sympy/sympy>`_: Ask questions in a live
-  chat.
 - `Stackoverflow
   <https://stackoverflow.com/questions/tagged/sympy?tab=Votes>`_: Ask and
   search questions on the most popular coding Q&A website.
