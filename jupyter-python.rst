@@ -58,8 +58,14 @@ following command:
 A new window will open in your web browser where you can open an existing
 notebook or start a new one. Notebooks are organized with cells. You may have a
 code cell for inputting commands followed by its result cell which contains the
-output of the code. You may also have a text cell that contains static content.
-Cell type can be changed using a Jupyter drop-down menu.
+output of the code. You may also have a text cell that contains static content
+written in Markdown_. Markdown allows you to incorporate simple formatting and
+even things like mathematical equations using LaTeX_ notation, e.g. ``$a^2$``
+displays as :math:`a^2`. The cell type can be changed using a Jupyter drop-down
+menu.
+
+.. _Markdown: https://en.wikipedia.org/wiki/Markdown
+.. _LaTeX: https://en.wikipedia.org/wiki/LaTeX
 
 There is the menu bar above for navigating a notebook but you will find the
 following keyboard shortcuts helpful:
