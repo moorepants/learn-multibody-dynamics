@@ -874,20 +874,14 @@ without the need to create auxiliary reference frames :math:`B` and :math:`C`:
 
    .. _orientation-euler-animation:
 
-   .. figure:: https://upload.wikimedia.org/wikipedia/commons/8/85/Euler2a.gif
+   .. figure:: https://objects-us-east-1.dream.io/mechmotum/euler-angle-animation.gif
       :align: center
 
-      An orientation through Euler angles with frame :math:`A` (blue),
-      :math:`B` (green), :math:`C` (yellow), and :math:`D` (red). The rightward
-      blue arrow is the :math:`x` direction, leftward blue arrow is the
-      :math:`y` direction, and upward blue arrow is the :math:`z` direction.
-      All frames' unit vectors are aligned before being oriented. The lower
-      yellow arrow in the animation should be green, considering that common
-      colored arrows should be orthogonal.
-
-      `Euler2.gif: Juansemperederivative work: Xavax
-      <https://commons.wikimedia.org/wiki/File:Euler2a.gif>`_, CC BY-SA 3.0, via
-      Wikimedia Commons
+      An orientation through Euler angles with frame :math:`A` (yellow),
+      :math:`B` (red), :math:`C` (green), and :math:`D` (blue). The rightward
+      yellow arrow is the :math:`x` direction, leftward yellow arrow is the
+      :math:`y` direction, and upward yellow arrow is the :math:`z` direction.
+      All frames' unit vectors are aligned before being oriented.
 
    Take the acute angles between :math:`A` and :math:`B` to be :math:`\psi`,
    :math:`B` and :math:`C` to be :math:`\theta`, and :math:`C` and :math:`D` to
