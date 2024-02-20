@@ -2,7 +2,8 @@
 Learn Multibody Dynamics
 ========================
 
-Version: |version|
+| Last Updated: |today|
+| Version: |version|
 
 This online book aims to teach multibody dynamics using interactive code woven
 into the text. It follows the organization and methods presented in [Kane1985]_
