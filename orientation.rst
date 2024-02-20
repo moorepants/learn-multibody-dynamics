@@ -30,10 +30,10 @@ Reference Frames
 
 In the study of multibody dynamics, we are interested in observing motion of
 connected and interacting objects in three dimensional space. This observation
-necessitates the concept of a frame of reference, or reference frame. A
+necessitates the concept of a *frame of reference*, or reference frame. A
 reference frame is an abstraction which we define as the set of all points in
 `Euclidean space`_ that are carried by and fixed to the observer of any given
-state of motion. Practically speaking, it is useful to image your eye as an
+state of motion. Practically speaking, it is useful to imagine your eye as an
 observer of motion. Your eye can orient itself in 3D space to view the motion
 of objects from any direction and the motion of objects will appear differently
 in the set of points associated with the reference frame attached to your eye
@@ -264,6 +264,9 @@ For example, the figure below shows the three angles
    :align: center
 
    Three angles relating :math:`\hat{a}_x` to the unit vectors of :math:`N`.
+
+.. todo:: Use double sided arrows on the above figure so a sign of the angle is
+   not implied.
 
 Similar to the simple example above, we can write these equations if the
 :math:`\alpha_y` and :math:`\alpha_z` angles relate the :math:`\hat{a}_y` and
