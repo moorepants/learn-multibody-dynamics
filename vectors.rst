@@ -134,9 +134,10 @@ from :math:`A`. There are then three unique scalar functions
    \bar{v} = v_x \hat{a}_x + v_y \hat{a}_y + v_y \hat{a}_y
 
 :math:`v_x \hat{a}_x` is called the :math:`\hat{a}_x` component of
-:math:`\bar{v}` and :math:`v_x` is called measure number of :math:`\bar{v}`.
-Since the components are mutually perpendicular the measure number can also be
-found from the dot product of :math:`\bar{v}` and the respective unit vector:
+:math:`\bar{v}` and :math:`v_x` is called :term:`measure number` of
+:math:`\bar{v}`.  Since the components are mutually perpendicular the measure
+number can also be found from the dot product of :math:`\bar{v}` and the
+respective unit vector:
 
 .. math::
    :label: meas-num-dots
@@ -621,7 +622,7 @@ position between two points:
    \bar{r}^{P_2/P_1}
 
 which reads as the "position vector from :math:`P_1` to :math:`P_2`" or the
-"position vector of :math:`P_2` with respect to :math:`P_1`. The tail of the
+"position vector of :math:`P_2` with respect to :math:`P_1`". The tail of the
 vector is at :math:`P_1` and the tip is at :math:`P_2`.
 
 .. admonition:: Exercise
