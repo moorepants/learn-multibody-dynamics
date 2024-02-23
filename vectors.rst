@@ -131,7 +131,7 @@ from :math:`A`. There are then three unique scalar functions
 .. math::
    :label: vector-with-meas-nums
 
-   \bar{v} = v_x \hat{a}_x + v_y \hat{a}_y + v_y \hat{a}_y
+   \bar{v} = v_x \hat{a}_x + v_y \hat{a}_y + v_z \hat{a}_z
 
 :math:`v_x \hat{a}_x` is called the :math:`\hat{a}_x` component of
 :math:`\bar{v}` and :math:`v_x` is called :term:`measure number` of
