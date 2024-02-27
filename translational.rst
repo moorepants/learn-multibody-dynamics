@@ -265,12 +265,13 @@ This gives the same result as manually calculated above.
 .. admonition:: Solution
    :class: dropdown
 
-   :math:`S` is fixed in :math:`A` and thus its velocity is zero in :math:`A`.
-   We can then write:
+   :math:`B_c` is fixed in :math:`B` and thus its velocity is zero in
+   :math:`B`. :math:`S` is fixed in :math:`A`. Using
+   :math:numref:`point-velocity-two-frames` we can then write:
 
    .. math::
 
-      {}^A\bar{v}^{B_c} = {}^A\bar{v}^S + {}^A\bar{\omega}^B\times\bar{r}^{B_c/S}
+      {}^A\bar{v}^{B_c} = {}^B\bar{v}^{B_c} + {}^A\bar{\omega}^B\times\bar{r}^{B_c/S}
 
    This results in:
 
