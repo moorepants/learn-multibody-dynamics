@@ -16,6 +16,7 @@ After completing this chapter readers will be able to:
 - calculate the velocity and acceleration of a point in a multibody system
 - apply the one and two point theorems to calculate velocity and acceleration
   of points
+- identify the tangential, centripetal, and Coriolis acceleration components
 
 Introduction
 ============
@@ -86,6 +87,8 @@ to Reddit during the 2022 storm Eunice:
 and it looks very dangerous. It would be interesting to know the velocity and
 acceleration of various points on this sculpture. First, we sketch a
 configuration diagram:
+
+.. todo:: Add the labels in the figures for N, A, B (circles around them).
 
 .. figure:: figures/translational-kinetic-sculpture.svg
    :align: center
@@ -222,8 +225,9 @@ example :math:`\bar{r}^{Q/O}` is:
    Q.pos_from(O)
 
 Also, once the position vectors are established, velocities can be calculated.
-You will always explicitly need to set the velocity of at least one point. In
-our case, we can set :math:`{}^N\bar{v}^O=0` with
+You will always explicitly need to set the velocity of at least one point in a
+collection of points before the velocities of the other points can be
+calculated. In our case, we can set :math:`{}^N\bar{v}^O=0` with
 :external:py:meth:`~sympy.physics.vector.point.Point.set_vel`:
 
 .. jupyter-execute::
@@ -246,10 +250,36 @@ statements can be found with the
 
    Q.vel(N)
 
+This gives the same result as manually calculated above.
+
 .. warning::
 
    :external:py:meth:`~sympy.physics.vector.point.Point.vel` method will
    calculate velocities naively, i.e. not necessarily give the simplest form.
+
+.. admonition:: Exercise
+
+   Calculate the velocity of point :math:`B_c` when observed from reference
+   frame :math:`A`.
+
+.. admonition:: Solution
+   :class: dropdown
+
+   :math:`B_c` is fixed in :math:`B` and thus its velocity is zero in
+   :math:`B`. :math:`S` is fixed in :math:`A`. Using
+   :math:numref:`point-velocity-two-frames` we can then write:
+
+   .. math::
+
+      {}^A\bar{v}^{B_c} = {}^B\bar{v}^{B_c} + {}^A\bar{\omega}^B\times\bar{r}^{B_c/S}
+
+   This results in:
+
+   .. jupyter-execute::
+
+      Bc = me.Point('B_c')
+      Bc.set_pos(S, -c*B.z - w/2*A.x)
+      me.cross(B.ang_vel_in(A), Bc.pos_from(S))
 
 Velocity Two Point Theorem
 ==========================
@@ -415,7 +445,7 @@ velocity is fixed in :math:`B` before making the computation:
    S.set_vel(B, 0)
    R.v1pt_theory(S, N, B)
 
-.. todo:: Why is S.set_vel(B, 0) required. It isn't in my manual calculation?
+.. todo:: Why is S.set_vel(B, 0) required? It isn't in my manual calculation.
    Maybe something that can be improved in SymPy.
 
 Translational Acceleration
@@ -477,7 +507,9 @@ acceleration:
 
    me.cross(A.ang_acc_in(N), S.pos_from(P))
 
-And this presentation also shows the radial component of acceleration:
+The tangential component is always tangent to the motion path of :math:`P`. The
+last term is the radial component of acceleration, also called
+:term:`centripetal acceleration`:
 
 .. math::
    :label: radial
@@ -491,6 +523,8 @@ which can also be calculated using the methods of with
 .. jupyter-execute::
 
    me.cross(A.ang_vel_in(N), me.cross(A.ang_vel_in(N), S.pos_from(P)))
+
+This acceleration component is always normal to the motion path of :math:`P`.
 
 Lastly, :external:py:meth:`~sympy.physics.vector.point.Point.a2pt_theory`
 calculates the acceleration using this theorem with:
@@ -571,9 +605,10 @@ is embedded, so this is equivalent to:
    2{}^N\bar{\omega}^B \times {}^B\bar{v}^R
 
 where :math:`T` is again the point fixed at :math:`R` in this instant of time.
-The term :math:`2{}^N\bar{\omega}^B \times {}^B\bar{v}^R` is the `Coriolis
-acceleration`_ that arises from :math:`R` moving in the rotating frame
-:math:`B`.
+The tangential and centripetal acceleration terms are present in
+:math:`{}^N\bar{a}^T`. The term :math:`2{}^N\bar{\omega}^B \times
+{}^B\bar{v}^R` is the `Coriolis acceleration`_ that arises from :math:`R`
+moving in the rotating frame :math:`B`.
 
 .. _Coriolis acceleration: https://en.wikipedia.org/wiki/Coriolis_force
 
