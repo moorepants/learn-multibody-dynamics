@@ -604,9 +604,10 @@ is embedded, so this is equivalent to:
    2{}^N\bar{\omega}^B \times {}^B\bar{v}^R
 
 where :math:`T` is again the point fixed at :math:`R` in this instant of time.
-The term :math:`2{}^N\bar{\omega}^B \times {}^B\bar{v}^R` is the `Coriolis
-acceleration`_ that arises from :math:`R` moving in the rotating frame
-:math:`B`.
+The tangential and centripetal acceleration terms are present in
+:math:`{}^N\bar{a}^T`. The term :math:`2{}^N\bar{\omega}^B \times
+{}^B\bar{v}^R` is the `Coriolis acceleration`_ that arises from :math:`R`
+moving in the rotating frame :math:`B`.
 
 .. _Coriolis acceleration: https://en.wikipedia.org/wiki/Coriolis_force
 
