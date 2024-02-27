@@ -42,11 +42,12 @@ After completing this chapter readers will be able to:
 - apply the definition of angular velocity
 - calculate the angular velocity of simple rotations
 - choose Euler angles for a rotating reference frame
-- calculate the angular velocity of references frames described by successive
+- calculate the angular velocity of reference frames described by successive
   simple rotations
 - derive the time derivative of a vector in terms of angular velocities
 - calculate the angular acceleration of a reference frame
-- calculate the angular acceleration of successive rotations
+- calculate the angular acceleration of reference frames described by
+  successive rotations
 
 Introduction
 ============
@@ -58,7 +59,7 @@ system: typically both angular velocity and angular acceleration. Assuming that
 a reference frame is fixed to a rigid body, we will start by finding the
 angular kinematics of a single reference frame and then use the properties of
 :ref:`Successive Orientations` to find the angular kinematics of a set of
-connected reference frames.
+related reference frames.
 
 .. _Euler's Laws of Motion: https://en.wikipedia.org/wiki/Euler%27s_laws_of_motion
 .. _angular momentum: https://en.wikipedia.org/wiki/Angular_momentum
@@ -94,10 +95,11 @@ Angular Velocity
 In Ch. :ref:`Orientation of Reference Frames` we learned that reference frames
 can be oriented relative to each other. If the relative orientation of two
 reference frames change with respect to time, then we can calculate the angular
-velocity :math:`{}^A\bar{\omega}^B` of reference frame :math:`B` when observed
-from reference frame :math:`A`. If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are
-right handed mutually perpendicular unit vectors fixed in :math:`B` then the
-angular velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
+velocity of reference frame :math:`B` when observed from reference frame
+:math:`A`. This vector is written with the notation :math:`{}^A\bar{\omega}^B`.
+If :math:`\hat{b}_x,\hat{b}_y,\hat{b}_z` are right handed mutually
+perpendicular unit vectors fixed in :math:`B` then the angular velocity of
+:math:`B` when observed from :math:`A` is defined as ([Kane1985]_, pg.  16):
 
 .. math::
    :label: angular-velocity-definition
@@ -114,8 +116,8 @@ angular velocity of :math:`B` in :math:`A` is defined as ([Kane1985]_, pg. 16):
    and angular velocities. :math:`{}^B\mathbf{C}^A` describes the orientation
    of :math:`B` rotated with respect to :math:`A` and the mapping of vectors in
    :math:`A` to vectors expressed in :math:`B`. Whereas
-   :math:`{}^A\bar{\omega}^B` describes the angular velocity of :math:`B` when
-   observed from :math:`A`.
+   :math:`{}^A\bar{\omega}^B` describes the angular velocity of :math:`B`
+   **when observed** from :math:`A`.
 
 If :math:`B` is oriented with respect to :math:`A` and mutually perpendicular
 unit vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` are fixed in :math:`A` then
@@ -157,8 +159,8 @@ and establish the orientation using
    B.orient_explicit(A, B_C_A.transpose())
    B.dcm(A)
 
-This now let's us write the :math:`B` unit vectors in terms of the :math:`A`
-unit vectors:
+This now let's write the :math:`B` unit vectors in terms of the :math:`A` unit
+vectors:
 
 .. jupyter-execute::
 
@@ -331,20 +333,20 @@ matrix exists between the two reference frames:
    B.orient_axis(A, theta, A.z)
    B.ang_vel_in(A)
 
-.. todo:: Should this return the angular velocity expressed in the body fixed
-   frame?
+.. todo:: SymPy behavior: Should this return the angular velocity expressed in
+   the body fixed frame?
 
-A simple orientation and associated simple angular velocity can be formulated for
-any arbitrary orientation axis vector, not just one of the three mutually
+A simple orientation and associated simple angular velocity can be formulated
+for any arbitrary orientation axis vector, not just one of the three mutually
 perpendicular unit vectors as shown above. There is a simple angular velocity
 between two reference frames :math:`A` and :math:`B` if there exists a single
 unit vector :math:`\hat{k}` which is fixed in both :math:`A` and :math:`B` for
 some finite time. If this is the case, then :math:`{}^A\bar{\omega}^B = \omega
 \hat{k}` where :math:`\omega` is the time rate of change of the angle
 :math:`\theta` between a line fixed in :math:`A` and another line fixed in
-:math:`B` both of which are perpendicular to the orientation axis :math:`\hat{k}`.
-We call :math:`\omega=\dot{\theta}` the angular speed of :math:`B` in
-:math:`A`.
+:math:`B` both of which are perpendicular to the orientation axis
+:math:`\hat{k}`.  We call :math:`\omega=\dot{\theta}` the :term:`angular speed`
+of :math:`B` in :math:`A`.
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_axis` can
 take any arbitrary vector fixed in :math:`A` and :math:`B` to establish the
 orientation:
@@ -364,13 +366,10 @@ The angular speed is then:
 
    B.ang_vel_in(A).magnitude()
 
-.. note:: This result should be :math:`|\dot{\theta}|`. This is a bug in SymPy,
-   see https://github.com/sympy/sympy/issues/23173 for more info. This
-   generally will not cause issues, but for certain equation of motion
-   derivations it could, so beware.
-
-.. todo:: Why doesn't this simplify to theta dot? I tried ``real=True`` on
-   theta.
+.. note:: This result could more properly be :math:`|\dot{\theta}|`. This is an
+   outstanding issue in SymPy, see https://github.com/sympy/sympy/issues/23173
+   for more info. This generally will not cause issues, but for certain
+   equation of motion derivations it could not be ideal, so beware.
 
 Body Fixed Orientations
 =======================
