@@ -1,6 +1,6 @@
-======================
-Holonomic  Constraints
-======================
+=====================
+Holonomic Constraints
+=====================
 
 .. note::
 
@@ -39,12 +39,12 @@ Learning Objectives
 
 After completing this chapter readers will be able to:
 
-- derive and specify the configuration constraints (holonomic constraints)
+- derive and specify the configuration constraint (holonomic constraint)
   equations for a system of connected rigid bodies
 - numerically solve a set of holonomic constraints for the dependent
   coordinates
-- apply a point configuration constraints as a general approach to constraining
-  a system
+- apply point configuration constraints as a general approach to constraining a
+  system
 - calculate the number of generalized coordinates
 - choose generalized coordinates
 - calculate velocities when holonomic constraints are present
@@ -90,13 +90,15 @@ Depending on the length of the links, different motion types are possible.
 .. _grashof-animation:
 .. figure:: https://upload.wikimedia.org/wikipedia/commons/c/ca/Grashof_Type_I_Four-Bar_Kinematic_Inversions.gif
    :align: center
-   :width: 80%
+   :width: 100%
 
    Pasimi, CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0, via Wikimedia Commons
 
-A four bar linkage is an example of a *closed kinematic loop*. The case of
-:numref:`configuration-four-bar` there are two vector paths to point
-:math:`P_4` from :math:`P_1`:
+A four bar linkage is an example of a *closed kinematic loop*. We can define
+this loop by disconnecting the loop at some location, :math:`P_4` in our case,
+and forming the *open loop* vector equations to points that should coincide. In
+the case of :numref:`configuration-four-bar` there are two vector paths to
+point :math:`P_4` from :math:`P_1`, for example:
 
 .. math::
    :label: vector-loop
@@ -104,12 +106,9 @@ A four bar linkage is an example of a *closed kinematic loop*. The case of
    \bar{r}^{P_4/P_1} & = l_n \hat{n}_x \\
    \bar{r}^{P_4/P_1} & = \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} = l_a\hat{a}_x + l_b\hat{b}_x + l_c\hat{c}_x
 
-For the loop to close, the two vector paths must equate. We can resolve this by
-disconnecting the loop at some location, :math:`P_4` in our case, and forming
-the *open loop* vector equations to points that should coincide. Keep in mind
-that we assume that the lengths are constant and the angles change with time.
-
-Setup the variables, reference frames, and points:
+For the loop to close, the two vector paths must equate. Keep in mind that we
+assume that the lengths are constant and the angles change with time. To define
+this loop in SymPy, setup the variables, reference frames, and points:
 
 .. jupyter-execute::
 
@@ -143,7 +142,8 @@ positions among points on one open leg of the chain:
 
    P4.pos_from(P1)
 
-Now, declare a vector for the other path to :math:`P_4`:
+Now, create a vector for the other path to :math:`P_4` outside of the ``Point``
+position relationships:
 
 .. jupyter-execute::
 
@@ -155,10 +155,11 @@ equation:
 .. math::
    :label: constraint-expression
 
-   \bar{r}^{P_4/P_1} - \left( \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} \right) = 0
+   \left( \bar{r}^{P_2/P_1} + \bar{r}^{P_3/P_2} + \bar{r}^{P_4/P_3} \right) -
+   \bar{r}^{P_4/P_1} = 0
 
-Using :external:py:meth:`~sympy.physics.vector.point.Point.pos_from` for the
-open loop leg made of points and the additional vector:
+Use :external:py:meth:`~sympy.physics.vector.point.Point.pos_from` for the open
+loop leg made of points and the additional vector:
 
 .. jupyter-execute::
 
@@ -168,8 +169,8 @@ open loop leg made of points and the additional vector:
 This "loop" vector expression must equate to zero for our linkage to always be
 a closed loop. We have a planar mechanism, so we can extract two scalar
 equations associated with a pair of unit vectors in the plane of the mechanism.
-We can pick any two non-parallel unit vectors to express the components in, with
-the intuitive choice being :math:`\hat{n}_x` and :math:`\hat{y}`.
+We can pick any two non-parallel unit vectors to express the components in,
+with the intuitive choice being :math:`\hat{n}_x` and :math:`\hat{n}_y`.
 
 .. jupyter-execute::
 
@@ -204,13 +205,14 @@ and :math:`M` is the number of scalar constraint equations.
    Holonomic constraints are defined strictly as equations that are function of
    the :math:`N` time varying coordinates. It is true that these equations are
    only valid for a limited set of ranges for the constants in the equations,
-   e.g. the lengths of the bars, but the range and combination constraints on
+   i.e. the lengths of the bars, but the range and combination constraints on
    the constants are not what we are considering here. Secondly, Eq.
    :math:numref:`configuration-constraint` does not represent inequality
    constraints. A coordinate may be constrained to a specific range, e.g.
    :math:`-\pi<q_1<\pi`, but these are not holonomic constraints in the sense
-   definied here. Inequality constraints are generally dealt with using
+   defined here. Inequality constraints are generally dealt with using
    collision models to capture the real dynamics of forcefully limiting motion.
+   See :ref:`collision` for more information.
 
 The four-bar linkage constraints are functions of configuration variables: time
 varying angles and distances. In our case the constraint equations are:
@@ -222,7 +224,7 @@ varying angles and distances. In our case the constraint equations are:
 
 and :math:`N=3` and :math:`M=2`.
 
-In SymPy, we'll typically form this column vector as so:
+In SymPy, we'll typically form this column matrix as so:
 
 .. jupyter-execute::
 
