@@ -323,3 +323,35 @@ Lagrange's method
    in $\ddot{\bar{q}}$ in the inertial forces and the generalized conservative forces
    considered in the Lagrangian.
 
+Figure Sign Conventions
+=======================
+
+:numref:`fig-sign-convention-translation` shows three ways to indicate leader
+arrows on the dimension for the distance between points :math:`P` and :math:`Q`
+parallel to :math:`\hat{n}_x`. A positive value of :math:`q` indicates that
+point :math:`Q` is to the right of point :math:`P` and that
+:math:`\bar{r}^{Q/P} \cdot \hat{n}_x = q` and :math:`\bar{r}^{P/Q} \cdot
+\hat{n}_x = -q`.
+
+.. _fig-sign-convention-translation:
+.. figure:: figures/sign-convention-translation.svg
+
+   Three options for adding arrows to linear dimensions which all have the same
+   meaning.
+
+In the first row (a, b, c) of :numref:`fig-sign-convention-orientation` there
+are three ways to indicate leader arrows on the angular dimension :math:`q` for
+a positive right handed orientation of :math:`A` with respect to :math:`N`. A
+positive value of :math:`q` gives a positive right handed orientation. This
+corresponds to the SymPy Mechanics command ``A.orient_axis(N, q, N.z)``. In the
+second row (d, e, f), three ways are shown to indicate leader arrows on the
+angular dimension :math:`q` for a negative right handed orientation of
+:math:`A` with respect to :math:`N`. A positive value of :math:`q` causes a
+negative right handed orientation. This row corresponds to the SymPy Mechanics
+commands ``A.orient_axis(N, -q, N.z)`` or ``A.orient_axis(N, q, -N.z)``.
+
+.. _fig-sign-convention-orientation:
+.. figure:: figures/sign-convention-orientation.svg
+
+   Options for adding arrows to angular dimensions for positive (first row) and
+   negative (second row) orientations.
