@@ -40,9 +40,9 @@ Learning Objectives
 After completing this chapter readers will be able to:
 
 - Formulate nonholonomic constraints to constrain motion.
-- Determine if a nonholonomic constraint is essential and not simply a
-  differentiated holonomic constraint.
-- Formulate a nonholonomic constraint for rolling without slip.
+- Determine if a nonholonomic constraint is essential and not simply the time
+  derivative of a  holonomic constraint.
+- Formulate a motion constraint for rolling without slip.
 - Define kinematical differential equations and solve them to put in first
   order form.
 - Select different choices of generalized speeds.
@@ -54,10 +54,11 @@ Motion Constraints
 ==================
 
 In :ref:`Holonomic Constraints`, we discussed constraints on the configuration
-of a system. Configuration only concerns where points are and how reference
-frames are oriented. In this chapter, we will consider constraints on the
-motion of a system. Motion concerns how points and reference frames move. Take
-parallel parking a car as a motivating example.
+of a system. When defining configuration we are only concerned with the
+locations of points and how reference frames are oriented. In this chapter, we
+will consider constraints on the motion of a system. Motion concerns how points
+and reference frames move in time. Take parallel parking a car as a motivating
+example, :numref:`fig-motion-parallel`.
 
 .. _fig-motion-parallel:
 .. figure:: figures/motion-parallel.svg
@@ -96,8 +97,8 @@ coordinates and arise from scalar equations derived from velocities.
    very high resisting friction force. It is important to note that any
    constraint is just a model of a physical phenomena. We know that if we push
    hard enough and low enough that the car's lateral motion is not constrained.
-   Also, if the car were on ice, then the nonholomonic constraint would be a
-   poor modeling decision.
+   Also, if the car were on ice, then the nonholomonic constraint may be a poor
+   modeling decision.
 
 Chaplygin Sleigh
 ================
@@ -180,7 +181,7 @@ nonholonomic constraint even though it looks like one.
 So if we can integrate :math:`f_n` with respect to time and we arrive at a
 function of only the generalized coordinates and time, then we do not have a
 nonholonomic constraint, but a holonomic constraint in disguise. Unfortunately,
-it is not generally possible to integrate :math:`f_n` so we can check the
+it is not generally possible to integrate :math:`f_n` so we must check the
 integrability of :math:`f_n` indirectly.
 
 If :math:`f_n` of the sleigh was the time derivative of a holonomic constraint
