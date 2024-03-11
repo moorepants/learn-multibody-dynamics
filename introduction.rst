@@ -82,7 +82,7 @@ History
 The primary presentation of multibody dynamics in this text is based on the
 presentation I and my fellow graduate students received in the graduate
 Multibody Dynamics course taught by Mont Hubbard and the late Fidelis O. Eke at
-the University of California, Davis in the early 2000's. Profs. Hubbard an Eke
+the University of California, Davis in the early 2000's. Profs. Hubbard and Eke
 taught the course from the late 80s or early 90s until they retired in 2013
 (Prof. Hubbard) and 2016 (Prof. Eke). The 10-week course was based on Thomas R.
 Kane's and David A. Levinson's 1985 book "Dynamics, Theory and Application" and
