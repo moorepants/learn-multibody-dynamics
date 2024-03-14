@@ -343,12 +343,13 @@ The cross product terms are found with the radius of the wheel with :math:`r`
 and the angular velocity to give the velocity of :math:`C`:
 
 .. math::
+   :label: eq-roll-slip
 
    {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x + \dot{q}_2 \hat{n}_z \times -r\hat{n}_y \\
    {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x + \dot{q}_2 r \hat{n}_x
 
 Applying the motion constraint and knowing that :math:`{}^N\bar{v}^{G} = 0`
-gives us this scalar constraint equation:
+gives us this scalar constraint equation from :math:numref:`eq-roll-slip`:
 
 .. math::
 
