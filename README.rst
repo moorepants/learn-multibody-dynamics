@@ -156,7 +156,8 @@ referencing. Use these patterns:
 
 .. code:: rst
 
-   :label:`eq-my-equation-name`
+   .. math::
+      :label: eq-my-equation-name
    :math:numref:`eq-my-equation-name`
 
    .. _fig-my-figure-name:

@@ -343,20 +343,22 @@ The cross product terms are found with the radius of the wheel with :math:`r`
 and the angular velocity to give the velocity of :math:`C`:
 
 .. math::
+   :label: eq-roll-slip
 
-   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 \hat{n}_z \times -r\hat{n}_y \\
-   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x - \dot{q}_2 r \hat{n}_x
+   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x + \dot{q}_2 \hat{n}_z \times -r\hat{n}_y \\
+   {}^N\bar{v}^{C} = & \dot{q}_1\hat{n}_x + \dot{q}_2 r \hat{n}_x
 
 Applying the motion constraint and knowing that :math:`{}^N\bar{v}^{G} = 0`
-gives us this scalar constraint equation:
+gives us this scalar constraint equation directly from
+:math:numref:`eq-roll-slip`:
 
 .. math::
 
-   \dot{q}_1 - \dot{q}_2 r = 0
+   \dot{q}_1 + \dot{q}_2 r = 0
 
 This is a scalar constraint equation that ensures rolling without slip and
 involves the time derivatives of the coordinates. It is integrable and thus
-actually a holonomic constraint, i.e. :math:`q_1 - q_2 r = 0`. General rolling
+actually a holonomic constraint, i.e. :math:`q_1 + q_2 r = 0`. General rolling
 without slip in three dimensions will be nonholonomic. Take care to calculate
 the relative velocities of the two points fixed in each of the bodies in
 rolling contact that are located at the contact point at that *instance of
