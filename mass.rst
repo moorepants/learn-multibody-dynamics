@@ -73,7 +73,7 @@ chapter. Both are abstractions of real translating and rotating objects.
 Particles are points that have a location in Euclidean space which have a
 volumetrically infinitesimal mass. Rigid bodies are reference frames that have
 orientation which have an associated continuous distribution of mass. The
-distribution of mass can be thought of as a infinite collection of points
+distribution of mass can be thought of as an infinite collection of points
 distributed in a finite volumetric boundary. All of the points distributed in
 the volume are fixed to one another and translate together.
 
@@ -171,8 +171,7 @@ dividing the first moment of mass by the zeroth moment of mass:
 
    \bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} }{\sum_{i=1}^\nu m_i}\textrm{.}
 
-which is the first moment divided by the zeroth moment. For a solid body, this
-takes the integral form:
+For a solid body, this takes the integral form:
 
 .. math::
    :label: mass-center-rigid-body
@@ -233,7 +232,17 @@ is defined as ([Kane1985]_, pg. 61):
    \bar{I}_a := \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times
    \bar{r}^{P_i/O}  \right)
 
-.. todo:: Add the rigid body form of the inertia vector.
+Similarly, for an infinite number of points at locations :math:`(x, y, z)`
+within a volume :math:`V` that make up a rigid body with density :math:`\rho(x,
+y, z)` the integral form is used ([Kane1985]_, pg. 62):
+
+.. math::
+   :label: inertia-vector-body
+
+   \bar{I}_a := \int_{\textrm{solid}} \rho(x, y, z) \left[ \bar{r}^{P(x, y, z)/O}
+   \times \left( \hat{n}_a \times
+   \bar{r}^{P(x, y, z)/O}  \right) \right] dV
+
 
 This vector describes the sum of each mass's contribution to the mass
 distribution about a line that is parallel to :math:`\hat{n}_a` and passes
@@ -439,7 +448,8 @@ are the off diagonal entries. Eq.
 :math:numref:`eq-product-of-inertia-equivalence` holds for the products of
 inertia, i.e. :math:`I_{xy}=I_{yx}`, :math:`I_{xz}=I_{zx}`, and
 :math:`I_{yz}=I_{zy}`, and the subscript :math:`A` indicates that these scalars
-are relative to unit vectors :math:`\hat{a}_x,\hat{a}_y,\hat{a}_z`.
+are relative to mutually perpendicular unit vectors
+:math:`\hat{a}_x,\hat{a}_y,\hat{a}_z` fixed in :math:`A`.
 
 This matrix (or second order tensor) is similar to the vectors (or first order
 tensors) we've already worked with:
