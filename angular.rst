@@ -509,8 +509,7 @@ return to the product rule in Section :ref:`Product Rule` and first express
    \bar{u} = u_1\hat{b}_x + u_2\hat{b}_y + u_3\hat{b}_z
 
 Taking the derivative in another reference frame :math:`A` by applying the
-product rule and applying the above theorems let's us arrive at this new
-theorem:
+product rule and applying the above theorems let us arrive at this new theorem:
 
 .. math::
    :label: deriv-arb-vector
