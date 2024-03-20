@@ -329,12 +329,6 @@ Figure Sign Conventions
 Vectors
 -------
 
-.. _fig-notation-rotation-dimension-sign-convention:
-.. figure:: figures/notation-rotation-dimension-sign-convention.svg
-
-   Options for adding arrows to angular dimensions for positive (first row) and
-   negative (second row) orientations.
-
 In figure :numref:`fig-notation-vector-sign-convention` various vectors are
 shown.  Vectors are always drawn with a single arrow to indicate the positive
 sense of the vector. In a) the vector acting on body :math:`A` is
@@ -375,17 +369,24 @@ that :math:`\bar{r}^{Q/P} \cdot \hat{n}_x = q` and :math:`\bar{r}^{P/Q} \cdot
    meaning. Follow the right hand rule to know the positive sense of an
    orientation.
 
-In the first row (a, b, c) of :numref:`fig-notation-rotation-sign-convention`
-there are three ways to indicate leader arrows on the angular dimension
-:math:`q` for a positive right handed orientation of :math:`A` with respect to
-:math:`N`. A positive value of :math:`q` gives a positive right handed
-orientation in a), b), and c). This corresponds to the SymPy Mechanics command
-``A.orient_axis(N, q, N.z)``. In the second row (d, e, f), three ways are shown
-to indicate leader arrows on the angular dimension :math:`q` for a negative
+In the first row (a, b, c) of
+:numref:`fig-notation-rotation-dimension-sign-convention` there are three ways
+to indicate leader arrows on the angular dimension :math:`q` for a positive
 right handed orientation of :math:`A` with respect to :math:`N`. A positive
-value of :math:`q` causes a negative right handed orientation. This row
-corresponds to the SymPy Mechanics commands ``A.orient_axis(N, -q, N.z)`` or
-``A.orient_axis(N, q, -N.z)``. In g) a negative sign is indicated on :math:`q`.
-It is sometimes convenient to draw the rotation in negative right handed
-rotation and by labeling the value :math:`-q`. This means that g) is equivalent
-to a). We try to do this sparingly.
+value of :math:`q` gives a positive right handed orientation in a), b), and c).
+This corresponds to the SymPy Mechanics command ``A.orient_axis(N, q, N.z)``.
+In the second row (d, e, f), three ways are shown to indicate leader arrows on
+the angular dimension :math:`q` for a negative right handed orientation of
+:math:`A` with respect to :math:`N`. A positive value of :math:`q` causes a
+negative right handed orientation. This row corresponds to the SymPy Mechanics
+commands ``A.orient_axis(N, -q, N.z)`` or ``A.orient_axis(N, q, -N.z)``. In g)
+a negative sign is indicated on :math:`q`.  It is sometimes convenient to draw
+the rotation in negative right handed rotation and by labeling the value
+:math:`-q`. This means that g) is equivalent to a). We try to do this
+sparingly.
+
+.. _fig-notation-rotation-dimension-sign-convention:
+.. figure:: figures/notation-rotation-dimension-sign-convention.svg
+
+   Options for adding arrows to angular dimensions for positive (first row) and
+   negative (second row) orientations.
