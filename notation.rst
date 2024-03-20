@@ -326,37 +326,53 @@ Lagrange's method
 Figure Sign Conventions
 =======================
 
-
-:numref:`fig-sign-convention-translation` shows three ways to indicate leader
-arrows on the dimension for the distance between points :math:`P` and :math:`Q`
-parallel to :math:`\hat{n}_x`. A positive value of :math:`q` indicates that
-point :math:`Q` is to the right of point :math:`P` and that
-:math:`\bar{r}^{Q/P} \cdot \hat{n}_x = q` and :math:`\bar{r}^{P/Q} \cdot
+:numref:`fig-notation-linear-dimension-sign-convention` shows three ways to
+indicate leader arrows on the dimension for the distance between points
+:math:`P` and :math:`Q` parallel to :math:`\hat{n}_x`. A positive value of
+:math:`q` indicates that point :math:`Q` is to the right of point :math:`P` and
+that :math:`\bar{r}^{Q/P} \cdot \hat{n}_x = q` and :math:`\bar{r}^{P/Q} \cdot
 \hat{n}_x = -q`.
 
-.. _fig-sign-convention-translation:
-.. figure:: figures/sign-convention-translation.svg
+.. _fig-notation-linear-dimension-sign-convention:
+.. figure:: figures/notation-linear-dimension-sign-convention.svg
 
    Three options for adding arrows to linear dimensions which all have the same
    meaning.
 
-In the first row (a, b, c) of :numref:`fig-sign-convention-orientation` there
-are three ways to indicate leader arrows on the angular dimension :math:`q` for
-a positive right handed orientation of :math:`A` with respect to :math:`N`. A
-positive value of :math:`q` gives a positive right handed orientation. This
-corresponds to the SymPy Mechanics command ``A.orient_axis(N, q, N.z)``. In the
-second row (d, e, f), three ways are shown to indicate leader arrows on the
-angular dimension :math:`q` for a negative right handed orientation of
-:math:`A` with respect to :math:`N`. A positive value of :math:`q` causes a
-negative right handed orientation. This row corresponds to the SymPy Mechanics
-commands ``A.orient_axis(N, -q, N.z)`` or ``A.orient_axis(N, q, -N.z)``.
+In the first row (a, b, c) of :numref:`fig-notation-rotation-sign-convention`
+there are three ways to indicate leader arrows on the angular dimension
+:math:`q` for a positive right handed orientation of :math:`A` with respect to
+:math:`N`. A positive value of :math:`q` gives a positive right handed
+orientation. This corresponds to the SymPy Mechanics command ``A.orient_axis(N,
+q, N.z)``. In the second row (d, e, f), three ways are shown to indicate leader
+arrows on the angular dimension :math:`q` for a negative right handed
+orientation of :math:`A` with respect to :math:`N`. A positive value of
+:math:`q` causes a negative right handed orientation. This row corresponds to
+the SymPy Mechanics commands ``A.orient_axis(N, -q, N.z)`` or
+``A.orient_axis(N, q, -N.z)``. In g) a negative sign is indicated on :math:`q`.
+It is sometimes convenient to draw the rotation in negative right handed
+rotation and by labeling the value :math:`-q` g) is equivalent to a). We try to
+do this sparingly.
 
-.. _fig-sign-convention-orientation:
-.. figure:: figures/sign-convention-orientation.svg
+.. _fig-notation-rotation-dimension-sign-convention:
+.. figure:: figures/notation-rotation-dimension-sign-convention.svg
 
    Options for adding arrows to angular dimensions for positive (first row) and
    negative (second row) orientations.
 
+In figure :numref:`fig-notation-vector-sign-convention` various vectors are shown.
+Vectors are always drawn with a single arrow to indicate the positive sense of
+the vector. In a) the vector acting on body :math:`A` is :math:`-F\hat{n}_x`
+and the vector actin gon body :math:`B` is :math:`F\hax{n}_x`. The variable
+:math:`F` indicated beside the arrow means that a positive value of :math:`F`
+has the corresponding sense as the vector arrow head. The sense changes for
+both vectors in b) and for one in c). In d), a negative :math:`F` is indicated.
+This makes d) equivalent to a). The negative sense for that vector is shown
+when :math:`-F` is beside it.
 
-.. _fig-vector-sign-convention:
+.. _fig-notation-vector-sign-convention:
 .. figure:: figures/notation-vector-sign-convention.svg
+
+   Various ways to draw vector arrows, where the arrow head indicates the
+   positive sense of the vector if the variable is positive and negative sense
+   if the variable is shown as negative.
