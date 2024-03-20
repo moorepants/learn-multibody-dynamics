@@ -326,33 +326,8 @@ Lagrange's method
 Figure Sign Conventions
 =======================
 
-:numref:`fig-notation-linear-dimension-sign-convention` shows three ways to
-indicate leader arrows on the dimension for the distance between points
-:math:`P` and :math:`Q` parallel to :math:`\hat{n}_x`. A positive value of
-:math:`q` indicates that point :math:`Q` is to the right of point :math:`P` and
-that :math:`\bar{r}^{Q/P} \cdot \hat{n}_x = q` and :math:`\bar{r}^{P/Q} \cdot
-\hat{n}_x = -q`.
-
-.. _fig-notation-linear-dimension-sign-convention:
-.. figure:: figures/notation-linear-dimension-sign-convention.svg
-
-   Three options for adding arrows to linear dimensions which all have the same
-   meaning.
-
-In the first row (a, b, c) of :numref:`fig-notation-rotation-sign-convention`
-there are three ways to indicate leader arrows on the angular dimension
-:math:`q` for a positive right handed orientation of :math:`A` with respect to
-:math:`N`. A positive value of :math:`q` gives a positive right handed
-orientation in a), b), and c). This corresponds to the SymPy Mechanics command
-``A.orient_axis(N, q, N.z)``. In the second row (d, e, f), three ways are shown
-to indicate leader arrows on the angular dimension :math:`q` for a negative
-right handed orientation of :math:`A` with respect to :math:`N`. A positive
-value of :math:`q` causes a negative right handed orientation. This row
-corresponds to the SymPy Mechanics commands ``A.orient_axis(N, -q, N.z)`` or
-``A.orient_axis(N, q, -N.z)``. In g) a negative sign is indicated on :math:`q`.
-It is sometimes convenient to draw the rotation in negative right handed
-rotation and by labeling the value :math:`-q`. This means that g) is equivalent
-to a). We try to do this sparingly.
+Vectors
+-------
 
 .. _fig-notation-rotation-dimension-sign-convention:
 .. figure:: figures/notation-rotation-dimension-sign-convention.svg
@@ -376,3 +351,41 @@ negative sense for that vector is shown when :math:`-F` is beside it.
    Various ways to draw vector arrows, where the arrow head indicates the
    positive sense of the vector if the variable has no sign and negative sense
    if the variable has a negative sign.
+
+Dimensions
+----------
+
+When we draw dimensions (linear or angular) the arrow heads (or absence of
+arrow heads) do not indicate anything about the "sense" of the dimension. A
+dimension can take on positive and negative values and you have to rely on the
+sense of reference frame unit vectors to know what configuration occurs if a
+positive or negative value is given for a dimension.
+
+:numref:`fig-notation-linear-dimension-sign-convention` shows three ways to
+indicate leader arrows on the dimension for the distance between points
+:math:`P` and :math:`Q` parallel to :math:`\hat{n}_x`. A positive value of
+:math:`q` indicates that point :math:`Q` is to the right of point :math:`P` and
+that :math:`\bar{r}^{Q/P} \cdot \hat{n}_x = q` and :math:`\bar{r}^{P/Q} \cdot
+\hat{n}_x = -q`.
+
+.. _fig-notation-linear-dimension-sign-convention:
+.. figure:: figures/notation-linear-dimension-sign-convention.svg
+
+   Three options for adding arrows to linear dimensions which all have the same
+   meaning. Follow the right hand rule to know the positive sense of an
+   orientation.
+
+In the first row (a, b, c) of :numref:`fig-notation-rotation-sign-convention`
+there are three ways to indicate leader arrows on the angular dimension
+:math:`q` for a positive right handed orientation of :math:`A` with respect to
+:math:`N`. A positive value of :math:`q` gives a positive right handed
+orientation in a), b), and c). This corresponds to the SymPy Mechanics command
+``A.orient_axis(N, q, N.z)``. In the second row (d, e, f), three ways are shown
+to indicate leader arrows on the angular dimension :math:`q` for a negative
+right handed orientation of :math:`A` with respect to :math:`N`. A positive
+value of :math:`q` causes a negative right handed orientation. This row
+corresponds to the SymPy Mechanics commands ``A.orient_axis(N, -q, N.z)`` or
+``A.orient_axis(N, q, -N.z)``. In g) a negative sign is indicated on :math:`q`.
+It is sometimes convenient to draw the rotation in negative right handed
+rotation and by labeling the value :math:`-q`. This means that g) is equivalent
+to a). We try to do this sparingly.
