@@ -364,7 +364,7 @@ In figure :numref:`fig-notation-vector-sign-convention` various vectors are
 shown.  Vectors are always drawn with a single arrow to indicate the positive
 sense of the vector. In a) the vector acting on body :math:`A` is
 :math:`-F\hat{n}_x` and the vector acting on body :math:`B` is
-:math:`F\hax{n}_x`. The variable :math:`F` indicated beside the arrow means
+:math:`F\hat{n}_x`. The variable :math:`F` indicated beside the arrow means
 that a positive value of :math:`F` has the corresponding sense as the vector
 arrow head. The sense changes for both vectors in b) and for one vector in c).
 In d), a negative :math:`F` is indicated.  This makes d) equivalent to a). The
