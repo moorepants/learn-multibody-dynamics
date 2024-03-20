@@ -326,6 +326,7 @@ Lagrange's method
 Figure Sign Conventions
 =======================
 
+
 :numref:`fig-sign-convention-translation` shows three ways to indicate leader
 arrows on the dimension for the distance between points :math:`P` and :math:`Q`
 parallel to :math:`\hat{n}_x`. A positive value of :math:`q` indicates that
@@ -355,3 +356,7 @@ commands ``A.orient_axis(N, -q, N.z)`` or ``A.orient_axis(N, q, -N.z)``.
 
    Options for adding arrows to angular dimensions for positive (first row) and
    negative (second row) orientations.
+
+
+.. _fig-vector-sign-convention:
+.. figure:: figures/notation-vector-sign-convention.svg
