@@ -122,7 +122,7 @@ integral of the general form:
 .. admonition:: Exercise
 
    What is the mass of a cone with uniform density :math:`\rho`, radius
-   :math:`r`, and height :math:`h`?
+   :math:`R`, and height :math:`h`?
 
 .. admonition:: Solution
    :class: dropdown
@@ -134,13 +134,14 @@ integral of the general form:
 
    .. math::
 
-      \int_0^h  \int_0^{2\pi} \int_0^{\frac{r}{h}z} \rho r \mathrm{d}{z} \mathrm{d}{\theta} \mathrm{d}r
+      \int_0^h  \int_0^{2\pi} \int_0^{\frac{R}{h}z} \rho r \mathrm{d}{z} \mathrm{d}{\theta} \mathrm{d}r
 
    .. jupyter-execute::
 
-      p, r, h, z, theta = sm.symbols('rho, r, h, z, theta')
+      p, R, h = sm.symbols('rho, R, h')  # constants
+      r, z, theta = sm.symbols('r, z, theta')  # integration variables
 
-      sm.integrate(p*r, (r, 0, r/h*z), (theta, 0, 2*sm.pi), (z, 0, h))
+      sm.integrate(p*r, (r, 0, R/h*z), (theta, 0, 2*sm.pi), (z, 0, h))
 
 Mass Center
 ===========
