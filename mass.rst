@@ -806,15 +806,16 @@ about this transform):
 .. admonition:: Solution
    :class: dropdown
 
-   Create a new reference frame that is aligned with the steer axis.
+   Create a new reference frame that has :math:`\hat{h}_z` aligned with the
+   steer axis.
 
    .. jupyter-execute::
 
       H = me.ReferenceFrame('H')
-      H.orient_axis(N, 68.0*sm.pi/180, N.y)
+      H.orient_axis(N, sm.pi/2 - 68.0*sm.pi/180, N.y)
 
-   Dot the inertia dyadic twice with :math:`\hat{h}_z` (which is aligned with
-   the steer axis) to get the moment of inertia about the steer axis:
+   Dot the inertia dyadic twice with :math:`\hat{h}_z` to get the moment of
+   inertia about the steer axis:
 
    .. jupyter-execute::
 
