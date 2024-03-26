@@ -233,16 +233,16 @@ is defined as ([Kane1985]_, pg. 61):
    \bar{I}_a := \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times
    \bar{r}^{P_i/O}  \right)
 
-Similarly, for an infinite number of points at locations :math:`(x, y, z)`
-within a volume :math:`V` that make up a rigid body with density :math:`\rho(x,
-y, z)` the integral form is used ([Kane1985]_, pg. 62):
+Similarly, for an infinite number of points at locations parametrized by
+:math:`\tau` that make up a rigid body with density :math:`\rho(\tau)` the
+integral form is used ([Kane1985]_, pg. 62):
 
 .. math::
    :label: inertia-vector-body
 
-   \bar{I}_a := \int_{\textrm{solid}} \rho(x, y, z) \left[ \bar{r}^{P(x, y, z)/O}
+   \bar{I}_a := \int_{\textrm{solid}} \rho(\tau) \left[ \bar{r}^{P(\tau)/O}
    \times \left( \hat{n}_a \times
-   \bar{r}^{P(x, y, z)/O}  \right) \right] dV
+   \bar{r}^{P(\tau)/O}  \right) \right] d\tau
 
 
 This vector describes the sum of each mass's contribution to the mass
@@ -506,7 +506,7 @@ it generates a matrix akin to the inertia matrix above.
 
 .. _outer product: https://en.wikipedia.org/wiki/Outer_product
 
-In SymPy Mechanics outer products can be taken between two vectors to create
+In SymPy Mechanics, outer products can be taken between two vectors to create
 the dyadic :math:`\breve{Q}` using
 :external:py:func:`~sympy.physics.vector.functions.outer`:
 
@@ -525,9 +525,11 @@ the dyadic :math:`\breve{Q}` using
 
 The result is not the matrix form shown in Eq.
 :math:numref:`eq-vector-outer-product`, but instead the result is a dyadic. The
-dyadic is the analogous form for second order tensors as what we've been using
-for first order tensors. If the matrix form is needed, it can be found with
-:external:py:meth:`~sympy.physics.vector.dyadic.Dyadic.to_matrix`:
+dyadic is the analogous form for second order tensors to what we have been
+using for first order tensors, i.e. vectors. If the matrix form is needed, it
+can be found with
+:external:py:meth:`~sympy.physics.vector.dyadic.Dyadic.to_matrix` and naming a
+specific reference frame to express the dyadic in:
 
 .. jupyter-execute::
 
@@ -625,9 +627,6 @@ Note that the unit dyadic is the same when expressed in any reference frame:
 
    U.express(B).simplify()
 
-.. todo:: ReferenceFrame should have an attribute that returns the unit dyadic
-   (or dyads). See: https://github.com/sympy/sympy/issues/24965
-
 Properties of Dyadics
 =====================
 
@@ -659,7 +658,8 @@ Dyadics have similar properties as vectors but are not necessarily commutative.
 Inertia Dyadic
 ==============
 
-Previously we defined the inertia vector as:
+Previously we defined the inertia vector for a set of :math:`\nu` particles
+as:
 
 .. math::
    :label: eq-inertia-vector-again
@@ -760,11 +760,17 @@ if the orientation is defined (demonstrated above in :ref:`Dyadics`):
 
 .. jupyter-execute::
 
-   sm.trigsimp(I.to_matrix(B))
+   I.express(B).simplify()
+
+or as a matrix in :math:`B`:
+
+.. jupyter-execute::
+
+   I.express(B).simplify().to_matrix(B)
 
 This is equivalent to the matrix transform to express an inertia matrix in
-other reference frame (see some explanations `on stackexchange
-<https://physics.stackexchange.com/questions/637421/inertia-tensor-of-rotated-object>`_
+other reference frame (see some explanations `on Wikipedia
+<https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor_of_rotation>`_
 about this transform):
 
 .. math::
@@ -774,7 +780,7 @@ about this transform):
 
 .. jupyter-execute::
 
-   sm.trigsimp(B.dcm(A)*I.to_matrix(A)*A.dcm(B))
+   sm.simplify(B.dcm(A)*I.to_matrix(A)*A.dcm(B))
 
 .. admonition:: Exercise
 
@@ -913,18 +919,22 @@ vectors in :math:`B` that are each parallel to a principal axis and
 :math:`I_{11},I_{22},I_{33}` are all principal moments of inertia.
 
 Geometrically symmetric objects with uniform mass density have principal planes
-that are perpendicular with the planes of symmetry of the geometry. But there
-also exist unique principal axes for non-symmetric and non-uniform density
-objects.
+that are perpendicular with the planes of symmetry of the geometry. But it is
+important to note that there also exist unique principal axes for all
+non-symmetric and non-uniform density objects, i.e. having geometric symmetry
+is not necessary to have principal moments of inertia; all rigid bodies have
+principal moments of inertia and associated axes.
 
 The principal axes and their associated principal moments of inertia can be
-found by solving the eigenvalue problem. The eigenvalues of an arbitrary
-inertia matrix are the principal moments of inertia and the eigenvectors are
-the unit vectors parallel to the mutually perpendicular principal axes.
-Recalling that the inertia matrix is a symmetric matrix of real numbers, we
-know then that it is Hermitian and therefore all its eigenvalues are real.
-Symmetric matrices are also diagonalizable and the eigenvectors will then be
-orthonormal.
+found by solving the `eigenvalue problem
+<https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors>`_. The eigenvalues
+of an arbitrary inertia matrix are the principal moments of inertia and the
+eigenvectors are the unit vectors parallel to the mutually perpendicular
+principal axes. Recalling that the inertia matrix is a symmetric matrix of real
+numbers, we know then that it is `Hermitian
+<https://en.wikipedia.org/wiki/Hermitian_matrix>`_ and therefore all of its
+eigenvalues are real. Symmetric matrices are also diagonalizable and the
+eigenvectors will then be orthonormal.
 
 .. warning::
 
