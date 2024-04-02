@@ -52,10 +52,11 @@ Force
 
 A *force* is an abstraction we use to describe something that causes mass to
 move (e.g. accelerate from a stationary state). There are four `fundamental
-forces of nature`_ of which all other forces can be derived from. Moments and
-torques arise from forces and are useful in describing what causes distributed
-mass rotation. Forces, moments, and torques have magnitude and direction and
-thus we use vectors to describe them mathematically.
+forces of nature`_ of which all other forces can be derived. We describe the
+resulting effect of these fundamental forces in this text. Moments and torques
+arise from forces and are useful in describing what causes distributed mass
+rotation. Forces, moments, and torques have magnitude and direction and thus we
+use vectors to describe them mathematically.
 
 .. _fundamental forces of nature: https://en.wikipedia.org/wiki/Force#Fundamental_interactions
 
@@ -67,7 +68,7 @@ and passes through a particular point. If a vector has a line of action, it is
 said to be *bound* to its line of action. If a vector is not bound to a line of
 action it is said to be *free*.
 
-Angular velocity is an example of a free vector. It has a direction and
+Angular velocity is an example of a free vector. It has a direction, sense, and
 magnitude, but is not associated with any line of action. For example, if a
 disc can rotate around a fixed point, you can place a body anywhere on this
 disc and the body will always have the same angular velocity. A force vector,
@@ -250,9 +251,9 @@ In SymPy Mechanics, first define the symbols:
    delta = me.dynamicsymbols('delta')
 
 With the symbols defined, I use some auxiliary reference frames to establish
-the orientations with :math:`B` behind the car body, :math:`W` being the
-steered front wheels, and the others to establish the direction of the force at
-each wheel.
+the orientations with :math:`B` being the car body, :math:`W` being the steered
+front wheels, and the others to establish the direction of the force at each
+wheel.
 
 .. jupyter-execute::
 
@@ -399,7 +400,7 @@ point the force is applied.
 For example, the gravitational force acting on a particle moving through a
 unidirectional constant gravitational field (i.e. where the gravitational force
 is equal in magnitude, doesn't change, and always the same direction) does work
-on the system.
+on the system unless the particle moves perpendicular to the field.
 
 *Noncontributing forces* never do work on the system. For example, when a force
 acts between two points that have no relative motion, no work is done. Examples
