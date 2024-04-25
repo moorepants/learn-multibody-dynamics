@@ -779,7 +779,7 @@ independent generalized speeds and :math:`\bar{u}_r` as a vector of dependent
 generalized speeds, the nonholonomic constraints can be written as:
 
 .. math::
-   :label: eq-contraint-linear-form
+   :label: eq-constraint-linear-form
 
    \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) =
    \mathbf{A}_r(\bar{q}, t) \bar{u}_r +
@@ -789,7 +789,7 @@ generalized speeds, the nonholonomic constraints can be written as:
 or
 
 .. math::
-   :label: eq-contraint-linear-form-solve
+   :label: eq-constraint-linear-form-solve
 
    \bar{u}_r = \mathbf{A}_r^{-1}\left(-\mathbf{A}_s \bar{u}_s - \bar{b}_{rs}\right) \\
    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n

@@ -82,7 +82,7 @@ and :math:`u_r` can be solved for as so:
 
    \bar{u}_r = -\mathbf{M}_n(\bar{q}, t)^{-1}\bar{g}_n(\bar{u}_s, \bar{q}, t)
 
-which is the same as Eq. :math:numref:`eq-contraint-linear-form-solve` we
+which is the same as Eq. :math:numref:`eq-constraint-linear-form-solve` we
 originally developed:
 
 .. math::

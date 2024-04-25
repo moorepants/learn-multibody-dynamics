@@ -39,7 +39,7 @@ Learning Objectives
 
 After completing this chapter readers will be able to:
 
-- Calculate partial velocities given generalized speeds
+- Calculate partial velocities when given generalized speeds
 - Calculate generalized active forces for a system of particles and rigid
   bodies
 - Calculate generalized inertia forces for a system of particles and rigid
@@ -258,7 +258,7 @@ Nonholonomic Partial Velocities
 If a system is nonholonomic, it is also true that every translational and
 angular velocity can be expressed uniquely in terms of the :math:`p`
 independent generalized speeds (see Eq.
-:math:numref:`eq-contraint-linear-form-solve`). Thus, we can also define the
+:math:numref:`eq-constraint-linear-form-solve`). Thus, we can also define the
 *nonholonomic partial velocities* :math:`\tilde{v}_r` and *nonholonomic partial
 angular velocities* :math:`\tilde{\omega}_r` as per ([Kane1985]_, pg. 46):
 
@@ -269,7 +269,7 @@ angular velocities* :math:`\tilde{\omega}_r` as per ([Kane1985]_, pg. 46):
    \bar{\omega} = & \sum_{r=1}^p \tilde{\omega}_r u_r + \tilde{\omega}_t
 
 If you have found the :math:`n` holonomic partial velocities, then you can use
-:math:`\mathbf{A}_n` from :math:numref:`eq-contraint-linear-form-solve` to find
+:math:`\mathbf{A}_n` from :math:numref:`eq-constraint-linear-form-solve` to find
 the nonholonomic partial velocities with:
 
 .. math::
