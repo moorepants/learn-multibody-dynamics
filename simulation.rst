@@ -258,9 +258,9 @@ from our problem definition but they can also be found using
 
    Mk.free_symbols | gk.free_symbols | Md.free_symbols | gd.free_symbols
 
-The ``|`` operator does the union of Python sets, which is the date type that
-``free_symbols`` returns. :math:`t` is not a constant parameter, but the rest
-are. We can then define the symbolic :math:`p` as:
+The ``|`` operator applies the union of Python sets, which is the data type
+that ``free_symbols`` returns. :math:`t` is not a constant parameter, but the
+rest are. We can then define the symbolic :math:`p` as:
 
 .. jupyter-execute::
 
@@ -412,7 +412,7 @@ The following function implements Euler's Method:
        Returns
        =======
        ts : ndarray(m, )
-          Monotonically increasing values of time.
+          Monotonically equally spaced increasing values of time.
        xs : ndarray(m, 2*n)
           State values at each time in ts.
 
@@ -434,7 +434,7 @@ The following function implements Euler's Method:
 
        return ts, x
 
-I used :external:py:func:`~numpy.linspace` to generate equally spaced values
+I used :external:py:func:`~numpy.arange` to generate equally spaced values
 between :math:`t_0` and :math:`t_f`. Now we need a Python function that
 represents :math:`\bar{f}_m(t_i, \bar{x}_i, \bar{p})`. This function evaluates
 the right hand side of the explicitly ordinary differential equations which
@@ -569,13 +569,12 @@ panels for the different state variables. I use
 :external:py:func:`~sympy.physics.vector.printing.vlatex` to include the
 symbolic symbol names in the legends. The other matplotlib functions and
 methods I use are:
-
-- :external:py:meth:`~matplotlib.figure.Figure.set_size_inches`
-- :external:py:meth:`~matplotlib.axes.Axes.plot`
-- :external:py:meth:`~matplotlib.axes.Axes.legend`
-- :external:py:meth:`~matplotlib.axes.Axes.set_ylabel`
-- :external:py:meth:`~matplotlib.axes.Axes.set_xlabel`
-- :external:py:meth:`~matplotlib.figure.Figure.tight_layout`
+:external:py:meth:`~matplotlib.figure.Figure.set_size_inches`,
+:external:py:meth:`~matplotlib.axes.Axes.plot`,
+:external:py:meth:`~matplotlib.axes.Axes.legend`,
+:external:py:meth:`~matplotlib.axes.Axes.set_ylabel`,
+:external:py:meth:`~matplotlib.axes.Axes.set_xlabel`, and
+:external:py:meth:`~matplotlib.figure.Figure.tight_layout`.
 
 I also make use of array slicing notation to select which rows and columns I
 want from each array. See the NumPy documentation `Indexing on ndarrays`_ for
@@ -638,9 +637,10 @@ Our function now gives an interpretable view of the results:
    plot_results(ts, xs);
 
 We now see that :math:`q_1` oscillates between :math:`\pm 40 \textrm{deg}` with
-a single period. :math:`q_2` grows to around :math:`\pm 100 \textrm{deg}`, and
-:math:`q_3` has half an oscillation between -0.2 and 0.2 meters. For the
-initial conditions and constants we choose, this seems physically feasible.
+a single period. :math:`q_2` grows to around :math:`100 \textrm{deg}`, and
+:math:`q_3` has half an oscillation period ranging between -0.2 and 0.2 meters.
+For the initial conditions and constants we choose, this seems physically
+feasible.
 
 Integration with SciPy
 ======================
@@ -648,14 +648,15 @@ Integration with SciPy
 Our ``euler_integrate()`` function seems to do the trick, but all numerical
 integrators suffer from two types of errors: `truncation error`_ and `floating
 point arithmetic error`_. Truncation error is the dominant error and is due to
-having to integrate over finite integration steps. Paying careful attention to
-truncation error is needed to keep the error in the resulting trajectories
-within some acceptable tolerance, usually close in magnitude to the floating
-point arithmetic error. Euler's Method has poor truncation error unless very
-small time steps are chosen. But more time steps results in longer computation
-time. There are a large number of other numerical integration methods that
-provide better results with fewer time steps, but at the cost of more
-complexity in the integration algorithm.
+having to integrate over finite integration steps with approximations to the
+area under the integral's curve. Paying careful attention to truncation error
+is needed to keep the error in the resulting trajectories within some
+acceptable tolerance, usually close in magnitude to the floating point
+arithmetic error. Euler's Method has poor truncation error unless very small
+time steps are chosen. But more time steps results in longer computation time.
+There are a large number of other numerical integration methods that provide
+better results with fewer time steps, but at the cost of more complexity in the
+integration algorithm.
 
 .. _truncation error: https://en.wikipedia.org/wiki/Truncation_error_(numerical_integration)
 .. _floating point arithmetic error: https://en.wikipedia.org/wiki/Floating-point_arithmetic
@@ -704,6 +705,10 @@ The time values are in the ``result.t`` attribute:
 
    result.t
 
+.. todo:: The time values of solve_ivp do not match mine in the
+   euler_integrate. Update the euler_integrate function to use the same method
+   of generating the time steps.
+
 and the state trajectory is in the ``result.y`` attribute:
 
 .. jupyter-execute::
@@ -725,10 +730,10 @@ into the plot function.
 
    plot_results(result.t, np.transpose(result.y));
 
-The default result is very coarse in time (only 10 steps!). This is because the
-underlying integration algorithm adaptively selects the necessary time steps to
-stay within the desired maximum truncation error. The Runge-Kutta method gives
-good accuracy with fewer integration steps in this case.
+The default result is very coarse in time (only 10 time steps!). This is
+because the underlying integration algorithm adaptively selects the necessary
+time steps to stay within the desired maximum truncation error. The Runge-Kutta
+method gives good accuracy with fewer integration steps in this case.
 
 If you want to specify which time values you'd like the result presented at you
 can do so by interpolating the results by providing the time values with the
