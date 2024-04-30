@@ -646,15 +646,19 @@ Integration with SciPy
 ======================
 
 Our ``euler_integrate()`` function seems to do the trick, but all numerical
-integrators suffer from numerical errors. Careful attention to `truncation
-error`_ is needed to keep the error in the resulting trajectories within some
-acceptable tolerance for your problem's needs. Euler's Method has poor
-truncation error unless very small time steps are chosen. But more time steps
-results in longer computation time. There are a large number of other numerical
-integration methods that provide better results with fewer time steps, but at
-the cost of more complexity in the integration algorithm.
+integrators suffer from two types of errors: `truncation error`_ and `floating
+point arithmetic error`_. Truncation error is the dominant error and is due to
+having to integrate over finite integration steps. Paying careful attention to
+truncation error is needed to keep the error in the resulting trajectories
+within some acceptable tolerance, usually close in magnitude to the floating
+point arithmetic error. Euler's Method has poor truncation error unless very
+small time steps are chosen. But more time steps results in longer computation
+time. There are a large number of other numerical integration methods that
+provide better results with fewer time steps, but at the cost of more
+complexity in the integration algorithm.
 
 .. _truncation error: https://en.wikipedia.org/wiki/Truncation_error_(numerical_integration)
+.. _floating point arithmetic error: https://en.wikipedia.org/wiki/Floating-point_arithmetic
 
 SciPy_ is built on top of NumPy and provides a large assortment of battle
 tested numerical methods for NumPy arrays, including numerical methods for
