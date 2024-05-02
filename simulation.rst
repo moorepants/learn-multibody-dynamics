@@ -412,7 +412,8 @@ The following function implements Euler's Method:
        Returns
        =======
        ts : ndarray(m, )
-          Monotonically equally spaced increasing values of time.
+          Monotonically equally spaced increasing values of time spaced apart
+          by ``delt``.
        xs : ndarray(m, 2*n)
           State values at each time in ts.
 
