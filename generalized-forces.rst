@@ -587,8 +587,8 @@ and rigid body :math:`B` are:
 .. math::
    :label: eq-nonholonomic-gaf
 
-   (\tilde{F}_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R} \\
-   (\tilde{F}_r)_B = {}^A\tilde{v}^Q \cdot \bar{R} + {}^A\tilde{\omega}^B \cdot \bar{T}
+   (\tilde{F}_r)_P = {}^A\tilde{v}_r^{P} \cdot \bar{R} \\
+   (\tilde{F}_r)_B = {}^A\tilde{v}_r^Q \cdot \bar{R} + {}^A\tilde{\omega}_r^B \cdot \bar{T}
 
 As a corollary to :math:numref:`eq-non-hol-partial`, if the holonomic
 generalized active forces are known and nonholonomic constraints are introduced
@@ -771,8 +771,8 @@ and rigid body :math:`B` are:
 .. math::
    :label: eq-nonholonomic-gif
 
-   (\tilde{F}^*_r)_P = {}^A\tilde{v}^{P} \cdot \bar{R}^* \\
-   (\tilde{F}^*_r)_B = {}^A\tilde{v}^Q \cdot \bar{R}^* + {}^A\tilde{\omega}^B \cdot \bar{T}^*
+   (\tilde{F}^*_r)_P = {}^A\tilde{v}_r^{P} \cdot \bar{R}^* \\
+   (\tilde{F}^*_r)_B = {}^A\tilde{v}_r^Q \cdot \bar{R}^* + {}^A\tilde{\omega}_r^B \cdot \bar{T}^*
 
 Similar to Eq. :math:numref:`eq-non-hol-fr`, the nonholonomic generalized
 inertia forces can be calculated from the holonomic generalized inertia forces
