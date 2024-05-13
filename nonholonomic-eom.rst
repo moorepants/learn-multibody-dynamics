@@ -583,7 +583,7 @@ Check whether ``eval_rhs()`` works with these arrays:
    eval_rhs(1.0, x0, p_vals)
 
 We can now integrate the equations of motion to find the state trajectories. I
-setup the time array for the solution to correspond to 30 frames per second for
+setup the time array for the solution to correspond to 20 frames per second for
 later use in the animation of the motion.
 
 .. jupyter-execute::
