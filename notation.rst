@@ -275,7 +275,7 @@ Lagrange's method
    Lagrange multiplier, variable encoding the (scaled) magnitude of a constraint force
 :math:`\bar{f}_{hn}`
    Combined time-derivatives of holonomic constraints and nonholonomic constraints
-:math:`\mathbfl{M}_{hn}`, ``Mhn``
+:math:`\mathbf{M}_{hn}`, ``Mhn``
    Jacobian of constraint equations with respect to :math:`\dot{\bar{q}}`.
 :math:`\bar{g}_{hn}`
    Constraint bias (terms not linear in :math:`\dot{\bar{q}}`).
