@@ -160,7 +160,8 @@ Now calculate:
 
    {}^N\bar{v}^S = {}^A\bar{v}^S + {}^N\bar{\omega}^A\times\bar{r}^{S/O}
 
-:math:`S` is not moving when observed from :math:`A` so:
+:math:`S` is not moving when observed from :math:`A` and :math:`O` is fixed in
+:math:`A` so:
 
 .. jupyter-execute::
 
@@ -183,19 +184,19 @@ giving :math:`{}^N\bar{v}^S`:
    N_v_S = (r_O_P + r_P_S).dt(A) + me.cross(A.ang_vel_in(N), r_O_P + r_P_S)
    N_v_S
 
-Similarly for point :math:`Q`:
+Similarly for point :math:`Q` where :math:`P` is fixed in :math:`B`:
 
 .. jupyter-execute::
 
-   (r_O_P + r_P_S + r_S_Q).dt(B)
+   (r_P_S + r_S_Q).dt(B)
 
 .. jupyter-execute::
 
-   me.cross(B.ang_vel_in(N), r_O_P + r_P_S + r_S_Q)
+   me.cross(B.ang_vel_in(N), r_P_S + r_S_Q)
 
 .. jupyter-execute::
 
-   N_v_Q = (r_O_P + r_P_S + r_S_Q).dt(B) + me.cross(B.ang_vel_in(N), r_O_P + r_P_S + r_S_Q)
+   N_v_Q = (r_P_S + r_S_Q).dt(B) + me.cross(B.ang_vel_in(N), r_P_S + r_S_Q)
    N_v_Q
 
 SymPy Mechanics provides the
