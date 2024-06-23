@@ -8,6 +8,14 @@ Three Dimensional Visualization
    :jupyter-download-script:`visualization` or Jupyter Notebook:
    :jupyter-download-notebook:`visualization`.
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Construct transformation matrices.
+- Create a 3D scene that animates based on changes in transformation matrices.
+
 .. jupyter-execute::
 
    from scipy.integrate import solve_ivp

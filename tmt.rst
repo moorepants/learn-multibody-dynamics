@@ -8,6 +8,13 @@ Unconstrained Equations of Motion with the TMT Method
    :jupyter-download-script:`tmt` or Jupyter Notebook:
    :jupyter-download-notebook:`tmt`.
 
+Learning Objectives
+===================
+
+After completing this chapter readers will be able to:
+
+- Use the TMT method to derive equations of motions
+
 .. jupyter-execute::
 
    import numpy as np
