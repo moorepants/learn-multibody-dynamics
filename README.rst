@@ -304,6 +304,60 @@ create a vim slime config file for rst
 
    <Ctrl>+cc  # execute line(s) in ipython pane
 
+Prepare Offline Version
+=======================
+
+Created a directory for MathJax v2::
+
+   mkdir -p _static/js/
+   cd _static/js/
+   wget https://github.com/mathjax/MathJax/archive/refs/tags/2.7.9.zip
+   unzip MathJax-2.7.9.zip
+   mv MathJax-2.7.9/ MathJax/
+   rm MathJax-2.7.9.zip
+
+Download this JavaScript file also::
+
+   wget https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js
+   cd ../../
+
+In ``conf.py`` change these two lines::
+
+   todo_include_todos = False
+
+   mathjax_path = "js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+
+Now, build the HTML version::
+
+   make clean
+   make html
+
+Make sure ``embed-amd.js`` loads from the local source with::
+
+   sed -i "s,https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist,_static/js,g" _build/html/*.html
+
+
+Now build the PDF version::
+
+   make latexpdf
+
+Create a folder to zip up the book::
+
+   mkdir -p misc/book/
+
+Copy over the files::
+
+   cp -r _build/html/* misc/book/
+   cp _build/latex/learnmultibodydynamics.pdf misc/
+
+Zip the book::
+
+   cd misc/
+   zip -r me41056-book-20XX.zip book/ learnmultibodydynamics.pdf
+
+This version should work offline (except for externally loaded videos and
+images).
+
 Content Resources
 =================
 
