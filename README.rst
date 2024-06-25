@@ -312,14 +312,14 @@ Created a directory for MathJax v2::
    mkdir -p _static/js/
    cd _static/js/
    wget https://github.com/mathjax/MathJax/archive/refs/tags/2.7.9.zip
-   unzip MathJax-2.7.9.zip
+   unzip 2.7.9.zip
    mv MathJax-2.7.9/ MathJax/
-   rm MathJax-2.7.9.zip
+   rm 2.7.9.zip
 
 Download this JavaScript file also::
 
    wget https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js
-   cd ../../
+   cd ../..
 
 In ``conf.py`` change these two lines::
 
@@ -336,6 +336,11 @@ Make sure ``embed-amd.js`` loads from the local source with::
 
    sed -i "s,https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist,_static/js,g" _build/html/*.html
 
+Remove links to external resources (slows loading on offline computers)::
+
+   sed -i 's,<link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>,,g' _build/html/*.html
+   sed -i 's^<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">^^g' _build/html/*.html
+   sed -i 's,<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>,,g' _build/html/*.html
 
 Now build the PDF version::
 
