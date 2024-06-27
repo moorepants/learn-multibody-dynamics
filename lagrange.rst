@@ -609,7 +609,7 @@ so, we make use of a useful fact:
    diff_constraint.jacobian(qdd) - Mhn
 
 This equality is true for all constraints, as can easily be shown by taking the
-time derivative of the constraint equation, using the chain rule.
+time derivative of the constraint equation, using the product rule.
 
 The combined equations can now be written in a block matrix form:
 
