@@ -941,7 +941,7 @@ especially as the dimension of :math:`\mathbf{A}` grows:
       unknowns = sm.Matrix([L1, L2, L3, L4, L5, L6])
 
       coef_mat = exprs.jacobian(unknowns)
-      rhs = exprs.xreplace(dict(zip(unknowns, [0]*6)))
+      rhs = -exprs.xreplace(dict(zip(unknowns, [0]*6)))
 
       sol = coef_mat.LUsolve(rhs)
 
