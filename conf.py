@@ -58,7 +58,7 @@ if ONGITHUB:
 
 if not ONGITHUB:
     # Display TODO notes.
-    todo_include_todos = True
+    todo_include_todos = False
 
 # This configures sphinx to number figures and allow referencing them, if
 # labeled, using :numref:`my_figure`.

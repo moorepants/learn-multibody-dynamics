@@ -2,20 +2,20 @@ name: multibody-book
 channels:
   - conda-forge
 dependencies:
-  - ghp-import ==2.1.0
-  - graphviz ==9.0.*
-  - imagemagick ==7.1.*
-  - ipython ==8.15.*
-  - jupyter-sphinx ==0.5.3  # >=0.4.0 required for new directive names jupyter-download-script/notebook
-  - matplotlib ==3.7.*
-  - notebook ==7.0.*
-  - numpy ==1.24.*
-  - python ==3.10.*
+  - ghp-import
+  - graphviz ==11.0.*
+  - imagemagick
+  - ipython ==8.25.*
+  - jupyter-sphinx  # >=0.4.0 required for new directive names jupyter-download-script/notebook
+  - matplotlib ==3.8.*
+  - notebook ==7.2.*
+  - numpy ==1.26.*
+  - python ==3.11.*
   - pythreejs ==2.4.2
   - scikits.odes ==2.7.*
-  - scipy ==1.11.*
-  - sphinx ==7.2.*
+  - scipy ==1.14.*
+  - sphinx
   - sphinx-autobuild  # dev
-  - sphinx-material ==0.0.36
-  - sphinx-togglebutton ==0.3.*
-  - sympy ==1.11.*
+  - sphinx-material
+  - sphinx-togglebutton
+  - sympy ==1.12.*
