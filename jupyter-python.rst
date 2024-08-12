@@ -467,7 +467,6 @@ book. These packages will consistently be imported like so:
 
    import sympy as sm
    import numpy as np
-   import scipy as sp
    import matplotlib.pyplot as plt
 
 This will allow you to keep the namespaces separate so that there are no
@@ -481,10 +480,6 @@ trigonometric functions:
 .. jupyter-execute::
 
    np.cos(12.0)
-
-.. jupyter-execute::
-
-   sp.cos(12.0)
 
 and there may be times when you want to use more than one version of ``cos()``
 in a single namespace.
