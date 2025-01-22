@@ -698,8 +698,8 @@ Both the ``*`` and the ``@`` operator perform matrix multiplication:
 
    mat1@mat2
 
-Element-by-element multiplication requires the ``sympy.hadamard_product()``
-function:
+Element-by-element multiplication requires the
+:external:py:func:`~sympy.matrices.expressions.hadamard_product` function:
 
 .. jupyter-execute::
 
@@ -728,7 +728,7 @@ If you have column vectors :math:`\bar{v}` and :math:`\bar{u}`, the
 entries in vector :math:`\bar{u}` are found with :math:`\mathbf{J}_{ij} =
 \frac{\partial v_i}{\partial u_j}`.  The Jacobian_ matrix of vector (column
 matrix) can be formed with the
-:external:py:meth:`~sympy.matrices.matrices.MatrixCalculus.jacobian` method.
+:external:py:meth:`~sympy.matrices.matrixbase.MatrixBase.jacobian` method.
 This calculates the partial derivatives of each element in the vector with
 respect to a vector (or sequence) of variables.
 
@@ -867,7 +867,7 @@ terms that are not linear in :math:`a_1` and :math:`a_2`.
    b = -exprs.xreplace({a1: 0, a2: 0})
    b
 
-The :external:py:meth:`~sympy.matrices.matrices.MatrixBase.inv` method can
+The :external:py:meth:`~sympy.matrices.matrixbase.MatrixBase.inv` method can
 compute the inverse of A to find the solution:
 
 .. jupyter-execute::
@@ -875,7 +875,7 @@ compute the inverse of A to find the solution:
    A.inv() @ b
 
 But it is best to use the
-:external:py:meth:`~sympy.matrices.matrices.MatrixBase.LUsolve` method to
+:external:py:meth:`~sympy.matrices.matrixbase.MatrixBase.LUsolve` method to
 perform an `LU decomposition`_ Gaussian-Elimination to solve the system,
 especially as the dimension of :math:`\mathbf{A}` grows:
 
@@ -956,7 +956,7 @@ Simplification
 ==============
 
 The above result from
-:external:py:meth:`~sympy.matrices.matrices.MatrixBase.LUsolve` is a bit
+:external:py:meth:`~sympy.matrices.matrixbase.MatrixBase.LUsolve` is a bit
 complicated. Reproduced here:
 
 .. jupyter-execute::
