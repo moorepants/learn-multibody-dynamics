@@ -21,9 +21,9 @@ import subprocess
 
 project = 'Learn Multibody Dynamics'
 html_title = project
-copyright = '2022-2024, Jason K. Moore'
+copyright = '2022-2025, Jason K. Moore'
 author = 'Jason K. Moore'
-version = '0.2.dev0'
+version = '0.4.dev0'
 
 # -- General configuration ---------------------------------------------------
 
