@@ -2,11 +2,10 @@ name: multibody-book
 channels:
   - conda-forge
 dependencies:
-  - ghp-import
+  # content (should match exam computer install:
+  # https://gitlab.ewi.tudelft.nl/bhmgerritsen/anaconda-dee-config/-/releases)
   - graphviz ==11.0.*
-  - imagemagick
   - ipython ==8.25.*
-  - jupyter-sphinx  # >=0.4.0 required for new directive names jupyter-download-script/notebook
   - matplotlib ==3.8.*
   - notebook ==7.2.*
   - numpy ==1.26.*
@@ -14,8 +13,12 @@ dependencies:
   - pythreejs ==2.4.2
   - scikits.odes ==2.7.*
   - scipy ==1.14.*
+  - sympy ==1.12.*
+  # development (can be latest versions)
+  - ghp-import
+  - imagemagick
+  - jupyter-sphinx  # >=0.4.0 required for new directive names jupyter-download-script/notebook
   - sphinx
-  - sphinx-autobuild  # dev
+  - sphinx-autobuild
   - sphinx-material
   - sphinx-togglebutton
-  - sympy ==1.12.*
