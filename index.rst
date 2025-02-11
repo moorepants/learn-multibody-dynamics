@@ -6,12 +6,12 @@ Learn Multibody Dynamics
 | Version: |version|
 
 This online book aims to teach multibody dynamics using interactive code woven
-into the text. It follows the organization and methods presented in [Kane1985]_
-and can be thought of a retelling of many topics in the book. Each page can be
-downloaded as a Python_ script or  Jupyter_ Notebook. The book is also
-`available in PDF format <learnmultibodydynamics.pdf>`_. This book is used
-primarily as a companion resource for TU Delft's `Multibody Dynamics`_ course
-taught by `Jason K. Moore`_ but it is designed to standalone from the course.
+into the text. It generally follows the organization and methods presented in
+[Kane1985]_ and can be thought of a retelling of many topics in the book. Each
+page can be downloaded as a Python_ script or  Jupyter_ Notebook. The book is
+also `available in PDF format <learnmultibodydynamics.pdf>`_. This book is used
+as a companion resource for TU Delft's `Multibody Dynamics`_ course taught by
+`Jason K. Moore`_ but it is designed to stand alone from the course.
 
 .. _Python: https://python.org
 .. _Jupyter: https://jupyter.org
@@ -57,9 +57,11 @@ taught by `Jason K. Moore`_ but it is designed to standalone from the course.
 Prior Versions
 ==============
 
+- `Version 0.3`_: Final version after the 2024 course.
 - `Version 0.2`_: Final version after the 2023 course.
 - `Version 0.1`_: Final version after the 2022 course.
 
+.. _Version 0.3: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.3
 .. _Version 0.2: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.2
 .. _Version 0.1: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.1
 
