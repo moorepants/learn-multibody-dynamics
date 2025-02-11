@@ -64,7 +64,7 @@ without the need of `Lagrange multipliers`_.
 Choice of programming language
 ==============================
 
-With the goal of teaching through computation, it means I need to also choose a
+With the goal of teaching through computation, it means I also need to choose a
 programming language. There are many programming languages well suited to
 multibody dynamics computation, but I select Python_ for several reasons: 1)
 Python is open source and freely available for use, 2) Python is currently one,
@@ -163,6 +163,8 @@ the text, in approximate order of first contribution:
 - Abhinav Kamath, 2020
 - Timo Stienstra, 2022
 - Dr. Sam Brockie, 2023
+- Hwayeon Kang, 2024
+- Riccardo Di Girolamo, 2024
 
 SymPy Mechanics is built on top of SymPy, whose `1000+ contributors`_ have also
 greatly helped SymPy Mechanics be what it is. Furthermore, the software sits on
