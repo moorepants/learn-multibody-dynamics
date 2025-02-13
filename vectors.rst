@@ -663,7 +663,7 @@ to :math:`N`:
 .. note:: Notice that the unneeded third simple orientation angle was set to
    zero.
 
-Then :math:`B`'s orientation relatie to :math:`A`:
+Then :math:`B`'s orientation relative to :math:`A`:
 
 .. jupyter-execute::
 
