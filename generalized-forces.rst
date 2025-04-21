@@ -321,7 +321,7 @@ and that the nonholonomic constraint is:
 The simplest, but not necessarily computationally efficient, method of finding
 a nonholonomic partial velocity is to substitute all dependent speeds for
 expressions that are functions only of the independent speeds. So, if we select
-:math:`u_x` to be the dependent speed, the nonholonmic partial velocity of
+:math:`u_x` to be the dependent speed, the nonholonomic partial velocity of
 :math:`u_y` is:
 
 .. jupyter-execute::
