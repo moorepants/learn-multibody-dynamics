@@ -284,6 +284,68 @@ where :math:`\hat{e}_r` is a unit vector in the independent speed
 :math:`\bar{u}_s` vector space, e.g. :math:`\hat{e}_2=\left[0, 1, 0,
 0\right]^T` if :math:`p=4`. See [Kane1985]_ pg. 48 for more explanation.
 
+Revisit the Chaplygin Sleigh
+----------------------------
+
+To see how :math:`\mathbf{A}_n` can be used to formulate a nonholonomic partial
+velocity, recall the :ref:`Chaplygin Sleigh` velocity equations where
+:math:`u_x=\dot{x}` and :math:`u_y=\dot{y}`:
+
+.. jupyter-execute::
+
+   x, y, theta = me.dynamicsymbols('x, y, theta')
+   ux, uy, utheta = me.dynamicsymbols('u_x, u_y, u_theta')
+
+   N = me.ReferenceFrame('N')
+   A = me.ReferenceFrame('A')
+
+   A.orient_axis(N, theta, N.z)
+
+   O = me.Point('O')
+   P = me.Point('P')
+
+   P.set_pos(O, x*N.x + y*N.y)
+
+   O.set_vel(N, 0)
+
+   N_v_P = P.vel(N).express(A).xreplace({x.diff(): ux, y.diff(): uy})
+   N_v_P
+
+and that the nonholonomic constraint is:
+
+.. jupyter-execute::
+
+   fn = N_v_P.dot(A.y)
+   fn
+
+The simplest, but not necessarily computationally efficient, method of finding
+a nonholonomic partial velocity is to substitute all dependent speeds for
+expressions that are functions only of the independent speeds. So, if we select
+:math:`u_x` to be the dependent speed, the nonholonmic partial velocity of
+:math:`u_y` is:
+
+.. jupyter-execute::
+
+   ux_sol = sm.solve(fn, ux)[0]
+   ux_sol
+
+.. jupyter-execute::
+
+   N_v_P.xreplace({ux: ux_sol}).diff(uy, N).simplify()
+
+But, the same result can be found without substitution by using
+:math:`\mathbf{A}_n` from :math:numref:`eq-constraint-linear-form-solve`, which
+for this example is simply the scalar:
+
+.. jupyter-execute::
+
+   An = ux_sol.diff(uy)
+   An
+
+.. jupyter-execute::
+
+   (N_v_P.diff(uy, N) + N_v_P.diff(ux, N)*An).simplify()
+
 Generalized Active Forces
 =========================
 
