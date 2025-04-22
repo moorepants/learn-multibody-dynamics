@@ -370,8 +370,8 @@ Simulation
 
 To simulate the system forward in time, we solve the `initial value problem`_
 of the ordinary differential equations by numerically integrating
-:math:`\bar{f}_m(t, \bar{x}, \bar{p})`. A simple way to do so, is to use
-`Euler's Method`_:
+:math:`\bar{f}_m(t, \bar{x}, \bar{p})` from :math:`t_0` to :math:`t_f`. A
+simple way to do so, is to use `Euler's Method`_:
 
 .. math::
    :label: eq-eulers-method
@@ -386,11 +386,13 @@ computed. We repeat this until :math:`t_i=t_f` to find the trajectories of
 .. _initial value problem: https://en.wikipedia.org/wiki/Initial_value_problem
 .. _Euler's Method: https://en.wikipedia.org/wiki/Euler_method
 
-The following function implements Euler's Method:
+The following function implements Euler's Method. I use
+:external:py:func:`~numpy.linspace` to generate equally spaced values between
+:math:`t_0` and :math:`t_f`:
 
 .. jupyter-execute::
 
-   def euler_integrate(rhs_func, ts, x0_vals, p_vals):
+   def euler_integrate(rhs_func, t0, tf, m, x0_vals, p_vals):
        """Returns state trajectory and corresponding values of time resulting
        from integrating the ordinary differential equations with Euler's
        Method.
@@ -400,8 +402,12 @@ The following function implements Euler's Method:
        rhs_func : function
           Python function that evaluates the derivative of the state and takes
           this form ``dxdt = f(t, x, p)``.
-       ts : array_like, shape(m,)
-          Monotonically increasing array of time values to integrate over.
+       t0 : float
+         Initial value of time.
+       tf : float
+         Final value of time.
+       m : integer
+         Number of time steps.
        x0_vals : array_like, shape(2*n,)
           Values of the state x at t0.
        p_vals : array_like, shape(o,)
@@ -409,22 +415,27 @@ The following function implements Euler's Method:
 
        Returns
        =======
-       xs : ndarray(m, 2*n)
-          State values at each time in ts.
+       t : ndarray, shape(m,)
+          Monotonically increasing array of time values.
+       x : ndarray(m, 2*n)
+          State values at each time in t.
 
        """
+       # create an array of time values.
+       t = np.linspace(t0, tf, num=m)
+
        # create an empty array to hold the state values.
-       x = np.empty((len(ts), len(x0_vals)))
+       x = np.empty((len(t), len(x0_vals)))
 
        # set the initial conditions to the first element.
        x[0, :] = x0_vals
 
        # use a for loop to sequentially calculate each new x.
-       for i, ti in enumerate(ts[:-1]):
-           delt = ts[i + 1] - ti
+       for i, ti in enumerate(t[:-1]):
+           delt = t[i + 1] - ti
            x[i + 1, :] = x[i, :] + delt*rhs_func(ti, x[i, :], p_vals)
 
-       return x
+       return t, x
 
 Now we need a Python function that represents :math:`\bar{f}_m(t_i, \bar{x}_i,
 \bar{p})`. This function evaluates the right hand side of the explicitly
@@ -472,10 +483,10 @@ state.
 
        return xd
 
-With the function evaluated and numerical values already defined above we can
-check to see if it works. First combine :math:`\bar{q}` and :math:`\bar{u}`
-into a single column vector of the initial conditions ``x0`` and pick an
-arbitrary value for time.
+With the function and numerical values already defined above we can check to
+see if it works. First combine :math:`\bar{q}` and :math:`\bar{u}` into a
+single column vector of the initial conditions ``x0`` and pick a value for
+:math:`t_0`.
 
 .. jupyter-execute::
 
@@ -493,26 +504,23 @@ Now execute the function at the initial state:
 
 It seems to work, giving a result for the time derivative of the state vector,
 matching the results we had above. Now we can try out the ``euler_integrate()``
-function to integration from ``t0`` to ``tf``. I use
-:external:py:func:`~numpy.linspace` to generate equally spaced values between
-:math:`t_0` and :math:`t_f` and then call ``euler_integrate()``:
+function to integration from ``t0`` to ``tf``.
 
 .. jupyter-execute::
 
    tf = 2.0
-   ts = np.linspace(t0, tf, num=51)
+   ts, xs = euler_integrate(eval_rhs, t0, tf, 51, x0, p_vals)
+
+Our ``euler_integrate()`` function returns the state trajectory and the
+corresponding time. They look like:
+
+.. jupyter-execute::
+
    ts
 
 .. jupyter-execute::
 
    type(ts), ts.shape
-
-.. jupyter-execute::
-
-   xs = euler_integrate(eval_rhs, ts, x0, p_vals)
-
-Our ``euler_integrate()`` function returns the state trajectory and the
-corresponding time. They look like:
 
 .. jupyter-execute::
 
