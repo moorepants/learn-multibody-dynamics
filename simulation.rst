@@ -407,7 +407,7 @@ The following function implements Euler's Method. I use
        tf : float
          Final value of time.
        m : integer
-         Number of time steps.
+         Number of time values.
        x0_vals : array_like, shape(2*n,)
           Values of the state x at t0.
        p_vals : array_like, shape(o,)
