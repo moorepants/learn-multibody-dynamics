@@ -90,8 +90,8 @@ Angular and Translational Kinematics
 Constraints
 ===========
 
-.. todo:: Add Y_k, kin diff eqs.
-
+:math:`\bar{u} = \mathbf{Y}_k \dot{\bar{q}} + \bar{z}_k`
+   Generalized speeds defined as the kinematical differential equations.
 :math:`N,M,n,m,p`
    :math:`N` coordinates, :math:`M` holonomic constraints, :math:`n`
    generalized coordinates and generalized speeds, :math:`m` nonholonomic
@@ -134,8 +134,8 @@ Mass Distribution
    Central inertia dyadic of body :math:`B` or set of particles :math:`B` with respect
    to mass center :math:`B_o`.
 :math:`{}^A \bar{H}^{B/O}`, ``A_H_B_O``
-   Angular momentum of rigid body :math:`B` with respect to point :math:`O` in
-   reference frame :math:`A`.
+   Angular momentum of rigid body :math:`B` with respect to point :math:`O`
+   when viewed from reference frame :math:`A`.
 
 Force, Moment, and Torque
 =========================
@@ -145,6 +145,8 @@ Force, Moment, and Torque
 :math:`\bar{R}^{S/Q}`, ``R_S_Q``
    Resultant of the vector set :math:`S` bound to a line of action through
    point :math:`Q`.
+:math:`\bar{F}^{Q}`, ``F_Q``
+   Force vector bound to a line of action through point :math:`Q`.
 :math:`\bar{M}^{S/P}`, ``M_S_P``
    Moment of the resultant of the vector set :math:`S` about point :math:`P`.
 :math:`\bar{T}^{B}`, ``T_B``
@@ -187,8 +189,10 @@ Generalized Forces
 Unconstrained Equations of Motion
 =================================
 
-:math:`\bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t)  = 0`
-   Kinematical differential equations.
+:math:`\bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t) = 0`
+   Kinematical differential equations that take the form: :math:`\bar{f}_k =
+   \mathbf{Y}_k \dot{\bar{q}} + \bar{z}_k - \bar{u} = \mathbf{M}_k
+   \dot{\bar{q}} + \bar{g}_k = 0`.
 :math:`\mathbf{M}_k`
    Linear coefficient matrix for :math:`\dot{\bar{q}}` in the kinematical
    differential equations.
@@ -196,7 +200,8 @@ Unconstrained Equations of Motion
    Terms not linear in :math:`\dot{\bar{q}}` in the kinematical differential
    equations.
 :math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t) = 0`
-   Dynamical differential equations.
+   Dynamical differential equations that take the form: :math:`\bar{f}_d =
+   \mathbf{M}_d \dot{\bar{u}} + \bar{g}_d = 0`.
 :math:`\mathbf{M}_d`
    Linear coefficient matrix for :math:`\dot{\bar{u}}` in the dynamical
    differential equations, often called the "mass matrix".
@@ -210,6 +215,8 @@ Unconstrained Equations of Motion
    motion.
 :math:`\bar{g}_m`
    Terms not linear in :math:`\dot{\bar{x}}` in the equations of motion.
+:math:`\dot{\bar{x}} = \bar{f}_m(\bar{x}, t) = -\mathbf{M}_m^{-1} \bar{g}_m`
+   Equations of motion in first order explicit form.
 
 Equations of Motion with Nonholonomic Constraints
 =================================================
