@@ -164,7 +164,7 @@ of the system.
 Total Energy
 ============
 
- The total energy of the system is:
+The total energy of the system is:
 
 .. math::
 
