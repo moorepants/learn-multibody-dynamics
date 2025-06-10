@@ -593,13 +593,13 @@ are similar to prior chapters, so I leave them unexplained.
           axes[4].legend(['$K$', '$V$', '$E$'])
           axes[5].legend(['$T_k$'])
 
-          axes[0].set_ylabel('Distance [m]')
-          axes[1].set_ylabel('Angle [deg]')
-          axes[2].set_ylabel('Speed [m/s]')
-          axes[3].set_ylabel('Angular Rate [deg/s]')
-          axes[4].set_ylabel('Energy [J]')
-          axes[5].set_ylabel('Torque [N-m]')
-          axes[5].set_xlabel('Time [s]')
+          axes[0].set_ylabel('Distance\n[m]')
+          axes[1].set_ylabel('Angle\n[deg]')
+          axes[2].set_ylabel('Speed\n[m/s]')
+          axes[3].set_ylabel('Angular Rate\n[deg/s]')
+          axes[4].set_ylabel('Energy\n[J]')
+          axes[5].set_ylabel('Torque\n[N-m]')
+          axes[5].set_xlabel('Time\n[s]')
 
           return axes
 
