@@ -573,7 +573,7 @@ are similar to prior chapters, so I leave them unexplained.
              Matplotlib axes for each panel.
 
           """
-          fig, axes = plt.subplots(6, 1, sharex=True)
+          fig, axes = plt.subplots(6, 1, sharex=True, layout='constrained')
 
           fig.set_size_inches((10.0, 6.0))
 
