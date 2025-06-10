@@ -601,8 +601,6 @@ are similar to prior chapters, so I leave them unexplained.
           axes[5].set_ylabel('Torque [N-m]')
           axes[5].set_xlabel('Time [s]')
 
-          fig.tight_layout()
-
           return axes
 
    .. jupyter-execute::
