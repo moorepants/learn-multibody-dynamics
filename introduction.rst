@@ -147,22 +147,12 @@ helped improve the text in many ways. We also thank the students of TU Delft's
 Multibody Dynamics course who test the materials while learning.
 
 These are the primary contributors to the SymPy Mechanics software presented in
-the text, in approximate order of first contribution:
-
-- Dr. Luke Peterson, 2009
-- Dr. Gilbert Gede, 2011
-- Dr. Angadh Nanjangud, 2012
-- Tarun Gaba, 2013
-- Oliver Lee, 2013
-- Dr. Chris Dembia, 2013
-- Jim Crist, 2014
-- Sahil Shekhawat, 2015
-- James McMillan, 2016
-- Nikhil Pappu, 2018
-- Sudeep Sidhu, 2020
-- Abhinav Kamath, 2020
-- Timo Stienstra, 2022
-- Dr. Sam Brockie, 2023
+the text, in approximate order of first contribution: Dr. Luke Peterson (2009),
+Dr. Gilbert Gede (2011), Dr. Angadh Nanjangud (2012), Tarun Gaba (2013), Oliver
+Lee (2013), Dr. Chris Dembia (2013), Jim Crist (2014), Sahil Shekhawat (2015),
+James McMillan (2016), Nikhil Pappu (2018), Sudeep Sidhu (2020), Abhinav Kamath
+(2020), Timo Stienstra (2022), Dr. Sam Brockie (2023), Hwayeon Kang (2025), and
+Riccardo Di Girolamo (2025).
 
 SymPy Mechanics is built on top of SymPy, whose `1000+ contributors`_ have also
 greatly helped SymPy Mechanics be what it is. Furthermore, the software sits on
