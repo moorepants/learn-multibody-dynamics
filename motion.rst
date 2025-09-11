@@ -720,8 +720,8 @@ nonholonomic constraints:
 .. math::
    :label: eq-snakeboard-constraints
 
-   {}^A\bar{v}^{Bo} \cdot \hat{b}_y = 0 \\
-   {}^A\bar{v}^{Co} \cdot \hat{c}_y = 0
+   {}^N\bar{v}^{Bo} \cdot \hat{b}_y = 0 \\
+   {}^N\bar{v}^{Co} \cdot \hat{c}_y = 0
 
 .. jupyter-execute::
 

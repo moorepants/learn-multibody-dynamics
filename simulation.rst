@@ -370,8 +370,8 @@ Simulation
 
 To simulate the system forward in time, we solve the `initial value problem`_
 of the ordinary differential equations by numerically integrating
-:math:`\bar{f}_m(t, \bar{x}, \bar{p})`. A simple way to do so, is to use
-`Euler's Method`_:
+:math:`\bar{f}_m(t, \bar{x}, \bar{p})` from :math:`t_0` to :math:`t_f`. A
+simple way to do so, is to use `Euler's Method`_:
 
 .. math::
    :label: eq-eulers-method
@@ -386,11 +386,13 @@ computed. We repeat this until :math:`t_i=t_f` to find the trajectories of
 .. _initial value problem: https://en.wikipedia.org/wiki/Initial_value_problem
 .. _Euler's Method: https://en.wikipedia.org/wiki/Euler_method
 
-The following function implements Euler's Method:
+The following function implements Euler's Method. I use
+:external:py:func:`~numpy.linspace` to generate equally spaced values between
+:math:`t_0` and :math:`t_f`:
 
 .. jupyter-execute::
 
-   def euler_integrate(rhs_func, tspan, x0_vals, p_vals, delt=0.03):
+   def euler_integrate(rhs_func, t0, tf, m, x0_vals, p_vals):
        """Returns state trajectory and corresponding values of time resulting
        from integrating the ordinary differential equations with Euler's
        Method.
@@ -400,46 +402,45 @@ The following function implements Euler's Method:
        rhs_func : function
           Python function that evaluates the derivative of the state and takes
           this form ``dxdt = f(t, x, p)``.
-       tspan : 2-tuple of floats
-          The initial time and final time values: (t0, tf).
+       t0 : float
+         Initial value of time.
+       tf : float
+         Final value of time.
+       m : integer
+         Number of time values.
        x0_vals : array_like, shape(2*n,)
           Values of the state x at t0.
        p_vals : array_like, shape(o,)
           Values of constant parameters.
-       delt : float
-          Integration time step in seconds/step.
 
        Returns
        =======
-       ts : ndarray(m, )
-          Monotonically equally spaced increasing values of time spaced apart
-          by ``delt``.
-       xs : ndarray(m, 2*n)
-          State values at each time in ts.
+       t : ndarray, shape(m,)
+          Monotonically increasing array of time values.
+       x : ndarray(m, 2*n)
+          State values at each time in t.
 
        """
-       # generate monotonically increasing values of time.
-       duration = tspan[1] - tspan[0]
-       num_samples = round(duration/delt) + 1
-       ts = np.arange(tspan[0], tspan[0] + delt*num_samples, delt)
+       # create an array of time values.
+       t = np.linspace(t0, tf, num=m)
 
        # create an empty array to hold the state values.
-       x = np.empty((len(ts), len(x0_vals)))
+       x = np.empty((len(t), len(x0_vals)))
 
        # set the initial conditions to the first element.
        x[0, :] = x0_vals
 
        # use a for loop to sequentially calculate each new x.
-       for i, ti in enumerate(ts[:-1]):
+       for i, ti in enumerate(t[:-1]):
+           delt = t[i + 1] - ti
            x[i + 1, :] = x[i, :] + delt*rhs_func(ti, x[i, :], p_vals)
 
-       return ts, x
+       return t, x
 
-I used :external:py:func:`~numpy.arange` to generate equally spaced values
-between :math:`t_0` and :math:`t_f`. Now we need a Python function that
-represents :math:`\bar{f}_m(t_i, \bar{x}_i, \bar{p})`. This function evaluates
-the right hand side of the explicitly ordinary differential equations which
-calculates the time derivatives of the state.
+Now we need a Python function that represents :math:`\bar{f}_m(t_i, \bar{x}_i,
+\bar{p})`. This function evaluates the right hand side of the explicitly
+ordinary differential equations which calculates the time derivatives of the
+state.
 
 .. jupyter-execute::
 
@@ -482,20 +483,20 @@ calculates the time derivatives of the state.
 
        return xd
 
-With the function evaluated and numerical values already defined above we can
-check to see if it works. First combine :math:`\bar{q}` and :math:`\bar{u}`
-into a single column vector of the initial conditions ``x0`` and pick an
-arbitrary value for time.
+With the function and numerical values already defined above we can check to
+see if it works. First combine :math:`\bar{q}` and :math:`\bar{u}` into a
+single column vector of the initial conditions ``x0`` and pick a value for
+:math:`t_0`.
 
 .. jupyter-execute::
 
    x0 = np.empty(6)
    x0[:3] = q_vals
    x0[3:] = u_vals
-
    t0 = 0.1
+   t0, x0
 
-Now execute the function:
+Now execute the function at the initial state:
 
 .. jupyter-execute::
 
@@ -503,15 +504,12 @@ Now execute the function:
 
 It seems to work, giving a result for the time derivative of the state vector,
 matching the results we had above. Now we can try out the ``euler_integrate()``
-function to integration from ``t0`` to ``tf``:
+function to integration from ``t0`` to ``tf``.
 
 .. jupyter-execute::
 
    tf = 2.0
-
-.. jupyter-execute::
-
-   ts, xs = euler_integrate(eval_rhs, (t0, tf), x0, p_vals)
+   ts, xs = euler_integrate(eval_rhs, t0, tf, 51, x0, p_vals)
 
 Our ``euler_integrate()`` function returns the state trajectory and the
 corresponding time. They look like:
@@ -706,10 +704,6 @@ The time values are in the ``result.t`` attribute:
 
    result.t
 
-.. todo:: The time values of solve_ivp do not match mine in the
-   euler_integrate. Update the euler_integrate function to use the same method
-   of generating the time steps.
-
 and the state trajectory is in the ``result.y`` attribute:
 
 .. jupyter-execute::
@@ -748,9 +742,15 @@ keyword argument ``t_eval=``.
 
    plot_results(result.t, np.transpose(result.y));
 
-Lastly, let's compare the results from ``euler_inegrate()`` with
+Lastly, let's compare the results from ``euler_integrate()`` with
 ``solve_ivp()``, the later of which uses a Runge-Kutta method that has lower
-truncation error.  We'll plot only :math:`q_1` for this comparison.
+truncation error. We'll plot only :math:`q_1` for this comparison. Note that
+the two results for :math:`q_1` are not the same, showing  up to 20 degrees of
+error:
+
+.. jupyter-execute::
+
+   np.rad2deg(xs[:, 0] - np.transpose(result.y)[:, 0])
 
 .. jupyter-execute::
 

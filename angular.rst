@@ -39,25 +39,25 @@ Learning Objectives
 
 After completing this chapter readers will be able to:
 
-- apply the definition of angular velocity
-- calculate the angular velocity of simple rotations
-- choose Euler angles for a rotating reference frame
-- calculate the angular velocity of reference frames described by successive
-  simple rotations
-- derive the time derivative of a vector in terms of angular velocities
-- calculate the angular acceleration of a reference frame
-- calculate the angular acceleration of reference frames described by
-  successive rotations
+#. apply the definition of angular velocity
+#. calculate the angular velocity of simple rotations
+#. choose Euler angles for a rotating reference frame
+#. calculate the angular velocity of reference frames described by successive
+   simple rotations
+#. derive the time derivative of a vector in terms of angular velocities
+#. calculate the angular acceleration of a reference frame
+#. calculate the angular acceleration of reference frames described by
+   successive rotations
 
 Introduction
 ============
 
 To apply `Euler's Laws of Motion`_ to a multibody system we will need to
 determine how the `angular momentum`_ of each rigid body changes with time.
-This requires that we specify the angular kinematics of each body in the
-system: typically both angular velocity and angular acceleration. Assuming that
-a reference frame is fixed to a rigid body, we will start by finding the
-angular kinematics of a single reference frame and then use the properties of
+This requires specifying the angular kinematics of each body in the system:
+typically both angular velocity and angular acceleration. Assuming that a
+reference frame is fixed to a rigid body, we will start by finding the angular
+kinematics of a single reference frame and then use the properties of
 :ref:`Successive Orientations` to find the angular kinematics of a set of
 related reference frames.
 
@@ -76,6 +76,10 @@ of time.
      <source
        src="https://upload.wikimedia.org/wikipedia/commons/b/be/Dzhanibekov_effect.ogv"
        type="video/ogg">
+     <source
+       src="https://objects-us-east-1.dream.io/mechmotum/dzhanibekow-effect.mp4"
+       type="video/mp4">
+     Your browser does not support the video tag.
    </video>
    <p>Public Domain, NASA</p>
    </center>
@@ -84,8 +88,8 @@ The T-handle exhibits unintuitive motion, reversing back and forth
 periodically. This phenomena is commonly referred to as the "`Dzhanibekov
 effect`_" and Euler's Laws of Motion predict the behavior, which we will
 investigate in later chapters. For now, we will learn how to specify the
-angular kinematics of a reference frame in motion, such as one fixed to this
-T-handle.
+angular kinematics of a reference frame in rotational motion, such as one fixed
+to this T-handle.
 
 .. _Dzhanibekov effect: https://en.wikipedia.org/wiki/Tennis_racket_theorem
 

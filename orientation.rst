@@ -564,6 +564,10 @@ explicitly:
 
    N.orient_explicit(A, A_C_N)
 
+.. todo::
+
+   When we change to SymPy 1.13, change ``orient_explicit`` to ``orient_dcm``.
+
 .. warning::
 
    Note very carefully what version of the direction cosine matrix you pass to
