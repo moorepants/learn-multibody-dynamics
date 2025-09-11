@@ -51,7 +51,7 @@ a format that is similar to the math in a textbook. Executing
 :external:py:func:`~sympy.interactive.printing.init_printing` at the beginning
 of your Jupyter Notebook will ensure that SymPy objects render as typeset
 mathematics. I use the ``use_latex='mathjax'`` argument here to disable math
-png image generation, but that keyword argument is not strictly necessary.
+png image generation, but that keyword argument is not necessary.
 
 .. jupyter-execute::
 
@@ -229,14 +229,13 @@ This is a visual representation of the tree:
    "Pow(Symbol('omega'), Integer(-2))_(1, 1)" -> "Integer(-2)_(1, 1, 1)";
    }
 
-This representation is SymPy's internal fundamental representation of the
-symbolic expression. SymPy can display this expression in many other
-representations, for example the typeset mathematical expression you have
-already seen is one of those representations. This is important to know,
-because sometimes the expressions are displayed to you in a way that may be
-confusing and checking the ``srepr()`` version can help clear up
-misunderstandings. See the `manipulation section`_ of the SymPy tutorial for
-more information on this.
+This representation is SymPy's "true" representation of the symbolic
+expression. SymPy can display this expression in many other representations,
+for example the typeset mathematical expression you have already seen is one of
+those representations. This is important to know, because sometimes the
+expressions are displayed to you in a way that may be confusing and checking
+the ``srepr()`` version can help clear up misunderstandings. See the
+`manipulation section`_ of the SymPy tutorial for more information on this.
 
 .. _manipulation section: https://docs.sympy.org/latest/tutorial/manipulation.html
 
@@ -351,7 +350,7 @@ to provide a form that more closely resembles typeset math:
    sm.pprint(expr3)
 
 Lastly, the following lines show how SymPy expressions can be represented as
-LaTeX code using :external:py:func:`~sympy.printing.latex.latex`. The double
+LaTeX code using :external:py:func:`sympy.printing.latex.latex`. The double
 backslashes are present because double backslashes represent the escape
 character in Python strings.
 
@@ -544,11 +543,11 @@ To convert this to Python floating point number, use ``float()``:
 
 .. jupyter-execute::
 
-   float(expr3.evalf(n=80, subs=repl))
+   float(expr3.evalf(n=300, subs=repl))
 
 .. jupyter-execute::
 
-   type(float(expr3.evalf(n=80, subs=repl)))
+   type(float(expr3.evalf(n=300, subs=repl)))
 
 This value is a `machine precision`_ floating point value and can be used with
 standard Python functions that operate on floating point numbers.
@@ -706,11 +705,8 @@ Element-by-element multiplication requires the
 
    sm.hadamard_product(mat1, mat2)
 
-.. warning::
-
-   Note that NumPy uses ``*`` for element-by-element multiplication and ``@``
-   for matrix multiplication, so to avoid possible confusion, use ``@`` for
-   SymPy matrix multiplication.
+Note that NumPy uses ``*`` for element-by-element multiplication and ``@`` for matrix multiplication,
+so to avoid possible confusion, use ``@`` for SymPy matrix multiplication.
 
 Differentiation operates on each element of the matrix:
 
@@ -854,17 +850,21 @@ To solve with SymPy, start with a column matrix of linear expressions:
    exprs
 
 Since we know these two expressions are linear in the :math:`a_1` and
-:math:`a_2` variables, the :math:`\mathbf{A}` and :math:`\bar{b}` matrices can
-be formed in one step with the
-:py:func:`~sympy.solvers.solveset.linear_eq_to_matrix` function:
+:math:`a_2` variables, the partial derivatives with respect to those two
+variables will return the linear coefficients. The :math:`\mathbf{A}` matrix
+can be formed in one step with the ``.jacobian()`` method:
 
 .. jupyter-execute::
 
-   A, b = sm.linear_eq_to_matrix(exprs, [a1, a2])
+   A = exprs.jacobian([a1, a2])
    A
 
+The :math:`\bar{b}` vector can be formed by setting :math:`a_1=a_2=0`, leaving the
+terms that are not linear in :math:`a_1` and :math:`a_2`.
+
 .. jupyter-execute::
 
+   b = -exprs.xreplace({a1: 0, a2: 0})
    b
 
 The :external:py:meth:`~sympy.matrices.matrixbase.MatrixBase.inv` method can
@@ -888,17 +888,21 @@ especially as the dimension of :math:`\mathbf{A}` grows:
 .. warning::
 
    This method of solving symbolic linear systems is fast, but it can give
-   incorrect answers for :math:`\mathbf{A}` matrix entries that would evaluate
-   to zero if simplified or specific numerical values are provided.
+   incorrect answers for:
+
+   1. expressions that are not acutally linear in the variables the Jacobian is
+      taken with respect to
+   2. :math:`\mathbf{A}` matrix entries that would evaluate to zero if
+      simplified or specific numerical values are provided
 
    So only use this method if you are sure your equations are linear and if
    your :math:`\mathbf{A}` matrix is made up of complex expressions, watch out
    for ``nan`` results after lambdifying.
    :external:py:func:`~sympy.solvers.solvers.solve` and
    :external:py:func:`~sympy.solvers.solveset.linsolve` can also solve linear
-   systems and they check for linearity and various properties of the A matrix.
-   The cost is that they can be extremely slow for large expressions (which we
-   can have in this book).
+   systems and they check for linearity and properties of the A matrix.  The
+   cost is that they can be extremely slow for large expressions (which we will
+   have in this book).
 
 .. admonition:: Exercise
 
@@ -936,7 +940,8 @@ especially as the dimension of :math:`\mathbf{A}` grows:
 
       unknowns = sm.Matrix([L1, L2, L3, L4, L5, L6])
 
-      coef_mat, rhs = sm.linear_eq_to_matrix(exprs, unknowns)
+      coef_mat = exprs.jacobian(unknowns)
+      rhs = -exprs.xreplace(dict(zip(unknowns, [0]*6)))
 
       sol = coef_mat.LUsolve(rhs)
 
@@ -961,7 +966,8 @@ complicated. Reproduced here:
        [a1*sm.sin(f(t))*sm.cos(2*f(t)) + a2 + omega/sm.log(f(t), t) + 100],
        [a1*omega**2 + f(t)*a2 + omega + f(t)**3],
    ])
-   A, b = sm.linear_eq_to_matrix(exprs, [a1, a2])
+   A = exprs.jacobian([a1, a2])
+   b = -exprs.xreplace({a1: 0, a2: 0})
    sol = A.LUsolve(b)
 
 SymPy has some functionality for automatically simplifying symbolic
