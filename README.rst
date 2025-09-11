@@ -49,7 +49,7 @@ Clone the repository::
    git clone https://github.com/moorepants/learn-multibody-dynamics.git
    cd learn-multibody-dynamics
 
-Install miniconda_ or a similar tool (e.g.  Anaconda_) and create a conda
+Install miniconda_ or a similar tool (e.g. Anaconda_) and create a conda
 environment for the book::
 
    conda env create -f multibody-book-env.yml
