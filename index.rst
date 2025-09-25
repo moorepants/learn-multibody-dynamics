@@ -57,10 +57,12 @@ as a companion resource for TU Delft's `Multibody Dynamics`_ course taught by
 Prior Versions
 ==============
 
+- `Version 0.4`_: Final version after the 2025 course.
 - `Version 0.3`_: Final version after the 2024 course.
 - `Version 0.2`_: Final version after the 2023 course.
 - `Version 0.1`_: Final version after the 2022 course.
 
+.. _Version 0.4: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.4
 .. _Version 0.3: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.3
 .. _Version 0.2: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.2
 .. _Version 0.1: https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.1
