@@ -17,14 +17,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
     - name: Install Conda environment with Micromamba
-      uses: mamba-org/setup-micromamba@v1
+      uses: conda-incubator/setup-miniconda@v3
       with:
+        auto-update-conda: true
+        cache-downloads: true
+        cache-environment: true
+        channels: conda-forge
+        conda-remove-defaults: "true"
         environment-file: multibody-book-env.yml
         environment-name: multibody-book
-        cache-environment: true
-        cache-downloads: true
+        miniforge-version: latest
 
     - name: Install apt dependencies
       run: |
