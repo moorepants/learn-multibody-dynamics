@@ -21,8 +21,6 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        cache-downloads: true
-        cache-environment: true
         channels: conda-forge
         conda-remove-defaults: "true"
         environment-file: multibody-book-env.yml
