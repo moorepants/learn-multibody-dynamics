@@ -786,7 +786,7 @@ about this transform):
 
    .. todo:: Improve this figure. Get the svg!
 
-   .. figure:: https://objects-us-east-1.dream.io/mechmotum/typical-bicycle-geometry.png
+   .. figure:: https://mechmotum.s3.us-east-005.dream.io/typical-bicycle-geometry.png
       :align: center
 
       Head tube angle of a bicycle.

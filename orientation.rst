@@ -878,7 +878,7 @@ without the need to create auxiliary reference frames :math:`B` and :math:`C`:
 
    .. _orientation-euler-animation:
 
-   .. figure:: https://objects-us-east-1.dream.io/mechmotum/euler-angle-animation.gif
+   .. figure:: https://mechmotum.s3.us-east-005.dream.io/euler-angle-animation.gif
       :align: center
 
       An orientation through Euler angles with frame :math:`A` (yellow),
