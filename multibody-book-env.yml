@@ -4,16 +4,16 @@ channels:
 dependencies:
   # content (should match exam computer install:
   # https://gitlab.ewi.tudelft.nl/bhmgerritsen/anaconda-dee-config/-/releases)
-  - graphviz ==11.0.*
-  - ipython ==8.25.*
-  - matplotlib ==3.8.*
-  - notebook ==7.2.*
-  - numpy ==1.26.*
-  - python ==3.11.*
+  - graphviz ==12.2.1
+  - ipython ==8.37.*
+  - matplotlib ==3.10.3
+  - notebook ==7.4.3
+  - numpy ==2.2.6
+  - python ==3.12.11
   - pythreejs ==2.4.2
-  - scikits.odes ==2.7.*
-  - scipy ==1.14.*
-  - sympy ==1.12.*
+  - scikits.odes ==3.1.1
+  - scipy ==1.16.0
+  - sympy ==1.14.0
   # development (can be latest versions)
   - ghp-import
   - imagemagick
