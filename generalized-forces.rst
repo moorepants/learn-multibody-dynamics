@@ -776,7 +776,11 @@ This can be used to formulate the central inertia dyadics of each rod:
 
    I_A_Ao = I*me.outer(A.y, A.y) + I*me.outer(A.z, A.z)
    I_B_Bo = I*me.outer(B.x, B.x) + I*me.outer(B.z, B.z)
-   I_A_Ao, I_B_Bo
+   I_A_Ao
+
+.. jupyter-execute::
+
+   I_B_Bo
 
 The resultant inertia forces acting at the mass center of each body are:
 
