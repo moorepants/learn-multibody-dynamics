@@ -5,6 +5,8 @@ on:
     branches: master
   pull_request:
     branches: master
+  pull_request_target:
+    branches: master
 
 env:
   ONGITHUB: True
@@ -38,7 +40,7 @@ jobs:
         make SPHINXOPTS="--verbose" latexpdf
 
     - name: Find Comment
-      if: ${{ github.event_name == 'pull_request' }}
+      if: ${{ github.event_name == 'pull_request_target' }}
       uses: peter-evans/find-comment@v1
       id: fc
       with:
@@ -47,14 +49,14 @@ jobs:
         body-includes: htmlpreview
 
     - name: Print Comment
-      if: ${{ github.event_name == 'pull_request' }}
+      if: ${{ github.event_name == 'pull_request_target' }}
       run: |
         echo ${{ steps.fc.outputs.comment-id }}
         echo ${{ steps.fc.outputs.comment-author }}
         echo ${{ steps.fc.outputs.comment-id == ''}}
 
     - name: Create comment
-      if: ${{ steps.fc.outputs.comment-id == '' && github.event_name == 'pull_request' }}
+      if: ${{ steps.fc.outputs.comment-id == '' && github.event_name == 'pull_request_target' }}
       id: crea
       uses: peter-evans/create-or-update-comment@v1
       with:
@@ -74,7 +76,7 @@ jobs:
 
     - name: Deploy the PR
       shell: bash -l {0}
-      if: ${{ github.event_name == 'pull_request' }}
+      if: ${{ github.event_name == 'pull_request_target' }}
       run: |
         git config --global user.name "Github Actions"
         git config --global user.email moorepants@users.noreply.github.com
