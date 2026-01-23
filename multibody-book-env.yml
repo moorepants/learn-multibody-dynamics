@@ -16,9 +16,9 @@ dependencies:
   - sympy ==1.14.0
   # development (can be latest versions)
   - ghp-import
-  - imagemagick
+  - imagemagick <7.1.2_9
   - jupyter-sphinx  # >=0.4.0 required for new directive names jupyter-download-script/notebook
-  - sphinx <9
+  - sphinx
   - sphinx-autobuild
   - sphinx-material
   - sphinx-togglebutton
