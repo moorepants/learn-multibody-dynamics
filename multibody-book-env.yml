@@ -18,7 +18,7 @@ dependencies:
   - ghp-import
   - imagemagick
   - jupyter-sphinx  # >=0.4.0 required for new directive names jupyter-download-script/notebook
-  - sphinx
+  - sphinx <9
   - sphinx-autobuild
   - sphinx-material
   - sphinx-togglebutton
