@@ -7,7 +7,7 @@
    viewBox="0 0 159.61966 184.44836"
    version="1.1"
    id="svg5"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    sodipodi:docname="mass-ring.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -25,12 +25,12 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.90583672"
-     inkscape:cx="275.98793"
-     inkscape:cy="385.27915"
+     inkscape:cx="276.5399"
+     inkscape:cy="341.67306"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
-     inkscape:window-y="32"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
      fit-margin-top="0"
@@ -113,16 +113,16 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-49.7937, -63.1321)">
-    <path
-       style="fill:#008000;stroke:#008000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
-       d="M 125.69363,149.34339 88.714478,101.04661"
-       id="path5478" />
     <circle
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path79"
        cx="125.42491"
        cy="149.93102"
        r="62.300976" />
+    <path
+       style="fill:#008000;stroke:#008000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="M 125.69363,149.34339 88.714478,101.04661"
+       id="path5478" />
     <circle
        style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path1468"
@@ -193,40 +193,40 @@
        r="4.271513" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 125.69363,149.34339 164.75739,63.338859"
+       d="M 125.69363,149.34339 163.62779,65.825827"
        id="path5153"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 125.69363,149.34339 83.50215,40.35209"
+       d="m 125.69363,149.34339 81.50927,39.38904"
        id="path5155"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 125.69363,149.34339 -3.68659,98.2183"
+       d="m 125.69363,149.34339 -3.63144,96.74897"
        id="path5157"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="97.897064"
-       y="131.83794"
+       x="99.357498"
+       y="132.86024"
        id="text6207"><tspan
          sodipodi:role="line"
          id="tspan6205"
          style="stroke-width:0.264583"
-         x="97.897064"
-         y="131.83794">r</tspan></text>
+         x="99.357498"
+         y="132.86024">r</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="49.199394"
+       x="50.075657"
        y="147.8931"
        id="text7699"><tspan
          sodipodi:role="line"
          id="tspan7697"
          style="stroke-width:0.264583"
-         x="49.199394"
+         x="50.075657"
          y="147.8931">O</tspan></text>
     <text
        xml:space="preserve"
