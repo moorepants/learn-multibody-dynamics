@@ -4,7 +4,7 @@ channels:
 dependencies:
   # content (should match exam computer install:
   # https://gitlab.ewi.tudelft.nl/bhmgerritsen/anaconda-dee-config/-/releases)
-  - graphviz
+  - graphviz ==12.1.1
   - ipython ==8.37.*
   - matplotlib ==3.10.3
   - notebook ==7.4.3
@@ -16,7 +16,7 @@ dependencies:
   - sympy ==1.14.0
   # development (can be latest versions)
   - ghp-import
-  - imagemagick ==7.1.2_8
+  - imagemagick
   - jupyter-sphinx  # >=0.4.0 required for new directive names jupyter-download-script/notebook
   - sphinx
   - sphinx-autobuild
