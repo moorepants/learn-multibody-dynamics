@@ -564,6 +564,11 @@ explicitly:
 
    N.orient_dcm(A, N_C_A)
 
+.. warning::
+
+   Note very carefully what version of the direction cosine matrix you pass to
+   ``.orient_dcm()``. Check its docstring with ``N.orient_dcm?``.
+
 Now you can ask for the direction cosine matrix of :math:`A` with respect to
 :math:`N`, i.e. :math:`{}^A\mathbf{C}^N`, using the
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.dcm` method:
