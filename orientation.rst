@@ -556,22 +556,13 @@ orientations. For example:
 
 relates :math:`A` and :math:`N`. ``ReferenceFrame`` objects can be oriented
 with respect to one another. The
-:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_explicit`
+:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_dcm`
 :term:`method` allows you to set the direction cosine matrix between two frames
 explicitly:
 
 .. jupyter-execute::
 
-   N.orient_explicit(A, A_C_N)
-
-.. todo::
-
-   When we change to SymPy 1.13, change ``orient_explicit`` to ``orient_dcm``.
-
-.. warning::
-
-   Note very carefully what version of the direction cosine matrix you pass to
-   ``.orient_explicit()``. Check its docstring with ``N.orient_explicit?``.
+   N.orient_dcm(A, N_C_A)
 
 Now you can ask for the direction cosine matrix of :math:`A` with respect to
 :math:`N`, i.e. :math:`{}^A\mathbf{C}^N`, using the
@@ -593,7 +584,7 @@ reversing the order of the arguments:
    Orient reference frame :math:`D` with respect to :math:`F` with a simple
    rotation about :math:`y` through angle :math:`\beta` and set this
    orientation with
-   :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_explicit`.
+   :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_dcm`.
 
 .. admonition:: Solution
    :class: dropdown
@@ -609,11 +600,11 @@ reversing the order of the arguments:
                          [0, 1, 0],
                          [sm.sin(beta), 0, sm.cos(beta)]])
 
-      F.orient_explicit(D, F_C_D.transpose())
+      F.orient_dcm(D, F_C_D)
 
       F.dcm(D)
 
-:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_explicit`
+:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_dcm`
 requires you to form the direction cosine matrix yourself, but there are also
 methods that relieve you of that necessity. For example,
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_axis`
@@ -699,7 +690,7 @@ pairs returns the expected direction cosine matrix entry:
 
    .. jupyter-execute::
 
-      E.orient_explicit(D, C.dcm(D))
+      E.orient_dcm(D, D.dcm(C))
       E.dcm(D)
 
 Euler Angles

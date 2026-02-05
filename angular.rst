@@ -150,7 +150,7 @@ matrix with time varying elements:
                       [czx, czy, czz]])
 
 and establish the orientation using
-:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_explicit`:
+:external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_dcm`:
 
 .. warning::
 
@@ -160,7 +160,7 @@ and establish the orientation using
 
    A = me.ReferenceFrame('A')
    B = me.ReferenceFrame('B')
-   B.orient_explicit(A, B_C_A.transpose())
+   B.orient_dcm(A, B_C_A)
    B.dcm(A)
 
 This now let's write the :math:`B` unit vectors in terms of the :math:`A` unit
@@ -306,7 +306,7 @@ Applying the definition of angular velocity as before, the angular velocity of
 
    A = me.ReferenceFrame('A')
    B = me.ReferenceFrame('B')
-   B.orient_explicit(A, B_C_A.transpose())
+   B.orient_dcm(A, B_C_A)
 
    mnx = me.dot(B.y.express(A).dt(A), B.z)
    mny = me.dot(B.z.express(A).dt(A), B.x)
