@@ -562,7 +562,7 @@ explicitly:
 
 .. jupyter-execute::
 
-   N.orient_dcm(A, N_C_A)
+   N.orient_dcm(A, A_C_N.transpose())
 
 .. warning::
 
