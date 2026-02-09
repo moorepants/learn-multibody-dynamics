@@ -878,8 +878,8 @@ without the need to create auxiliary reference frames :math:`B` and :math:`C`:
       :align: center
 
       An orientation through Euler angles with frame :math:`A` (yellow),
-      :math:`B` (red), :math:`C` (green), and :math:`D` (blue). The rightward
-      yellow arrow is the :math:`x` direction, leftward yellow arrow is the
+      :math:`B` (red), :math:`C` (green), and :math:`D` (blue). The  leftward
+      yellow arrow is the :math:`x` direction, rightward yellow arrow is the
       :math:`y` direction, and upward yellow arrow is the :math:`z` direction.
       All frames' unit vectors are aligned before being oriented.
 
