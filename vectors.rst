@@ -153,9 +153,9 @@ sections 1.1-1.3 in [Kane1985]_ for a more general explanation.
 Addition
 ========
 
-When we add vector :math:`\bar{b}` to vector :math:`\bar{a}`, the result is
-a vector that starts at the tail of :math:`\bar{a}` and ends at the tip of
-:math:`\bar{b}`:
+When we add vector :math:`\bar{w}` to vector :math:`\bar{v}`, the result is
+a vector that starts at the tail of :math:`\bar{v}` and ends at the tip of
+:math:`\bar{w}`:
 
 .. figure:: figures/vectors-addition.svg
    :alt: Vector addition
