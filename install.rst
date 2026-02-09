@@ -9,32 +9,33 @@ software installed.
 
 .. _Conda: https://en.wikipedia.org/wiki/Conda_(package_manager)
 
-1) Miniconda
-============
+1) Miniforge
+=============
 
-Miniconda is a stripped down version of Anaconda so that you can install only
-what you desire. If you already have Miniconda (or Anaconda) on your computer,
-you can skip this step or delete your prior Miniconda (or Anaconda) folder on
-your computer to uninstall it. Download Miniconda for your operating system:
+Miniforge is a stripped down version of Anaconda with no special license terms
+so that you can install only what you desire from the packages available on
+Conda Forge. If you already have Miniconda or Anaconda on your computer, you
+can either skip this step, install Miniforge alongside them, or uninstall your
+prior Miniconda or Anaconda. Download Miniforge for your operating system:
 
-https://docs.conda.io/en/latest/miniconda.html
+https://conda-forge.org/miniforge/
 
 Install as a user, not an administrator, when asked. This will install the
 package manager conda and configure your computer to use the Python installed
-with Miniconda when you open a terminal or command prompt.
+with Miniforge when you open a terminal or command prompt.
 
 2) Create and Activate an Environment
 =====================================
 
-Open either the terminal (Linux/Mac) or the (Anaconda) command prompt (Windows)
-and type the following series of commands followed each by the <enter> key to
-execute the commands.
+Open either the terminal (Linux/Mac) or the (Miniforge/Miniconda/Anaconda)
+command prompt (Windows) and type the following series of commands followed
+each by the <enter> key to execute the commands.
 
 Create the environment with:
 
 .. code-block:: bash
 
-   conda create -c conda-forge -n learn-multibody-dynamics python=3.10
+   conda create -c conda-forge -n learn-multibody-dynamics python=3.12
 
 The ``-c conda-forge`` flag installs the packages from `Conda Forge`_. Conda
 Forge is a community maintained collection of compatible software packages and
@@ -56,7 +57,7 @@ this book with this command:
 
 .. code-block:: bash
 
-   conda install -c conda-forge ipympl ipython jupyter notebook matplotlib numpy pythreejs "scikits.odes" scipy "sympy>=1.11"
+   conda install -c conda-forge ipympl ipython jupyter notebook matplotlib numpy pythreejs "scikits.odes" scipy sympy
 
 4) Open Jupyter Notebook
 ========================
