@@ -707,7 +707,7 @@ In SymPy, this can be defined like so:
 
 .. jupyter-execute::
 
-   x, y, z, zd = me.dynamicsymbols('x, y, z, \dot{z}', real=True)
+   x, y, z, zd = me.dynamicsymbols(r'x, y, z, \dot{z}', real=True)
 
    r_O_P = x*N.x + y*N.y + z*N.z
 
