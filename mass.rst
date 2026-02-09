@@ -741,7 +741,7 @@ where the position of any location in the particle is parameterize by
 
 In SymPy Mechanics, simple inertia dyadics in terms of the unit vectors of a
 single reference frame can quickly be generated with
-:external:py:func:`~sympy.physics.mechanics.functions.inertia`. For example:
+:external:py:func:`~sympy.physics.mechanics.inertia.inertia`. For example:
 
 .. jupyter-execute::
 
@@ -955,7 +955,7 @@ inertia with SymPy:
                   [-0.1123, 0.0, 1.8501]])
    I
 
-The :external:py:meth:`~sympy.matrices.matrices.MatrixEigen.eigenvects` method on a
+The :external:py:meth:`~sympy.matrices.matrixbase.MatrixBase.eigenvects` method on a
 SymPy matrix returns a list of tuples that each contain ``(eigenvalue,
 multiplicity, eigenvector)``:
 

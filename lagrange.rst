@@ -149,7 +149,7 @@ A similar derivation should be made for all generalized coordinates. We could
 write a loop, but there there is a method to derive all the equations in one
 go.  The vector of partial derivatives of a function, that is the gradient, can
 be created using the
-:external:py:meth:`~sympy.matrices.matrices.MatrixCalculus.jacobian` method.
+:external:py:meth:`~sympy.matrices.matrixbase.MatrixBase.jacobian` method.
 The generalized inertial forces can then be found like this:
 
 .. jupyter-execute::
