@@ -285,12 +285,12 @@ To test out the function ``eval_eom()`` we need some NumPy 1D arrays for
    \textrm{angular acceleration}\rightarrow N \ m = kg \ m^2 \cdot rad
    \ s^{-2}`.
 
-The :external:py:func:`~numpy._core.umath.deg2rad` and
-:external:py:func:`~numpy._core.umath.rad2deg` are helpful for angle
-conversions. All SymPy and NumPy trigonometric functions operate on radians, so
-you'll have to convert if you prefer thinking in degrees. My recommendation is
-to only use degrees when displaying the outputs, so keep any calls to these two
-functions at the input and output of your whole computation pipeline.
+The :external:py:func:`~numpy.deg2rad` and :external:py:func:`~numpy.rad2deg`
+are helpful for angle conversions. All SymPy and NumPy trigonometric functions
+operate on radians, so you'll have to convert if you prefer thinking in
+degrees. My recommendation is to only use degrees when displaying the outputs,
+so keep any calls to these two functions at the input and output of your whole
+computation pipeline.
 
 Here I introduce ``q_vals``, ``u_vals``, and ``p_vals``, each a 1D NumPy array.
 Make sure to use a different variable name than your symbols so you can
