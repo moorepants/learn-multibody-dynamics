@@ -864,9 +864,6 @@ without the need to create auxiliary reference frames :math:`B` and :math:`C`:
 
    D.dcm(A)
 
-.. todo:: The wikipedia animation is not correct. The lower yellow arrow should
-   be colored green. This needs to be replaced with a corrected animation.
-
 .. admonition:: Exercise
 
    Euler_ discovered 6 of the 12 orientation sets. One of these sets is shown

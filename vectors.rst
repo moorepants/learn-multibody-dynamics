@@ -150,6 +150,10 @@ which is the projection of :math:`\bar{v}` onto each unit vector. When written
 this way we can say that :math:`\bar{v}` is expressed in :math:`A`. See
 sections 1.1-1.3 in [Kane1985]_ for a more general explanation.
 
+.. todo:: I use the dot product here before introducing the operation. I do
+   assume readers already know vector calculus, but if I can rearrange it might
+   flow better.
+
 Addition
 ========
 
