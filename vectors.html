@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Vectors &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Vector Differentiation" href="differentiation.html" />
+    <link rel="prev" title="Orientation of Reference Frames" href="orientation.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#vectors" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Vectors </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Vectors </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Vectors</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#vectors--page-root" class="md-nav__link">Vectors</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#what-is-a-vector" class="md-nav__link">What is a vector?</a>
+        </li>
+        <li class="md-nav__item"><a href="#vector-functions" class="md-nav__link">Vector Functions</a>
+        </li>
+        <li class="md-nav__item"><a href="#addition" class="md-nav__link">Addition</a>
+        </li>
+        <li class="md-nav__item"><a href="#scaling" class="md-nav__link">Scaling</a>
+        </li>
+        <li class="md-nav__item"><a href="#dot-product" class="md-nav__link">Dot Product</a>
+        </li>
+        <li class="md-nav__item"><a href="#cross-product" class="md-nav__link">Cross Product</a>
+        </li>
+        <li class="md-nav__item"><a href="#vectors-expressed-in-multiple-reference-frames" class="md-nav__link">Vectors Expressed in Multiple Reference Frames</a>
+        </li>
+        <li class="md-nav__item"><a href="#relative-position-among-points" class="md-nav__link">Relative Position Among Points</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/vectors.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#vectors--page-root" class="md-nav__link">Vectors</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#what-is-a-vector" class="md-nav__link">What is a vector?</a>
+        </li>
+        <li class="md-nav__item"><a href="#vector-functions" class="md-nav__link">Vector Functions</a>
+        </li>
+        <li class="md-nav__item"><a href="#addition" class="md-nav__link">Addition</a>
+        </li>
+        <li class="md-nav__item"><a href="#scaling" class="md-nav__link">Scaling</a>
+        </li>
+        <li class="md-nav__item"><a href="#dot-product" class="md-nav__link">Dot Product</a>
+        </li>
+        <li class="md-nav__item"><a href="#cross-product" class="md-nav__link">Cross Product</a>
+        </li>
+        <li class="md-nav__item"><a href="#vectors-expressed-in-multiple-reference-frames" class="md-nav__link">Vectors Expressed in Multiple Reference Frames</a>
+        </li>
+        <li class="md-nav__item"><a href="#relative-position-among-points" class="md-nav__link">Relative Position Among Points</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/vectors.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="vectors">
+<h1 id="vectors--page-root">Vectors<a class="headerlink" href="#vectors--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/d5392fcbbe010ff21bdb45c9d2a14645/vectors.py"><code class="xref download docutils literal notranslate"><span class="pre">vectors.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/e74100f92602e976af8b2e2b00fcd30c/vectors.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">vectors.ipynb</span></code></a>.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy.physics.mechanics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">me</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">init_printing</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="invisible docutils container">
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceFrame</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'latexs'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\hat{{</span><span class="si">{}</span><span class="s1">}}_</span><span class="si">{}</span><span class="s1">'</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReferenceFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                             <span class="n">latexs</span><span class="o">=</span><span class="p">(</span><span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)),</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n">ReferenceFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>State the properties of a vectors.</p></li>
+<li><p>Determine what scalars a vector is a function of.</p></li>
+<li><p>Add, subtract, scale, negate, normalize vectors.</p></li>
+<li><p>Dot and cross vectors with each other.</p></li>
+<li><p>Express vectors in different reference frames.</p></li>
+<li><p>Define vectors with components expressed in different reference frames.</p></li>
+<li><p>Create position vectors between points using reference frame unit vectors.</p></li>
+</ul>
+</section>
+<section id="what-is-a-vector">
+<h2 id="what-is-a-vector">What is a vector?<a class="headerlink" href="#what-is-a-vector" title="Link to this heading">¶</a></h2>
+<p>Vectors have three characteristics:</p>
+<ol class="arabic simple">
+<li><p>magnitude</p></li>
+<li><p>orientation</p></li>
+<li><p>sense</p></li>
+</ol>
+<p>The direction the vector points is derived from both the orientation and the
+sense. Vectors are equal when all three characteristics are the same.</p>
+<figure class="align-center" id="id5">
+<img alt="_images/vectors-characteristics.svg" src="_images/vectors-characteristics.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Three characteristics of vectors: magnitude, orientation, and sense.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this text we will distinguish scalar variables, e.g. <span class="math notranslate nohighlight">\(v\)</span>, from
+vectors by including a bar over the top of the symbol, e.g. <span class="math notranslate nohighlight">\(\bar{v}\)</span>.
+Vectors will be drawn as follows:</p>
+<figure class="align-center" id="id6">
+<img alt="_images/vectors-figure-notation.svg" src="_images/vectors-figure-notation.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Various ways vectors will be drawn in figures.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id7">
+<img alt="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Right-hand_grip_rule.svg/240px-Right-hand_grip_rule.svg.png" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Right-hand_grip_rule.svg/240px-Right-hand_grip_rule.svg.png"/>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">See <a class="reference external" href="https://en.wikipedia.org/wiki/Right-hand_rule">right-hand rule</a>
+for a refresher on right handed systems.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+<div class="legend">
+<p>Right_hand_rule_simple.png: The original uploader was Schorschi2 at
+German Wikipedia.derivative work: Wizard191, Public domain, via Wikimedia
+Commons</p>
+</div>
+</figcaption>
+</figure>
+</div>
+<p>Vectors have these mathematical properties:</p>
+<ul class="simple">
+<li><p>scalar multiplicative: <span class="math notranslate nohighlight">\(\bar{v} = \lambda\bar{u}\)</span> where <span class="math notranslate nohighlight">\(\lambda\)</span>
+can only change the magnitude and the sense of the vector, i.e.
+<span class="math notranslate nohighlight">\(\bar{v}\)</span> and <span class="math notranslate nohighlight">\(\bar{u}\)</span> have the same orientation</p></li>
+<li><p>commutative: <span class="math notranslate nohighlight">\(\bar{u} + \bar{v} = \bar{v} + \bar{u}\)</span></p></li>
+<li><p>distributive: <span class="math notranslate nohighlight">\(\lambda(\bar{u} + \bar{v}) = \lambda\bar{u} +
+\lambda\bar{v}\)</span></p></li>
+<li><p>associative: <span class="math notranslate nohighlight">\((\bar{u} + \bar{v}) + \bar{w} = \bar{u} + (\bar{v} +
+\bar{w})\)</span></p></li>
+</ul>
+<p>Unit vectors are vectors with a magnitude of <span class="math notranslate nohighlight">\(1\)</span>. If the magnitude of
+<span class="math notranslate nohighlight">\(\bar{v}\)</span> is 1, then we indicate this with <span class="math notranslate nohighlight">\(\hat{v}\)</span>. Any vector
+has an associated unit vector with the same orientation and sense, found by:</p>
+<div class="math notranslate nohighlight" id="equation-unit-vector-def">
+<span class="eqno">(33)<a class="headerlink" href="#equation-unit-vector-def" title="Link to this equation">¶</a></span>\[\hat{u} = \frac{\bar{u}}{|\bar{u}|}\]</div>
+<p>where <span class="math notranslate nohighlight">\(|\bar{u}|\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm">Euclidean norm</a> (2-norm), or magnitude, of
+the vector <span class="math notranslate nohighlight">\(\bar{u}\)</span>.</p>
+</section>
+<section id="vector-functions">
+<h2 id="vector-functions">Vector Functions<a class="headerlink" href="#vector-functions" title="Link to this heading">¶</a></h2>
+<p>Vectors can be functions of scalar variables. If a change in scalar variable
+<span class="math notranslate nohighlight">\(q\)</span> changes the magnitude and/or direction of <span class="math notranslate nohighlight">\(\bar{v}\)</span> when
+observed from <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(\bar{v}\)</span> is a vector function of <span class="math notranslate nohighlight">\(q\)</span> in
+<span class="math notranslate nohighlight">\(A\)</span>. It is possible that <span class="math notranslate nohighlight">\(\bar{v}\)</span> may not be a vector function of
+scalar variable <span class="math notranslate nohighlight">\(q\)</span> when observed from another reference frame, i.e. the
+function dependency of a vector on a scalar depends on the reference frame it
+is observed from.</p>
+<p>Let vector <span class="math notranslate nohighlight">\(\bar{v}\)</span> be a function of <span class="math notranslate nohighlight">\(n\)</span> scalars
+<span class="math notranslate nohighlight">\(q_1,q_2,\ldots,q_n\)</span> in <span class="math notranslate nohighlight">\(A\)</span>. If we introduce
+<span class="math notranslate nohighlight">\(\hat{a}_x,\hat{a}_y,\hat{a}_z\)</span> as a set of mutually perpendicular unit
+vectors fixed in <span class="math notranslate nohighlight">\(A\)</span>, then these unit vectors are constant when observed
+from <span class="math notranslate nohighlight">\(A\)</span>. There are then three unique scalar functions
+<span class="math notranslate nohighlight">\(v_x,v_y,v_z\)</span> of <span class="math notranslate nohighlight">\(q_1,q_2,\ldots,q_n\)</span> such that:</p>
+<div class="math notranslate nohighlight" id="equation-vector-with-meas-nums">
+<span class="eqno">(34)<a class="headerlink" href="#equation-vector-with-meas-nums" title="Link to this equation">¶</a></span>\[\bar{v} = v_x \hat{a}_x + v_y \hat{a}_y + v_z \hat{a}_z\]</div>
+<p><span class="math notranslate nohighlight">\(v_x \hat{a}_x\)</span> is called the <span class="math notranslate nohighlight">\(\hat{a}_x\)</span> component of
+<span class="math notranslate nohighlight">\(\bar{v}\)</span> and <span class="math notranslate nohighlight">\(v_x\)</span> is called <span class="xref std std-term">measure number</span> of
+<span class="math notranslate nohighlight">\(\bar{v}\)</span>.  Since the components are mutually perpendicular the measure
+number can also be found from the dot product of <span class="math notranslate nohighlight">\(\bar{v}\)</span> and the
+respective unit vector:</p>
+<div class="math notranslate nohighlight" id="equation-meas-num-dots">
+<span class="eqno">(35)<a class="headerlink" href="#equation-meas-num-dots" title="Link to this equation">¶</a></span>\[\bar{v} = (\bar{v} \cdot \hat{a}_x) \hat{a}_x +
+          (\bar{v} \cdot \hat{a}_y) \hat{a}_y +
+          (\bar{v} \cdot \hat{a}_z) \hat{a}_z\]</div>
+<p>which is the projection of <span class="math notranslate nohighlight">\(\bar{v}\)</span> onto each unit vector. When written
+this way we can say that <span class="math notranslate nohighlight">\(\bar{v}\)</span> is expressed in <span class="math notranslate nohighlight">\(A\)</span>. See
+sections 1.1-1.3 in <a class="reference internal" href="references.html#kane1985" id="id1"><span>[Kane1985]</span></a> for a more general explanation.</p>
+</section>
+<section id="addition">
+<h2 id="addition">Addition<a class="headerlink" href="#addition" title="Link to this heading">¶</a></h2>
+<p>When we add vector <span class="math notranslate nohighlight">\(\bar{w}\)</span> to vector <span class="math notranslate nohighlight">\(\bar{v}\)</span>, the result is
+a vector that starts at the tail of <span class="math notranslate nohighlight">\(\bar{v}\)</span> and ends at the tip of
+<span class="math notranslate nohighlight">\(\bar{w}\)</span>:</p>
+<figure class="align-center" id="id8">
+<img alt="Vector addition" src="_images/vectors-addition.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Graphical vector addition</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Vectors in SymPy Mechanics are created by first introducing a reference frame
+and using its associated unit vectors to construct vectors of arbitrary
+magnitude and direction.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now introduce some scalar variables:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'a, b, c, d, e, f'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The simplest 3D non-unit vector is made up of a single component:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a\hat{n}_x\]</div>
+</div>
+</div>
+<p>A, possible more familiar, column matrix form of a vector is accessed with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.to_matrix" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_matrix()</span></code></a>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a\\0\\0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Fully 3D and arbitrary vectors can be created by providing a measure number for
+each unit vector of <span class="math notranslate nohighlight">\(N\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">w</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a\hat{n}_x + b\hat{n}_y + c\hat{n}_z\]</div>
+</div>
+</div>
+<p>And the associated column matrix form:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a\\b\\c\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Vector addition works by adding the measure numbers of each common component:</p>
+<div class="math notranslate nohighlight" id="equation-vector-add">
+<span class="eqno">(36)<a class="headerlink" href="#equation-vector-add" title="Link to this equation">¶</a></span>\[\begin{split}\bar{w} = &amp; a \hat{n}_x + b \hat{n}_y + c \hat{n}_z \\
+\bar{x} = &amp; d \hat{n}_x + e \hat{n}_y + f \hat{n}_z \\
+\bar{w} + \bar{x} = &amp; (a + d) \hat{n}_x + (b + e) \hat{n}_y + (c + f) \hat{n}_z\end{split}\]</div>
+<p>SymPy Mechanics vectors work as expected:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">f</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d\hat{n}_x + e\hat{n}_y + f\hat{n}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">+</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (a + d)\hat{n}_x + (b + e)\hat{n}_y + (c + f)\hat{n}_z\]</div>
+</div>
+</div>
+</section>
+<section id="scaling">
+<h2 id="scaling">Scaling<a class="headerlink" href="#scaling" title="Link to this heading">¶</a></h2>
+<p>Multiplying a vector by a scalar changes its magnitude, but not its
+orientation. Scaling by a negative number changes a vector’s magnitude and
+reverses its sense (rotates it by <span class="math notranslate nohighlight">\(\pi\)</span> radians).</p>
+<figure class="align-center" id="id9">
+<img alt="Vector scaling" src="_images/vectors-scaling.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Vector scaling</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">w</span>
+<span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 a\hat{n}_x + 2 b\hat{n}_y + 2 c\hat{n}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="n">w</span>
+<span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  a\hat{n}_x -  b\hat{n}_y -  c\hat{n}_z\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Create three vectors that lie in the <span class="math notranslate nohighlight">\(xy\)</span> plane of reference frame
+<span class="math notranslate nohighlight">\(N\)</span> where each vector is:</p>
+<ol class="arabic simple">
+<li><p>of length <span class="math notranslate nohighlight">\(l\)</span> that is at an angle of <span class="math notranslate nohighlight">\(\frac{\pi}{4}\)</span>
+degrees from the <span class="math notranslate nohighlight">\(\hat{n}_x\)</span> unit vector.</p></li>
+<li><p>of length <span class="math notranslate nohighlight">\(10\)</span> and is in the <span class="math notranslate nohighlight">\(-\hat{n}_y\)</span> direction</p></li>
+<li><p>of length <span class="math notranslate nohighlight">\(l\)</span> and is <span class="math notranslate nohighlight">\(\theta\)</span> radians from the
+<span class="math notranslate nohighlight">\(\hat{n}_y\)</span> unit vector.</p></li>
+</ol>
+<p>Finally, add vectors from 1 and 2 and substract <span class="math notranslate nohighlight">\(5\)</span> times the third
+vector.</p>
+<p>Hint: SymPy has fundamental constants and trigonometic functions, for
+example <code class="docutils literal notranslate"><span class="pre">sm.tan,</span> <span class="pre">sm.pi</span></code>.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">l</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'l, theta'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v1</span> <span class="o">=</span> <span class="n">l</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">l</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">v1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\sqrt{2} l}{2}\hat{n}_x + \frac{\sqrt{2} l}{2}\hat{n}_y\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">v2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - 10\hat{n}_y\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v3</span> <span class="o">=</span> <span class="o">-</span><span class="n">l</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">l</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">v3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  l \sin{\left(\theta \right)}\hat{n}_x + l \cos{\left(\theta \right)}\hat{n}_y\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v1</span> <span class="o">+</span> <span class="n">v2</span> <span class="o">-</span> <span class="mi">5</span><span class="o">*</span><span class="n">v3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (5 l \sin{\left(\theta \right)} + \frac{\sqrt{2} l}{2})\hat{n}_x + (- 5 l \cos{\left(\theta \right)} + \frac{\sqrt{2} l}{2} - 10)\hat{n}_y\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="dot-product">
+<h2 id="dot-product">Dot Product<a class="headerlink" href="#dot-product" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Dot_product">dot product</a>, which yields a scalar quantity, is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-vector-dot">
+<span class="eqno">(37)<a class="headerlink" href="#equation-vector-dot" title="Link to this equation">¶</a></span>\[\bar{v} \cdot \bar{w} = |\bar{v}| |\bar{w}| \cos{\theta}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta\)</span> is the angle between the two vectors. For arbitrary
+measure numbers this results in the following:</p>
+<div class="math notranslate nohighlight" id="equation-dot-rules">
+<span class="eqno">(38)<a class="headerlink" href="#equation-dot-rules" title="Link to this equation">¶</a></span>\[\begin{split}\bar{v} = &amp; v_x \hat{n}_x + v_y \hat{n}_y + v_z \hat{n}_z \\
+\bar{w} = &amp; w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
+\bar{v} \cdot \bar{w} = &amp; v_x w_x + v_v w_y + v_z w_z\end{split}\]</div>
+<figure class="align-center" id="id10">
+<img alt="Vector dot product" src="_images/vectors-dot-product.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Vector dot product</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The dot product has these properties:</p>
+<ul class="simple">
+<li><p>You can pull out scalars: <span class="math notranslate nohighlight">\(c \bar{u} \cdot d \bar{v} = cd (\bar{u} \cdot \bar{v})\)</span></p></li>
+<li><p>Order does not matter (commutative multiplication): <span class="math notranslate nohighlight">\(\bar{u} \cdot \bar{v} = \bar{v} \cdot \bar{u}\)</span></p></li>
+<li><p>You can distribute: <span class="math notranslate nohighlight">\(\bar{u} \cdot (\bar{v} + \bar{w}) = \bar{u} \cdot \bar{v} + \bar{u} \cdot \bar{w}\)</span></p></li>
+</ul>
+<p>The dot product is often used to determine:</p>
+<ul class="simple">
+<li><p>the angle between two vectors:
+<span class="math notranslate nohighlight">\(\theta = \arccos\frac{\bar{a} \cdot \bar{b}}{|\bar{a}|\bar{b}|}\)</span></p></li>
+<li><p>a vector’s magnitude: <span class="math notranslate nohighlight">\(|\bar{v}| = \sqrt{\bar{v} \cdot \bar{v}}\)</span></p></li>
+<li><p>the length of a vector along a direction of another vector <span class="math notranslate nohighlight">\(\hat{u}\)</span>
+(called the projection):
+<span class="math notranslate nohighlight">\(\mbox{proj}_{\hat{u}} \bar{v} = \bar{v} \cdot \hat{u}\)</span></p></li>
+<li><p>if two vectors are perpendicular: <span class="math notranslate nohighlight">\(\bar{v} \cdot \bar{w} = 0 \mbox{ if
+and only if }\bar{v} \perp \bar{w}\)</span></p></li>
+<li><p>Compute power: <span class="math notranslate nohighlight">\(P = \bar{F} \cdot \bar{v}\)</span>, where <span class="math notranslate nohighlight">\(\bar{F}\)</span> is a
+force vector and <span class="math notranslate nohighlight">\(\bar{v}\)</span> is the velocity of the point the force is
+acting on.</p></li>
+</ul>
+<p>Also, dot products are used to convert a vector equation into a scalar equation
+by “dotting” an entire equation with a vector.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">f</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/functions.html#sympy.physics.vector.functions.dot" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dot()</span></code></a> function
+calculates the dot product:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a d + b e + c f\]</div>
+</div>
+</div>
+<p>The method form is equivalent:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a d + b e + c f\]</div>
+</div>
+</div>
+<p>You can compute a unit vector <span class="math notranslate nohighlight">\(\hat{w}\)</span> in the same direction as
+<span class="math notranslate nohighlight">\(\bar{w}\)</span> with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.normalize" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normalize()</span></code></a> method:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{a}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_x + \frac{b}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_y + \frac{c}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_z\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Write your own function that normalizes an arbitrary vector and show that it
+gives the same result as <code class="docutils literal notranslate"><span class="pre">w.normalize()</span></code>.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">vector</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">vector</span><span class="p">))</span>
+
+<span class="n">normalize</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{a}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_x + \frac{b}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_y + \frac{c}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_z\]</div>
+</div>
+</div>
+</div>
+<p>SymPy Mechanics vectors also have a method
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.magnitude" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">magnitude()</span></code></a> which is
+helpful:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="o">.</span><span class="n">magnitude</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \sqrt{a^{2} + b^{2} + c^{2}}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="o">/</span><span class="n">w</span><span class="o">.</span><span class="n">magnitude</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{a}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_x + \frac{b}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_y + \frac{c}{\sqrt{a^{2} + b^{2} + c^{2}}}\hat{n}_z\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Given the vectors
+<span class="math notranslate nohighlight">\(\bar{v}_1 = a \hat{n}_x + b\hat{n}_y + a \hat{n}_z\)</span>
+and
+<span class="math notranslate nohighlight">\(\bar{v}_2=b \hat{n}_x + a\hat{n}_y + b \hat{n}_z\)</span>
+find the angle between the two vectors using the dot product.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">v1</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">v2</span> <span class="o">=</span> <span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">v1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">v1</span><span class="o">.</span><span class="n">magnitude</span><span class="p">()</span><span class="o">*</span><span class="n">v2</span><span class="o">.</span><span class="n">magnitude</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \operatorname{acos}{\left(\frac{3 a b}{\sqrt{a^{2} + 2 b^{2}} \sqrt{2 a^{2} + b^{2}}} \right)}\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="cross-product">
+<h2 id="cross-product">Cross Product<a class="headerlink" href="#cross-product" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_product">cross product</a>, which yields a vector quantity, is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-vector-cross">
+<span class="eqno">(39)<a class="headerlink" href="#equation-vector-cross" title="Link to this equation">¶</a></span>\[\bar{v} \times \bar{w} = |\bar{v}|\bar{w}| \sin\theta \hat{u}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta\)</span> is the angle between the two vectors, and <span class="math notranslate nohighlight">\(\hat{u}\)</span>
+is the unit vector perpendicular to both <span class="math notranslate nohighlight">\(\bar{v}\)</span> and <span class="math notranslate nohighlight">\(\bar{w}\)</span>
+whose sense is given by the right-hand rule. For arbitrary measure numbers this
+results in the following:</p>
+<div class="math notranslate nohighlight" id="equation-vector-cross-rules">
+<span class="eqno">(40)<a class="headerlink" href="#equation-vector-cross-rules" title="Link to this equation">¶</a></span>\[\begin{split}\bar{v} = &amp; v_x \hat{n}_x + v_y \hat{n}_y + v_z \hat{n}_z \\
+\bar{w} = &amp; w_x \hat{n}_x + w_y \hat{n}_y + w_z \hat{n}_z \\
+\bar{v} \times \bar{w} = &amp;
+(v_y w_z - v_z w_y) \hat{n}_x +
+(v_z w_x - v_x w_z) \hat{n}_y +
+(v_x w_y - v_y w_x) \hat{n}_z\end{split}\]</div>
+<figure class="align-center" id="id11">
+<img alt="Vector cross product" src="_images/vectors-cross-product.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Vector cross product</span><a class="headerlink" href="#id11" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Some properties of cross products are:</p>
+<ul class="simple">
+<li><p>Crossing a vector with itself “cancels” it: <span class="math notranslate nohighlight">\(\bar{a} \times \bar{a} = \bar{0}\)</span></p></li>
+<li><p>You can pull out scalars: <span class="math notranslate nohighlight">\(c \bar{a} \times d \bar{b} = cd (\bar{a} \times \bar{b})\)</span></p></li>
+<li><p>Order <strong>DOES</strong> matter (because of the right-hand rule): <span class="math notranslate nohighlight">\(\bar{a} \times
+\bar{b} = -\bar{b} \times \bar{a}\)</span></p></li>
+<li><p>You can distribute:
+<span class="math notranslate nohighlight">\(\bar{a} \times (\bar{b} + \bar{c}) = \bar{a} \times \bar{b} + \bar{a} \times \bar{c}\)</span></p></li>
+<li><p>They are <strong>NOT</strong> associative:
+<span class="math notranslate nohighlight">\(\bar{a} \times (\bar{b} \times \bar{c}) \neq (\bar{a} \times \bar{b}) \times \bar{c}\)</span></p></li>
+</ul>
+<p>The cross product is used to:</p>
+<ul class="simple">
+<li><p>obtain a vector/direction perpendicular to two other vectors</p></li>
+<li><p>determine if two vectors are parallel:
+<span class="math notranslate nohighlight">\(\bar{v} \times \bar{w} = \bar{0} \mbox{ if } \bar{v} \parallel \bar{w}\)</span></p></li>
+<li><p>compute moments: <span class="math notranslate nohighlight">\(\bar{r} \times \bar{F}\)</span></p></li>
+<li><p>compute the area of a triangle</p></li>
+</ul>
+<p>SymPy Mechanics can calculate cross products with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/functions.html#sympy.physics.vector.functions.cross" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross()</span></code></a> function:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">w</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a\hat{n}_x + b\hat{n}_y + c\hat{n}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">f</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d\hat{n}_x + e\hat{n}_y + f\hat{n}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (b f - c e)\hat{n}_x + (- a f + c d)\hat{n}_y + (a e - b d)\hat{n}_z\]</div>
+</div>
+</div>
+<p>The method form is equivalent:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (b f - c e)\hat{n}_x + (- a f + c d)\hat{n}_y + (a e - b d)\hat{n}_z\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Given three points located in reference frame <span class="math notranslate nohighlight">\(N\)</span> by:</p>
+<div class="math notranslate nohighlight" id="equation-triangle">
+<span class="eqno">(41)<a class="headerlink" href="#equation-triangle" title="Link to this equation">¶</a></span>\[\begin{split}\bar{p}_1 = 23 \hat{n}_x - 12 \hat{n}_y \\
+\bar{p}_2 = 16 \hat{n}_x + 2 \hat{n}_y - 4 \hat{n}_z \\
+\bar{p}_3 = \hat{n}_x + 14 \hat{n}_z\end{split}\]</div>
+<p>Find the area of the triangle bounded by these three points using the cross
+product.</p>
+<p>Hint: Search online for the relationship of the cross product to triangle
+area.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="mi">23</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="mi">12</span><span class="o">*</span> <span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="mi">16</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">p3</span> <span class="o">=</span> <span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">14</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">p2</span> <span class="o">-</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p3</span> <span class="o">-</span> <span class="n">p1</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \sqrt{36077}\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="vectors-expressed-in-multiple-reference-frames">
+<h2 id="vectors-expressed-in-multiple-reference-frames">Vectors Expressed in Multiple Reference Frames<a class="headerlink" href="#vectors-expressed-in-multiple-reference-frames" title="Link to this heading">¶</a></h2>
+<p>The notation of vectors represented by a scalar measure numbers associated with
+unit vectors becomes quite useful when you need to describe vectors with
+components in multiple reference frames. Utilizing unit vectors fixed in
+various frames is rather natural, with no need to think about direction cosine
+matrices.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'a, b, theta'</span><span class="p">)</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a\hat{a}_x + b\hat{n}_y\]</div>
+</div>
+</div>
+<p>All of the previously described operations work as expected:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">+</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 a\hat{a}_x + 2 b\hat{n}_y\]</div>
+</div>
+</div>
+<p>If an orientation is established between the two reference frames, the
+direction cosine transformations are handled for you and can be used to
+naturally express the vector in either reference frame using the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.express" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">express()</span></code></a>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+<span class="n">v</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a \cos{\left(\theta \right)}\hat{n}_x + (a \sin{\left(\theta \right)} + b)\hat{n}_y\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (a + b \sin{\left(\theta \right)})\hat{a}_x + b \cos{\left(\theta \right)}\hat{a}_y\]</div>
+</div>
+</div>
+</section>
+<section id="relative-position-among-points">
+<h2 id="relative-position-among-points">Relative Position Among Points<a class="headerlink" href="#relative-position-among-points" title="Link to this heading">¶</a></h2>
+<p>Take for example the <a class="reference external" href="https://en.wikipedia.org/wiki/Balanced-arm_lamp">balanced-arm lamp</a>, which has multiple articulated
+joints configured in a way to balance the weight of the lamp in any
+configuration. Here are two examples:</p>
+<figure class="align-center" id="id12">
+<img alt="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Anglepoise_1227.jpg/353px-Anglepoise_1227.jpg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Anglepoise_1227.jpg/353px-Anglepoise_1227.jpg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Balanced-arm desk lamp.</span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
+<div class="legend">
+<p>Flickr user “renaissance chambara”, cropped by uploader, CC BY 2.0
+<a class="reference external" href="https://creativecommons.org/licenses/by/2.0">https://creativecommons.org/licenses/by/2.0</a>, via Wikimedia Commons</p>
+</div>
+</figcaption>
+</figure>
+<figure class="align-center" id="id13">
+<img alt="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/GraphyArchy_-_Wikipedia_00323.jpg/320px-GraphyArchy_-_Wikipedia_00323.jpg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/GraphyArchy_-_Wikipedia_00323.jpg/320px-GraphyArchy_-_Wikipedia_00323.jpg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Example of a huge balance-arm lamp in Rotterdam at the Schouwburgplein.</span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
+<div class="legend">
+<p>GraphyArchy, CC BY-SA 4.0 <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0">https://creativecommons.org/licenses/by-sa/4.0</a>,
+via Wikimedia Commons</p>
+</div>
+</figcaption>
+</figure>
+<p>With those lamps in mind, <a class="reference internal" href="#vectors-desk-lamp"><span class="std std-numref">Fig. 19</span></a> shows a diagram of a
+similar desk lamp with all necessary configuration information present. The
+base <span class="math notranslate nohighlight">\(N\)</span> is fixed to the desk. The first linkage <span class="math notranslate nohighlight">\(A\)</span> is oriented
+with respect to <span class="math notranslate nohighlight">\(N\)</span> by a <span class="math notranslate nohighlight">\(z\textrm{-}x\)</span> body fixed orientation
+through angles <span class="math notranslate nohighlight">\(q_1\)</span> and <span class="math notranslate nohighlight">\(q_2\)</span>. Point <span class="math notranslate nohighlight">\(P_1\)</span> is fixed in
+<span class="math notranslate nohighlight">\(N\)</span> and is located at the center of the base. Linkage <span class="math notranslate nohighlight">\(A\)</span> is
+defined by points <span class="math notranslate nohighlight">\(P_1\)</span> and <span class="math notranslate nohighlight">\(P_2\)</span> which are separated by length
+<span class="math notranslate nohighlight">\(l_1\)</span> along the <span class="math notranslate nohighlight">\(\hat{a}_z\)</span> direction. Linkage <span class="math notranslate nohighlight">\(B\)</span> orients
+simply with respect to <span class="math notranslate nohighlight">\(A\)</span> about <span class="math notranslate nohighlight">\(\hat{a}_x=\hat{b}_x\)</span> through
+angle <span class="math notranslate nohighlight">\(q_3\)</span> and point <span class="math notranslate nohighlight">\(P_3\)</span> is <span class="math notranslate nohighlight">\(l_2\)</span> from <span class="math notranslate nohighlight">\(P_2\)</span> along
+<span class="math notranslate nohighlight">\(\hat{b}_z\)</span>. Lastly, the lamp head <span class="math notranslate nohighlight">\(C\)</span> orients relative to
+<span class="math notranslate nohighlight">\(B\)</span> by a <span class="math notranslate nohighlight">\(x\textrm{-}z\)</span> body fixed orientation through angles
+<span class="math notranslate nohighlight">\(q_4\)</span> and <span class="math notranslate nohighlight">\(q_5\)</span>. The center of the light bulb <span class="math notranslate nohighlight">\(P_4\)</span> is
+located relative to <span class="math notranslate nohighlight">\(P_3\)</span> by the distances <span class="math notranslate nohighlight">\(l_3\)</span> along
+<span class="math notranslate nohighlight">\(\hat{c}_z\)</span> and <span class="math notranslate nohighlight">\(l_4\)</span> along <span class="math notranslate nohighlight">\(-\hat{c}_y\)</span>.</p>
+<figure class="align-center" id="id14">
+<span id="vectors-desk-lamp"></span><a class="reference internal image-reference" href="_images/vectors-desk-lamp.svg"><img alt="_images/vectors-desk-lamp.svg" src="_images/vectors-desk-lamp.svg" style="width: 500px;"/>
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Configuration diagram of a balanced-arm desk lamp.</span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>We will use the following notation for vectors that indicate the relative
+position between two points:</p>
+<div class="math notranslate nohighlight" id="equation-position-vect-p2p1">
+<span class="eqno">(42)<a class="headerlink" href="#equation-position-vect-p2p1" title="Link to this equation">¶</a></span>\[\bar{r}^{P_2/P_1}\]</div>
+<p>which reads as the “position vector from <span class="math notranslate nohighlight">\(P_1\)</span> to <span class="math notranslate nohighlight">\(P_2\)</span>” or the
+“position vector of <span class="math notranslate nohighlight">\(P_2\)</span> with respect to <span class="math notranslate nohighlight">\(P_1\)</span>”. The tail of the
+vector is at <span class="math notranslate nohighlight">\(P_1\)</span> and the tip is at <span class="math notranslate nohighlight">\(P_2\)</span>.</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Reread the <a class="reference internal" href="#vector-functions"><span class="std std-ref">Vector Functions</span></a> section and answer the following
+questions:</p>
+<ol class="arabic simple">
+<li><p>Is <span class="math notranslate nohighlight">\(\bar{r}^{P_2/P_1}\)</span> vector function of <span class="math notranslate nohighlight">\(q_1\)</span> and <span class="math notranslate nohighlight">\(q_2\)</span> in N?</p></li>
+<li><p>Is <span class="math notranslate nohighlight">\(\bar{r}^{P_2/P_1}\)</span> vector function of <span class="math notranslate nohighlight">\(q_1\)</span> and <span class="math notranslate nohighlight">\(q_1\)</span> in A?</p></li>
+<li><p>Is <span class="math notranslate nohighlight">\(\bar{r}^{P_2/P_1}\)</span> vector function of <span class="math notranslate nohighlight">\(q_3\)</span> and <span class="math notranslate nohighlight">\(q_4\)</span> in N?</p></li>
+<li><p>Is <span class="math notranslate nohighlight">\(\bar{r}^{P_3/P_2}\)</span> vector function of <span class="math notranslate nohighlight">\(q_1\)</span> and <span class="math notranslate nohighlight">\(q_2\)</span> in N?</p></li>
+</ol>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p>See below how to use <code class="docutils literal notranslate"><span class="pre">.free_symbols()</span></code> to check your answers.</p>
+</div>
+<p>We can now write position vectors between pairs of points as we move from the
+base of the lamp to the light bulb. We’ll do so with SymPy Mechanics. First
+create the necessary symbols and reference frames.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span><span class="p">,</span> <span class="n">q4</span><span class="p">,</span> <span class="n">q5</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'q1, q2, q3, q4, q5'</span><span class="p">)</span>
+<span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">l3</span><span class="p">,</span> <span class="n">l4</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'l1, l2, l3, l4'</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'C'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now establish the orientations, starting with <span class="math notranslate nohighlight">\(A\)</span>’s orientation relative
+to <span class="math notranslate nohighlight">\(N\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">.</span><span class="n">orient_body_fixed</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'ZXZ'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Notice that the unneeded third simple orientation angle was set to
+zero.</p>
+</div>
+<p>Then <span class="math notranslate nohighlight">\(B\)</span>’s orientation relative to <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">q3</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>And finally <span class="math notranslate nohighlight">\(C\)</span>’s orientation relative to <span class="math notranslate nohighlight">\(B\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="o">.</span><span class="n">orient_body_fixed</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="p">(</span><span class="n">q4</span><span class="p">,</span> <span class="n">q5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'XZX'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>We can now create position vectors between pairs of points in the most
+convenient frame to do so, i.e. the reference frame in which both points lie on
+a line parallel to an existing unit vector. The intermediate vectors that
+connect <span class="math notranslate nohighlight">\(P_1\)</span> to <span class="math notranslate nohighlight">\(P_2\)</span>, <span class="math notranslate nohighlight">\(P_2\)</span> to <span class="math notranslate nohighlight">\(P_3\)</span>, and <span class="math notranslate nohighlight">\(P_3\)</span>
+to <span class="math notranslate nohighlight">\(P_4\)</span> are:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_P1_P2</span> <span class="o">=</span> <span class="n">l1</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span>
+<span class="n">R_P2_P3</span> <span class="o">=</span> <span class="n">l2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+<span class="n">R_P3_P4</span> <span class="o">=</span> <span class="n">l3</span><span class="o">*</span><span class="n">C</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">l4</span><span class="o">*</span><span class="n">C</span><span class="o">.</span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The position vector from <span class="math notranslate nohighlight">\(P_1\)</span> to <span class="math notranslate nohighlight">\(P_4\)</span> is then found by vector
+addition:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_P1_P4</span> <span class="o">=</span> <span class="n">R_P1_P2</span> <span class="o">+</span> <span class="n">R_P2_P3</span> <span class="o">+</span> <span class="n">R_P3_P4</span>
+<span class="n">R_P1_P4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle l_{1}\hat{a}_z + l_{2}\hat{b}_z -  l_{4}\hat{c}_y + l_{3}\hat{c}_z\]</div>
+</div>
+</div>
+<p>To convince you of the utility of our vector notation, have a look at what
+<span class="math notranslate nohighlight">\(\bar{r}^{P_4/P_1}\)</span> looks like if expressed completely in the <span class="math notranslate nohighlight">\(N\)</span>
+frame:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_P1_P4</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (l_{1} \sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)} + l_{2} \left(\sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)} \cos{\left(q_{3} \right)} + \sin{\left(q_{1} \right)} \sin{\left(q_{3} \right)} \cos{\left(q_{2} \right)}\right) + l_{3} \left(- \left(\sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)} \sin{\left(q_{3} \right)} - \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)} \cos{\left(q_{3} \right)}\right) \sin{\left(q_{4} \right)} + \left(\sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)} \cos{\left(q_{3} \right)} + \sin{\left(q_{1} \right)} \sin{\left(q_{3} \right)} \cos{\left(q_{2} \right)}\right) \cos{\left(q_{4} \right)}\right) - l_{4} \left(\left(\sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)} \sin{\left(q_{3} \right)} - \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)} \cos{\left(q_{3} \right)}\right) \cos{\left(q_{4} \right)} \cos{\left(q_{5} \right)} + \left(\sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)} \cos{\left(q_{3} \right)} + \sin{\left(q_{1} \right)} \sin{\left(q_{3} \right)} \cos{\left(q_{2} \right)}\right) \sin{\left(q_{4} \right)} \cos{\left(q_{5} \right)} - \sin{\left(q_{5} \right)} \cos{\left(q_{1} \right)}\right))\hat{n}_x + (- l_{1} \sin{\left(q_{2} \right)} \cos{\left(q_{1} \right)} + l_{2} \left(- \sin{\left(q_{2} \right)} \cos{\left(q_{1} \right)} \cos{\left(q_{3} \right)} - \sin{\left(q_{3} \right)} \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)}\right) + l_{3} \left(- \left(- \sin{\left(q_{2} \right)} \sin{\left(q_{3} \right)} \cos{\left(q_{1} \right)} + \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)} \cos{\left(q_{3} \right)}\right) \sin{\left(q_{4} \right)} + \left(- \sin{\left(q_{2} \right)} \cos{\left(q_{1} \right)} \cos{\left(q_{3} \right)} - \sin{\left(q_{3} \right)} \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)}\right) \cos{\left(q_{4} \right)}\right) - l_{4} \left(\left(- \sin{\left(q_{2} \right)} \sin{\left(q_{3} \right)} \cos{\left(q_{1} \right)} + \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)} \cos{\left(q_{3} \right)}\right) \cos{\left(q_{4} \right)} \cos{\left(q_{5} \right)} + \left(- \sin{\left(q_{2} \right)} \cos{\left(q_{1} \right)} \cos{\left(q_{3} \right)} - \sin{\left(q_{3} \right)} \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)}\right) \sin{\left(q_{4} \right)} \cos{\left(q_{5} \right)} - \sin{\left(q_{1} \right)} \sin{\left(q_{5} \right)}\right))\hat{n}_y + (l_{1} \cos{\left(q_{2} \right)} + l_{2} \left(- \sin{\left(q_{2} \right)} \sin{\left(q_{3} \right)} + \cos{\left(q_{2} \right)} \cos{\left(q_{3} \right)}\right) + l_{3} \left(\left(- \sin{\left(q_{2} \right)} \sin{\left(q_{3} \right)} + \cos{\left(q_{2} \right)} \cos{\left(q_{3} \right)}\right) \cos{\left(q_{4} \right)} - \left(\sin{\left(q_{2} \right)} \cos{\left(q_{3} \right)} + \sin{\left(q_{3} \right)} \cos{\left(q_{2} \right)}\right) \sin{\left(q_{4} \right)}\right) - l_{4} \left(\left(- \sin{\left(q_{2} \right)} \sin{\left(q_{3} \right)} + \cos{\left(q_{2} \right)} \cos{\left(q_{3} \right)}\right) \sin{\left(q_{4} \right)} \cos{\left(q_{5} \right)} + \left(\sin{\left(q_{2} \right)} \cos{\left(q_{3} \right)} + \sin{\left(q_{3} \right)} \cos{\left(q_{2} \right)}\right) \cos{\left(q_{4} \right)} \cos{\left(q_{5} \right)}\right))\hat{n}_z\]</div>
+</div>
+</div>
+<p>If you have properly established your orientations and position vectors, SymPy
+Mechanics can help you determine the answers to the previous exercise.
+Expressing <span class="math notranslate nohighlight">\(\bar{r}^{P2/P1}\)</span> in <span class="math notranslate nohighlight">\(N\)</span> can show us which scalar
+variables that vector function depends on in <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_P1_P2</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle l_{1} \sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)}\hat{n}_x -  l_{1} \sin{\left(q_{2} \right)} \cos{\left(q_{1} \right)}\hat{n}_y + l_{1} \cos{\left(q_{2} \right)}\hat{n}_z\]</div>
+</div>
+</div>
+<p>By inspection, we see the variables are <span class="math notranslate nohighlight">\(l_1,q_1,q_2\)</span>. The
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.free_symbols" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">free_symbols()</span></code></a> function
+can extract these scalars directly:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_P1_P2</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{l_{1}, q_{1}, q_{2}\right\}\]</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">free_symbols()</span></code> shows all SymPy <code class="docutils literal notranslate"><span class="pre">Symbol</span></code> objects, but will not show
+<code class="docutils literal notranslate"><span class="pre">Function()</span></code> objects. In the next chapter we will introduce a way to do
+the same thing when functions of time are present in your vector
+expressions.</p>
+</div>
+<p>Similarly, other vector functions can be inspected:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_P1_P2</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{l_{1}\right\}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_P1_P4</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{l_{1}, l_{2}, l_{3}, l_{4}, q_{1}, q_{2}, q_{3}, q_{4}, q_{5}\right\}\]</div>
+</div>
+</div>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="orientation.html" title="Orientation of Reference Frames"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Orientation of Reference Frames </span>
+              </div>
+            </a>
+          
+          
+            <a href="differentiation.html" title="Vector Differentiation"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Vector Differentiation </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

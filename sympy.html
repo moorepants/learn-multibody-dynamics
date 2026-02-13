@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>SymPy &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Orientation of Reference Frames" href="orientation.html" />
+    <link rel="prev" title="Jupyter and Python" href="jupyter-python.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#sympy" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> SymPy </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> SymPy </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">SymPy</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#sympy--page-root" class="md-nav__link">SymPy</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#import-and-setup" class="md-nav__link">Import and Setup</a>
+        </li>
+        <li class="md-nav__item"><a href="#symbols" class="md-nav__link">Symbols</a>
+        </li>
+        <li class="md-nav__item"><a href="#undefined-functions" class="md-nav__link">Undefined Functions</a>
+        </li>
+        <li class="md-nav__item"><a href="#symbolic-expressions" class="md-nav__link">Symbolic Expressions</a>
+        </li>
+        <li class="md-nav__item"><a href="#printing" class="md-nav__link">Printing</a>
+        </li>
+        <li class="md-nav__item"><a href="#differentiating" class="md-nav__link">Differentiating</a>
+        </li>
+        <li class="md-nav__item"><a href="#evaluating-symbolic-expressions" class="md-nav__link">Evaluating Symbolic Expressions</a>
+        </li>
+        <li class="md-nav__item"><a href="#matrices" class="md-nav__link">Matrices</a>
+        </li>
+        <li class="md-nav__item"><a href="#solving-linear-systems" class="md-nav__link">Solving Linear Systems</a>
+        </li>
+        <li class="md-nav__item"><a href="#simplification" class="md-nav__link">Simplification</a>
+        </li>
+        <li class="md-nav__item"><a href="#learn-more" class="md-nav__link">Learn more</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/sympy.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#sympy--page-root" class="md-nav__link">SymPy</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#import-and-setup" class="md-nav__link">Import and Setup</a>
+        </li>
+        <li class="md-nav__item"><a href="#symbols" class="md-nav__link">Symbols</a>
+        </li>
+        <li class="md-nav__item"><a href="#undefined-functions" class="md-nav__link">Undefined Functions</a>
+        </li>
+        <li class="md-nav__item"><a href="#symbolic-expressions" class="md-nav__link">Symbolic Expressions</a>
+        </li>
+        <li class="md-nav__item"><a href="#printing" class="md-nav__link">Printing</a>
+        </li>
+        <li class="md-nav__item"><a href="#differentiating" class="md-nav__link">Differentiating</a>
+        </li>
+        <li class="md-nav__item"><a href="#evaluating-symbolic-expressions" class="md-nav__link">Evaluating Symbolic Expressions</a>
+        </li>
+        <li class="md-nav__item"><a href="#matrices" class="md-nav__link">Matrices</a>
+        </li>
+        <li class="md-nav__item"><a href="#solving-linear-systems" class="md-nav__link">Solving Linear Systems</a>
+        </li>
+        <li class="md-nav__item"><a href="#simplification" class="md-nav__link">Simplification</a>
+        </li>
+        <li class="md-nav__item"><a href="#learn-more" class="md-nav__link">Learn more</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/sympy.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="sympy">
+<h1 id="sympy--page-root">SymPy<a class="headerlink" href="#sympy--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/1a39c397889d135c1b6c623f19306618/sympy.py"><code class="xref download docutils literal notranslate"><span class="pre">sympy.py</span></code></a> or Jupyter notebook:
+<a class="reference download internal" download="" href="_downloads/41808dc975751523e04c925c2511034b/sympy.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">sympy.ipynb</span></code></a>.</p>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>Write mathematical expressions with symbols and functions using SymPy.</p></li>
+<li><p>Print different forms of expressions and equations with SymPy.</p></li>
+<li><p>Differentiate mathematical expressions using SymPy.</p></li>
+<li><p>Evaluate mathematical expressions using SymPy.</p></li>
+<li><p>Create matrices and do linear algebra using SymPy.</p></li>
+<li><p>Solve a linear system of equations with SymPy.</p></li>
+<li><p>Simplify mathematical expressions with SymPy.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://www.sympy.org">SymPy</a> is an open source, collaboratively developed <a class="reference external" href="https://en.wikipedia.org/wiki/Computer_algebra_system">computer algebra system</a>
+(CAS) written in Python. It will be used extensively for manipulating symbolic
+expressions and equations. All of the mathematics needed to formulate the
+equations of motion of multibody systems can be done with pencil and paper, but
+the bookkeeping becomes extremely tedious and error prone for systems with even
+a small number of bodies. SymPy lets a computer handle the tedious aspects
+(e.g. differentiation or solving linear systems of equations) and reduces the
+errors one would encounter with pencil and paper. This chapter introduces SymPy
+and the primary SymPy features we will be using.</p>
+</section>
+<section id="import-and-setup">
+<h2 id="import-and-setup">Import and Setup<a class="headerlink" href="#import-and-setup" title="Link to this heading">¶</a></h2>
+<p>I will import SymPy as follows throughout this book:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Since SymPy works with mathematical symbols it’s nice to view SymPy objects in
+a format that is similar to the math in a textbook. Executing
+<a class="reference external" href="https://docs.sympy.org/latest/modules/interactive.html#sympy.interactive.printing.init_printing" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">init_printing()</span></code></a> at the beginning
+of your Jupyter Notebook will ensure that SymPy objects render as typeset
+mathematics. I use the <code class="docutils literal notranslate"><span class="pre">use_latex='mathjax'</span></code> argument here to disable math
+png image generation, but that keyword argument is not necessary.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">init_printing</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="symbols">
+<h2 id="symbols">Symbols<a class="headerlink" href="#symbols" title="Link to this heading">¶</a></h2>
+<p>Mathematical symbols are created with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.symbol.symbols" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">symbols()</span></code></a> function. A symbol <span class="math notranslate nohighlight">\(a\)</span> is
+created like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span>
+<span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a\]</div>
+</div>
+</div>
+<p>This symbol object is of the <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.symbol.Symbol" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Symbol</span></code></a> type:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>sympy.core.symbol.Symbol
+</pre></div>
+</div>
+</div>
+</div>
+<p>Multiple symbols can be created with one call to <code class="docutils literal notranslate"><span class="pre">symbols()</span></code> and SymPy
+recognizes common Greek symbols by their spelled-out name.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">Omega</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'b, t, omega, Omega'</span><span class="p">)</span>
+<span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">Omega</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( b, \  t, \  \omega, \  \Omega\right)\]</div>
+</div>
+</div>
+<p>Note that the argument provided to <code class="docutils literal notranslate"><span class="pre">symbols()</span></code> does not need to match the
+Python variable name it is assigned to. Using more verbose Python variable
+names may make code easier to read and understand, especially if there are many
+mathematical variables that you need to keep track of. Note that the subscripts
+are recognized too.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pivot_angle</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'alpha1, omega2'</span><span class="p">)</span>
+<span class="n">pivot_angle</span><span class="p">,</span> <span class="n">w2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( \alpha_{1}, \  \omega_{2}\right)\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Review the SymPy documentation and create symbols <span class="math notranslate nohighlight">\(q_1, q_2, \ldots,
+q_{10}\)</span> with a very succint call to
+<a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.symbol.symbols" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">symbols()</span></code></a>.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'q1:11'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( q_{1}, \  q_{2}, \  q_{3}, \  q_{4}, \  q_{5}, \  q_{6}, \  q_{7}, \  q_{8}, \  q_{9}, \  q_{10}\right)\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="undefined-functions">
+<h2 id="undefined-functions">Undefined Functions<a class="headerlink" href="#undefined-functions" title="Link to this heading">¶</a></h2>
+<p>You will also work with undefined mathematical functions in addition to symbols.
+These will play an important role in setting up differential equations, where
+you typically don’t know the function, but only its derivative(s). You can
+create arbitrary functions of variables. In this case, you make a function of
+<span class="math notranslate nohighlight">\(t\)</span>. First create the function name:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">'f'</span><span class="p">)</span>
+<span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>f
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is of a type <code class="docutils literal notranslate"><span class="pre">sympy.core.function.UndefinedFunction</span></code>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>sympy.core.function.UndefinedFunction
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now you can create functions of one or more variables like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle f{\left(t \right)}\]</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Due to SymPy’s internal implementations, the type of a function with its
+argument is not defined as expected:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>f
+</pre></div>
+</div>
+</div>
+</div>
+<p>This can be confusing if you are checking types.</p>
+</div>
+<p>The same <code class="docutils literal notranslate"><span class="pre">UndefinedFunction</span></code> can be used to create multivariate functions:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle f{\left(a,b,\omega,t \right)}\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Create a function <span class="math notranslate nohighlight">\(H(x, y, z)\)</span>.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'x, y, z'</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">'H'</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle H{\left(x,y,z \right)}\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="symbolic-expressions">
+<h2 id="symbolic-expressions">Symbolic Expressions<a class="headerlink" href="#symbolic-expressions" title="Link to this heading">¶</a></h2>
+<p>Now that you have mathematical variables and functions available, they can be
+used to construct mathematical expressions. The most basic way to construct
+expressions is with the standard Python operators <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">**</span></code>. For example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr1</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="o">/</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">expr1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a + \frac{b}{\omega^{2}}\]</div>
+</div>
+</div>
+<p>An expression will have the type <code class="docutils literal notranslate"><span class="pre">Add,</span> <span class="pre">Mul,</span> <span class="pre">or</span> <span class="pre">Pow</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">expr1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>sympy.core.add.Add
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is because SymPy stores expressions behind the scenes as a <a class="reference external" href="https://en.wikipedia.org/wiki/Tree_(graph_theory)">tree</a>. You can
+inspect this internal representation by using the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/printing.html#sympy.printing.repr.srepr" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">srepr()</span></code></a> function:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">srepr</span><span class="p">(</span><span class="n">expr1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>"Add(Symbol('a'), Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2))))"
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is a visual representation of the tree:</p>
+<div align="center" class="align-center"><div class="graphviz"><img alt="digraph{
+
+# Graph style
+&quot;ordering&quot;=&quot;out&quot;
+&quot;rankdir&quot;=&quot;TD&quot;
+
+#########
+# Nodes #
+#########
+
+&quot;Add(Symbol('a'), Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2))))_()&quot; [&quot;color&quot;=&quot;black&quot;, &quot;label&quot;=&quot;Add&quot;, &quot;shape&quot;=&quot;ellipse&quot;];
+&quot;Symbol('a')_(0,)&quot; [&quot;color&quot;=&quot;black&quot;, &quot;label&quot;=&quot;a&quot;, &quot;shape&quot;=&quot;ellipse&quot;];
+&quot;Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)&quot; [&quot;color&quot;=&quot;black&quot;, &quot;label&quot;=&quot;Mul&quot;, &quot;shape&quot;=&quot;ellipse&quot;];
+&quot;Symbol('b')_(1, 0)&quot; [&quot;color&quot;=&quot;black&quot;, &quot;label&quot;=&quot;b&quot;, &quot;shape&quot;=&quot;ellipse&quot;];
+&quot;Pow(Symbol('omega'), Integer(-2))_(1, 1)&quot; [&quot;color&quot;=&quot;black&quot;, &quot;label&quot;=&quot;Pow&quot;, &quot;shape&quot;=&quot;ellipse&quot;];
+&quot;Symbol('omega')_(1, 1, 0)&quot; [&quot;color&quot;=&quot;black&quot;, &quot;label&quot;=&quot;omega&quot;, &quot;shape&quot;=&quot;ellipse&quot;];
+&quot;Integer(-2)_(1, 1, 1)&quot; [&quot;color&quot;=&quot;black&quot;, &quot;label&quot;=&quot;-2&quot;, &quot;shape&quot;=&quot;ellipse&quot;];
+
+#########
+# Edges #
+#########
+
+&quot;Add(Symbol('a'), Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2))))_()&quot; -&gt; &quot;Symbol('a')_(0,)&quot;;
+&quot;Add(Symbol('a'), Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2))))_()&quot; -&gt; &quot;Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)&quot;;
+&quot;Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)&quot; -&gt; &quot;Symbol('b')_(1, 0)&quot;;
+&quot;Mul(Symbol('b'), Pow(Symbol('omega'), Integer(-2)))_(1,)&quot; -&gt; &quot;Pow(Symbol('omega'), Integer(-2))_(1, 1)&quot;;
+&quot;Pow(Symbol('omega'), Integer(-2))_(1, 1)&quot; -&gt; &quot;Symbol('omega')_(1, 1, 0)&quot;;
+&quot;Pow(Symbol('omega'), Integer(-2))_(1, 1)&quot; -&gt; &quot;Integer(-2)_(1, 1, 1)&quot;;
+}" class="graphviz" src="_images/graphviz-0306b80f2fb209814f0a413beadf9fb8403da073.png"/></div>
+</div>
+<p>This representation is SymPy’s “true” representation of the symbolic
+expression. SymPy can display this expression in many other representations,
+for example the typeset mathematical expression you have already seen is one of
+those representations. This is important to know, because sometimes the
+expressions are displayed to you in a way that may be confusing and checking
+the <code class="docutils literal notranslate"><span class="pre">srepr()</span></code> version can help clear up misunderstandings. See the
+<a class="reference external" href="https://docs.sympy.org/latest/tutorial/manipulation.html">manipulation section</a> of the SymPy tutorial for more information on this.</p>
+<p>Undefined functions can also be used in expressions just like symbols:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr2</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">omega</span>
+<span class="n">expr2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a \omega + f{\left(t \right)}\]</div>
+</div>
+</div>
+<p>SymPy has a large number of elementary and special functions. See the SymPy
+<a class="reference external" href="https://docs.sympy.org/latest/modules/functions/index.html">documentation on functions</a> for more information. For example, here is an
+expression that uses
+<a class="reference external" href="https://docs.sympy.org/latest/modules/functions/elementary.html#sympy.functions.elementary.trigonometric.sin" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sin</span></code></a>,
+<a class="reference external" href="https://docs.sympy.org/latest/modules/functions/elementary.html#sympy.functions.elementary.complexes.Abs" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Abs</span></code></a>, and
+<a class="reference external" href="https://docs.sympy.org/latest/modules/functions/elementary.html#sympy.functions.elementary.miscellaneous.sqrt" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sqrt()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span> <span class="o">+</span> <span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">expr3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a \sin{\left(\omega \right)} + \frac{\left|{f{\left(t \right)}}\right|}{\sqrt{b}}\]</div>
+</div>
+</div>
+<p>Note that Python integers and floats can also be used when constructing
+expressions:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr4</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="o">+</span> <span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="o">-</span><span class="mi">1001</span><span class="p">)</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">89.2</span><span class="p">)</span>
+<span class="n">expr4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 5 \sin{\left(12 \right)} + 105.986768359379\]</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be careful with numbers, as SymPy may not intepret them as expected. For
+example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0.5 a\]</div>
+</div>
+</div>
+<p>Python does the division before it is multiplied by <code class="docutils literal notranslate"><span class="pre">a</span></code>, thus a floating
+point value is created. To fix this you can use the <code class="docutils literal notranslate"><span class="pre">S()</span></code> function to
+“sympify” numbers:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{a}{2}\]</div>
+</div>
+</div>
+<p>Or you can ensure the symbol comes first in the division operation:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{a}{2}\]</div>
+</div>
+</div>
+</div>
+<p>Lastly, an expression of <code class="docutils literal notranslate"><span class="pre">t</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr5</span> <span class="o">=</span> <span class="n">t</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">expr5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle t \sin{\left(\omega f{\left(t \right)} \right)} + \frac{f{\left(t \right)}}{\sqrt{t}}\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Create an expression for the normal distribution function:</p>
+<div class="math notranslate nohighlight" id="equation-sympy-0">
+<span class="eqno">(1)<a class="headerlink" href="#equation-sympy-0" title="Link to this equation">¶</a></span>\[\frac{1}{\sqrt{2\pi\sigma}}e^{\frac{(x-\mu)^2}{2\sigma^2}}\]</div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'x, sigma, mu'</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="n">m</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\sqrt{2} e^{\frac{\left(- \mu + x\right)^{2}}{2 \sigma^{2}}}}{2 \sqrt{\pi} \sqrt{\sigma}}\]</div>
+</div>
+</div>
+<p>Notice that SymPy does some minor manipulation of the expression, but it is
+equivalent to the form shown in the prompt.</p>
+</div>
+</section>
+<section id="printing">
+<h2 id="printing">Printing<a class="headerlink" href="#printing" title="Link to this heading">¶</a></h2>
+<p>I introduced the <code class="docutils literal notranslate"><span class="pre">srepr()</span></code> form of SymPy expressions above and mentioned that
+expressions can have different representations. For the following <code class="docutils literal notranslate"><span class="pre">srepr()</span></code>
+form:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">srepr</span><span class="p">(</span><span class="n">expr3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>"Add(Mul(Symbol('a'), sin(Symbol('omega'))), Mul(Pow(Symbol('b'), Rational(-1, 2)), Abs(Function('f')(Symbol('t')))))"
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is also a standard representation accessed with the <code class="docutils literal notranslate"><span class="pre">repr()</span></code> function:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">repr</span><span class="p">(</span><span class="n">expr3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>'a*sin(omega) + Abs(f(t))/sqrt(b)'
+</pre></div>
+</div>
+</div>
+</div>
+<p>This form matches what you typically would type to create the expression and it
+returns a string. The <code class="docutils literal notranslate"><span class="pre">print()</span></code> function will display that string:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">expr3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>a*sin(omega) + Abs(f(t))/sqrt(b)
+</pre></div>
+</div>
+</div>
+</div>
+<p>SymPy also has a “pretty printer” (<a class="reference external" href="https://docs.sympy.org/latest/modules/printing.html#sympy.printing.pretty.pretty.pretty_print" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">pprint()</span></code></a>) that makes use of unicode symbols
+to provide a form that more closely resembles typeset math:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">expr3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>           │f(t)│
+a⋅sin(ω) + ──────
+             √b  
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lastly, the following lines show how SymPy expressions can be represented as
+LaTeX code using <a class="reference external" href="https://docs.sympy.org/latest/modules/printing.html#sympy.printing.latex.latex" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sympy.printing.latex.latex()</span></code></a>. The double
+backslashes are present because double backslashes represent the escape
+character in Python strings.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">expr3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>'a \\sin{\\left(\\omega \\right)} + \\frac{\\left|{f{\\left(t \\right)}}\\right|}{\\sqrt{b}}'
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">expr3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>a \sin{\left(\omega \right)} + \frac{\left|{f{\left(t \right)}}\right|}{\sqrt{b}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When you are working with long expressions, which will be the case in this
+course, there is no need to print them to the screen. In fact, printing them
+to the screen make take a long time and fill your entire notebook with an
+unreadable mess.</p>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Print the normal distribution expression</p>
+<div class="math notranslate nohighlight" id="equation-sympy-1">
+<span class="eqno">(2)<a class="headerlink" href="#equation-sympy-1" title="Link to this equation">¶</a></span>\[\frac{1}{\sqrt{2\pi\sigma}}e^{\frac{(x-\mu)^2}{2\sigma^2}}\]</div>
+<p>as a LaTeX string inside an equation environment.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'x, sigma, mu'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="n">m</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">s</span><span class="p">),</span>
+               <span class="n">mode</span><span class="o">=</span><span class="s1">'equation'</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>\begin{equation}\frac{\sqrt{2} e^{\frac{\left(- \mu + x\right)^{2}}{2 \sigma^{2}}}}{2 \sqrt{\pi} \sqrt{\sigma}}\end{equation}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="differentiating">
+<h2 id="differentiating">Differentiating<a class="headerlink" href="#differentiating" title="Link to this heading">¶</a></h2>
+<p>One of the most tedious tasks in formulating equations of motion is
+differentiating complex trigonometric expressions. SymPy can calculate
+derivatives effortlessly. The <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.function.diff" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">diff()</span></code></a>
+SymPy function takes an undefined function or an expression and differentiates
+it with respect to the symbol provided as the second argument:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{d}{d t} f{\left(t \right)}\]</div>
+</div>
+</div>
+<p>All functions and expressions also have a <code class="docutils literal notranslate"><span class="pre">.diff()</span></code> method which can be used
+like so (many SymPy functions exist as standalone functions and methods):</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{d}{d t} f{\left(t \right)}\]</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">expr3</span></code> is a more complicated expression:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a \sin{\left(\omega \right)} + \frac{\left|{f{\left(t \right)}}\right|}{\sqrt{b}}\]</div>
+</div>
+</div>
+<p>It can be differentiated, for example, with respect to <span class="math notranslate nohighlight">\(b\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \frac{\left|{f{\left(t \right)}}\right|}{2 b^{\frac{3}{2}}}\]</div>
+</div>
+</div>
+<p>You can also calculate partial derivatives with respect to successive
+variables. If you want to first differentiate with respect to <span class="math notranslate nohighlight">\(b\)</span> and
+then with respect to <span class="math notranslate nohighlight">\(t\)</span> as in the following operation:</p>
+<div class="math notranslate nohighlight" id="equation-sympy-2">
+<span class="eqno">(3)<a class="headerlink" href="#equation-sympy-2" title="Link to this equation">¶</a></span>\[\frac{\partial^2 h(a, \omega, t, b)}{\partial t \partial b}\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight" id="equation-sympy-3">
+<span class="eqno">(4)<a class="headerlink" href="#equation-sympy-3" title="Link to this equation">¶</a></span>\[h(a, \omega, t, b) = \displaystyle a \sin{\left(\omega \right)} + \frac{\left|{f{\left(t \right)}}\right|}{\sqrt{b}}\]</div>
+<p>then you can use successive arguments to <code class="docutils literal notranslate"><span class="pre">.diff()</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \frac{\left(\operatorname{re}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{re}{\left(f{\left(t \right)}\right)} + \operatorname{im}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{im}{\left(f{\left(t \right)}\right)}\right) \operatorname{sign}{\left(f{\left(t \right)} \right)}}{2 b^{\frac{3}{2}} f{\left(t \right)}}\]</div>
+</div>
+</div>
+<p>Note that the answer includes real and imaginary components and the <a class="reference external" href="https://en.wikipedia.org/wiki/Sign_function">signum
+function</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>SymPy assumes all symbols are complex-valued unless told otherwise. You can
+attach assumptions to symbols to force them to be real, positive, negative,
+etc. For example, compare these three outputs:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">'h'</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\left(\operatorname{re}{\left(h{\left(t \right)}\right)} \frac{d}{d t} \operatorname{re}{\left(h{\left(t \right)}\right)} + \operatorname{im}{\left(h{\left(t \right)}\right)} \frac{d}{d t} \operatorname{im}{\left(h{\left(t \right)}\right)}\right) \operatorname{sign}{\left(h{\left(t \right)} \right)}}{h{\left(t \right)}}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \operatorname{sign}{\left(h{\left(t \right)} \right)} \frac{d}{d t} h{\left(t \right)}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">'h'</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{d}{d t} h{\left(t \right)}\]</div>
+</div>
+</div>
+<p>Sometimes you may need to add assumptions to variables, but in general it
+will not be necessary. Read more about <a class="reference external" href="https://docs.sympy.org/latest/guides/assumptions.html">assumptions in SymPy’s guide</a>.</p>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Differentiate <code class="docutils literal notranslate"><span class="pre">expr5</span></code> above using this operator:</p>
+<div class="math notranslate nohighlight" id="equation-sympy-4">
+<span class="eqno">(5)<a class="headerlink" href="#equation-sympy-4" title="Link to this equation">¶</a></span>\[\frac{\partial^2}{\partial \omega \partial t}\]</div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p>First show <code class="docutils literal notranslate"><span class="pre">expr5</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle t \sin{\left(\omega f{\left(t \right)} \right)} + \frac{f{\left(t \right)}}{\sqrt{t}}\]</div>
+</div>
+</div>
+<p>The twice partial derivative is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr5</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \omega t f{\left(t \right)} \sin{\left(\omega f{\left(t \right)} \right)} \frac{d}{d t} f{\left(t \right)} + t \cos{\left(\omega f{\left(t \right)} \right)} \frac{d}{d t} f{\left(t \right)} + f{\left(t \right)} \cos{\left(\omega f{\left(t \right)} \right)}\]</div>
+</div>
+</div>
+<p>or you can chain <code class="docutils literal notranslate"><span class="pre">.diff()</span></code> calls:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr5</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \omega t f{\left(t \right)} \sin{\left(\omega f{\left(t \right)} \right)} \frac{d}{d t} f{\left(t \right)} + t \cos{\left(\omega f{\left(t \right)} \right)} \frac{d}{d t} f{\left(t \right)} + f{\left(t \right)} \cos{\left(\omega f{\left(t \right)} \right)}\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluating-symbolic-expressions">
+<h2 id="evaluating-symbolic-expressions">Evaluating Symbolic Expressions<a class="headerlink" href="#evaluating-symbolic-expressions" title="Link to this heading">¶</a></h2>
+<p>SymPy expressions can be evaluated numerically in several ways. The
+<a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.basic.Basic.xreplace" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xreplace()</span></code></a> method allows substitution
+of exact symbols or sub-expressions. First create a dictionary that maps
+symbols, functions or sub-expressions to the replacements:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">repl</span> <span class="o">=</span> <span class="p">{</span><span class="n">omega</span><span class="p">:</span> <span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mi">25</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>This dictionary can then be passed to <code class="docutils literal notranslate"><span class="pre">.xreplace()</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">repl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \sqrt{2} + \frac{12}{5}\]</div>
+</div>
+</div>
+<p>Notice how the square root and fraction do not automatically reduce to their
+decimal equivalents. To do so, you must use the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.evalf.EvalfMixin.evalf" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evalf()</span></code></a> method. This method will
+evaluate an expression to an arbitrary number of decimal points.  You provide
+the number of decimal places and the substitution dictionary to evaluate:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">subs</span><span class="o">=</span><span class="n">repl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 3.814213562\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">expr3</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">subs</span><span class="o">=</span><span class="n">repl</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>sympy.core.numbers.Float
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that this is a SymPy <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.numbers.Float" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Float</span></code></a>
+object, which is a special object that can have an arbitrary number of decimal
+places, for example here is the expression evaluated to 80 decimal places:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">subs</span><span class="o">=</span><span class="n">repl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 3.814213562373095048801688724209698078569671875376948073176679737990732478462107\]</div>
+</div>
+</div>
+<p>To convert this to Python floating point number, use <code class="docutils literal notranslate"><span class="pre">float()</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">float</span><span class="p">(</span><span class="n">expr3</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">subs</span><span class="o">=</span><span class="n">repl</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 3.81421356237309\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">expr3</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">subs</span><span class="o">=</span><span class="n">repl</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>float
+</pre></div>
+</div>
+</div>
+</div>
+<p>This value is a <a class="reference external" href="https://en.wikipedia.org/wiki/Machine_epsilon">machine precision</a> floating point value and can be used with
+standard Python functions that operate on floating point numbers.</p>
+<p>To obtain machine precision floating point numbers directly and with more
+flexibility, it is better to use the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/utilities/lambdify.html#sympy.utilities.lambdify.lambdify" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">lambdify()</span></code></a> function to convert the
+expression to a Python function. When using <code class="docutils literal notranslate"><span class="pre">lambdify()</span></code>, all symbols and
+functions should be converted to numbers so first identify what symbols and
+functions make up the expression.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a \sin{\left(\omega \right)} + \frac{\left|{f{\left(t \right)}}\right|}{\sqrt{b}}\]</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\omega, a, f(t)\)</span>, and <span class="math notranslate nohighlight">\(b\)</span> are all present in the expression. The
+first argument of <code class="docutils literal notranslate"><span class="pre">lambdify()</span></code> should be a sequence of all these symbols and
+functions and the second argument should be the expression.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_expr3</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">omega</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">b</span><span class="p">),</span> <span class="n">expr3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lambdify()</span></code> generates a Python function and, in this case, we store that
+function in the variable <code class="docutils literal notranslate"><span class="pre">eval_expr3</span></code>. You can see what the inputs and
+outputs of the function are with <code class="docutils literal notranslate"><span class="pre">help()</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">eval_expr3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Help on function _lambdifygenerated:
+
+_lambdifygenerated(omega, a, _Dummy_36, b)
+    Created with lambdify. Signature:
+
+    func(omega, a, f, b)
+
+    Expression:
+
+    a*sin(omega) + Abs(f(t))/sqrt(b)
+
+    Source code:
+
+    def _lambdifygenerated(omega, a, _Dummy_36, b):
+        return a*sin(omega) + abs(_Dummy_36)/sqrt(b)
+
+
+    Imported modules:
+
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function operates on and returns floating point values, for example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_expr3</span><span class="p">(</span><span class="mf">3.14</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 3.81365036221073\]</div>
+</div>
+</div>
+<p>The type of lambdify’s return values will be <a class="reference external" href="https://www.numpy.org">NumPy</a> floats.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">eval_expr3</span><span class="p">(</span><span class="mf">3.14</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">25</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>numpy.float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>These floats are interoperable with Python floats for single values (unlike
+SymPy Floats) but also support arrays of floats. For example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_expr3</span><span class="p">(</span><span class="mf">3.14</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([3.81365036, 3.76704398, 3.72305144])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">eval_expr3</span><span class="p">(</span><span class="mf">3.14</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>numpy.ndarray
+</pre></div>
+</div>
+</div>
+</div>
+<p>More on NumPy arrays of floats will be introduced in a later chapter.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Python and NumPy floats can be mixed, but avoid mixing SymPy
+Floats with either.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This distinction between SymPy <code class="docutils literal notranslate"><span class="pre">Float</span></code> objects and regular Python and
+NumPy <code class="docutils literal notranslate"><span class="pre">float</span></code> objects is important. In this case, the Python float and the
+NumPy float are equivalent. The later will compute much faster because
+arbitrary precision is not required. In this book, you will almost always
+want to convert SymPy expressions to machine precision floating point
+numbers, so use <code class="docutils literal notranslate"><span class="pre">lambdify()</span></code>.</p>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Create a symbolic expression representing <a class="reference external" href="https://en.wikipedia.org/wiki/Newton's_law_of_universal_gravitation">Newton’s Law of Universal
+Gravitation</a>. Use
+<code class="docutils literal notranslate"><span class="pre">lambdify()</span></code> to evaluate the expression for two mass of 5.972E24 kg and 80
+kg at a distance of 6371 km apart to find the gravitational force in
+Newtons.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'G, m1, m2, r'</span><span class="p">)</span>
+<span class="n">F</span> <span class="o">=</span> <span class="n">G</span><span class="o">*</span><span class="n">m1</span><span class="o">*</span><span class="n">m2</span><span class="o">/</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">eval_F</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">G</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="n">F</span><span class="p">)</span>
+<span class="n">eval_F</span><span class="p">(</span><span class="mf">6.67430E-11</span><span class="p">,</span> <span class="mf">5.972E24</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">6371E3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 785.597874097975\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="matrices">
+<h2 id="matrices">Matrices<a class="headerlink" href="#matrices" title="Link to this heading">¶</a></h2>
+<p>SymPy supports matrices of expressions and linear algebra. Many of the
+operations needed in multibody dynamics are more succinctly formulated with
+matrices and linear algebra. Matrices can be created by passing nested lists to
+the <a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/dense.html#sympy.matrices.dense.MutableDenseMatrix" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix()</span></code></a>
+object. For example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">],</span> <span class="p">[</span><span class="n">b</span><span class="o">/</span><span class="n">omega</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)]])</span>
+<span class="n">mat1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a &amp; 2 a\\\frac{b}{\omega} &amp; f{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat2</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">mat2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1 &amp; 2\\3 &amp; 4\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>All matrices are two dimensional and the number of rows and columns, in that
+order, are stored in the <code class="docutils literal notranslate"><span class="pre">.shape</span></code> attribute.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( 2, \  2\right)\]</div>
+</div>
+</div>
+<p>Individual elements of the matrix can be extracted with the bracket notation
+taking the row and column indices (remember Python indexes from 0):</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 a\]</div>
+</div>
+</div>
+<p>The slice notation can extract rows or columns:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left[\begin{matrix}a &amp; 2 a\end{matrix}\right]\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}2 a\\f{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Matrix algebra can be performed. Matrices can be added:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span> <span class="o">+</span> <span class="n">mat2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a + 1 &amp; 2 a + 2\\\frac{b}{\omega} + 3 &amp; f{\left(t \right)} + 4\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Both the <code class="docutils literal notranslate"><span class="pre">*</span></code> and the <code class="docutils literal notranslate"><span class="pre">@</span></code> operator perform matrix multiplication:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="o">*</span><span class="n">mat2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7 a &amp; 10 a\\\frac{b}{\omega} + 3 f{\left(t \right)} &amp; \frac{2 b}{\omega} + 4 f{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="nd">@mat2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7 a &amp; 10 a\\\frac{b}{\omega} + 3 f{\left(t \right)} &amp; \frac{2 b}{\omega} + 4 f{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Element-by-element multiplication requires the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/expressions.html#sympy.matrices.expressions.hadamard_product" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">hadamard_product()</span></code></a> function:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">hadamard_product</span><span class="p">(</span><span class="n">mat1</span><span class="p">,</span> <span class="n">mat2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a &amp; 4 a\\\frac{3 b}{\omega} &amp; 4 f{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Note that NumPy uses <code class="docutils literal notranslate"><span class="pre">*</span></code> for element-by-element multiplication and <code class="docutils literal notranslate"><span class="pre">@</span></code> for matrix multiplication,
+so to avoid possible confusion, use <code class="docutils literal notranslate"><span class="pre">@</span></code> for SymPy matrix multiplication.</p>
+<p>Differentiation operates on each element of the matrix:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat3</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">expr1</span><span class="p">,</span> <span class="n">expr2</span><span class="p">,</span> <span class="n">expr3</span><span class="p">,</span> <span class="n">expr4</span><span class="p">,</span> <span class="n">expr5</span><span class="p">])</span>
+<span class="n">mat3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a + \frac{b}{\omega^{2}}\\a \omega + f{\left(t \right)}\\a \sin{\left(\omega \right)} + \frac{\left|{f{\left(t \right)}}\right|}{\sqrt{b}}\\5 \sin{\left(12 \right)} + 105.986768359379\\t \sin{\left(\omega f{\left(t \right)} \right)} + \frac{f{\left(t \right)}}{\sqrt{t}}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat3</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1\\\omega\\\sin{\left(\omega \right)}\\0\\0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat3</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0\\\frac{d}{d t} f{\left(t \right)}\\\frac{\left(\operatorname{re}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{re}{\left(f{\left(t \right)}\right)} + \operatorname{im}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{im}{\left(f{\left(t \right)}\right)}\right) \operatorname{sign}{\left(f{\left(t \right)} \right)}}{\sqrt{b} f{\left(t \right)}}\\0\\\omega t \cos{\left(\omega f{\left(t \right)} \right)} \frac{d}{d t} f{\left(t \right)} + \sin{\left(\omega f{\left(t \right)} \right)} + \frac{\frac{d}{d t} f{\left(t \right)}}{\sqrt{t}} - \frac{f{\left(t \right)}}{2 t^{\frac{3}{2}}}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>If you have column vectors <span class="math notranslate nohighlight">\(\bar{v}\)</span> and <span class="math notranslate nohighlight">\(\bar{u}\)</span>, the
+<span class="math notranslate nohighlight">\((i,j)\)</span> entries of the Jacobian of <span class="math notranslate nohighlight">\(\bar{v}\)</span> with respect to the
+entries in vector <span class="math notranslate nohighlight">\(\bar{u}\)</span> are found with <span class="math notranslate nohighlight">\(\mathbf{J}_{ij} =
+\frac{\partial v_i}{\partial u_j}\)</span>.  The <a class="reference external" href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a> matrix of vector (column
+matrix) can be formed with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/matrices.html#sympy.matrices.matrixbase.MatrixBase.jacobian" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">jacobian()</span></code></a> method.
+This calculates the partial derivatives of each element in the vector with
+respect to a vector (or sequence) of variables.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat4</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+<span class="n">mat4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a\\b\\\omega\\t\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat3</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">mat4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1 &amp; \frac{1}{\omega^{2}} &amp; - \frac{2 b}{\omega^{3}} &amp; 0\\\omega &amp; 0 &amp; a &amp; \frac{d}{d t} f{\left(t \right)}\\\sin{\left(\omega \right)} &amp; - \frac{\left|{f{\left(t \right)}}\right|}{2 b^{\frac{3}{2}}} &amp; a \cos{\left(\omega \right)} &amp; \frac{\left(\operatorname{re}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{re}{\left(f{\left(t \right)}\right)} + \operatorname{im}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{im}{\left(f{\left(t \right)}\right)}\right) \operatorname{sign}{\left(f{\left(t \right)} \right)}}{\sqrt{b} f{\left(t \right)}}\\0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; t f{\left(t \right)} \cos{\left(\omega f{\left(t \right)} \right)} &amp; \omega t \cos{\left(\omega f{\left(t \right)} \right)} \frac{d}{d t} f{\left(t \right)} + \sin{\left(\omega f{\left(t \right)} \right)} + \frac{\frac{d}{d t} f{\left(t \right)}}{\sqrt{t}} - \frac{f{\left(t \right)}}{2 t^{\frac{3}{2}}}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Write your own function that produces a Jacobian given a column matrix of
+expressions. It should look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Returns the Jacobian of the vector function v with respect to the</span>
+<span class="sd">    vector of variables x."""</span>
+    <span class="c1"># fill in your code here</span>
+    <span class="k">return</span> <span class="n">J_v_x</span>
+</pre></div>
+</div>
+<p>Show that it gives the same solution as the above <code class="docutils literal notranslate"><span class="pre">.jacobian()</span></code> method. Do
+not use the <code class="docutils literal notranslate"><span class="pre">.jacobian()</span></code> method in your function.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Returns the Jacobian of the vector function v with respect to the</span>
+<span class="sd">    vector of variables x."""</span>
+    <span class="n">diffs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+         <span class="n">diffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
+    <span class="n">J_v_x</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">J_v_x</span>
+
+<span class="n">jacobian</span><span class="p">(</span><span class="n">mat3</span><span class="p">,</span> <span class="n">mat4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1 &amp; \frac{1}{\omega^{2}} &amp; - \frac{2 b}{\omega^{3}} &amp; 0\\\omega &amp; 0 &amp; a &amp; \frac{d}{d t} f{\left(t \right)}\\\sin{\left(\omega \right)} &amp; - \frac{\left|{f{\left(t \right)}}\right|}{2 b^{\frac{3}{2}}} &amp; a \cos{\left(\omega \right)} &amp; \frac{\left(\operatorname{re}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{re}{\left(f{\left(t \right)}\right)} + \operatorname{im}{\left(f{\left(t \right)}\right)} \frac{d}{d t} \operatorname{im}{\left(f{\left(t \right)}\right)}\right) \operatorname{sign}{\left(f{\left(t \right)} \right)}}{\sqrt{b} f{\left(t \right)}}\\0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; t f{\left(t \right)} \cos{\left(\omega f{\left(t \right)} \right)} &amp; \omega t \cos{\left(\omega f{\left(t \right)} \right)} \frac{d}{d t} f{\left(t \right)} + \sin{\left(\omega f{\left(t \right)} \right)} + \frac{\frac{d}{d t} f{\left(t \right)}}{\sqrt{t}} - \frac{f{\left(t \right)}}{2 t^{\frac{3}{2}}}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solving-linear-systems">
+<h2 id="solving-linear-systems">Solving Linear Systems<a class="headerlink" href="#solving-linear-systems" title="Link to this heading">¶</a></h2>
+<p>You’ll need to solve <a class="reference external" href="https://en.wikipedia.org/wiki/System_of_linear_equations">linear systems of equations</a> often in this book. SymPy
+offers <a class="reference external" href="https://docs.sympy.org/latest/guides/solving/index.html">a number of ways to do this</a>, but the best way to do so if you know a
+set of equations are linear in specific variables is the method described
+below. First, you should confirm you have equations of this form:</p>
+<div class="math notranslate nohighlight" id="equation-sympy-5">
+<span class="eqno">(6)<a class="headerlink" href="#equation-sympy-5" title="Link to this equation">¶</a></span>\[\begin{split}a_{11} x_1 + a_{12} x_2 + \ldots + a_{1n} x_n + b_1 = 0 \\
+a_{21} x_1 + a_{22} x_2 + \ldots + a_{2n} x_n + b_2 = 0 \\
+\vdots \\
+a_{n1} x_1 + a_{n2} x_2 + \ldots + a_{nn} x_n + b_n = 0\end{split}\]</div>
+<p>These equations can be put into matrix form:</p>
+<div class="math notranslate nohighlight" id="equation-sympy-6">
+<span class="eqno">(7)<a class="headerlink" href="#equation-sympy-6" title="Link to this equation">¶</a></span>\[\mathbf{A}\bar{x} = \bar{b}\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight" id="equation-sympy-7">
+<span class="eqno">(8)<a class="headerlink" href="#equation-sympy-7" title="Link to this equation">¶</a></span>\[\begin{split}\mathbf{A} =
+\begin{bmatrix}
+  a_{11} &amp; a_{12} &amp; \ldots &amp; a_{1n} \\
+  a_{21} &amp; a_{22} &amp; \ldots &amp; a_{2n} \\
+  \ldots &amp; \ldots &amp; \ldots &amp; \ldots \\
+  a_{n1} &amp; a_{n2} &amp; \ldots &amp; a_{nn}
+\end{bmatrix},
+\bar{x} =
+\begin{bmatrix}
+  x_1 \\
+  x_2 \\
+  \ldots \\
+  x_n
+\end{bmatrix},
+\bar{b} =
+\begin{bmatrix}
+  -b_1 \\
+  -b_2 \\
+  \ldots \\
+  -b_n
+\end{bmatrix}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\bar{x}\)</span>, the solution, is found with matrix inversion (if the matrix is
+invertible):</p>
+<div class="math notranslate nohighlight" id="equation-sympy-8">
+<span class="eqno">(9)<a class="headerlink" href="#equation-sympy-8" title="Link to this equation">¶</a></span>\[\bar{x} = \mathbf{A}^{-1}\bar{b}\]</div>
+<p>Taking the inverse is not computationally efficient and potentially numerically
+inaccurate, so some form of <a class="reference external" href="https://en.wikipedia.org/wiki/Gaussian_elimination">Gaussian elmination</a> should be used to solve the
+system.</p>
+<p>To solve with SymPy, start with a column matrix of linear expressions:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'a1, a2'</span><span class="p">)</span>
+
+<span class="n">exprs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span>
+    <span class="p">[</span><span class="n">a1</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="o">+</span> <span class="n">a2</span> <span class="o">+</span> <span class="n">omega</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">a1</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">a2</span> <span class="o">+</span> <span class="n">omega</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">],</span>
+<span class="p">])</span>
+<span class="n">exprs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}a_{1} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)} + a_{2} + \frac{\omega \log{\left(t \right)}}{\log{\left(f{\left(t \right)} \right)}} + 100\\a_{1} \omega^{2} + a_{2} f{\left(t \right)} + \omega + f^{3}{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Since we know these two expressions are linear in the <span class="math notranslate nohighlight">\(a_1\)</span> and
+<span class="math notranslate nohighlight">\(a_2\)</span> variables, the partial derivatives with respect to those two
+variables will return the linear coefficients. The <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> matrix
+can be formed in one step with the <code class="docutils literal notranslate"><span class="pre">.jacobian()</span></code> method:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">exprs</span><span class="o">.</span><span class="n">jacobian</span><span class="p">([</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">])</span>
+<span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)} &amp; 1\\\omega^{2} &amp; f{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The <span class="math notranslate nohighlight">\(\bar{b}\)</span> vector can be formed by setting <span class="math notranslate nohighlight">\(a_1=a_2=0\)</span>, leaving the
+terms that are not linear in <span class="math notranslate nohighlight">\(a_1\)</span> and <span class="math notranslate nohighlight">\(a_2\)</span>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">exprs</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">a1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{\omega \log{\left(t \right)}}{\log{\left(f{\left(t \right)} \right)}} - 100\\- \omega - f^{3}{\left(t \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/matrices.html#sympy.matrices.matrixbase.MatrixBase.inv" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inv()</span></code></a> method can
+compute the inverse of A to find the solution:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">.</span><span class="n">inv</span><span class="p">()</span> <span class="o">@</span> <span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{- \omega - f^{3}{\left(t \right)}}{- \omega^{2} + f{\left(t \right)} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}} + \frac{\left(- \frac{\omega \log{\left(t \right)}}{\log{\left(f{\left(t \right)} \right)}} - 100\right) f{\left(t \right)}}{- \omega^{2} + f{\left(t \right)} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}}\\- \frac{\omega^{2} \left(- \frac{\omega \log{\left(t \right)}}{\log{\left(f{\left(t \right)} \right)}} - 100\right)}{- \omega^{2} + f{\left(t \right)} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}} + \frac{\left(- \omega - f^{3}{\left(t \right)}\right) \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}}{- \omega^{2} + f{\left(t \right)} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>But it is best to use the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/matrices.html#sympy.matrices.matrixbase.MatrixBase.LUsolve" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LUsolve()</span></code></a> method to
+perform an <a class="reference external" href="https://en.wikipedia.org/wiki/LU_decomposition">LU decomposition</a> Gaussian-Elimination to solve the system,
+especially as the dimension of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> grows:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">.</span><span class="n">LUsolve</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\frac{- \frac{\omega \log{\left(t \right)}}{\log{\left(f{\left(t \right)} \right)}} - 100 - \frac{- \frac{\omega^{2} \left(- \frac{\omega \log{\left(t \right)}}{\log{\left(f{\left(t \right)} \right)}} - 100\right)}{\sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}} - \omega - f^{3}{\left(t \right)}}{- \frac{\omega^{2}}{\sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}} + f{\left(t \right)}}}{\sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}}\\\frac{- \frac{\omega^{2} \left(- \frac{\omega \log{\left(t \right)}}{\log{\left(f{\left(t \right)} \right)}} - 100\right)}{\sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}} - \omega - f^{3}{\left(t \right)}}{- \frac{\omega^{2}}{\sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}} + f{\left(t \right)}}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method of solving symbolic linear systems is fast, but it can give
+incorrect answers for:</p>
+<ol class="arabic simple">
+<li><p>expressions that are not acutally linear in the variables the Jacobian is
+taken with respect to</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{A}\)</span> matrix entries that would evaluate to zero if
+simplified or specific numerical values are provided</p></li>
+</ol>
+<p>So only use this method if you are sure your equations are linear and if
+your <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> matrix is made up of complex expressions, watch out
+for <code class="docutils literal notranslate"><span class="pre">nan</span></code> results after lambdifying.
+<a class="reference external" href="https://docs.sympy.org/latest/modules/solvers/solvers.html#sympy.solvers.solvers.solve" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve()</span></code></a> and
+<a class="reference external" href="https://docs.sympy.org/latest/modules/solvers/solveset.html#sympy.solvers.solveset.linsolve" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">linsolve()</span></code></a> can also solve linear
+systems and they check for linearity and properties of the A matrix.  The
+cost is that they can be extremely slow for large expressions (which we will
+have in this book).</p>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Solve the following equations for all of the <span class="math notranslate nohighlight">\(L\)</span>’s and then use
+<code class="docutils literal notranslate"><span class="pre">lambdify()</span></code> to evaluate the solution for <span class="math notranslate nohighlight">\(F_1=13\)</span> and
+<span class="math notranslate nohighlight">\(F_2=32\)</span>.</p>
+<div class="math notranslate nohighlight" id="equation-sympy-9">
+<span class="eqno">(10)<a class="headerlink" href="#equation-sympy-9" title="Link to this equation">¶</a></span>\[\begin{split}-L_1 + L_2 - L_3/\sqrt{2} = &amp; 0 \\
+L_3/\sqrt{2} + L_4 = &amp;  F_1 \\
+-L_2 - L_5/\sqrt{2} = &amp;  0 \\
+L_5/\sqrt{2} = &amp; F_2 \\
+L_5/\sqrt{2} + L_6 = &amp;  0 \\
+-L_4 -L_5/\sqrt{2} = &amp;  0\end{split}\]</div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L1</span><span class="p">,</span> <span class="n">L2</span><span class="p">,</span> <span class="n">L3</span><span class="p">,</span> <span class="n">L4</span><span class="p">,</span> <span class="n">L5</span><span class="p">,</span> <span class="n">L6</span><span class="p">,</span> <span class="n">F1</span><span class="p">,</span> <span class="n">F2</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'L1, L2, L3, L4, L5, L6, F1, F2'</span><span class="p">)</span>
+
+<span class="n">exprs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span>
+    <span class="o">-</span><span class="n">L1</span> <span class="o">+</span> <span class="n">L2</span> <span class="o">-</span> <span class="n">L3</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">L3</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">L4</span> <span class="o">-</span> <span class="n">F1</span><span class="p">,</span>
+    <span class="o">-</span><span class="n">L2</span> <span class="o">-</span> <span class="n">L5</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">L5</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">F2</span><span class="p">,</span>
+    <span class="n">L5</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">L6</span><span class="p">,</span>
+    <span class="o">-</span><span class="n">L4</span> <span class="o">-</span><span class="n">L5</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="n">exprs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- L_{1} + L_{2} - \frac{\sqrt{2} L_{3}}{2}\\- F_{1} + \frac{\sqrt{2} L_{3}}{2} + L_{4}\\- L_{2} - \frac{\sqrt{2} L_{5}}{2}\\- F_{2} + \frac{\sqrt{2} L_{5}}{2}\\\frac{\sqrt{2} L_{5}}{2} + L_{6}\\- L_{4} - \frac{\sqrt{2} L_{5}}{2}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unknowns</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">L1</span><span class="p">,</span> <span class="n">L2</span><span class="p">,</span> <span class="n">L3</span><span class="p">,</span> <span class="n">L4</span><span class="p">,</span> <span class="n">L5</span><span class="p">,</span> <span class="n">L6</span><span class="p">])</span>
+
+<span class="n">coef_mat</span> <span class="o">=</span> <span class="n">exprs</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">unknowns</span><span class="p">)</span>
+<span class="n">rhs</span> <span class="o">=</span> <span class="o">-</span><span class="n">exprs</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">6</span><span class="p">)))</span>
+
+<span class="n">sol</span> <span class="o">=</span> <span class="n">coef_mat</span><span class="o">.</span><span class="n">LUsolve</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>
+
+<span class="n">sm</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="n">sol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}L_{1}\\L_{2}\\L_{3}\\L_{4}\\L_{5}\\L_{6}\end{matrix}\right] = \left[\begin{matrix}- F_{1} - 2 F_{2}\\- F_{2}\\\sqrt{2} \left(F_{1} + F_{2}\right)\\- F_{2}\\\sqrt{2} F_{2}\\- F_{2}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_sol</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">F1</span><span class="p">,</span> <span class="n">F2</span><span class="p">),</span> <span class="n">sol</span><span class="p">)</span>
+<span class="n">eval_sol</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([[-77.        ],
+       [-32.        ],
+       [ 63.63961031],
+       [-32.        ],
+       [ 45.254834  ],
+       [-32.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="simplification">
+<h2 id="simplification">Simplification<a class="headerlink" href="#simplification" title="Link to this heading">¶</a></h2>
+<p>The above result from
+<a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/matrices.html#sympy.matrices.matrixbase.MatrixBase.LUsolve" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LUsolve()</span></code></a> is a bit
+complicated. Reproduced here:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'a1, a2'</span><span class="p">)</span>
+<span class="n">exprs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span>
+    <span class="p">[</span><span class="n">a1</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="o">+</span> <span class="n">a2</span> <span class="o">+</span> <span class="n">omega</span><span class="o">/</span><span class="n">sm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">a1</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">a2</span> <span class="o">+</span> <span class="n">omega</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">],</span>
+<span class="p">])</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">exprs</span><span class="o">.</span><span class="n">jacobian</span><span class="p">([</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">exprs</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">a1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">LUsolve</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>SymPy has some functionality for automatically simplifying symbolic
+expressions. The function <a class="reference external" href="https://docs.sympy.org/latest/modules/simplify/simplify.html#sympy.simplify.simplify.simplify" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">simplify()</span></code></a>
+will attempt to find a simpler version:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\frac{- \omega f{\left(t \right)} \log{\left(t \right)} + \omega \log{\left(f{\left(t \right)} \right)} + f^{3}{\left(t \right)} \log{\left(f{\left(t \right)} \right)} - 100 f{\left(t \right)} \log{\left(f{\left(t \right)} \right)}}{\left(- \omega^{2} + f{\left(t \right)} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}\right) \log{\left(f{\left(t \right)} \right)}}\\\frac{- \omega^{2} \left(\omega \log{\left(t \right)} + 100 \log{\left(f{\left(t \right)} \right)}\right) + \left(\omega + f^{3}{\left(t \right)}\right) \log{\left(f{\left(t \right)} \right)} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}}{\left(\omega^{2} - f{\left(t \right)} \sin{\left(f{\left(t \right)} \right)} \cos{\left(2 f{\left(t \right)} \right)}\right) \log{\left(f{\left(t \right)} \right)}}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>But you’ll have the best luck at simplifying if you use simplification functions that
+target the type of expression you have. The
+<a class="reference external" href="https://docs.sympy.org/latest/modules/simplify/simplify.html#sympy.simplify.trigsimp.trigsimp" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">trigsimp()</span></code></a> function only attempts
+trigonometric simplifications, for example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trig_expr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">trig_expr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \sin^{2}{\left(\omega \right)} + \cos^{2}{\left(\omega \right)}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">trig_expr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 1\]</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Only attempt simplification on expressions that are several lines of text.
+Larger expressions become increasingly computationally intensive to simplify
+and there is generally no need to do so.</p>
+</div>
+<p>As mentioned earlier, SymPy represents expressions as trees. Symbolic
+expressions can also be represented as <a class="reference external" href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">directed acyclic graphs</a> that contain
+only one node for each unique expression (unlike SymPy’s trees which may have
+the same expression in more than one node). These unique expressions, or
+“common subexpressions”, can be found with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/simplify/simplify.html#sympy.simplify.cse_main.cse" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">cse()</span></code></a> function. This function will
+provide a simpler form of the equations that minimizes the number of operations
+to compute the answer. We can count the number of basic operations (additions,
+multiplies, etc.) using <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.function.count_ops" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">count_ops()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">count_ops</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 79\]</div>
+</div>
+</div>
+<p>We can simplify with <code class="docutils literal notranslate"><span class="pre">cse()</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">substitutions</span><span class="p">,</span> <span class="n">simplified</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">cse</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">substitutions</span></code> variable contains a list of tuples, where each tuple has
+a new intermediate variable and the sub-expression it is equal to.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">substitutions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( x_{0}, \  f{\left(t \right)}\right)\]</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.relational.Equality" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Eq()</span></code></a> class with tuple
+unpacking (<code class="docutils literal notranslate"><span class="pre">*</span></code>) can be used to display these tuples as equations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="o">*</span><span class="n">substitutions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle x_{0} = f{\left(t \right)}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="o">*</span><span class="n">substitutions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle x_{1} = \frac{1}{\sin{\left(x_{0} \right)} \cos{\left(2 x_{0} \right)}}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="o">*</span><span class="n">substitutions</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle x_{2} = \omega^{2} x_{1}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="o">*</span><span class="n">substitutions</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle x_{4} = \frac{- \omega - x_{0}^{3} + x_{2} x_{3}}{x_{0} - x_{2}}\]</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">simplified</span></code> variable contains the simplified expression, made up of the
+intermediate variables.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simplified</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}x_{1} \left(- x_{3} - x_{4}\right)\\x_{4}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>We can count the number of operations of the simplified version:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_ops</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">count_ops</span><span class="p">(</span><span class="n">simplified</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">substitutions</span><span class="p">:</span>
+    <span class="n">num_ops</span> <span class="o">+=</span> <span class="n">sm</span><span class="o">.</span><span class="n">count_ops</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">num_ops</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 22\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p><a class="reference external" href="https://docs.sympy.org/latest/modules/utilities/lambdify.html#sympy.utilities.lambdify.lambdify" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">lambdify()</span></code></a> has an optional
+argument <code class="docutils literal notranslate"><span class="pre">cse=True|False</span></code> that applies common subexpression elimination
+internally to simplify the number of operations. Differentiate the
+<code class="docutils literal notranslate"><span class="pre">base_expr</span></code> with respect to <code class="docutils literal notranslate"><span class="pre">x</span></code> 10 times to generate a very long
+expression. Create two functions using <code class="docutils literal notranslate"><span class="pre">lambdify()</span></code>, one with <code class="docutils literal notranslate"><span class="pre">cse=True</span></code>
+and one with <code class="docutils literal notranslate"><span class="pre">cse=False</span></code>. Compare how long it takes to numerically
+evaluate the resulting functions using the <code class="docutils literal notranslate"><span class="pre">%timeit</span></code> magic.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'a, b, c, x, y, z'</span><span class="p">)</span>
+<span class="n">base_expr</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">z</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p>Differentiate 10 times:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">long_expr</span> <span class="o">=</span> <span class="n">base_expr</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Create the numerical functions:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_long_expr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">long_expr</span><span class="p">)</span>
+<span class="n">eval_long_expr_cse</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">lambdify</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">long_expr</span><span class="p">,</span> <span class="n">cse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now time each function:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">eval_long_expr</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>288 μs ± 834 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">eval_long_expr_cse</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>17 μs ± 35.7 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="learn-more">
+<h2 id="learn-more">Learn more<a class="headerlink" href="#learn-more" title="Link to this heading">¶</a></h2>
+<p>This section only scratches the surface of what SymPy can do. The presented
+concepts are the basic ones needed for this book, but getting more familiar
+with SymPy and what it can do will help. I recommend doing the <a class="reference external" href="https://docs.sympy.org/latest/tutorial/index.html">SymPy
+Tutorial</a>. The “Gotchas” section is particularly helpful for common mistakes
+when using SymPy. The tutorial is part of the SymPy documentation
+<a class="reference external" href="https://docs.sympy.org">https://docs.sympy.org</a>, where you will find general information on SymPy.</p>
+<p>The tutorial is also available on video:</p>
+<iframe allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/AqnpuGbM6-Q" title="YouTube video player" width="560"></iframe><p>If you want to ask a question about using SymPy (or search to see if someone
+else has asked your question), you can do so at the following places:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://groups.google.com/g/sympy">SymPy mailing list</a>: Ask questions via
+email.</p></li>
+<li><p><a class="reference external" href="https://github.com/sympy/sympy/discussions">SymPy Github Discussions</a>: Ask
+questions via Github.</p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/tagged/sympy?tab=Votes">Stackoverflow</a>: Ask and
+search questions on the most popular coding Q&amp;A website.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="jupyter-python.html" title="Jupyter and Python"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Jupyter and Python </span>
+              </div>
+            </a>
+          
+          
+            <a href="orientation.html" title="Orientation of Reference Frames"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Orientation of Reference Frames </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

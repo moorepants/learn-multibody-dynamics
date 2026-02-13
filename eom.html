@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Unconstrained Equations of Motion &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulation and Visualization" href="simulation.html" />
+    <link rel="prev" title="Generalized Forces" href="generalized-forces.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#eom" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Unconstrained Equations of Motion </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Unconstrained Equations of Motion </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Unconstrained Equations of Motion</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#eom--page-root" class="md-nav__link">Unconstrained Equations of Motion</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#dynamical-differential-equations" class="md-nav__link">Dynamical Differential Equations</a>
+        </li>
+        <li class="md-nav__item"><a href="#body-fixed-newton-euler-equations" class="md-nav__link">Body Fixed Newton-Euler Equations</a>
+        </li>
+        <li class="md-nav__item"><a href="#equations-of-motion" class="md-nav__link">Equations of Motion</a>
+        </li>
+        <li class="md-nav__item"><a href="#example-of-kane-s-equations" class="md-nav__link">Example of Kane’s Equations</a>
+        </li>
+        <li class="md-nav__item"><a href="#implicit-and-explicit-form" class="md-nav__link">Implicit and Explicit Form</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/eom.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#eom--page-root" class="md-nav__link">Unconstrained Equations of Motion</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#dynamical-differential-equations" class="md-nav__link">Dynamical Differential Equations</a>
+        </li>
+        <li class="md-nav__item"><a href="#body-fixed-newton-euler-equations" class="md-nav__link">Body Fixed Newton-Euler Equations</a>
+        </li>
+        <li class="md-nav__item"><a href="#equations-of-motion" class="md-nav__link">Equations of Motion</a>
+        </li>
+        <li class="md-nav__item"><a href="#example-of-kane-s-equations" class="md-nav__link">Example of Kane’s Equations</a>
+        </li>
+        <li class="md-nav__item"><a href="#implicit-and-explicit-form" class="md-nav__link">Implicit and Explicit Form</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/eom.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="unconstrained-equations-of-motion">
+<h1 id="eom--page-root">Unconstrained Equations of Motion<a class="headerlink" href="#eom--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/8a50eb53f0afc41cafe51fd7a59becd7/eom.py"><code class="xref download docutils literal notranslate"><span class="pre">eom.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/ca7f3d5e426b0530dd35e2b87f879759/eom.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">eom.ipynb</span></code></a>.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy.physics.mechanics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">me</span>
+<span class="n">me</span><span class="o">.</span><span class="n">init_vprinting</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="invisible docutils container">
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceFrame</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'latexs'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\hat{{</span><span class="si">{}</span><span class="s1">}}_</span><span class="si">{}</span><span class="s1">'</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReferenceFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                             <span class="n">latexs</span><span class="o">=</span><span class="p">(</span><span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)),</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n">ReferenceFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>Form the dynamical differential equations for a multibody system where
+<span class="math notranslate nohighlight">\(n=p\)</span>.</p></li>
+<li><p>Calculate the dynamical differential equations of motion for a single rigid
+body.</p></li>
+<li><p>Form the equations of motion for a multibody system where <span class="math notranslate nohighlight">\(n=p\)</span>.</p></li>
+<li><p>Write the equations of motion in implicit and explicit forms.</p></li>
+</ul>
+</section>
+<section id="dynamical-differential-equations">
+<h2 id="dynamical-differential-equations">Dynamical Differential Equations<a class="headerlink" href="#dynamical-differential-equations" title="Link to this heading">¶</a></h2>
+<p>In the previous chapter, we introduced the generalized active forces
+<span class="math notranslate nohighlight">\(\bar{F}_r\)</span> and the generalized inertia forces <span class="math notranslate nohighlight">\(\bar{F}_r^*\)</span>.
+Together, these two forces give us the <em>dynamical differential equations</em>. The
+dynamical differential equations for a holonomic system with <span class="math notranslate nohighlight">\(p=n\)</span>
+degrees of freedom in an inertial reference frame. They are a function of the
+generalized coordinates, the generalized speeds, the time derivatives of the
+generalized speeds, and time. The dynamical differential equations take this
+form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-kanes-equations">
+<span class="eqno">(188)<a class="headerlink" href="#equation-eq-kanes-equations" title="Link to this equation">¶</a></span>\[\bar{F}_r + \bar{F}^*_r = \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)  = 0\]</div>
+<p>These are the <a class="reference external" href="https://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations">Newton-Euler equations</a> for a multibody system in the form
+presented in <a class="reference internal" href="references.html#kane1985" id="id1"><span>[Kane1985]</span></a> pg. 158, thus we also call these equations <em>Kane’s
+Equations</em>. The dynamical differential equations can only be formed when motion
+is viewed from an <a class="reference external" href="https://en.wikipedia.org/wiki/Inertial_frame_of_reference">inertial reference frame</a>, because an inertial reference
+frame is one where Newton’s First Law holds, i.e. objects at rest stay at rest
+unless an external force acts on them. An inertial reference frame is one that
+is not accelerating, or can be assumed not to be with respect to the motion of
+the bodies of interest.</p>
+<p><span class="math notranslate nohighlight">\(\bar{F}^*_r\)</span> is always linear in the time derivatives of the generalized
+speeds and contains velocity dependent terms such as the centripetal and
+Coriolis forces and the rotational velocity coupling terms. These forces are
+sometimes called <a class="reference external" href="https://en.wikipedia.org/wiki/Fictitious_force">fictitious forces</a>. <span class="math notranslate nohighlight">\(\bar{F}_r\)</span> are contributing
+forces due to body and environment interactions. Texts about dynamics will
+often present the dynamical differential equations in this form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-canonical-eom-form">
+<span class="eqno">(189)<a class="headerlink" href="#equation-eq-canonical-eom-form" title="Link to this equation">¶</a></span>\[-\bar{F}^*_r = \bar{F}_r \rightarrow
+\mathbf{M}(\bar{q}, t) \dot{\bar{u}} + \bar{C}(\bar{u}, \bar{q}, t)
+= \bar{F}(\bar{u}, \bar{q}, t)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is called the <em>mass matrix</em>,  <span class="math notranslate nohighlight">\(\bar{C}\)</span> is are
+the forces due to the various velocity effects, and <span class="math notranslate nohighlight">\(\bar{F}\)</span> are the
+contributing externally applied forces.</p>
+</section>
+<section id="body-fixed-newton-euler-equations">
+<h2 id="body-fixed-newton-euler-equations">Body Fixed Newton-Euler Equations<a class="headerlink" href="#body-fixed-newton-euler-equations" title="Link to this heading">¶</a></h2>
+<p>To show that Kane’s Equations are equivalent to the Newton-Euler equations you
+may have seen before, we can find the dynamical differential equations for a
+single rigid body using Kane’s method and then show the results in the
+canonical form. For a rigid body <span class="math notranslate nohighlight">\(B\)</span> moving in an inertial reference
+frame <span class="math notranslate nohighlight">\(A\)</span> with its velocity and angular velocity expressed in body fixed
+coordinates and acted upon by a resultant force <span class="math notranslate nohighlight">\(\bar{F}\)</span> at the mass
+center <span class="math notranslate nohighlight">\(B_o\)</span> and a moment about the mass center <span class="math notranslate nohighlight">\(\bar{M}\)</span> we need
+these variables, reference frames, and points:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, I_</span><span class="si">{xx}</span><span class="s1">, I_</span><span class="si">{yy}</span><span class="s1">, I_</span><span class="si">{zz}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">Ixy</span><span class="p">,</span> <span class="n">Iyz</span><span class="p">,</span> <span class="n">Ixz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'I_</span><span class="si">{xy}</span><span class="s1">, I_</span><span class="si">{yz}</span><span class="s1">, I_</span><span class="si">{xz}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">Fx</span><span class="p">,</span> <span class="n">Fy</span><span class="p">,</span> <span class="n">Fz</span><span class="p">,</span> <span class="n">Mx</span><span class="p">,</span> <span class="n">My</span><span class="p">,</span> <span class="n">Mz</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'F_x, F_y, F_z, M_x, M_y, M_z'</span><span class="p">)</span>
+<span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">u3</span><span class="p">,</span> <span class="n">u4</span><span class="p">,</span> <span class="n">u5</span><span class="p">,</span> <span class="n">u6</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'u1, u2, u3, u4, u5, u6'</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">Bo</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'Bo'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now define the angular velocity of the body and the velocity of the mass center
+in terms of six generalized coordinates expressed in body fixed coordinates.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_w_B</span> <span class="o">=</span> <span class="n">u4</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">u5</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">u6</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+<span class="n">B</span><span class="o">.</span><span class="n">set_ang_vel</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_w_B</span><span class="p">)</span>
+
+<span class="n">A_v_Bo</span> <span class="o">=</span> <span class="n">u1</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">u2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">u3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+<span class="n">Bo</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_v_Bo</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now we can find the six partial velocities and partial angular velocities. Note
+that we use the <code class="docutils literal notranslate"><span class="pre">var_in_dcm=False</span></code> keyword argument. We do this because the
+generalized speeds are not present in the unspecified direction cosine matrix
+relating <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. This allows the derivative in <span class="math notranslate nohighlight">\(A\)</span> to be
+formed without use of a direction cosine matrix. Generalized speeds will never
+be present in a direction cosine matrix.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v_Bo_1</span> <span class="o">=</span> <span class="n">A_v_Bo</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">v_Bo_2</span> <span class="o">=</span> <span class="n">A_v_Bo</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">v_Bo_3</span> <span class="o">=</span> <span class="n">A_v_Bo</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u3</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">v_Bo_4</span> <span class="o">=</span> <span class="n">A_v_Bo</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u4</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">v_Bo_5</span> <span class="o">=</span> <span class="n">A_v_Bo</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u5</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">v_Bo_6</span> <span class="o">=</span> <span class="n">A_v_Bo</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u6</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">v_Bo_1</span><span class="p">,</span> <span class="n">v_Bo_2</span><span class="p">,</span> <span class="n">v_Bo_3</span><span class="p">,</span> <span class="n">v_Bo_4</span><span class="p">,</span> <span class="n">v_Bo_5</span><span class="p">,</span> <span class="n">v_Bo_6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( \hat{b}_x, \  \hat{b}_y, \  \hat{b}_z, \  0, \  0, \  0\right)\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_B_1</span> <span class="o">=</span> <span class="n">A_w_B</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">w_B_2</span> <span class="o">=</span> <span class="n">A_w_B</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">w_B_3</span> <span class="o">=</span> <span class="n">A_w_B</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u3</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">w_B_4</span> <span class="o">=</span> <span class="n">A_w_B</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u4</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">w_B_5</span> <span class="o">=</span> <span class="n">A_w_B</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u5</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">w_B_6</span> <span class="o">=</span> <span class="n">A_w_B</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u6</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">var_in_dcm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">w_B_1</span><span class="p">,</span> <span class="n">w_B_2</span><span class="p">,</span> <span class="n">w_B_3</span><span class="p">,</span> <span class="n">w_B_4</span><span class="p">,</span> <span class="n">w_B_5</span><span class="p">,</span> <span class="n">w_B_6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( 0, \  0, \  0, \  \hat{b}_x, \  \hat{b}_y, \  \hat{b}_z\right)\]</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">partial_velocity()</span></code> function does this same thing. Notice that due to
+our velocity definitions, we get a very simple set of partial velocities.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">par_vels</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">partial_velocity</span><span class="p">([</span><span class="n">A_v_Bo</span><span class="p">,</span> <span class="n">A_w_B</span><span class="p">],</span> <span class="p">[</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">u3</span><span class="p">,</span> <span class="n">u4</span><span class="p">,</span> <span class="n">u5</span><span class="p">,</span> <span class="n">u6</span><span class="p">],</span> <span class="n">A</span><span class="p">)</span>
+
+<span class="n">par_vels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left[ \left[ \hat{b}_x, \  \hat{b}_y, \  \hat{b}_z, \  0, \  0, \  0\right], \  \left[ 0, \  0, \  0, \  \hat{b}_x, \  \hat{b}_y, \  \hat{b}_z\right]\right]\]</div>
+</div>
+</div>
+<p>Now form the generalized active forces:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">Mx</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">My</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">Mz</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">Fx</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">Fy</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">Fz</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">F1</span> <span class="o">=</span> <span class="n">v_Bo_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">F2</span> <span class="o">=</span> <span class="n">v_Bo_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">F3</span> <span class="o">=</span> <span class="n">v_Bo_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">F4</span> <span class="o">=</span> <span class="n">v_Bo_4</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_4</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">F5</span> <span class="o">=</span> <span class="n">v_Bo_5</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_5</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">F6</span> <span class="o">=</span> <span class="n">v_Bo_6</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_6</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">Fr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">F1</span><span class="p">,</span> <span class="n">F2</span><span class="p">,</span> <span class="n">F3</span><span class="p">,</span> <span class="n">F4</span><span class="p">,</span> <span class="n">F4</span><span class="p">,</span> <span class="n">F6</span><span class="p">])</span>
+<span class="n">Fr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}F_{x}\\F_{y}\\F_{z}\\M_{x}\\M_{x}\\M_{z}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>and the generalized inertia forces:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">inertia</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span><span class="p">,</span> <span class="n">Ixy</span><span class="p">,</span> <span class="n">Iyz</span><span class="p">,</span> <span class="n">Ixz</span><span class="p">)</span>
+
+<span class="n">Rs</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">Bo</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">Ts</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_acc_in</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A_w_B</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A_w_B</span><span class="p">))</span>
+
+<span class="n">F1s</span> <span class="o">=</span> <span class="n">v_Bo_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Rs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">)</span>
+<span class="n">F2s</span> <span class="o">=</span> <span class="n">v_Bo_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Rs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">)</span>
+<span class="n">F3s</span> <span class="o">=</span> <span class="n">v_Bo_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Rs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">)</span>
+<span class="n">F4s</span> <span class="o">=</span> <span class="n">v_Bo_4</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Rs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_4</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">)</span>
+<span class="n">F5s</span> <span class="o">=</span> <span class="n">v_Bo_5</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Rs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_5</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">)</span>
+<span class="n">F6s</span> <span class="o">=</span> <span class="n">v_Bo_6</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Rs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_6</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">)</span>
+
+<span class="n">Frs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">F1s</span><span class="p">,</span> <span class="n">F2s</span><span class="p">,</span> <span class="n">F3s</span><span class="p">,</span> <span class="n">F4s</span><span class="p">,</span> <span class="n">F5s</span><span class="p">,</span> <span class="n">F6s</span><span class="p">])</span>
+<span class="n">Frs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- m \left(- u_{2} u_{6} + u_{3} u_{5} + \dot{u}_{1}\right)\\- m \left(u_{1} u_{6} - u_{3} u_{4} + \dot{u}_{2}\right)\\- m \left(- u_{1} u_{5} + u_{2} u_{4} + \dot{u}_{3}\right)\\- I_{xx} \dot{u}_{4} - I_{xy} \dot{u}_{5} - I_{xz} \dot{u}_{6} - \left(- I_{xy} u_{6} + I_{xz} u_{5}\right) u_{4} - \left(- I_{yy} u_{6} + I_{yz} u_{5}\right) u_{5} - \left(- I_{yz} u_{6} + I_{zz} u_{5}\right) u_{6}\\- I_{xy} \dot{u}_{4} - I_{yy} \dot{u}_{5} - I_{yz} \dot{u}_{6} - \left(I_{xx} u_{6} - I_{xz} u_{4}\right) u_{4} - \left(I_{xy} u_{6} - I_{yz} u_{4}\right) u_{5} - \left(I_{xz} u_{6} - I_{zz} u_{4}\right) u_{6}\\- I_{xz} \dot{u}_{4} - I_{yz} \dot{u}_{5} - I_{zz} \dot{u}_{6} - \left(- I_{xx} u_{5} + I_{xy} u_{4}\right) u_{4} - \left(- I_{xy} u_{5} + I_{yy} u_{4}\right) u_{5} - \left(- I_{xz} u_{5} + I_{yz} u_{4}\right) u_{6}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>and finally Kane’s Equations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fr</span> <span class="o">+</span> <span class="n">Frs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- m \left(- u_{2} u_{6} + u_{3} u_{5} + \dot{u}_{1}\right) + F_{x}\\- m \left(u_{1} u_{6} - u_{3} u_{4} + \dot{u}_{2}\right) + F_{y}\\- m \left(- u_{1} u_{5} + u_{2} u_{4} + \dot{u}_{3}\right) + F_{z}\\- I_{xx} \dot{u}_{4} - I_{xy} \dot{u}_{5} - I_{xz} \dot{u}_{6} - \left(- I_{xy} u_{6} + I_{xz} u_{5}\right) u_{4} - \left(- I_{yy} u_{6} + I_{yz} u_{5}\right) u_{5} - \left(- I_{yz} u_{6} + I_{zz} u_{5}\right) u_{6} + M_{x}\\- I_{xy} \dot{u}_{4} - I_{yy} \dot{u}_{5} - I_{yz} \dot{u}_{6} - \left(I_{xx} u_{6} - I_{xz} u_{4}\right) u_{4} - \left(I_{xy} u_{6} - I_{yz} u_{4}\right) u_{5} - \left(I_{xz} u_{6} - I_{zz} u_{4}\right) u_{6} + M_{x}\\- I_{xz} \dot{u}_{4} - I_{yz} \dot{u}_{5} - I_{zz} \dot{u}_{6} - \left(- I_{xx} u_{5} + I_{xy} u_{4}\right) u_{4} - \left(- I_{xy} u_{5} + I_{yy} u_{4}\right) u_{5} - \left(- I_{xz} u_{5} + I_{yz} u_{4}\right) u_{6} + M_{z}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>We can put Kane’s Equations in canonical form (Eq.
+<a class="reference internal" href="#equation-eq-canonical-eom-form">(189)</a>) by extracting the mass matrix, which is
+the linear coefficient matrix of <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">u3</span><span class="p">,</span> <span class="n">u4</span><span class="p">,</span> <span class="n">u5</span><span class="p">,</span> <span class="n">u6</span><span class="p">])</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+<span class="n">ud</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The mass matrix is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="o">-</span><span class="n">Frs</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">ud</span><span class="p">)</span>
+<span class="n">M</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}m &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; m &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; m &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; I_{xx} &amp; I_{xy} &amp; I_{xz}\\0 &amp; 0 &amp; 0 &amp; I_{xy} &amp; I_{yy} &amp; I_{yz}\\0 &amp; 0 &amp; 0 &amp; I_{xz} &amp; I_{yz} &amp; I_{zz}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The velocity forces vector is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="o">-</span><span class="n">Frs</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">udi</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">udi</span> <span class="ow">in</span> <span class="n">ud</span><span class="p">})</span>
+<span class="n">C</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}m \left(- u_{2} u_{6} + u_{3} u_{5}\right)\\m \left(u_{1} u_{6} - u_{3} u_{4}\right)\\m \left(- u_{1} u_{5} + u_{2} u_{4}\right)\\\left(- I_{xy} u_{6} + I_{xz} u_{5}\right) u_{4} + \left(- I_{yy} u_{6} + I_{yz} u_{5}\right) u_{5} + \left(- I_{yz} u_{6} + I_{zz} u_{5}\right) u_{6}\\\left(I_{xx} u_{6} - I_{xz} u_{4}\right) u_{4} + \left(I_{xy} u_{6} - I_{yz} u_{4}\right) u_{5} + \left(I_{xz} u_{6} - I_{zz} u_{4}\right) u_{6}\\\left(- I_{xx} u_{5} + I_{xy} u_{4}\right) u_{4} + \left(- I_{xy} u_{5} + I_{yy} u_{4}\right) u_{5} + \left(- I_{xz} u_{5} + I_{yz} u_{4}\right) u_{6}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>And the forcing vector is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F</span> <span class="o">=</span> <span class="n">Fr</span>
+<span class="n">F</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}F_{x}\\F_{y}\\F_{z}\\M_{x}\\M_{x}\\M_{z}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>This example may seem overly complicated when using Kane’s method, but it is a
+systematic method that works for any number of rigid bodies and particles in a
+system.</p>
+</section>
+<section id="equations-of-motion">
+<h2 id="equations-of-motion">Equations of Motion<a class="headerlink" href="#equations-of-motion" title="Link to this heading">¶</a></h2>
+<p>The kinematical and dynamical differential equations constitute the <em>equations
+of motion</em> for a holonomic multibody system. These equations are ordinary
+differential equations in the generalized speeds and generalized coordinates.</p>
+<div class="math notranslate nohighlight" id="equation-eq-equations-of-motion">
+<span class="eqno">(190)<a class="headerlink" href="#equation-eq-equations-of-motion" title="Link to this equation">¶</a></span>\[\begin{split}\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)  = 0 \\
+\bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t)  = 0\end{split}\]</div>
+<p>and since they are both linear in <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span> and
+<span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span>, respectively, they can be written in a combined form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-intermediate-state-form">
+<span class="eqno">(191)<a class="headerlink" href="#equation-eq-intermediate-state-form" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+\mathbf{M}_k &amp;&amp; 0 \\
+0 &amp;&amp; \mathbf{M}_d \\
+\end{bmatrix}
+\begin{bmatrix}
+\dot{\bar{q}} \\
+\dot{\bar{u}}
+\end{bmatrix}
++
+\begin{bmatrix}
+\bar{g}_k(\bar{u}, \bar{q}, t) \\
+\bar{g}_d(\bar{u}, \bar{q}, t)
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0
+\end{bmatrix}\end{split}\]</div>
+<p>which we write as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-state-form">
+<span class="eqno">(192)<a class="headerlink" href="#equation-eq-state-form" title="Link to this equation">¶</a></span>\[\mathbf{M}_m
+\dot{\bar{x}}
++
+\bar{g}_m
+= \bar{0}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{x}=[\bar{q} \quad \bar{u}]^T\)</span> is called the <em>state</em> of the
+system and is comprised of the generalized coordinates and generalized speeds.</p>
+</section>
+<section id="example-of-kane-s-equations">
+<h2 id="example-of-kane-s-equations">Example of Kane’s Equations<a class="headerlink" href="#example-of-kane-s-equations" title="Link to this heading">¶</a></h2>
+<p>Returning to the example from the previous chapter, I will add an additional
+particle of mass <span class="math notranslate nohighlight">\(m/4\)</span> at point <span class="math notranslate nohighlight">\(Q\)</span> that can slide along the rod
+<span class="math notranslate nohighlight">\(B\)</span> and is attached to point <span class="math notranslate nohighlight">\(B_o\)</span> via a linear translational
+spring with stiffness <span class="math notranslate nohighlight">\(k_l\)</span> and located by generalized coordinate
+<span class="math notranslate nohighlight">\(q_3\)</span>. The torsional spring stiffness has been renamed to <span class="math notranslate nohighlight">\(k_t\)</span>.
+See <a class="reference internal" href="#fig-eom-double-rod-pendulum"><span class="std std-numref">Fig. 47</span></a> for a visual description.</p>
+<figure class="align-center" id="id3">
+<span id="fig-eom-double-rod-pendulum"></span><a class="reference internal image-reference" href="_images/eom-double-rod-pendulum.svg"><img alt="_images/eom-double-rod-pendulum.svg" src="_images/eom-double-rod-pendulum.svg" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 47 </span><span class="caption-text">Three dimensional pendulum made up of two pinned rods and a sliding mass on
+rod <span class="math notranslate nohighlight">\(B\)</span>. Each degree of freedom is resisted by a linear spring. When
+the generalized coordinates are all zero, the two rods are perpendicular to
+each other.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The following code is reproduced from the prior chapter and gives the
+velocities and angular velocities of <span class="math notranslate nohighlight">\(A_o\)</span>, <span class="math notranslate nohighlight">\(B_o\)</span>, <span class="math notranslate nohighlight">\(A\)</span>, and
+<span class="math notranslate nohighlight">\(B\)</span> in the inertial reference frame <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">kt</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, g, k_t, k_l, l'</span><span class="p">)</span>
+<span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'q1, q2, q3'</span><span class="p">)</span>
+<span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">u3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'u1, u2, u3'</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">A</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">A</span><span class="o">.</span><span class="n">set_ang_vel</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">u1</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">set_ang_vel</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">u2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">O</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'O'</span><span class="p">)</span>
+<span class="n">Ao</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'A_O'</span><span class="p">)</span>
+<span class="n">Bo</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'B_O'</span><span class="p">)</span>
+
+<span class="n">Ao</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Bo</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">l</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">O</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Ao</span><span class="o">.</span><span class="n">v2pt_theory</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+<span class="n">Bo</span><span class="o">.</span><span class="n">v2pt_theory</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
+<span class="n">Ao</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">Bo</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( \frac{l u_{1}}{2}\hat{a}_y, \  l u_{1}\hat{a}_y, \  u_{1}\hat{n}_z, \  u_{2}\hat{a}_x + u_{1}\hat{n}_z\right)\]</div>
+</div>
+</div>
+<p>We now have the particle at <span class="math notranslate nohighlight">\(Q\)</span> so we need its velocity for its
+contribution to  <span class="math notranslate nohighlight">\(F_r\)</span> and <span class="math notranslate nohighlight">\(F_r^*\)</span>. <span class="math notranslate nohighlight">\(Q\)</span> is moving in
+<span class="math notranslate nohighlight">\(B\)</span> so the one point velocity theorem can be used.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">)</span>
+<span class="n">Q</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">Bo</span><span class="p">,</span> <span class="n">q3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="n">Q</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">u3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="n">Q</span><span class="o">.</span><span class="n">v1pt_theory</span><span class="p">(</span><span class="n">Bo</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+<span class="n">Q</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  q_{3} u_{1} \cos{\left(q_{2} \right)}\hat{b}_x + u_{3}\hat{b}_y + q_{3} u_{2}\hat{b}_z + l u_{1}\hat{a}_y\]</div>
+</div>
+</div>
+<p>We will also need the accelerations of the points and frames for the
+generalized inertia forces. For points <span class="math notranslate nohighlight">\(A_o\)</span>, <span class="math notranslate nohighlight">\(B_o\)</span> and frames
+<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> these are nicely expressed in terms of
+<span class="math notranslate nohighlight">\(\dot{\bar{u}}, \bar{u}, \bar{q}\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ao</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">Bo</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">A</span><span class="o">.</span><span class="n">ang_acc_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_acc_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( -  \frac{l u_{1}^{2}}{2}\hat{a}_x + \frac{l \dot{u}_{1}}{2}\hat{a}_y, \  -  l u_{1}^{2}\hat{a}_x + l \dot{u}_{1}\hat{a}_y, \  \dot{u}_{1}\hat{n}_z, \  \dot{u}_{2}\hat{a}_x + u_{1} u_{2}\hat{a}_y + \dot{u}_{1}\hat{n}_z\right)\]</div>
+</div>
+</div>
+<p>but the acceleration of point <span class="math notranslate nohighlight">\(Q\)</span> contains <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span> terms,
+so we need to eliminate those with the kinematical differential equations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (q_{3} u_{1} u_{2} \sin{\left(q_{2} \right)} + q_{3} u_{1} \sin{\left(q_{2} \right)} \dot{q}_{2} - q_{3} \cos{\left(q_{2} \right)} \dot{u}_{1} - u_{1} u_{3} \cos{\left(q_{2} \right)} - u_{1} \cos{\left(q_{2} \right)} \dot{q}_{3})\hat{b}_x + (- q_{3} u_{1}^{2} \cos^{2}{\left(q_{2} \right)} - q_{3} u_{2}^{2} + \dot{u}_{3})\hat{b}_y + (q_{3} u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)} + q_{3} \dot{u}_{2} + u_{2} u_{3} + u_{2} \dot{q}_{3})\hat{b}_z -  l u_{1}^{2}\hat{a}_x + l \dot{u}_{1}\hat{a}_y\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+
+<span class="n">qdot_repl</span> <span class="o">=</span> <span class="p">{</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="n">u1</span><span class="p">,</span>
+             <span class="n">q2</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="n">u2</span><span class="p">,</span>
+             <span class="n">q3</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="n">u3</span><span class="p">}</span>
+
+<span class="n">Q</span><span class="o">.</span><span class="n">set_acc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">qdot_repl</span><span class="p">))</span>
+<span class="n">Q</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (2 q_{3} u_{1} u_{2} \sin{\left(q_{2} \right)} - q_{3} \cos{\left(q_{2} \right)} \dot{u}_{1} - 2 u_{1} u_{3} \cos{\left(q_{2} \right)})\hat{b}_x + (- q_{3} u_{1}^{2} \cos^{2}{\left(q_{2} \right)} - q_{3} u_{2}^{2} + \dot{u}_{3})\hat{b}_y + (q_{3} u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)} + q_{3} \dot{u}_{2} + 2 u_{2} u_{3})\hat{b}_z -  l u_{1}^{2}\hat{a}_x + l \dot{u}_{1}\hat{a}_y\]</div>
+</div>
+</div>
+<div class="dropdown admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be careful when making substitutions when expressions contain derivatives
+and double derivatives. The order in which you make the substitutions matter
+and the printer that SymPy is using may not show you what you think you are
+looking at. Take this expression:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">kt</span><span class="o">*</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">kl</span><span class="o">*</span><span class="n">q1</span>
+<span class="n">expr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle k_{l} q_{1} + k_{t} \dot{q}_{1} + m \ddot{q}_{1}\]</div>
+</div>
+</div>
+<p>Let’s say you need to make these substitutions:
+<span class="math notranslate nohighlight">\(q_1=\frac{q_2}{q_1},\dot{q}_1=u_1,\ddot{q}_1=\dot{u}_1\)</span>. It may seem
+obvious that the <span class="math notranslate nohighlight">\(\ddot{q}_1\)</span> substitution should be done before
+<span class="math notranslate nohighlight">\(q_1\)</span>, but care may be needed to help the computer realize this. If
+the highest derivatives are substituted first with successive calls to
+<code class="docutils literal notranslate"><span class="pre">.xreplace()</span></code> then you get:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr1</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">u1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)})</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="n">u1</span><span class="p">})</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="p">:</span> <span class="n">q2</span><span class="o">/</span><span class="n">q1</span><span class="p">})</span>
+<span class="n">expr1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{k_{l} q_{2}}{q_{1}} + k_{t} u_{1} + m \dot{u}_{1}\]</div>
+</div>
+</div>
+<p>But if you substitute in the opposite order you get:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr2</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="p">:</span> <span class="n">q2</span><span class="o">/</span><span class="n">q1</span><span class="p">})</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="n">u1</span><span class="p">})</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">u1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)})</span>
+<span class="n">expr2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{k_{l} q_{2}}{q_{1}} + k_{t} \left(\frac{\dot{q}_{2}}{q_{1}} - \frac{q_{2} \dot{q}_{1}}{q_{1}^{2}}\right) + m \left(\frac{- \frac{\left(\ddot{q}_{1} - \frac{2 \dot{q}_{1}^{2}}{q_{1}}\right) q_{2}}{q_{1}} + \ddot{q}_{2} - \frac{2 \dot{q}_{1} \dot{q}_{2}}{q_{1}}}{q_{1}}\right)\]</div>
+</div>
+</div>
+<p>which is a very different answer.</p>
+<p>Checking the <code class="docutils literal notranslate"><span class="pre">str()</span></code> or <code class="docutils literal notranslate"><span class="pre">srepr()</span></code> versions of the expressions can help
+diagnose what is going on. The string representation of the first expression
+is as expected:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">expr1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>k_l*q2(t)/q1(t) + k_t*u1(t) + m*Derivative(u1(t), t)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The string representation of the second expression shows that the
+<span class="math notranslate nohighlight">\(q_1\)</span> symbol was substituted into each derivative term.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">expr2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>k_l*q2(t)/q1(t) + k_t*Derivative(q2(t)/q1(t), t) + m*Derivative(q2(t)/q1(t), (t, 2))
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">expr2</span></code> shows different results depending on how you print it! The typeset
+math evaluates the derivatives and the string representation does not.</p>
+<p>If you put all of the substitutions in the same dictionary, SymPy should
+substitute the terms in the expected order:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="p">:</span> <span class="n">q2</span><span class="o">/</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="n">u1</span><span class="p">,</span> <span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">u1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{k_{l} q_{2}}{q_{1}} + k_{t} u_{1} + m \dot{u}_{1}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expr</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">u1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">):</span> <span class="n">u1</span><span class="p">,</span> <span class="n">q1</span><span class="p">:</span> <span class="n">q2</span><span class="o">/</span><span class="n">q1</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{k_{l} q_{2}}{q_{1}} + k_{t} u_{1} + m \dot{u}_{1}\]</div>
+</div>
+</div>
+</div>
+<p>Now we formulate the resultant forces and torques on each relevant point and
+frame:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R_Ao</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">R_Bo</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">kl</span><span class="o">*</span><span class="n">q3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span>
+<span class="n">R_Q</span> <span class="o">=</span> <span class="n">m</span><span class="o">/</span><span class="mi">4</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">kl</span><span class="o">*</span><span class="n">q3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span>
+<span class="n">T_A</span> <span class="o">=</span> <span class="o">-</span><span class="n">kt</span><span class="o">*</span><span class="n">q1</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">kt</span><span class="o">*</span><span class="n">q2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span>
+<span class="n">T_B</span> <span class="o">=</span> <span class="o">-</span><span class="n">kt</span><span class="o">*</span><span class="n">q2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Note the equal and opposite spring forces that act on the pairs of points and
+pairs of reference frames. We ignored the reaction torque on <span class="math notranslate nohighlight">\(N\)</span> from
+<span class="math notranslate nohighlight">\(A\)</span> because <span class="math notranslate nohighlight">\(N\)</span> is our inertial reference frame.</p>
+<p>The inertia dyadics of the two rods are:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">12</span>
+<span class="n">I_A_Ao</span> <span class="o">=</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">I_B_Bo</span> <span class="o">=</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>To form the equations of motion, start by finding all of the partial velocities
+of the two mass centers <span class="math notranslate nohighlight">\(A_o,B_o\)</span>, one particle <span class="math notranslate nohighlight">\(Q\)</span>, and two bodies
+<span class="math notranslate nohighlight">\(A,B\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v_Ao_1</span> <span class="o">=</span> <span class="n">Ao</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">v_Bo_1</span> <span class="o">=</span> <span class="n">Bo</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">v_Q_1</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="n">v_Ao_2</span> <span class="o">=</span> <span class="n">Ao</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">v_Bo_2</span> <span class="o">=</span> <span class="n">Bo</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">v_Q_2</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="n">v_Ao_3</span> <span class="o">=</span> <span class="n">Ao</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u3</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">v_Bo_3</span> <span class="o">=</span> <span class="n">Bo</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u3</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">v_Q_3</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u3</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="n">w_A_1</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">w_B_1</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="n">w_A_2</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">w_B_2</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="n">w_A_3</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u3</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">w_B_3</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">u3</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The three generalized active forces are then formed by dotting the partial
+velocities with the associated load:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F1</span> <span class="o">=</span> <span class="n">v_Ao_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Ao</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_Bo_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Bo</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_Q_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Q</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_A_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T_A</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T_B</span><span class="p">)</span>
+<span class="n">F2</span> <span class="o">=</span> <span class="n">v_Ao_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Ao</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_Bo_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Bo</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_Q_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Q</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_A_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T_A</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T_B</span><span class="p">)</span>
+<span class="n">F3</span> <span class="o">=</span> <span class="n">v_Ao_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Ao</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_Bo_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Bo</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_Q_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_Q</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_A_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T_A</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T_B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The generalized force vector <span class="math notranslate nohighlight">\(\bar{F}_r\)</span> is then:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">F1</span><span class="p">,</span> <span class="n">F2</span><span class="p">,</span> <span class="n">F3</span><span class="p">])</span>
+<span class="n">Fr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{7 g l m \sin{\left(q_{1} \right)}}{4} - \frac{g m q_{3} \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)}}{4} - k_{t} q_{1}\\\frac{g m q_{3} \sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)}}{4} - k_{t} q_{2}\\- \frac{g m \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)}}{4} - k_{l} q_{3}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The three generalized inertia forces are similarly formed but with the
+resultant inertial forces:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TAs</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_acc_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I_A_Ao</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">I_A_Ao</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span>
+<span class="n">TBs</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_acc_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I_B_Bo</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">I_B_Bo</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span>
+
+<span class="n">F1s</span> <span class="o">=</span> <span class="n">v_Ao_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">Ao</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">+</span> <span class="n">v_Bo_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">Bo</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">+</span> <span class="n">v_Q_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">/</span><span class="mi">4</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+<span class="n">F1s</span> <span class="o">+=</span> <span class="n">w_A_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">TAs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">TBs</span><span class="p">)</span>
+
+<span class="n">F2s</span> <span class="o">=</span> <span class="n">v_Ao_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">Ao</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">+</span> <span class="n">v_Bo_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">Bo</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">+</span> <span class="n">v_Q_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">/</span><span class="mi">4</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+<span class="n">F2s</span> <span class="o">+=</span> <span class="n">w_A_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">TAs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">TBs</span><span class="p">)</span>
+
+<span class="n">F3s</span> <span class="o">=</span> <span class="n">v_Ao_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">Ao</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">+</span> <span class="n">v_Bo_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">Bo</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">+</span> <span class="n">v_Q_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">/</span><span class="mi">4</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+<span class="n">F3s</span> <span class="o">+=</span> <span class="n">w_A_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">TAs</span><span class="p">)</span> <span class="o">+</span> <span class="n">w_B_3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">TBs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Finally the generalized inertia force vector is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Frs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">F1s</span><span class="p">,</span> <span class="n">F2s</span><span class="p">,</span> <span class="n">F3s</span><span class="p">])</span>
+<span class="n">Frs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{19 l^{2} m \dot{u}_{1}}{12} - \frac{l m q_{3} u_{1}^{2} \cos{\left(q_{2} \right)}}{4} + l \left(- \frac{m \left(- q_{3} u_{1}^{2} \cos^{2}{\left(q_{2} \right)} - q_{3} u_{2}^{2} + \dot{u}_{3}\right) \cos{\left(q_{2} \right)}}{4} + \frac{m \left(q_{3} u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)} + q_{3} \dot{u}_{2} + 2 u_{2} u_{3}\right) \sin{\left(q_{2} \right)}}{4}\right) + \frac{m \left(2 q_{3} u_{1} u_{2} \sin{\left(q_{2} \right)} - q_{3} \cos{\left(q_{2} \right)} \dot{u}_{1} - 2 u_{1} u_{3} \cos{\left(q_{2} \right)}\right) q_{3} \cos{\left(q_{2} \right)}}{4} + \left(- \frac{l^{2} m \left(- u_{1} u_{2} \sin{\left(q_{2} \right)} + \cos{\left(q_{2} \right)} \dot{u}_{1}\right)}{12} + \frac{l^{2} m u_{1} u_{2} \sin{\left(q_{2} \right)}}{12}\right) \cos{\left(q_{2} \right)}\\- \frac{l^{2} m u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)}}{12} - \frac{l^{2} m \dot{u}_{2}}{12} + \frac{l m q_{3} \sin{\left(q_{2} \right)} \dot{u}_{1}}{4} - \frac{m \left(q_{3} u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)} + q_{3} \dot{u}_{2} + 2 u_{2} u_{3}\right) q_{3}}{4}\\- \frac{l m \cos{\left(q_{2} \right)} \dot{u}_{1}}{4} - \frac{m \left(- q_{3} u_{1}^{2} \cos^{2}{\left(q_{2} \right)} - q_{3} u_{2}^{2} + \dot{u}_{3}\right)}{4}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Notice that the dynamical differential equations are only functions of the time
+varying variables <span class="math notranslate nohighlight">\(\dot{\bar{u}},\bar{u},\bar{q}\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">find_dynamicsymbols</span><span class="p">(</span><span class="n">Fr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{q_{1}, q_{2}, q_{3}\right\}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">find_dynamicsymbols</span><span class="p">(</span><span class="n">Frs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{q_{2}, q_{3}, u_{1}, u_{2}, u_{3}, \dot{u}_{1}, \dot{u}_{2}, \dot{u}_{3}\right\}\]</div>
+</div>
+</div>
+</section>
+<section id="implicit-and-explicit-form">
+<h2 id="implicit-and-explicit-form">Implicit and Explicit Form<a class="headerlink" href="#implicit-and-explicit-form" title="Link to this heading">¶</a></h2>
+<p>Eq. <a class="reference internal" href="#equation-eq-state-form">(192)</a> is written in an <em>implicit form</em>, meaning that
+the derivatives are not explicitly solved for. The <em>explicit form</em> is found by
+inverting <span class="math notranslate nohighlight">\(\mathbf{M}_m\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-state-form-explicit">
+<span class="eqno">(193)<a class="headerlink" href="#equation-eq-state-form-explicit" title="Link to this equation">¶</a></span>\[\dot{\bar{x}}
+=
+-\mathbf{M}_m^{-1}
+\bar{g}_m
+=\bar{f}_m(\bar{x}, t)\]</div>
+<p>To determine how the state changes over time, these explicit differential
+equations can be solved by integrating them with respect to time:</p>
+<div class="math notranslate nohighlight" id="equation-eq-eom-integral">
+<span class="eqno">(194)<a class="headerlink" href="#equation-eq-eom-integral" title="Link to this equation">¶</a></span>\[\bar{x}(t) = \int^{t_f}_{t_0} \bar{f}_m(\bar{x}, t) dt\]</div>
+<p><span class="math notranslate nohighlight">\(\bar{f}_m\)</span> is, in general, nonlinear in time, thus analytical solutions
+are impossible to find. To solve this integral we must numerically integrate
+<span class="math notranslate nohighlight">\(\bar{f}_m\)</span>. To do so, it will be useful to extract the symbolic forms of
+<span class="math notranslate nohighlight">\(\mathbf{M}_k\)</span>, <span class="math notranslate nohighlight">\(\bar{g}_k\)</span>, <span class="math notranslate nohighlight">\(\mathbf{M}_d\)</span>, and
+<span class="math notranslate nohighlight">\(\bar{g}_d\)</span>.</p>
+<p>Our example problem has a simple definition of the kinematical differential
+equations:</p>
+<div class="math notranslate nohighlight" id="equation-eq-qdot-equals-u">
+<span class="eqno">(195)<a class="headerlink" href="#equation-eq-qdot-equals-u" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+\dot{q}_1 \\
+\dot{q}_2 \\
+\dot{q}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+u_1 \\
+u_2 \\
+u_3
+\end{bmatrix}\end{split}\]</div>
+<p>so <span class="math notranslate nohighlight">\(\mathbf{M}_k\)</span> is the identity matrix and need not be formed:</p>
+<div class="math notranslate nohighlight" id="equation-eq-yk-identity">
+<span class="eqno">(196)<a class="headerlink" href="#equation-eq-yk-identity" title="Link to this equation">¶</a></span>\[\begin{split}\mathbf{M}_k \dot{\bar{q}} + \bar{g}_k = 0
+\rightarrow
+-
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\dot{q}_1 \\
+\dot{q}_2 \\
+\dot{q}_3
+\end{bmatrix}
++
+\begin{bmatrix}
+u_1 \\
+u_2 \\
+u_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0
+\end{bmatrix}\end{split}\]</div>
+<p>But we will need <span class="math notranslate nohighlight">\(\mathbf{M}_d\)</span> to solve explicitly for
+<span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span>. Recall that we can use the Jacobian to extract the
+linear coefficients of <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span> and then find the terms that
+aren’t functions of <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span> by substitution (See Sec.
+<a class="reference internal" href="sympy.html#solving-linear-systems"><span class="std std-ref">Solving Linear Systems</span></a>).</p>
+<p>Form the column vector <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">u3</span><span class="p">])</span>
+<span class="n">ud</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">ud</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\dot{u}_{1}\\\dot{u}_{2}\\\dot{u}_{3}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Extract the coefficients of <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Md</span> <span class="o">=</span> <span class="n">Frs</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">ud</span><span class="p">)</span>
+<span class="n">Md</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{l^{2} m \cos^{2}{\left(q_{2} \right)}}{12} - \frac{19 l^{2} m}{12} - \frac{m q_{3}^{2} \cos^{2}{\left(q_{2} \right)}}{4} &amp; \frac{l m q_{3} \sin{\left(q_{2} \right)}}{4} &amp; - \frac{l m \cos{\left(q_{2} \right)}}{4}\\\frac{l m q_{3} \sin{\left(q_{2} \right)}}{4} &amp; - \frac{l^{2} m}{12} - \frac{m q_{3}^{2}}{4} &amp; 0\\- \frac{l m \cos{\left(q_{2} \right)}}{4} &amp; 0 &amp; - \frac{m}{4}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Make a substitution dictionary to set <span class="math notranslate nohighlight">\(\dot{\bar{u}}=\bar{0}\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ud_zerod</span> <span class="o">=</span> <span class="p">{</span><span class="n">udr</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">udr</span> <span class="ow">in</span> <span class="n">ud</span><span class="p">}</span>
+<span class="n">ud_zerod</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{ \dot{u}_{1} : 0, \  \dot{u}_{2} : 0, \  \dot{u}_{3} : 0\right\}\]</div>
+</div>
+</div>
+<p>Find <span class="math notranslate nohighlight">\(\bar{g}_d\)</span> with <span class="math notranslate nohighlight">\(\bar{g}_d =
+\bar{F}_r^* |_{\dot{\bar{u}}=\bar{0}} + \bar{F}_r\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span> <span class="o">=</span> <span class="n">Frs</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">ud_zerod</span><span class="p">)</span> <span class="o">+</span> <span class="n">Fr</span>
+<span class="n">gd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{7 g l m \sin{\left(q_{1} \right)}}{4} - \frac{g m q_{3} \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)}}{4} - k_{t} q_{1} + \frac{l^{2} m u_{1} u_{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)}}{6} - \frac{l m q_{3} u_{1}^{2} \cos{\left(q_{2} \right)}}{4} + l \left(- \frac{m \left(- q_{3} u_{1}^{2} \cos^{2}{\left(q_{2} \right)} - q_{3} u_{2}^{2}\right) \cos{\left(q_{2} \right)}}{4} + \frac{m \left(q_{3} u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)} + 2 u_{2} u_{3}\right) \sin{\left(q_{2} \right)}}{4}\right) + \frac{m \left(2 q_{3} u_{1} u_{2} \sin{\left(q_{2} \right)} - 2 u_{1} u_{3} \cos{\left(q_{2} \right)}\right) q_{3} \cos{\left(q_{2} \right)}}{4}\\\frac{g m q_{3} \sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)}}{4} - k_{t} q_{2} - \frac{l^{2} m u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)}}{12} - \frac{m \left(q_{3} u_{1}^{2} \sin{\left(q_{2} \right)} \cos{\left(q_{2} \right)} + 2 u_{2} u_{3}\right) q_{3}}{4}\\- \frac{g m \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)}}{4} - k_{l} q_{3} - \frac{m \left(- q_{3} u_{1}^{2} \cos^{2}{\left(q_{2} \right)} - q_{3} u_{2}^{2}\right)}{4}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Check that neither are functions of <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">find_dynamicsymbols</span><span class="p">(</span><span class="n">Md</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{q_{2}, q_{3}\right\}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">find_dynamicsymbols</span><span class="p">(</span><span class="n">gd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left\{q_{1}, q_{2}, q_{3}, u_{1}, u_{2}, u_{3}\right\}\]</div>
+</div>
+</div>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="generalized-forces.html" title="Generalized Forces"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Generalized Forces </span>
+              </div>
+            </a>
+          
+          
+            <a href="simulation.html" title="Simulation and Visualization"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Simulation and Visualization </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

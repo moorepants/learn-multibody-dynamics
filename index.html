@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Learn Multibody Dynamics &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="introduction.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#index" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="#" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Learn Multibody Dynamics </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="#" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="#" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="#"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#index--page-root" class="md-nav__link">Learn Multibody Dynamics</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#prior-versions" class="md-nav__link">Prior Versions</a>
+        </li>
+        <li class="md-nav__item"><a href="#lecture-videos" class="md-nav__link">Lecture Videos</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/index.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="learn-multibody-dynamics">
+<h1 id="index--page-root">Learn Multibody Dynamics<a class="headerlink" href="#index--page-root" title="Link to this heading">¶</a></h1>
+<div class="line-block">
+<div class="line">Last Updated: Feb 13, 2026</div>
+<div class="line">Version: 0.5.dev0+a361c8f</div>
+</div>
+<p>This online book aims to teach multibody dynamics using interactive code woven
+into the text. It generally follows the organization and methods presented in
+<a class="reference internal" href="references.html#kane1985" id="id1"><span>[Kane1985]</span></a> and can be thought of a retelling of many topics in the book. Each
+page can be downloaded as a <a class="reference external" href="https://python.org">Python</a> script or  <a class="reference external" href="https://jupyter.org">Jupyter</a> Notebook. The book is
+also <a class="reference external" href="learnmultibodydynamics.pdf">available in PDF format</a>. This book is used
+as a companion resource for TU Delft’s <a class="reference external" href="https://moorepants.github.io/me41055">Multibody Dynamics</a> course taught by
+<a class="reference external" href="https://www.moorepants.info">Jason K. Moore</a> but it is designed to stand alone from the course.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-you-will-learn">What You Will Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#choice-of-dynamics-formalism">Choice of dynamics formalism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#choice-of-programming-language">Choice of programming language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#history">History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#tools-behind-the-book">Tools Behind the Book</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install the Software</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#miniforge">1) Miniforge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#create-and-activate-an-environment">2) Create and Activate an Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-packages">3) Install Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#open-jupyter-notebook">4) Open Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#software-versions">Software Versions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter-python.html">Jupyter and Python</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jupyter-python.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jupyter-python.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jupyter-python.html#the-jupyter-notebook">The Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jupyter-python.html#python">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jupyter-python.html#learn-more">Learn More</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sympy.html">SymPy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#import-and-setup">Import and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#symbols">Symbols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#undefined-functions">Undefined Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#symbolic-expressions">Symbolic Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#printing">Printing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#differentiating">Differentiating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#evaluating-symbolic-expressions">Evaluating Symbolic Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#matrices">Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#solving-linear-systems">Solving Linear Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#simplification">Simplification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sympy.html#learn-more">Learn more</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="orientation.html">Orientation of Reference Frames</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#reference-frames">Reference Frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#unit-vectors">Unit Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#simple-orientations">Simple Orientations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#direction-cosine-matrices">Direction Cosine Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#successive-orientations">Successive Orientations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#sympy-mechanics">SymPy Mechanics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#euler-angles">Euler Angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#alternatives-for-representing-orientation">Alternatives for Representing Orientation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orientation.html#learn-more">Learn more</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#what-is-a-vector">What is a vector?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#vector-functions">Vector Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#addition">Addition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#scaling">Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#dot-product">Dot Product</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#cross-product">Cross Product</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#vectors-expressed-in-multiple-reference-frames">Vectors Expressed in Multiple Reference Frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#relative-position-among-points">Relative Position Among Points</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="differentiation.html">Vector Differentiation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="differentiation.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="differentiation.html#partial-derivatives">Partial Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="differentiation.html#product-rule">Product Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="differentiation.html#second-derivatives">Second Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="differentiation.html#vector-functions-of-time">Vector Functions of Time</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="angular.html">Angular Kinematics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#angular-velocity">Angular Velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#angular-velocity-of-simple-orientations">Angular Velocity of Simple Orientations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#body-fixed-orientations">Body Fixed Orientations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#time-derivatives-of-vectors">Time Derivatives of Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#addition-of-angular-velocity">Addition of Angular Velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#angular-acceleration">Angular Acceleration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="angular.html#addition-of-angular-acceleration">Addition of Angular Acceleration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="translational.html">Translational Kinematics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#translational-velocity">Translational Velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#velocity-two-point-theorem">Velocity Two Point Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#velocity-one-point-theorem">Velocity One Point Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#translational-acceleration">Translational Acceleration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#acceleration-two-point-theorem">Acceleration Two Point Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translational.html#acceleration-one-point-theorem">Acceleration One Point Theorem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Holonomic Constraints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#four-bar-linkage">Four-Bar Linkage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#solving-holonomic-constraints">Solving Holonomic Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#general-holonomic-constraints">General Holonomic Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#generalized-coordinates">Generalized Coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#calculating-additional-kinematic-quantities">Calculating Additional Kinematic Quantities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="motion.html">Nonholonomic Constraints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#motion-constraints">Motion Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#chaplygin-sleigh">Chaplygin Sleigh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#rolling-without-slip">Rolling Without Slip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#kinematical-differential-equations">Kinematical Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#choosing-generalized-speeds">Choosing Generalized Speeds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#snakeboard">Snakeboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="motion.html#degrees-of-freedom">Degrees of Freedom</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mass.html">Mass Distribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#particles-and-rigid-bodies">Particles and Rigid Bodies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#mass">Mass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#mass-center">Mass Center</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#distribution-of-mass">Distribution of Mass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#inertia-matrix">Inertia Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#dyadics">Dyadics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#properties-of-dyadics">Properties of Dyadics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#inertia-dyadic">Inertia Dyadic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#parallel-axis-theorem">Parallel Axis Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#principal-axes-and-moments-of-inertia">Principal Axes and Moments of Inertia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mass.html#angular-momentum">Angular Momentum</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="loads.html">Force, Moment, and Torque</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#force">Force</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#bound-and-free-vectors">Bound and Free Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#moment">Moment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#couple">Couple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#equivalence-replacement">Equivalence &amp; Replacement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#specifying-forces-and-torques">Specifying Forces and Torques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#equal-opposite">Equal &amp; Opposite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#contributing-and-noncontributing-forces">Contributing and Noncontributing Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#gravity">Gravity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#springs-dampers">Springs &amp; Dampers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#friction">Friction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#aerodynamic-drag">Aerodynamic Drag</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html#collision">Collision</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generalized-forces.html">Generalized Forces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#partial-velocities">Partial Velocities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#nonholonomic-partial-velocities">Nonholonomic Partial Velocities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#generalized-active-forces">Generalized Active Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#generalized-active-forces-on-a-rigid-body">Generalized Active Forces on a Rigid Body</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#nonholonomic-generalized-active-forces">Nonholonomic Generalized Active Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#generalized-inertia-forces">Generalized Inertia Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalized-forces.html#nonholonomic-generalized-inertia-forces">Nonholonomic Generalized Inertia Forces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eom.html">Unconstrained Equations of Motion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eom.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eom.html#dynamical-differential-equations">Dynamical Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eom.html#body-fixed-newton-euler-equations">Body Fixed Newton-Euler Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eom.html#equations-of-motion">Equations of Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eom.html#example-of-kane-s-equations">Example of Kane’s Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eom.html#implicit-and-explicit-form">Implicit and Explicit Form</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Simulation and Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#numerical-integration">Numerical Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#numerical-evaluation">Numerical Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#simulation">Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#plotting-simulation-trajectories">Plotting Simulation Trajectories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#integration-with-scipy">Integration with SciPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#animation-with-matplotlib">Animation with Matplotlib</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Three Dimensional Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#id3">pythreejs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#creating-a-scene">Creating a Scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#transformation-matrices">Transformation Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#geometry-and-mesh-definitions">Geometry and Mesh Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#scene-setup">Scene Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#animation-setup">Animation Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html#animated-interactive-3d-visualization">Animated Interactive 3D Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nonholonomic-eom.html">Equations of Motion with Nonholonomic Constraints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nonholonomic-eom.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nonholonomic-eom.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nonholonomic-eom.html#snakeboard-equations-of-motion">Snakeboard Equations of Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nonholonomic-eom.html#simulate-the-snakeboard">Simulate the Snakeboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nonholonomic-eom.html#animate-the-snakeboard">Animate the Snakeboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nonholonomic-eom.html#calculating-dependent-speeds">Calculating Dependent Speeds</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="holonomic-eom.html">Equations of Motion with Holonomic Constraints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="holonomic-eom.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="holonomic-eom.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="holonomic-eom.html#four-bar-linkage-equations-of-motion">Four-bar Linkage Equations of Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="holonomic-eom.html#simulate-without-constraint-enforcement">Simulate without constraint enforcement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="holonomic-eom.html#animate-the-motion">Animate the Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="holonomic-eom.html#correct-dependent-coordinates">Correct Dependent Coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="holonomic-eom.html#simulate-using-a-dae-solver">Simulate Using a DAE Solver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="noncontributing.html">Exposing Noncontributing Forces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#double-pendulum-example">Double Pendulum Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#apply-newton-s-second-law-directly">Apply Newton’s Second Law Directly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#auxiliary-generalized-speeds">Auxiliary Generalized Speeds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#auxiliary-generalized-active-forces">Auxiliary Generalized Active Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#auxiliary-generalized-inertia-forces">Auxiliary Generalized Inertia Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#augmented-dynamical-differential-equations">Augmented Dynamical Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="noncontributing.html#compare-newton-and-kane-results">Compare Newton and Kane Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="energy.html">Energy and Power</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#kinetic-energy">Kinetic Energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#potential-energy">Potential Energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#total-energy">Total Energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#energetics-of-jumping">Energetics of Jumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#simulation-setup">Simulation Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#conservative-simulation">Conservative Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#conservative-simulation-with-ground-spring">Conservative Simulation with Ground Spring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#nonconservative-simulation">Nonconservative Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#simulation-with-passive-knee-torques">Simulation with Passive Knee Torques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy.html#simulation-with-active-knee-torques">Simulation with Active Knee Torques</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lagrange.html">Equations of Motion with the Lagrange Method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#inertial-forces-from-kinetic-energy">Inertial Forces from Kinetic Energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#conservative-forces">Conservative Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#the-lagrange-method">The Lagrange Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#generalized-momenta">Generalized Momenta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#constrained-equations-of-motion">Constrained Equations of Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lagrange.html#lagrange-s-vs-kane-s">Lagrange’s vs Kane’s</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tmt.html">Unconstrained Equations of Motion with the TMT Method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tmt.html#learning-objectives">Learning Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmt.html#example-formulation">Example Formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmt.html#create-the-tmt-components">Create the TMT Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmt.html#formulate-the-reduced-equations-of-motion">Formulate the reduced equations of motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmt.html#evaluate-the-equations-of-motion">Evaluate the equations of motion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#orientation-of-reference-frames">Orientation of Reference Frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#vectors-and-vector-differentiation">Vectors and Vector Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#angular-and-translational-kinematics">Angular and Translational Kinematics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#constraints">Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#mass-distribution">Mass Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#force-moment-and-torque">Force, Moment, and Torque</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#generalized-forces">Generalized Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#unconstrained-equations-of-motion">Unconstrained Equations of Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#equations-of-motion-with-nonholonomic-constraints">Equations of Motion with Nonholonomic Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#equations-of-motion-with-holonomic-constraints">Equations of Motion with Holonomic Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#energy-and-power">Energy and Power</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#lagrange-s-method">Lagrange’s method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html#figure-sign-conventions">Figure Sign Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</div>
+<section id="prior-versions">
+<h2 id="prior-versions">Prior Versions<a class="headerlink" href="#prior-versions" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.4">Version 0.4</a>: Final version after the 2025 course.</p></li>
+<li><p><a class="reference external" href="https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.3">Version 0.3</a>: Final version after the 2024 course.</p></li>
+<li><p><a class="reference external" href="https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.2">Version 0.2</a>: Final version after the 2023 course.</p></li>
+<li><p><a class="reference external" href="https://github.com/moorepants/learn-multibody-dynamics/releases/tag/v0.1">Version 0.1</a>: Final version after the 2022 course.</p></li>
+</ul>
+</section>
+<section id="lecture-videos">
+<h2 id="lecture-videos">Lecture Videos<a class="headerlink" href="#lecture-videos" title="Link to this heading">¶</a></h2>
+<p>2023 Lecture Video Playlist</p>
+<p>There are companion lecture videos that align with many of the chapters.
+The 2023 YouTube playlist is shown below:</p>
+<center>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/videoseries?list=PLK0jeQYhBx8Oi-6_-trPa-3MZcD3TKXuH" title="YouTube video player" width="560">
+</iframe>
+</center><p>2022 Lecture Video Playlist</p>
+<p>There are companion lecture videos that align with many of the chapters.
+The 2022 YouTube playlist is shown below:</p>
+<center>
+<iframe allow="accelerometer; autoplay;
+  clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/videoseries?list=PLK0jeQYhBx8MfvU6bNDTYzgxYnkVQNsLy" title="YouTube video player" width="560">
+</iframe>
+</center></section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+          
+            <a href="introduction.html" title="Introduction"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Introduction </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

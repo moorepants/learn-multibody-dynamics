@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Notation &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Unconstrained Equations of Motion with the TMT Method" href="tmt.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#notation" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Notation </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Notation </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Notation</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#notation--page-root" class="md-nav__link">Notation</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#general" class="md-nav__link">General</a>
+        </li>
+        <li class="md-nav__item"><a href="#orientation-of-reference-frames" class="md-nav__link">Orientation of Reference Frames</a>
+        </li>
+        <li class="md-nav__item"><a href="#vectors-and-vector-differentiation" class="md-nav__link">Vectors and Vector Differentiation</a>
+        </li>
+        <li class="md-nav__item"><a href="#angular-and-translational-kinematics" class="md-nav__link">Angular and Translational Kinematics</a>
+        </li>
+        <li class="md-nav__item"><a href="#constraints" class="md-nav__link">Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#mass-distribution" class="md-nav__link">Mass Distribution</a>
+        </li>
+        <li class="md-nav__item"><a href="#force-moment-and-torque" class="md-nav__link">Force, Moment, and Torque</a>
+        </li>
+        <li class="md-nav__item"><a href="#generalized-forces" class="md-nav__link">Generalized Forces</a>
+        </li>
+        <li class="md-nav__item"><a href="#unconstrained-equations-of-motion" class="md-nav__link">Unconstrained Equations of Motion</a>
+        </li>
+        <li class="md-nav__item"><a href="#equations-of-motion-with-nonholonomic-constraints" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#equations-of-motion-with-holonomic-constraints" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#energy-and-power" class="md-nav__link">Energy and Power</a>
+        </li>
+        <li class="md-nav__item"><a href="#lagrange-s-method" class="md-nav__link">Lagrange’s method</a>
+        </li>
+        <li class="md-nav__item"><a href="#figure-sign-conventions" class="md-nav__link">Figure Sign Conventions</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#vectors" class="md-nav__link">Vectors</a>
+        </li>
+        <li class="md-nav__item"><a href="#dimensions" class="md-nav__link">Dimensions</a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/notation.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#notation--page-root" class="md-nav__link">Notation</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#general" class="md-nav__link">General</a>
+        </li>
+        <li class="md-nav__item"><a href="#orientation-of-reference-frames" class="md-nav__link">Orientation of Reference Frames</a>
+        </li>
+        <li class="md-nav__item"><a href="#vectors-and-vector-differentiation" class="md-nav__link">Vectors and Vector Differentiation</a>
+        </li>
+        <li class="md-nav__item"><a href="#angular-and-translational-kinematics" class="md-nav__link">Angular and Translational Kinematics</a>
+        </li>
+        <li class="md-nav__item"><a href="#constraints" class="md-nav__link">Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#mass-distribution" class="md-nav__link">Mass Distribution</a>
+        </li>
+        <li class="md-nav__item"><a href="#force-moment-and-torque" class="md-nav__link">Force, Moment, and Torque</a>
+        </li>
+        <li class="md-nav__item"><a href="#generalized-forces" class="md-nav__link">Generalized Forces</a>
+        </li>
+        <li class="md-nav__item"><a href="#unconstrained-equations-of-motion" class="md-nav__link">Unconstrained Equations of Motion</a>
+        </li>
+        <li class="md-nav__item"><a href="#equations-of-motion-with-nonholonomic-constraints" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#equations-of-motion-with-holonomic-constraints" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+        </li>
+        <li class="md-nav__item"><a href="#energy-and-power" class="md-nav__link">Energy and Power</a>
+        </li>
+        <li class="md-nav__item"><a href="#lagrange-s-method" class="md-nav__link">Lagrange’s method</a>
+        </li>
+        <li class="md-nav__item"><a href="#figure-sign-conventions" class="md-nav__link">Figure Sign Conventions</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#vectors" class="md-nav__link">Vectors</a>
+        </li>
+        <li class="md-nav__item"><a href="#dimensions" class="md-nav__link">Dimensions</a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/notation.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="notation">
+<h1 id="notation--page-root">Notation<a class="headerlink" href="#notation--page-root" title="Link to this heading">¶</a></h1>
+<p>This explains the notation in the book. The mathematical symbol is shown and
+then an example of a variable name that we use in the code.</p>
+<section id="general">
+<h2 id="general">General<a class="headerlink" href="#general" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(x\)</span>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, <a class="reference internal" href="_images/notation-scalar.svg"><img alt="notation-scalar" src="_images/notation-scalar.svg" style="height: 10px;"/></a></dt><dd><p>Scalars are normal mathematical font.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{R}\)</span>, <code class="docutils literal notranslate"><span class="pre">R</span></code></dt><dd><p>Matrices are capitalized letters in bold font.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{J}_{\bar{v},\bar{u}}\)</span></dt><dd><p>The Jacobian of the vector function <span class="math notranslate nohighlight">\(\bar{v}\)</span> with respect to the
+entries in vector <span class="math notranslate nohighlight">\(\bar{u}\)</span> where the <span class="math notranslate nohighlight">\((i,j)\)</span> entries of the
+Jacobian are <span class="math notranslate nohighlight">\(\mathbf{J}_{ij} = \frac{\partial v_i}{\partial u_j}\)</span>.</p>
+</dd>
+</dl>
+</section>
+<section id="orientation-of-reference-frames">
+<h2 id="orientation-of-reference-frames">Orientation of Reference Frames<a class="headerlink" href="#orientation-of-reference-frames" title="Link to this heading">¶</a></h2>
+<dl>
+<dt><span class="math notranslate nohighlight">\(A\)</span>, <code class="docutils literal notranslate"><span class="pre">A</span></code>, <a class="reference internal" href="_images/notation-ref-frame.svg"><img alt="notation-ref-frame" src="_images/notation-ref-frame.svg" style="height: 20px;"/></a></dt><dd><p>Reference frame <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\hat{a}_x,\hat{a}_y,\hat{a}_z\)</span>, <code class="docutils literal notranslate"><span class="pre">A.x</span></code>, <code class="docutils literal notranslate"><span class="pre">A.y</span></code>, <code class="docutils literal notranslate"><span class="pre">A.z</span></code>, <a class="reference internal" href="_images/notation-ref-frame-unit-vec.svg"><img alt="notation-ref-frame-unit-vec" src="_images/notation-ref-frame-unit-vec.svg" style="height: 20px;"/></a></dt><dd><p>Right handed mutually perpendicular unit vectors fixed in reference frame
+<span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A\mathbf{C}^B\)</span>, <code class="docutils literal notranslate"><span class="pre">A_C_B</span></code>, <a class="reference internal" href="_images/notation-dcm.svg"><img alt="notation-dcm" src="_images/notation-dcm.svg" style="height: 25px;"/></a></dt><dd><p>Direction cosine matrix relating reference frames (or rigid bodies)
+<span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(A\)</span> where this relation between the right handed
+mutually perpendicular unit vectors fixed in the two reference frames follow
+this relationship:</p>
+<div class="math notranslate nohighlight" id="equation-notation-0">
+<span class="eqno">(250)<a class="headerlink" href="#equation-notation-0" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \hat{a}_x \\
+  \hat{a}_y \\
+  \hat{a}_z
+\end{bmatrix}
+=
+{}^A\mathbf{C}^B
+\begin{bmatrix}
+  \hat{b}_x \\
+  \hat{b}_y \\
+  \hat{b}_z
+\end{bmatrix}\end{split}\]</div>
+</dd>
+</dl>
+</section>
+<section id="vectors-and-vector-differentiation">
+<h2 id="vectors-and-vector-differentiation">Vectors and Vector Differentiation<a class="headerlink" href="#vectors-and-vector-differentiation" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{v}\)</span>, <code class="docutils literal notranslate"><span class="pre">v</span></code>, <a class="reference internal" href="_images/notation-vector.svg"><img alt="notation-vector" src="_images/notation-vector.svg" style="height: 15px;"/></a></dt><dd><p>Vectors are indicated with a bar.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\hat{u}\)</span>, <code class="docutils literal notranslate"><span class="pre">uhat</span> <span class="pre">=</span> <span class="pre">u.normalize()</span></code>, <a class="reference internal" href="_images/notation-unit-vec.svg"><img alt="notation-unit-vec" src="_images/notation-unit-vec.svg" style="height: 15px;"/></a></dt><dd><p>Unit vectors are indicated with a hat.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(|\bar{v}|\)</span>, <code class="docutils literal notranslate"><span class="pre">v.magnitude()</span></code>, <a class="reference internal" href="_images/notation-vec-mag.svg"><img alt="notation-vec-mag" src="_images/notation-vec-mag.svg" style="height: 20px;"/></a></dt><dd><p>Magnitude of a vector; Euclidean norm (2-norm).</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{u} \cdot \bar{v}\)</span>, <code class="docutils literal notranslate"><span class="pre">u.dot(v)</span></code>, <a class="reference internal" href="_images/notation-vec-dot.svg"><img alt="notation-vec-dot" src="_images/notation-vec-dot.svg" style="height: 20px;"/></a></dt><dd><p>Dot product of two vectors.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{u} \times \bar{v}\)</span>, <code class="docutils literal notranslate"><span class="pre">u.cross(v)</span></code>, <a class="reference internal" href="_images/notation-vec-cross.svg"><img alt="notation-vec-cross" src="_images/notation-vec-cross.svg" style="height: 20px;"/></a></dt><dd><p>Cross product of two vectors.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{u} \otimes \bar{v}\)</span>, <code class="docutils literal notranslate"><span class="pre">u.outer(v)</span></code>, <a class="reference internal" href="_images/notation-vec-outer.svg"><img alt="notation-vec-outer" src="_images/notation-vec-outer.svg" style="height: 20px;"/></a></dt><dd><p>Outer product of two vectors.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\frac{{}^A\partial \bar{v}}{\partial q}\)</span>, <code class="docutils literal notranslate"><span class="pre">dvdqA</span> <span class="pre">=</span> <span class="pre">v.diff(q,</span> <span class="pre">A)</span></code>, <a class="reference internal" href="_images/notation-vec-par-diff.svg"><img alt="notation-vec-par-diff" src="_images/notation-vec-par-diff.svg" style="height: 30px;"/></a></dt><dd><p>Partial derivative of <span class="math notranslate nohighlight">\(\bar{v}\)</span> with respect to <span class="math notranslate nohighlight">\(q\)</span> when
+observed from <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\frac{{}^A d \bar{v}}{dt}\)</span>, <code class="docutils literal notranslate"><span class="pre">dvdtA</span> <span class="pre">=</span> <span class="pre">v.dt(A)</span></code>, <a class="reference internal" href="_images/notation-vec-time-diff.svg"><img alt="notation-vec-time-diff" src="_images/notation-vec-time-diff.svg" style="height: 30px;"/></a></dt><dd><p>Time derivative of <span class="math notranslate nohighlight">\(\bar{v}\)</span> when observed from <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+</dl>
+</section>
+<section id="angular-and-translational-kinematics">
+<h2 id="angular-and-translational-kinematics">Angular and Translational Kinematics<a class="headerlink" href="#angular-and-translational-kinematics" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\({}^A\bar{\omega}^B\)</span>, <code class="docutils literal notranslate"><span class="pre">A_w_B</span></code></dt><dd><p>Angular velocity vector of reference frame or rigid body <span class="math notranslate nohighlight">\(B\)</span> when
+observed from reference frame or rigid body <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A\bar{\alpha}^B\)</span>, <code class="docutils literal notranslate"><span class="pre">A_alp_B</span></code></dt><dd><p>Angular acceleration vector of reference frame or rigid body <span class="math notranslate nohighlight">\(B\)</span> when
+observed from reference frame or rigid body <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{r}^{P/O}\)</span>, <code class="docutils literal notranslate"><span class="pre">r_O_P</span></code>, <a class="reference internal" href="_images/notation-pos-vec.svg"><img alt="notation-pos-vec" src="_images/notation-pos-vec.svg" style="height: 25px;"/></a></dt><dd><p>Vector from point <span class="math notranslate nohighlight">\(O\)</span> to point <span class="math notranslate nohighlight">\(P\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A\bar{v}^P\)</span>, <code class="docutils literal notranslate"><span class="pre">A_v_P</span></code></dt><dd><p>Translational velocity of point <span class="math notranslate nohighlight">\(P\)</span> when observed from reference frame
+or rigid body <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A\bar{a}^P\)</span>, <code class="docutils literal notranslate"><span class="pre">A_a_P</span></code></dt><dd><p>Translational acceleration of point <span class="math notranslate nohighlight">\(P\)</span> when observed from reference
+frame or rigid body <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+</dl>
+</section>
+<section id="constraints">
+<h2 id="constraints">Constraints<a class="headerlink" href="#constraints" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{u} = \mathbf{Y}_k \dot{\bar{q}} + \bar{z}_k\)</span></dt><dd><p>Generalized speeds defined as the kinematical differential equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(N,M,n,m,p\)</span></dt><dd><p><span class="math notranslate nohighlight">\(N\)</span> coordinates, <span class="math notranslate nohighlight">\(M\)</span> holonomic constraints, <span class="math notranslate nohighlight">\(n\)</span>
+generalized coordinates and generalized speeds, <span class="math notranslate nohighlight">\(m\)</span> nonholonomic
+constraints, and <span class="math notranslate nohighlight">\(p\)</span> degrees of freedom. These are related by the two
+equations <span class="math notranslate nohighlight">\(n=N-M\)</span> and <span class="math notranslate nohighlight">\(p=n-m\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{f}_h(q_1, \ldots, q_N, t) = 0 \textrm{ where } \bar{f}_h \in \mathbb{R}^M\)</span>, <code class="docutils literal notranslate"><span class="pre">fh</span></code></dt><dd><p>Vector function of <span class="math notranslate nohighlight">\(M\)</span> holonomic constraint equations among the
+<span class="math notranslate nohighlight">\(N\)</span> coordinates.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{f}_n(u_1, \ldots, u_n, q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^m\)</span>, <code class="docutils literal notranslate"><span class="pre">fn</span></code></dt><dd><p>Vector function of <span class="math notranslate nohighlight">\(m\)</span> nonholonomic constraint equations among the
+<span class="math notranslate nohighlight">\(n\)</span> generalized speeds and generalized coordinates.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{A}_r\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\bar{u}_r\)</span> in the nonholonomic
+constraint equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{A}_s\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\bar{u}_s\)</span> in the nonholonomic
+constraint equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{b}_{rs}\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\bar{u}_s\)</span> or <span class="math notranslate nohighlight">\(\bar{u}_r\)</span> in the
+nonholonomic constraint equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{A}_n\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\bar{u}_s\)</span> in the equation for
+<span class="math notranslate nohighlight">\(\bar{u}_r=\mathbf{A}_n\bar{u}_s + \bar{b}_n\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{b}_n\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\bar{u}_s\)</span> in the equation for
+<span class="math notranslate nohighlight">\(\bar{u}_r=\mathbf{A}_n\bar{u}_s + \bar{b}_n\)</span>.</p>
+</dd>
+</dl>
+</section>
+<section id="mass-distribution">
+<h2 id="mass-distribution">Mass Distribution<a class="headerlink" href="#mass-distribution" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{I}^{B/O}_a\)</span>, <code class="docutils literal notranslate"><span class="pre">I_B_O_a</span></code></dt><dd><p>Inertia vector of rigid body <span class="math notranslate nohighlight">\(B\)</span> or set of particles <span class="math notranslate nohighlight">\(B\)</span> with
+respect to point <span class="math notranslate nohighlight">\(O\)</span> about the unit vector <span class="math notranslate nohighlight">\(\hat{n}_a\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\breve{Q}\)</span>, <code class="docutils literal notranslate"><span class="pre">Q</span></code></dt><dd><p>Dyadics are indicated with a breve accent.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\breve{I}^{B/O}\)</span>, <code class="docutils literal notranslate"><span class="pre">I_B_O</span></code></dt><dd><p>Inertia dyadic of body <span class="math notranslate nohighlight">\(B\)</span> or set of particles <span class="math notranslate nohighlight">\(B\)</span> with respect
+to point <span class="math notranslate nohighlight">\(O\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\breve{I}^{B/B_o}\)</span>, <code class="docutils literal notranslate"><span class="pre">I_B_Bo</span></code></dt><dd><p>Central inertia dyadic of body <span class="math notranslate nohighlight">\(B\)</span> or set of particles <span class="math notranslate nohighlight">\(B\)</span> with respect
+to mass center <span class="math notranslate nohighlight">\(B_o\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A \bar{H}^{B/O}\)</span>, <code class="docutils literal notranslate"><span class="pre">A_H_B_O</span></code></dt><dd><p>Angular momentum of rigid body <span class="math notranslate nohighlight">\(B\)</span> with respect to point <span class="math notranslate nohighlight">\(O\)</span>
+when viewed from reference frame <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+</dl>
+</section>
+<section id="force-moment-and-torque">
+<h2 id="force-moment-and-torque">Force, Moment, and Torque<a class="headerlink" href="#force-moment-and-torque" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{R}^{S}\)</span>, <code class="docutils literal notranslate"><span class="pre">R_S</span></code></dt><dd><p>Resultant of the vector set <span class="math notranslate nohighlight">\(S\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{R}^{S/Q}\)</span>, <code class="docutils literal notranslate"><span class="pre">R_S_Q</span></code></dt><dd><p>Resultant of the vector set <span class="math notranslate nohighlight">\(S\)</span> bound to a line of action through
+point <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{F}^{Q}\)</span>, <code class="docutils literal notranslate"><span class="pre">F_Q</span></code></dt><dd><p>Force vector bound to a line of action through point <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{M}^{S/P}\)</span>, <code class="docutils literal notranslate"><span class="pre">M_S_P</span></code></dt><dd><p>Moment of the resultant of the vector set <span class="math notranslate nohighlight">\(S\)</span> about point <span class="math notranslate nohighlight">\(P\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{T}^{B}\)</span>, <code class="docutils literal notranslate"><span class="pre">T_B</span></code></dt><dd><p>Torque of couple acting on reference frame or body <span class="math notranslate nohighlight">\(B\)</span>.</p>
+</dd>
+</dl>
+</section>
+<section id="generalized-forces">
+<h2 id="generalized-forces">Generalized Forces<a class="headerlink" href="#generalized-forces" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\({}^A\bar{v}_r^P\)</span>, <code class="docutils literal notranslate"><span class="pre">v_P_r</span></code></dt><dd><p>r<sup>th</sup> holonomic partial velocity of point <span class="math notranslate nohighlight">\(P\)</span> in reference
+frame <span class="math notranslate nohighlight">\(A\)</span> associated with the generalized speed <span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A\bar{\omega}_r^B\)</span>, <code class="docutils literal notranslate"><span class="pre">w_B_r</span></code></dt><dd><p>r<sup>th</sup> holonomic partial angular velocity of reference frame <span class="math notranslate nohighlight">\(B\)</span>
+in reference frame <span class="math notranslate nohighlight">\(A\)</span> associated with the generalized speed
+<span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A\tilde{v}_r^P\)</span>, <code class="docutils literal notranslate"><span class="pre">v_P_r</span></code></dt><dd><p>r<sup>th</sup> nonholonomic partial velocity of point <span class="math notranslate nohighlight">\(P\)</span> in reference
+frame <span class="math notranslate nohighlight">\(A\)</span> associated with the generalized speed <span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\({}^A\tilde{\omega}_r^B\)</span>, <code class="docutils literal notranslate"><span class="pre">w_B_r</span></code></dt><dd><p>r<sup>th</sup> nonholonomic partial angular velocity of reference frame
+<span class="math notranslate nohighlight">\(B\)</span> in reference frame <span class="math notranslate nohighlight">\(A\)</span> associated with the generalized speed
+<span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(F_r\)</span>, <code class="docutils literal notranslate"><span class="pre">F1</span></code></dt><dd><p>r<sup>th</sup> holonomic generalized active force associated with the
+generalized speed <span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\tilde{F}_r\)</span>, <code class="docutils literal notranslate"><span class="pre">F1</span></code></dt><dd><p>r<sup>th</sup> nonholonomic generalized active force associated with the
+generalized speed <span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{F}_r\)</span>, <code class="docutils literal notranslate"><span class="pre">Fr</span></code></dt><dd><p>Column vector of all generalized active forces (holonomic or nonholonomic).</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(F^*_r\)</span>, <code class="docutils literal notranslate"><span class="pre">F1s</span></code></dt><dd><p>r<sup>th</sup> holonomic generalized inertia force associated with the
+generalized speed <span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\tilde{F}^*_r\)</span>, <code class="docutils literal notranslate"><span class="pre">F1s</span></code></dt><dd><p>r<sup>th</sup> nonholonomic generalized inertia force associated with the
+generalized speed <span class="math notranslate nohighlight">\(u_r\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{F}^*_r\)</span>, <code class="docutils literal notranslate"><span class="pre">Frs</span></code></dt><dd><p>Column vector of all generalized active forces (holonomic or nonholonomic).</p>
+</dd>
+</dl>
+</section>
+<section id="unconstrained-equations-of-motion">
+<h2 id="unconstrained-equations-of-motion">Unconstrained Equations of Motion<a class="headerlink" href="#unconstrained-equations-of-motion" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t) = 0\)</span></dt><dd><p>Kinematical differential equations that take the form: <span class="math notranslate nohighlight">\(\bar{f}_k =
+\mathbf{Y}_k \dot{\bar{q}} + \bar{z}_k - \bar{u} = \mathbf{M}_k
+\dot{\bar{q}} + \bar{g}_k = 0\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{M}_k\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span> in the kinematical
+differential equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_k\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span> in the kinematical differential
+equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t) = 0\)</span></dt><dd><p>Dynamical differential equations that take the form: <span class="math notranslate nohighlight">\(\bar{f}_d =
+\mathbf{M}_d \dot{\bar{u}} + \bar{g}_d = 0\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{M}_d\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span> in the dynamical
+differential equations, often called the “mass matrix”.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_d\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\dot{\bar{u}}\)</span> in the dynamical differential
+equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{x}=[\bar{q} \quad \bar{u}]^T\)</span></dt><dd><p>State of a multibody system.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{M}_m\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\dot{\bar{x}}\)</span> in the equations of
+motion.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_m\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\dot{\bar{x}}\)</span> in the equations of motion.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\dot{\bar{x}} = \bar{f}_m(\bar{x}, t) = -\mathbf{M}_m^{-1} \bar{g}_m\)</span></dt><dd><p>Equations of motion in first order explicit form.</p>
+</dd>
+</dl>
+</section>
+<section id="equations-of-motion-with-nonholonomic-constraints">
+<h2 id="equations-of-motion-with-nonholonomic-constraints">Equations of Motion with Nonholonomic Constraints<a class="headerlink" href="#equations-of-motion-with-nonholonomic-constraints" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = 0\)</span></dt><dd><p>Nonholonomic constraint equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{M}_n=\mathbf{A}_r\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\bar{u}_r\)</span> in the nonholonomic
+constraint equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_n=\mathbf{A}_s\bar{u}_s+\bar{b}_{rs}\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\bar{u}_r\)</span> in the nonholonomic constraint
+equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\dot{\bar{f}}_n(\dot{\bar{u}}_s, \dot{\bar{u}}_r, \bar{u}_s, \bar{u}_r, \bar{q}, t) = 0\)</span></dt><dd><p>Time derivative of the nonholonomic constraint equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{M}_{nd}\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\dot{\bar{u}}_r\)</span> in the time
+differentiated nonholonomic constraint equations.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_{nd}\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\dot{\bar{u}}_r\)</span> in the time differentiated
+nonholonomic constraint equations.</p>
+</dd>
+</dl>
+</section>
+<section id="equations-of-motion-with-holonomic-constraints">
+<h2 id="equations-of-motion-with-holonomic-constraints">Equations of Motion with Holonomic Constraints<a class="headerlink" href="#equations-of-motion-with-holonomic-constraints" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\dot{\bar{f}}_h(\bar{u}, \bar{u}_r, \bar{q}, \bar{q}_r, t) = 0\)</span></dt><dd><p>Time derivative of the holonomic constraints.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{M}_{hd}\)</span></dt><dd><p>Linear coefficient matrix for <span class="math notranslate nohighlight">\(\bar{u}_r\)</span> in the time differentiated
+holonomic constraints.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_{hd}\)</span></dt><dd><p>Terms not linear in <span class="math notranslate nohighlight">\(\bar{u}_r\)</span> in the time differentiated holonomic
+constraints.</p>
+</dd>
+</dl>
+</section>
+<section id="energy-and-power">
+<h2 id="energy-and-power">Energy and Power<a class="headerlink" href="#energy-and-power" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(P\)</span>, <code class="docutils literal notranslate"><span class="pre">P</span></code></dt><dd><p>Power</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(W\)</span>, <code class="docutils literal notranslate"><span class="pre">W</span></code></dt><dd><p>Work</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(K,K_Q,K_B\)</span>, <code class="docutils literal notranslate"><span class="pre">K,KQ,KB</span></code></dt><dd><p>Kinetic energy, kinetic energy of particle <span class="math notranslate nohighlight">\(Q\)</span>, kinetic energy of body
+<span class="math notranslate nohighlight">\(B\)</span></p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(V\)</span>, <code class="docutils literal notranslate"><span class="pre">V</span></code></dt><dd><p>Potential energy</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(E\)</span>, <code class="docutils literal notranslate"><span class="pre">E</span></code></dt><dd><p>Total energy, i.e. <span class="math notranslate nohighlight">\(E=K+V\)</span></p>
+</dd>
+</dl>
+</section>
+<section id="lagrange-s-method">
+<h2 id="lagrange-s-method">Lagrange’s method<a class="headerlink" href="#lagrange-s-method" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\bar{F}_r^\textrm{c}\)</span></dt><dd><p>Conservative generalized active force.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{F}_r^\textrm{nc}\)</span></dt><dd><p>Non-conservative generalized active force.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(L\)</span>, <code class="docutils literal notranslate"><span class="pre">L</span></code></dt><dd><p>Lagrangian the difference between the kinetic energy and the potential energy: <span class="math notranslate nohighlight">\(L = K - V\)</span></p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(a_r\)</span></dt><dd><p>Multiplicative term associated with generalized speed <span class="math notranslate nohighlight">\(q_r\)</span> in a constraint equation</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\lambda\)</span></dt><dd><p>Lagrange multiplier, variable encoding the (scaled) magnitude of a constraint force</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{f}_{hn}\)</span></dt><dd><p>Combined time-derivatives of holonomic constraints and nonholonomic constraints</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\mathbf{M}_{hn}\)</span>, <code class="docutils literal notranslate"><span class="pre">Mhn</span></code></dt><dd><p>Jacobian of constraint equations with respect to <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_{hn}\)</span></dt><dd><p>Constraint bias (terms not linear in <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span>).</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_{hnd}\)</span></dt><dd><p>Constraint bias (terms not linear in <span class="math notranslate nohighlight">\(\ddot{\bar{q}}\)</span>).</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{p}\)</span>, <code class="docutils literal notranslate"><span class="pre">p</span></code></dt><dd><p>Generalized momenta associated with the <span class="math notranslate nohighlight">\(\bar{q}\)</span> generalized coordinates</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\bar{g}_d\)</span></dt><dd><p>Dynamic bias, the sum of terms not linear in <span class="math notranslate nohighlight">\(\ddot{\bar{q}}\)</span> in the
+inertial forces and the generalized forces considered in the Lagrangian.</p>
+</dd>
+</dl>
+</section>
+<section id="figure-sign-conventions">
+<h2 id="figure-sign-conventions">Figure Sign Conventions<a class="headerlink" href="#figure-sign-conventions" title="Link to this heading">¶</a></h2>
+<section id="vectors">
+<h3 id="vectors">Vectors<a class="headerlink" href="#vectors" title="Link to this heading">¶</a></h3>
+<p>In figure <a class="reference internal" href="#fig-notation-vector-sign-convention"><span class="std std-numref">Fig. 56</span></a> various vectors are
+shown.  Vectors are always drawn with a single arrow to indicate the positive
+sense of the vector. In a) the vector acting on body <span class="math notranslate nohighlight">\(A\)</span> is
+<span class="math notranslate nohighlight">\(-F\hat{n}_x\)</span> and the vector acting on body <span class="math notranslate nohighlight">\(B\)</span> is
+<span class="math notranslate nohighlight">\(F\hat{n}_x\)</span>. The variable <span class="math notranslate nohighlight">\(F\)</span> indicated beside the arrow means
+that a positive value of <span class="math notranslate nohighlight">\(F\)</span> has the corresponding sense as the vector
+arrow head. The sense changes for both vectors in b) and for one vector in c).
+In d), a negative <span class="math notranslate nohighlight">\(F\)</span> is indicated.  This makes d) equivalent to a). The
+negative sense for that vector is shown when <span class="math notranslate nohighlight">\(-F\)</span> is beside it.</p>
+<figure class="align-default" id="id3">
+<span id="fig-notation-vector-sign-convention"></span><img alt="_images/notation-vector-sign-convention.svg" src="_images/notation-vector-sign-convention.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 56 </span><span class="caption-text">Various ways to draw vector arrows, where the arrow head indicates the
+positive sense of the vector if the variable has no sign and negative sense
+if the variable has a negative sign.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="dimensions">
+<h3 id="dimensions">Dimensions<a class="headerlink" href="#dimensions" title="Link to this heading">¶</a></h3>
+<p>When we draw dimensions (linear or angular) the arrow heads (or absence of
+arrow heads) do not indicate anything about the “sense” of the dimension. A
+dimension can take on positive and negative values and you have to rely on the
+sense of reference frame unit vectors to know what configuration occurs if a
+positive or negative value is given for a dimension.</p>
+<p><a class="reference internal" href="#fig-notation-linear-dimension-sign-convention"><span class="std std-numref">Fig. 57</span></a> shows three ways to
+indicate leader arrows on the dimension for the distance between points
+<span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> parallel to <span class="math notranslate nohighlight">\(\hat{n}_x\)</span>. A positive value of
+<span class="math notranslate nohighlight">\(q\)</span> indicates that point <span class="math notranslate nohighlight">\(Q\)</span> is to the right of point <span class="math notranslate nohighlight">\(P\)</span> and
+that <span class="math notranslate nohighlight">\(\bar{r}^{Q/P} \cdot \hat{n}_x = q\)</span> and <span class="math notranslate nohighlight">\(\bar{r}^{P/Q} \cdot
+\hat{n}_x = -q\)</span>.</p>
+<figure class="align-default" id="id4">
+<span id="fig-notation-linear-dimension-sign-convention"></span><img alt="_images/notation-linear-dimension-sign-convention.svg" src="_images/notation-linear-dimension-sign-convention.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 57 </span><span class="caption-text">Three options for adding arrows to linear dimensions which all have the same
+meaning. Follow the right hand rule to know the positive sense of an
+orientation.</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In the first row (a, b, c) of
+<a class="reference internal" href="#fig-notation-rotation-dimension-sign-convention"><span class="std std-numref">Fig. 58</span></a> there are three ways
+to indicate leader arrows on the angular dimension <span class="math notranslate nohighlight">\(q\)</span> for a positive
+right handed orientation of <span class="math notranslate nohighlight">\(A\)</span> with respect to <span class="math notranslate nohighlight">\(N\)</span>. A positive
+value of <span class="math notranslate nohighlight">\(q\)</span> gives a positive right handed orientation in a), b), and c).
+This corresponds to the SymPy Mechanics command <code class="docutils literal notranslate"><span class="pre">A.orient_axis(N,</span> <span class="pre">q,</span> <span class="pre">N.z)</span></code>.
+In the second row (d, e, f), three ways are shown to indicate leader arrows on
+the angular dimension <span class="math notranslate nohighlight">\(q\)</span> for a negative right handed orientation of
+<span class="math notranslate nohighlight">\(A\)</span> with respect to <span class="math notranslate nohighlight">\(N\)</span>. A positive value of <span class="math notranslate nohighlight">\(q\)</span> causes a
+negative right handed orientation. This row corresponds to the SymPy Mechanics
+commands <code class="docutils literal notranslate"><span class="pre">A.orient_axis(N,</span> <span class="pre">-q,</span> <span class="pre">N.z)</span></code> or <code class="docutils literal notranslate"><span class="pre">A.orient_axis(N,</span> <span class="pre">q,</span> <span class="pre">-N.z)</span></code>. In g)
+a negative sign is indicated on <span class="math notranslate nohighlight">\(q\)</span>.  It is sometimes convenient to draw
+the rotation in negative right handed rotation and by labeling the value
+<span class="math notranslate nohighlight">\(-q\)</span>. This means that g) is equivalent to a). We try to do this
+sparingly.</p>
+<figure class="align-default" id="id5">
+<span id="fig-notation-rotation-dimension-sign-convention"></span><img alt="_images/notation-rotation-dimension-sign-convention.svg" src="_images/notation-rotation-dimension-sign-convention.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 58 </span><span class="caption-text">Options for adding arrows to angular dimensions for positive (first row) and
+negative (second row) orientations.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="tmt.html" title="Unconstrained Equations of Motion with the TMT Method"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Unconstrained Equations of Motion with the TMT Method </span>
+              </div>
+            </a>
+          
+          
+            <a href="references.html" title="References"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> References </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
