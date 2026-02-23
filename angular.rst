@@ -152,10 +152,6 @@ matrix with time varying elements:
 and establish the orientation using
 :external:py:meth:`~sympy.physics.vector.frame.ReferenceFrame.orient_dcm`:
 
-.. warning::
-
-   Remember this method takes the transpose of the direction cosine matrix.
-
 .. jupyter-execute::
 
    A = me.ReferenceFrame('A')
