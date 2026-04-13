@@ -379,3 +379,4 @@ incorporated into this repository, as is or as inspiration:
 - Problems from EME 134: https://moorepants.github.io/eme134/labs.html
 - TU Delft MAE41055 2021 homework notebooks
 - Oliver's solutions to the TUD advanced dynamics course examples: https://github.com/pydy/pydy/pull/137
+- Here are some examples which use SymPy for dynamics: https://pydy.org/pst-notebooks/
