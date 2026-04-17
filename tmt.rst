@@ -131,8 +131,8 @@ associated mass and inertia for that body can be written as:
    \breve{I}^{B_1/B_{1o}} \cdot \hat{n}_z\hat{n}_z \\
    \end{bmatrix}
 
-Multiplying the velocities with this matrix gives the momenta of each rigid
-body.
+Multiplying the velocities with this matrix gives the momenta scalars of each
+rigid body.
 
 .. math::
 
@@ -190,7 +190,32 @@ then:
 
 .. math::
 
-   \frac{d \mathbf{M} \bar{v}}{dt} = \bar{F} \in \mathbb{R}^{6\nu}
+   \frac{d \mathbf{M} \bar{v}}{dt}
+   = \mathbf{M}\dot{\bar{v}} + \dot{\mathbf{M}}\bar{v}
+   = \bar{F}
+   \in \mathbb{R}^{6\nu}
+
+Subsituting the mapping to generalized speeds :math:`\dot{\bar{v}} =
+\dot{\mathbf{T}} \bar{u} + \mathbf{T} \dot{\bar{u}}` gives:
+
+.. math::
+
+   \mathbf{M}\mathbf{T}\dot{\bar{u}}
+   + \left(\dot{\mathbf{M}}\mathbf{T}
+   + \mathbf{M}\dot{\mathbf{T}}\right)\bar{u}
+   = \bar{F}
+   \in \mathbb{R}^{6\nu}
+
+Finally, premultiplying by the transpose of :math:`\mathbf{T}` transforms the
+equations of motion into the dimension of the generalized coordinates.
+
+.. math::
+
+   \mathbf{T}^T\left[\mathbf{M}\mathbf{T}\dot{\bar{u}}
+   + \left(\dot{\mathbf{M}}\mathbf{T}
+   + \mathbf{M}\dot{\mathbf{T}}\right)\bar{u}\right]
+   = \mathbf{T}^T \bar{F}
+   \in \mathbb{R}^{n}
 
 We know that selecting :math:`n` generalized coordinates for such a system
 allows us to write the dynamical differential equations as a set of :math:`n`
@@ -211,26 +236,24 @@ with:
 
    \bar{g}_d = \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
 
-where [#]_:
+where:
 
 .. math::
 
-   \bar{g} = \frac{d\mathbf{M}\bar{v}}{dt}\bigg\rvert_{\dot{\bar{u}}=\bar{0}}
-
-.. [#] Note that my :math:`\bar{g}` is slightly different than the one
-   presented in [Vallery2020]_ to make sure the time derivative of the angular
-   momenta are properly calculated.
+   \bar{g} = \frac{d\mathbf{M}\bar{v}}{dt}\bigg\rvert_{\dot{\bar{u}}=\bar{0}} =
+   \left(\dot{\mathbf{M}} \mathbf{T} + \mathbf{M} \dot{\mathbf{T}}\right) \bar{u}
 
 The equations of motion then take this form:
 
 .. math::
 
-   \bar{0} =
    \mathbf{M}_d\dot{\bar{u}} + \bar{g}_d =
    -\mathbf{T}^T \mathbf{M} \mathbf{T} \dot{\bar{u}} +
    \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
+   = \bar{0}
 
-These equations are equivalent to Kane's Equations.
+These equations are equivalent to Kane's Equations and Lagrange's dynamical
+differential equations.
 
 Example Formulation
 ===================
@@ -406,8 +429,7 @@ and then compute :math:`\bar{g}`:
 .. jupyter-execute::
 
    qd_repl = dict(zip(q.diff(t), u))
-   ud_repl = {udi: 0 for udi in u.diff(t)}
-   gbar = (M*v).diff(t).xreplace(qd_repl).xreplace(ud_repl)
+   gbar = ((M.diff(t)*T + M*T.diff(t))*u).xreplace(qd_repl)
    sm.trigsimp(gbar)
 
 The reduced mass matrix is then formed with
