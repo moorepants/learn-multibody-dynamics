@@ -67,11 +67,11 @@ matrix is populated by the measure numbers of the partial velocities expressed
 in the inertial reference frame.
 
 Given :math:`\nu` rigid bodies in a multibody system described by :math:`n`
-generalized coordinates and generalized speeds, the velocities of each mass
-center and the angular velocities of each body in an inertial reference frame
-:math:`N` can be written in column vector :math:`\bar{v}` form by extracting
-the measure numbers in the inertial reference frame :math:`N` of each velocity
-term.
+generalized coordinates and generalized speeds related by
+:math:`\bar{u}=\dot{\bar{q}}`, the velocities of each mass center and the
+angular velocities of each body in an inertial reference frame :math:`N` can be
+written in column vector :math:`\bar{v}` form by extracting the measure numbers
+in the inertial reference frame :math:`N` of each velocity term.
 
 .. math::
 
@@ -131,8 +131,8 @@ associated mass and inertia for that body can be written as:
    \breve{I}^{B_1/B_{1o}} \cdot \hat{n}_z\hat{n}_z \\
    \end{bmatrix}
 
-Multiplying the velocities with this matrix gives the momenta of each rigid
-body.
+Multiplying the velocities with this matrix gives the momenta scalars of each
+rigid body.
 
 .. math::
 
@@ -190,7 +190,32 @@ then:
 
 .. math::
 
-   \frac{d \mathbf{M} \bar{v}}{dt} = \bar{F} \in \mathbb{R}^{6\nu}
+   \frac{d \mathbf{M} \bar{v}}{dt}
+   = \mathbf{M}\dot{\bar{v}} + \dot{\mathbf{M}}\bar{v}
+   = \bar{F}
+   \in \mathbb{R}^{6\nu}
+
+Subsituting the mapping to generalized speeds :math:`\dot{\bar{v}} =
+\dot{\mathbf{T}} \bar{u} + \mathbf{T} \dot{\bar{u}}` gives:
+
+.. math::
+
+   \mathbf{M}\mathbf{T}\dot{\bar{u}}
+   + \left(\dot{\mathbf{M}}\mathbf{T}
+   + \mathbf{M}\dot{\mathbf{T}}\right)\bar{u}
+   = \bar{F}
+   \in \mathbb{R}^{6\nu}
+
+Finally, premultiplying by the transpose of :math:`\mathbf{T}` transforms the
+equations of motion into the dimension of the generalized coordinates.
+
+.. math::
+
+   \mathbf{T}^T\left[\mathbf{M}\mathbf{T}\dot{\bar{u}}
+   + \left(\dot{\mathbf{M}}\mathbf{T}
+   + \mathbf{M}\dot{\mathbf{T}}\right)\bar{u}\right]
+   = \mathbf{T}^T \bar{F}
+   \in \mathbb{R}^{n}
 
 We know that selecting :math:`n` generalized coordinates for such a system
 allows us to write the dynamical differential equations as a set of :math:`n`
@@ -198,11 +223,14 @@ equations which is, in general, much smaller than :math:`6\nu` equations due to
 the large number of holonomic constraints that represent the connections of all
 the bodies in the system. Vallery and Schwab show that the mass matrix
 :math:`\mathbf{M}_d` for this reduced set of equations can be efficiently
-calculated using the :math:`\mathbf{T}` matrix ([Vallery2020]_, pg. 349):
+calculated using the :math:`\mathbf{T}` matrix ([Vallery2020]_, pg. 349) [#]_:
 
 .. math::
 
    \mathbf{M}_d = -\mathbf{T}^T \mathbf{M} \mathbf{T}
+
+.. [#] The negative sign is present to match the sign convention we used in
+   Kane's Method, i.e. :math:`F - ma = 0`.
 
 and that the forces not proportional to the generalized accelerations is found
 with:
@@ -211,26 +239,44 @@ with:
 
    \bar{g}_d = \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
 
-where [#]_:
+where:
 
 .. math::
 
-   \bar{g} = \frac{d\mathbf{M}\bar{v}}{dt}\bigg\rvert_{\dot{\bar{u}}=\bar{0}}
+   \bar{g} = \frac{d\mathbf{M}\bar{v}}{dt}\bigg\rvert_{\dot{\bar{u}}=\bar{0}} =
+   \left(\dot{\mathbf{M}} \mathbf{T} + \mathbf{M} \dot{\mathbf{T}}\right) \bar{u}
 
-.. [#] Note that my :math:`\bar{g}` is slightly different than the one
-   presented in [Vallery2020]_ to make sure the time derivative of the angular
-   momenta are properly calculated.
+.. note::
+
+   It is worth noting that with the chain rule you can compute
+   :math:`\dot{\mathbf{M}}` and :math:`\dot{\mathbf{T}}`:
+
+   .. math::
+
+      \dot{\mathbf{M}} = \left[\begin{array}{c|c|c} \mathbf{J}_{\bar{M}_i, \bar{q}}\bar{u} & \ldots & \mathbf{J}_{\bar{M}_{6\nu}, \bar{q}}\bar{u} \end{array}\right], \quad
+      \dot{\mathbf{T}} = \left[\begin{array}{c|c|c} \mathbf{J}_{\bar{T}_j, \bar{q}}\bar{u} & \ldots & \mathbf{J}_{\bar{T}_n, \bar{q}}\bar{u} \end{array}\right]
+
+   where:
+
+   .. math::
+
+      \mathbf{M} = \left[\begin{array}{c|c|c}\bar{M}_i & \ldots & \bar{M}_{6\nu} \end{array}\right], \quad
+      \mathbf{T} = \left[\begin{array}{c|c|c}\bar{T}_j & \ldots & \bar{T}_n \end{array}\right]
+
+   It is then clear that :math:`\bar{g}(\bar{u}, \bar{q})` are inertial forces
+   that are stricly a function of configuration and velocity.
 
 The equations of motion then take this form:
 
 .. math::
 
-   \bar{0} =
    \mathbf{M}_d\dot{\bar{u}} + \bar{g}_d =
    -\mathbf{T}^T \mathbf{M} \mathbf{T} \dot{\bar{u}} +
    \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
+   = \bar{0}
 
-These equations are equivalent to Kane's Equations.
+These equations are equivalent to Kane's and Lagrange's dynamical differential
+equations.
 
 Example Formulation
 ===================
@@ -406,8 +452,7 @@ and then compute :math:`\bar{g}`:
 .. jupyter-execute::
 
    qd_repl = dict(zip(q.diff(t), u))
-   ud_repl = {udi: 0 for udi in u.diff(t)}
-   gbar = (M*v).diff(t).xreplace(qd_repl).xreplace(ud_repl)
+   gbar = ((M.diff(t)*T + M*T.diff(t))*u).xreplace(qd_repl)
    sm.trigsimp(gbar)
 
 The reduced mass matrix is then formed with
