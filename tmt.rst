@@ -246,18 +246,6 @@ where:
    \bar{g} = \frac{d\mathbf{M}\bar{v}}{dt}\bigg\rvert_{\dot{\bar{u}}=\bar{0}} =
    \left(\dot{\mathbf{M}} \mathbf{T} + \mathbf{M} \dot{\mathbf{T}}\right) \bar{u}
 
-The equations of motion then take this form:
-
-.. math::
-
-   \mathbf{M}_d\dot{\bar{u}} + \bar{g}_d =
-   -\mathbf{T}^T \mathbf{M} \mathbf{T} \dot{\bar{u}} +
-   \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
-   = \bar{0}
-
-These equations are equivalent to Kane's and Lagrange's dynamical differential
-equations.
-
 .. note::
 
    It is worth noting that with the chain rule you can compute
@@ -274,6 +262,21 @@ equations.
 
       \mathbf{M} = \left[\begin{array}{c|c|c}\bar{M}_i & \ldots & \bar{M}_{6\nu} \end{array}\right], \quad
       \mathbf{T} = \left[\begin{array}{c|c|c}\bar{T}_j & \ldots & \bar{T}_n \end{array}\right]
+
+   It is then clear that :math:`\bar{g}(\bar{u}, \bar{q})` are inertial forces
+   that are stricly a function of configuration and velocity.
+
+The equations of motion then take this form:
+
+.. math::
+
+   \mathbf{M}_d\dot{\bar{u}} + \bar{g}_d =
+   -\mathbf{T}^T \mathbf{M} \mathbf{T} \dot{\bar{u}} +
+   \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
+   = \bar{0}
+
+These equations are equivalent to Kane's and Lagrange's dynamical differential
+equations.
 
 Example Formulation
 ===================
