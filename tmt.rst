@@ -67,11 +67,11 @@ matrix is populated by the measure numbers of the partial velocities expressed
 in the inertial reference frame.
 
 Given :math:`\nu` rigid bodies in a multibody system described by :math:`n`
-generalized coordinates and generalized speeds, the velocities of each mass
-center and the angular velocities of each body in an inertial reference frame
-:math:`N` can be written in column vector :math:`\bar{v}` form by extracting
-the measure numbers in the inertial reference frame :math:`N` of each velocity
-term.
+generalized coordinates and generalized speeds related by
+:math:`\bar{u}=\dot{\bar{q}}`, the velocities of each mass center and the
+angular velocities of each body in an inertial reference frame :math:`N` can be
+written in column vector :math:`\bar{v}` form by extracting the measure numbers
+in the inertial reference frame :math:`N` of each velocity term.
 
 .. math::
 
@@ -223,11 +223,14 @@ equations which is, in general, much smaller than :math:`6\nu` equations due to
 the large number of holonomic constraints that represent the connections of all
 the bodies in the system. Vallery and Schwab show that the mass matrix
 :math:`\mathbf{M}_d` for this reduced set of equations can be efficiently
-calculated using the :math:`\mathbf{T}` matrix ([Vallery2020]_, pg. 349):
+calculated using the :math:`\mathbf{T}` matrix ([Vallery2020]_, pg. 349) [#]_:
 
 .. math::
 
    \mathbf{M}_d = -\mathbf{T}^T \mathbf{M} \mathbf{T}
+
+.. [#] The negative sign is present to match the sign convention we used in
+   Kane's Method, i.e. :math:`F - ma = 0`.
 
 and that the forces not proportional to the generalized accelerations is found
 with:
@@ -254,6 +257,23 @@ The equations of motion then take this form:
 
 These equations are equivalent to Kane's Equations and Lagrange's dynamical
 differential equations.
+
+.. note::
+
+   It is worth noting that with the chain rule you can compute
+   :math:`\dot{\mathbf{M}}` and :math:`\dot{\mathbf{T}}`:
+
+   .. math::
+
+      \dot{\mathbf{M}} = \left[\begin{array}{c|c|c} \mathbf{J}_{\bar{M}_i, \bar{q}}\bar{u} & \ldots & \mathbf{J}_{\bar{M}_{6\nu}, \bar{q}}\bar{u} \end{array}\right], \quad
+      \dot{\mathbf{T}} = \left[\begin{array}{c|c|c} \mathbf{J}_{\bar{T}_j, \bar{q}}\bar{u} & \ldots & \mathbf{J}_{\bar{T}_n, \bar{q}}\bar{u} \end{array}\right]
+
+   where:
+
+   .. math::
+
+      \mathbf{M} = \left[\begin{array}{c|c|c}\bar{M}_i & \ldots & \bar{M}_{6\nu} \end{array}\right], \quad
+      \mathbf{T} = \left[\begin{array}{c|c|c}\bar{T}_j & \ldots & \bar{T}_n \end{array}\right]
 
 Example Formulation
 ===================
