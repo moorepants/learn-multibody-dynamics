@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Vector Differentiation &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Angular Kinematics" href="angular.html" />
+    <link rel="prev" title="Vectors" href="vectors.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#differentiation" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Vector Differentiation </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Vector Differentiation </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Vector Differentiation</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#differentiation--page-root" class="md-nav__link">Vector Differentiation</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#partial-derivatives" class="md-nav__link">Partial Derivatives</a>
+        </li>
+        <li class="md-nav__item"><a href="#product-rule" class="md-nav__link">Product Rule</a>
+        </li>
+        <li class="md-nav__item"><a href="#second-derivatives" class="md-nav__link">Second Derivatives</a>
+        </li>
+        <li class="md-nav__item"><a href="#vector-functions-of-time" class="md-nav__link">Vector Functions of Time</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/differentiation.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#differentiation--page-root" class="md-nav__link">Vector Differentiation</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#partial-derivatives" class="md-nav__link">Partial Derivatives</a>
+        </li>
+        <li class="md-nav__item"><a href="#product-rule" class="md-nav__link">Product Rule</a>
+        </li>
+        <li class="md-nav__item"><a href="#second-derivatives" class="md-nav__link">Second Derivatives</a>
+        </li>
+        <li class="md-nav__item"><a href="#vector-functions-of-time" class="md-nav__link">Vector Functions of Time</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/differentiation.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="vector-differentiation">
+<h1 id="differentiation--page-root">Vector Differentiation<a class="headerlink" href="#differentiation--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/816aeaf5696f63f85258f5bf92e845ec/differentiation.py"><code class="xref download docutils literal notranslate"><span class="pre">differentiation.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/8033f2b84093079619e7b35c591ec219/differentiation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">differentiation.ipynb</span></code></a>.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy.physics.mechanics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">me</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">init_printing</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="invisible docutils container">
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceFrame</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'latexs'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\hat{{</span><span class="si">{}</span><span class="s1">}}_</span><span class="si">{}</span><span class="s1">'</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReferenceFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                             <span class="n">latexs</span><span class="o">=</span><span class="p">(</span><span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)),</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n">ReferenceFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>Calculate the partial derivative of a vector with respect to any variable
+when viewed from any reference frame.</p></li>
+<li><p>Use the product rule to find the relationship of changing measure numbers and
+changing unit vectors.</p></li>
+<li><p>Explain the difference in expressing a vector in a reference frame and taking
+the derivative of the vector when observed from the reference frame.</p></li>
+<li><p>Calculate second partial derivatives.</p></li>
+<li><p>Calculate time derivatives of vector functions.</p></li>
+</ul>
+</section>
+<section id="partial-derivatives">
+<h2 id="partial-derivatives">Partial Derivatives<a class="headerlink" href="#partial-derivatives" title="Link to this heading">¶</a></h2>
+<p>If a vector <span class="math notranslate nohighlight">\(\bar{v}\)</span> is a function of <span class="math notranslate nohighlight">\(n\)</span> scalar variables
+<span class="math notranslate nohighlight">\(q_1,q_2,\ldots,q_n\)</span> in reference frame <span class="math notranslate nohighlight">\(A\)</span> then the first partial
+derivatives of <span class="math notranslate nohighlight">\(\bar{v}\)</span> in <span class="math notranslate nohighlight">\(A\)</span> with respect to <span class="math notranslate nohighlight">\(q_r\)</span> where
+<span class="math notranslate nohighlight">\(r=1\ldots n\)</span> can be formed by applying the product rule of
+differentation and taking into account that the mutually perpendicular unit
+vectors fixed in <span class="math notranslate nohighlight">\(A\)</span> do not change when observed from <span class="math notranslate nohighlight">\(A\)</span>. The
+partial derivatives are then:</p>
+<div class="math notranslate nohighlight" id="equation-partial-deriv-def">
+<span class="eqno">(43)<a class="headerlink" href="#equation-partial-deriv-def" title="Link to this equation">¶</a></span>\[\frac{{}^A\partial \bar{v}}{\partial q_r} = \sum_{i=1}^3 \frac{\partial
+v_i}{\partial q_r} \hat{a}_i \textrm{ for } r=1\ldots n\]</div>
+<p>where <span class="math notranslate nohighlight">\(v_i\)</span> are the measure numbers of <span class="math notranslate nohighlight">\(\bar{v}\)</span> expressed in
+<span class="math notranslate nohighlight">\(A\)</span> associated with the mutually perpendicular unit vectors
+<span class="math notranslate nohighlight">\(\hat{a}_1,\hat{a}_2,\hat{a}_3\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z\)</span> the above definition
+expands to:</p>
+<div class="math notranslate nohighlight" id="equation-partial-measure">
+<span class="eqno">(44)<a class="headerlink" href="#equation-partial-measure" title="Link to this equation">¶</a></span>\[\frac{{}^A\partial \bar{v}}{\partial q_r} =
+\frac{\partial v_x}{\partial q_r} \hat{a}_x +
+\frac{\partial v_y}{\partial q_r} \hat{a}_y +
+\frac{\partial v_z}{\partial q_r} \hat{a}_z
+\textrm{ for } r=1\ldots n\]</div>
+<p>Many of the vectors we will work with in multibody dynamics will be a function
+of a single variable, most often time <span class="math notranslate nohighlight">\(t\)</span>. If that is the case, the
+partial derivative reduces to a single variate derivative:</p>
+<div class="math notranslate nohighlight" id="equation-single-var-deriv-def">
+<span class="eqno">(45)<a class="headerlink" href="#equation-single-var-deriv-def" title="Link to this equation">¶</a></span>\[\frac{{}^A d \bar{v}}{dt} := \sum_{i=1}^3 \frac{d v_i}{dt} \hat{a}_i\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A derivative written as <span class="math notranslate nohighlight">\(\frac{\partial \bar{v}}{\partial q_r}\)</span> is
+meaningless because no reference frame is indicated. The derivative is
+dependent on which reference frame the change is observed from, so without a
+reference frame, the derivative cannot be calculated. This is not the case
+for partial derivatives of scalar expressions, as no reference frame is
+involved.</p>
+</div>
+<p>The above definition implies that a vector must be expressed in the reference
+frame one is observing the change from before calculating the partial
+derivatives of the scalar measure numbers. For example, here is a vector that
+is expressed with unit vectors from three different reference frames:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'alpha, beta'</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'a, b, c, d, e, f'</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'C'</span><span class="p">)</span>
+
+<span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">d</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">e</span><span class="o">*</span><span class="n">C</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">f</span><span class="o">*</span><span class="n">C</span><span class="o">.</span><span class="n">y</span>
+<span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle a\hat{a}_x + b\hat{a}_y + c\hat{b}_x + d\hat{b}_y + e\hat{c}_x + f\hat{c}_y\]</div>
+</div>
+</div>
+<p>To calculate <span class="math notranslate nohighlight">\(\frac{{}^A\partial\bar{v}}{\partial \alpha}\)</span> we first need
+to project the vector <span class="math notranslate nohighlight">\(\bar{v}\)</span> onto the unit vectors of <span class="math notranslate nohighlight">\(A\)</span> and
+take the partial derivative of those measure numbers with respect to
+<span class="math notranslate nohighlight">\(\alpha\)</span>. The dot product provides the projection and the resulting
+scalar is differentiated:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dvdalphaAx</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">dvdalphaAx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dvdalphaAy</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">dvdalphaAy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - d \sin{\left(\alpha \right)} + e \sin{\left(\beta \right)} \cos{\left(\alpha \right)} - f \sin{\left(\alpha \right)}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dvdalphaAz</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">dvdalphaAz</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d \cos{\left(\alpha \right)} + e \sin{\left(\alpha \right)} \sin{\left(\beta \right)} + f \cos{\left(\alpha \right)}\]</div>
+</div>
+</div>
+<p>We can then construct the vector <span class="math notranslate nohighlight">\(\frac{{}^A\partial \bar{v}}{\partial
+\alpha}\)</span> from the new measure numbers know that the <span class="math notranslate nohighlight">\(A\)</span> unit vectors are
+fixed:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dvdalphaA</span> <span class="o">=</span> <span class="n">dvdalphaAx</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dvdalphaAy</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dvdalphaAz</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span>
+<span class="n">dvdalphaA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (- d \sin{\left(\alpha \right)} + e \sin{\left(\beta \right)} \cos{\left(\alpha \right)} - f \sin{\left(\alpha \right)})\hat{a}_y + (d \cos{\left(\alpha \right)} + e \sin{\left(\alpha \right)} \sin{\left(\beta \right)} + f \cos{\left(\alpha \right)})\hat{a}_z\]</div>
+</div>
+</div>
+<p>SymPy Mechanics vectors have a special
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.diff" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diff()</span></code></a> method that
+manages taking partial derivatives from different reference frames. For the
+vector <code class="docutils literal notranslate"><span class="pre">.diff()</span></code> method you provide first the variable <span class="math notranslate nohighlight">\(\alpha\)</span>
+followed by the reference frame you are observing from:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (- d \sin{\left(\alpha \right)} + e \sin{\left(\beta \right)} \cos{\left(\alpha \right)} - f \sin{\left(\alpha \right)})\hat{a}_y + (d \cos{\left(\alpha \right)} + e \sin{\left(\alpha \right)} \sin{\left(\beta \right)} + f \cos{\left(\alpha \right)})\hat{a}_z\]</div>
+</div>
+</div>
+<p>This gives the identical result as our manually constructed partial derivative
+above.</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Calculate <span class="math notranslate nohighlight">\(\frac{{}^B\partial \bar{v}}{\partial e}\)</span> manually and with
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.diff" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diff()</span></code></a> and show the
+results are the same.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dvdeBx</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="n">dvdeBy</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="n">dvdeBz</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="n">dvdeBx</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dvdeBy</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dvdeBz</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \cos{\left(\beta \right)}\hat{b}_x -  \sin{\left(\beta \right)}\hat{b}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \cos{\left(\beta \right)}\hat{b}_x -  \sin{\left(\beta \right)}\hat{b}_z\]</div>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>What’s the difference in <cite>.express()</cite> and <cite>.diff()</cite>?</p>
+<p>Any vector can be “expressed” in any reference frame. To express a vector in
+a reference frame means to project it onto the three mutually perpendicular
+unit vectors fixed in the reference frame and then to rewrite the vector in
+terms of measure numbers associated with those three unit vectors using the
+relevant direction cosine matrix entries. This has nothing to do with
+differentiation.</p>
+<p>We can also take the derivative of a vector when viewed from a specific
+reference frame. To do so, we observe how the vector changes when viewed
+from the reference frame and formulate that derivative. Once the derivative
+is taken, we can express the new vector in any reference frame we desire.</p>
+<p>Expressing a vector in a reference frame and taking a derivative of a vector
+when observered from a reference frame are two different things! Try not to
+get tripped up by this important distinction.</p>
+</div>
+</section>
+<section id="product-rule">
+<h2 id="product-rule">Product Rule<a class="headerlink" href="#product-rule" title="Link to this heading">¶</a></h2>
+<p>Consider again vector <span class="math notranslate nohighlight">\(\bar{v}=v_x\hat{a}_x+v_y\hat{a}_y+v_z\hat{a}_z\)</span>.
+Previously, only the measure numbers of this vector were scalar functions of
+<span class="math notranslate nohighlight">\(q_r\)</span>. Now consider a reference frame <span class="math notranslate nohighlight">\(N\)</span> that is oriented relative
+to <span class="math notranslate nohighlight">\(A\)</span> such that the relative orientation also depends on <span class="math notranslate nohighlight">\(q_r\)</span>.
+This means, that when observed from <span class="math notranslate nohighlight">\(N\)</span>, the unit vectors
+<span class="math notranslate nohighlight">\(\hat{a}_x,\hat{a}_y,\hat{a}_z\)</span> may be a function of <span class="math notranslate nohighlight">\(q_r\)</span>. With
+both the measure numbers and unit vectors dependent on <span class="math notranslate nohighlight">\(q_r\)</span> the
+derivative of <span class="math notranslate nohighlight">\(\bar{v}\)</span> in <span class="math notranslate nohighlight">\(N\)</span> requires the use of the product rule
+when taking the partial derivative. For example:</p>
+<div class="math notranslate nohighlight" id="equation-product-rule-big">
+<span class="eqno">(46)<a class="headerlink" href="#equation-product-rule-big" title="Link to this equation">¶</a></span>\[\frac{{}^N\partial \bar{v}}{\partial q_r} =
+\frac{{}^N\partial v_x}{\partial q_r}\hat{a}_x + v_x \frac{{}^N\partial \hat{a}_x}{\partial q_r} +
+\frac{{}^N\partial v_y}{\partial q_r}\hat{a}_y + v_y \frac{{}^N\partial \hat{a}_y}{\partial q_r} +
+\frac{{}^N\partial v_z}{\partial q_r}\hat{a}_z + v_z \frac{{}^N\partial \hat{a}_z}{\partial q_r}\]</div>
+<p>The three similar terms with scalar derivatives have the same interpretation of
+the ones in the prior section.</p>
+<div class="math notranslate nohighlight" id="equation-product-rule-part-01">
+<span class="eqno">(47)<a class="headerlink" href="#equation-product-rule-part-01" title="Link to this equation">¶</a></span>\[\frac{{}^N\partial v_x}{\partial q_r}\hat{a}_x,
+\frac{{}^N\partial v_y}{\partial q_r}\hat{a}_y,
+\frac{{}^N\partial v_z}{\partial q_r}\hat{a}_z\]</div>
+<p>But the part with unit vector derivatives is more interesting. The partial
+derivative of a unit vector depends on how it changes. But unit vectors do not
+change in length, only in orientation.</p>
+<div class="math notranslate nohighlight" id="equation-product-rule-part-02">
+<span class="eqno">(48)<a class="headerlink" href="#equation-product-rule-part-02" title="Link to this equation">¶</a></span>\[v_x \frac{{}^N\partial \hat{a}_x}{\partial q_r},
+v_y \frac{{}^N\partial \hat{a}_y}{\partial q_r},
+v_z \frac{{}^N\partial \hat{a}_z}{\partial q_r}\]</div>
+<p>You will learn in the next chapter how to interpret and use these terms to
+simplify the calculations of common derivatives. But for now, just be aware of
+the nature of this partial derivative in <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<p>The product rule also applies to the dot and cross products:</p>
+<div class="math notranslate nohighlight" id="equation-product-dot-cross">
+<span class="eqno">(49)<a class="headerlink" href="#equation-product-dot-cross" title="Link to this equation">¶</a></span>\[ \begin{align}\begin{aligned}\frac{\partial}{\partial q_r}(\bar{v} \cdot \bar{w}) = &amp;
+\frac{\partial \bar{v}}{\partial q_r} \cdot \bar{w} +
+\bar{v} \cdot \frac{\partial \bar{w}}{\partial q_r}\\\frac{\partial}{\partial q_r}(\bar{v} \times \bar{w}) = &amp;
+\frac{\partial \bar{v}}{\partial q_r} \times \bar{w} +
+\bar{v} \times \frac{\partial \bar{w}}{\partial q_r}\end{aligned}\end{align} \]</div>
+<p>and generalizes to any series of products. Let <span class="math notranslate nohighlight">\(G=f_1 \cdots f_n\)</span> be a
+series of products, then:</p>
+<div class="math notranslate nohighlight" id="equation-product-rule-gen">
+<span class="eqno">(50)<a class="headerlink" href="#equation-product-rule-gen" title="Link to this equation">¶</a></span>\[\frac{\partial G}{\partial q_r} =
+\frac{\partial f_1}{\partial q_r}\cdot f_2 \cdots f_n +
+f_1 \cdot\frac{\partial f_2}{\partial q_r}\cdot f_3 \cdots f_n +
+\dots +
+f_1 \cdots f_{n-1} \cdot \frac{\partial f_n}{\partial q_r}\]</div>
+</section>
+<section id="second-derivatives">
+<h2 id="second-derivatives">Second Derivatives<a class="headerlink" href="#second-derivatives" title="Link to this heading">¶</a></h2>
+<p><span class="math notranslate nohighlight">\(\frac{{}^A\partial \bar{v}}{\partial q_r}\)</span> is also a vector and, just
+like <span class="math notranslate nohighlight">\(\bar{v}\)</span>, may be a vector function. We can thus calculate the
+second partial derivative with respect to <span class="math notranslate nohighlight">\(q_s\)</span> where <span class="math notranslate nohighlight">\(s=1\ldots
+n\)</span>. This second partial derivative need not be taken with respect to the same
+reference frame as the first partial derivative. If we first differentiate with
+when viewed from <span class="math notranslate nohighlight">\(A\)</span> and then when viewed from <span class="math notranslate nohighlight">\(B\)</span>, the second
+partial derivative is:</p>
+<div class="math notranslate nohighlight" id="equation-second-derivative">
+<span class="eqno">(51)<a class="headerlink" href="#equation-second-derivative" title="Link to this equation">¶</a></span>\[\frac{{}^B\partial}{\partial q_s} \left(\frac{{}^A\partial\bar{v}}{\partial
+q_r}\right)\]</div>
+<p>Second partials in different reference frames do not necessarily commute:</p>
+<div class="math notranslate nohighlight" id="equation-no-commute-second-deriv">
+<span class="eqno">(52)<a class="headerlink" href="#equation-no-commute-second-deriv" title="Link to this equation">¶</a></span>\[\frac{{}^B\partial}{\partial q_s} \left(\frac{{}^A\partial\bar{v}}{\partial
+q_r}\right)
+\neq
+\frac{{}^A\partial}{\partial q_r} \left(\frac{{}^B\partial\bar{v}}{\partial
+q_s}\right)\]</div>
+<p>If the reference frames of each partial derivative are the same, then <a class="reference external" href="https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives">mixed
+partials do commute</a>.</p>
+</section>
+<section id="vector-functions-of-time">
+<h2 id="vector-functions-of-time">Vector Functions of Time<a class="headerlink" href="#vector-functions-of-time" title="Link to this heading">¶</a></h2>
+<p>In multibody dynamics we are primarily concerned with how motion changes with
+respect to time <span class="math notranslate nohighlight">\(t\)</span> and our vectors and measure numbers will often be
+implicit functions of time, i.e. <span class="math notranslate nohighlight">\(q_r(t)\)</span>. When that is the case the
+chain rule can be used to take total derivatives:</p>
+<div class="math notranslate nohighlight" id="equation-time-deriv">
+<span class="eqno">(53)<a class="headerlink" href="#equation-time-deriv" title="Link to this equation">¶</a></span>\[\frac{{}^A d\bar{v}}{dt} =
+\sum_{i=1}^n \frac{{}^A\partial \bar{v}}{\partial q_r(t)} \frac{d q_r(t)}{dt} +
+\frac{{}^A \partial \bar{v}}{\partial t}
+\textrm{ where } r=1,\ldots,n\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We will typically use the “dot” notation for time derivatives, i.e.
+<span class="math notranslate nohighlight">\(\frac{dq}{dt}\)</span> as <span class="math notranslate nohighlight">\(\dot{q}\)</span> and <span class="math notranslate nohighlight">\(\frac{d^2q}{dt^2}\)</span> as
+<span class="math notranslate nohighlight">\(\ddot{q}\)</span> and so on.</p>
+</div>
+<p>In SymPy Mechanics, scalar functions of time can be created like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'t'</span><span class="p">)</span>
+<span class="n">q_of</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">'q'</span><span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">q_of</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle q{\left(t \right)}\]</div>
+</div>
+</div>
+<p>And these scalar functions can be differentiated:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{d}{d t} q{\left(t \right)}\]</div>
+</div>
+</div>
+<p>SymPy Mechanics provides the convenience function
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/functions.html#sympy.physics.vector.dynamicsymbols" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dynamicsymbols()</span></code></a> to create scalar
+functions of time just like <code class="docutils literal notranslate"><span class="pre">symbols()</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'q1, q2, q3'</span><span class="p">)</span>
+<span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( q_{1}{\left(t \right)}, \  q_{2}{\left(t \right)}, \  q_{3}{\left(t \right)}\right)\]</div>
+</div>
+</div>
+<p>The time variable used in <code class="docutils literal notranslate"><span class="pre">q1,q2,q3</span></code> can be accessed like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>SymPy Mechanics also provide a special printing function
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/printing.html#sympy.physics.vector.printing.init_vprinting" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">init_vprinting()</span></code></a> which enables
+the dot notation on functions of time:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">init_vprinting</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">q2</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">q3</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( \dot{q}_{1}, \  \ddot{q}_{2}, \  \dddot{q}_{3}\right)\]</div>
+</div>
+</div>
+<p>Now these scalar functions of time can be used to formulate vectors:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">orient_body_fixed</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span><span class="p">),</span> <span class="s1">'ZXZ'</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">q1</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">q2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span>
+<span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle q_{1}\hat{a}_x + q_{2}\hat{a}_y + t^{2}\hat{a}_z\]</div>
+</div>
+</div>
+<p>And the time derivative can be found with:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \dot{q}_{1}\hat{a}_x + \dot{q}_{2}\hat{a}_y + 2 t\hat{a}_z\]</div>
+</div>
+</div>
+<p>Lastly, vectors have a
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.vector.Vector.dt" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dt()</span></code></a> method that
+calculates time derivatives when viewed from a reference frame, saving a few
+characters of typing:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="o">.</span><span class="n">dt</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \dot{q}_{1}\hat{a}_x + \dot{q}_{2}\hat{a}_y + 2 t\hat{a}_z\]</div>
+</div>
+</div>
+<p>We will use time derivatives in the next chapters to formulate velocity and
+acceleration.</p>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="vectors.html" title="Vectors"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Vectors </span>
+              </div>
+            </a>
+          
+          
+            <a href="angular.html" title="Angular Kinematics"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Angular Kinematics </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
