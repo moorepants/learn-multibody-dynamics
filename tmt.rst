@@ -255,8 +255,8 @@ The equations of motion then take this form:
    \mathbf{T}^T\left(\bar{F} - \bar{g}\right)
    = \bar{0}
 
-These equations are equivalent to Kane's Equations and Lagrange's dynamical
-differential equations.
+These equations are equivalent to Kane's and Lagrange's dynamical differential
+equations.
 
 .. note::
 
