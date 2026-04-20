@@ -195,6 +195,11 @@ then:
    = \bar{F}
    \in \mathbb{R}^{6\nu}
 
+.. note:: If the measure numbers are instead extracted from the dyadics and
+   vectors expressed in the associated rigid bodies' reference frames,
+   :math:`\mathbf{M}` is constant with respect to time and thus
+   :math:`\dot{\mathbf{M}} = 0`.
+
 Subsituting the mapping to generalized speeds :math:`\dot{\bar{v}} =
 \dot{\mathbf{T}} \bar{u} + \mathbf{T} \dot{\bar{u}}` gives:
 
