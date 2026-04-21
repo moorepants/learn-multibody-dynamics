@@ -51,8 +51,8 @@ potential energy of the system. `Sir William Hamilton`_ then reformulated
 Lagrange's approach in terms of *generalized momenta* instead of energy. Since
 then, `Gibbs & Appell`_, Kane [Kane1985]_, and others have proposed more
 methods. In this chapter, we present one of these alternative methods called
-the "TMT Method".  The details and derivation of the TMT Method can be found in
-[Vallery2020]_ .
+the "TMT Method" which is derived from [Werff1977]_. The details and derivation
+of the TMT Method as presented here can be found in [Vallery2020]_ .
 
 .. _several mathematical methods: https://en.wikipedia.org/wiki/Classical_mechanics
 .. _Joseph-Louis Lagrange: https://en.wikipedia.org/wiki/Lagrangian_mechanics
