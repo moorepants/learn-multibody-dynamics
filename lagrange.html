@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Equations of Motion with the Lagrange Method &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unconstrained Equations of Motion with the TMT Method" href="tmt.html" />
+    <link rel="prev" title="Energy and Power" href="energy.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#lagrange" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Equations of Motion with the Lagrange Method </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Equations of Motion with the Lagrange Method </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Equations of Motion with the Lagrange Method</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#lagrange--page-root" class="md-nav__link">Equations of Motion with the Lagrange Method</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#inertial-forces-from-kinetic-energy" class="md-nav__link">Inertial Forces from Kinetic Energy</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#example-torque-free-rigid-body" class="md-nav__link">Example: Torque Free Rigid Body</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#conservative-forces" class="md-nav__link">Conservative Forces</a>
+        </li>
+        <li class="md-nav__item"><a href="#the-lagrange-method" class="md-nav__link">The Lagrange Method</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#example-unconstrained-system" class="md-nav__link">Example: Unconstrained System</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#generalized-momenta" class="md-nav__link">Generalized Momenta</a>
+        </li>
+        <li class="md-nav__item"><a href="#constrained-equations-of-motion" class="md-nav__link">Constrained Equations of Motion</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#example-turn-the-torque-free-rigid-body-into-a-rolling-sphere" class="md-nav__link">Example: Turn the Torque Free Rigid Body into a Rolling Sphere</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#lagrange-s-vs-kane-s" class="md-nav__link">Lagrange’s vs Kane’s</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/lagrange.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#lagrange--page-root" class="md-nav__link">Equations of Motion with the Lagrange Method</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#inertial-forces-from-kinetic-energy" class="md-nav__link">Inertial Forces from Kinetic Energy</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#example-torque-free-rigid-body" class="md-nav__link">Example: Torque Free Rigid Body</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#conservative-forces" class="md-nav__link">Conservative Forces</a>
+        </li>
+        <li class="md-nav__item"><a href="#the-lagrange-method" class="md-nav__link">The Lagrange Method</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#example-unconstrained-system" class="md-nav__link">Example: Unconstrained System</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#generalized-momenta" class="md-nav__link">Generalized Momenta</a>
+        </li>
+        <li class="md-nav__item"><a href="#constrained-equations-of-motion" class="md-nav__link">Constrained Equations of Motion</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#example-turn-the-torque-free-rigid-body-into-a-rolling-sphere" class="md-nav__link">Example: Turn the Torque Free Rigid Body into a Rolling Sphere</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#lagrange-s-vs-kane-s" class="md-nav__link">Lagrange’s vs Kane’s</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/lagrange.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="equations-of-motion-with-the-lagrange-method">
+<h1 id="lagrange--page-root">Equations of Motion with the Lagrange Method<a class="headerlink" href="#lagrange--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/cf5862abf32ac5e37e9fd1bb986101e0/lagrange.py"><code class="xref download docutils literal notranslate"><span class="pre">lagrange.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/7d386c207d1da3acb5b0c1e04d1540df/lagrange.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">lagrange.ipynb</span></code></a>.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy.physics.mechanics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">me</span>
+<span class="n">me</span><span class="o">.</span><span class="n">init_vprinting</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="invisible docutils container">
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceFrame</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'latexs'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\hat{{</span><span class="si">{}</span><span class="s1">}}_</span><span class="si">{}</span><span class="s1">'</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReferenceFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                             <span class="n">latexs</span><span class="o">=</span><span class="p">(</span><span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)),</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n">ReferenceFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>Derive the Lagrangian for a system of interconnected particles and rigid bodies</p></li>
+<li><p>Use the Euler-Lagrange equation to derive equations of motions given a Lagrangian</p></li>
+<li><p>Use the method of Lagrange multipliers to add constraints to the equations of motions</p></li>
+<li><p>Determine the generalized momenta of a system</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>This book has already discussed two methods to derive the equations of motion
+of multibody systems: Newton-Euler and Kane’s method. This chapter will add a
+third: the <a class="reference external" href="https://en.wikipedia.org/wiki/Lagrangian_mechanics">Lagrange method</a>, originally developed by <a class="reference external" href="https://en.wikipedia.org/wiki/Joseph-Louis_Lagrange">Joseph-Louis
+Lagrange</a>. These materials focus on Engineering applications for multibody
+systems, and therefore build the Lagrange method around the terms found earlier
+in Kane’s equations. In other textbooks, the Lagrange method is often derived
+from the <a class="reference external" href="https://en.wikipedia.org/wiki/Variational_principle">Variational principles</a>, such as virtual work or the principle of
+least action. A good starting point for studying the physical and mathematical
+background of the Lagrange approach is <a class="reference internal" href="references.html#lanczos1986" id="id1"><span>[Lanczos1986]</span></a>.</p>
+</section>
+<section id="inertial-forces-from-kinetic-energy">
+<h2 id="inertial-forces-from-kinetic-energy">Inertial Forces from Kinetic Energy<a class="headerlink" href="#inertial-forces-from-kinetic-energy" title="Link to this heading">¶</a></h2>
+<p>In Kane’s method the negated generalized inertial forces equal the applied
+forces, see <a class="reference internal" href="notation.html#unconstrained-equations-of-motion"><span class="std std-ref">Unconstrained Equations of Motion</span></a>.  A large part of Kane’s
+method of deriving the equations of motions for a system is involved with
+finding the generalized inertial forces. As an alternative, the following
+equation also calculates the generalized inertial forces of a system, now by
+starting from the kinetic energy <span class="math notranslate nohighlight">\(K (\dot{\bar{q}}, \bar{q})\)</span> expressed
+as function of the generalized coordinates <span class="math notranslate nohighlight">\(\bar{q}\)</span>, and their time
+derivatives. See <a class="reference internal" href="notation.html#energy-and-power"><span class="std std-ref">Energy and Power</span></a> for the definition of kinetic energy.</p>
+<div class="math notranslate nohighlight" id="equation-eq-lagrange-inertial">
+<span class="eqno">(225)<a class="headerlink" href="#equation-eq-lagrange-inertial" title="Link to this equation">¶</a></span>\[ -\bar{F}^*_r = \frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial K}{\partial \dot{q}_r}
+      \right) - \frac{\partial K}{\partial q_r}\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note the two minus signs in the above equation</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In Kane’s method, it is possible to choose generalized speeds <span class="math notranslate nohighlight">\(\bar{u}\)</span> that differ from
+the time derivatives of the generalized coordinates <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span>. By convention
+<span class="math notranslate nohighlight">\(\bar{u} = \dot{\bar{q}}\)</span> is assumed when using the Lagrange method. Therefore, throughout
+this chapter <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span> is used.</p>
+</div>
+<p>The generalized inertial forces computed in this manner are the same as when
+following Kane’s method or the TMT method, used in the next chapter. This can
+be shown by carefully matching terms in these formulations, as is done for a
+system of point-masses in <a class="reference internal" href="references.html#vallery2020" id="id2"><span>[Vallery2020]</span></a>.</p>
+<section id="example-torque-free-rigid-body">
+<h3 id="example-torque-free-rigid-body">Example: Torque Free Rigid Body<a class="headerlink" href="#example-torque-free-rigid-body" title="Link to this heading">¶</a></h3>
+<p>This example is largely the same as the example in <a class="reference internal" href="eom.html#body-fixed-newton-euler-equations"><span class="std std-ref">Body Fixed Newton-Euler Equations</span></a>. A key difference is a difference between the
+generalized speeds describing the rotation. In the calculation with Kane’s
+method, they were body-fixed angular velocities, whereas here they are the
+rates of change of the Euler angles.</p>
+<p>First, set up the generalized coordinates, reference frames, and mass
+properties for a single rigid body located by coordinates <span class="math notranslate nohighlight">\(x,y,z\)</span> from
+point <span class="math notranslate nohighlight">\(O\)</span> and oriented by Euler angles <span class="math notranslate nohighlight">\(\psi,\theta,\phi\)</span> relative
+to the inertial reference frame <span class="math notranslate nohighlight">\(N\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, I_</span><span class="si">{xx}</span><span class="s1">, I_</span><span class="si">{yy}</span><span class="s1">, I_</span><span class="si">{zz}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">psi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'psi, theta, phi, x, y, z'</span><span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">psi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span>
+<span class="n">qd</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">qdd</span> <span class="o">=</span> <span class="n">qd</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">q</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">qdd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left( \left[\begin{matrix}\psi\\\theta\\\phi\\x\\y\\z\end{matrix}\right], \  \left[\begin{matrix}\dot{\psi}\\\dot{\theta}\\\dot{\phi}\\\dot{x}\\\dot{y}\\\dot{z}\end{matrix}\right], \  \left[\begin{matrix}\ddot{\psi}\\\ddot{\theta}\\\ddot{\phi}\\\ddot{x}\\\ddot{y}\\\ddot{z}\end{matrix}\right]\right)\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">orient_body_fixed</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">),</span> <span class="s1">'zxy'</span><span class="p">)</span>
+
+<span class="n">I_B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">inertia</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Then compute the kinetic energy:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_w_B</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">r_O_Bo</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">N_v_C</span> <span class="o">=</span> <span class="n">r_O_Bo</span><span class="o">.</span><span class="n">dt</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">N_v_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N_v_C</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">N_w_B</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I_B</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N_w_B</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">K</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{I_{xx} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right)^{2}}{2} + \frac{I_{yy} \left(\sin{\left(\theta \right)} \dot{\psi} + \dot{\phi}\right)^{2}}{2} + \frac{I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right)^{2}}{2} + \frac{m \left(\dot{x}^{2} + \dot{y}^{2} + \dot{z}^{2}\right)}{2}\]</div>
+</div>
+</div>
+<p>Use the kinetic energy to find the generalized inertial forces. Here we, as an
+example, start with the generalized coordinate <span class="math notranslate nohighlight">\(\psi\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F_psi_s</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">psi</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">K</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span>
+<span class="n">F_psi_s</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle I_{xx} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right) \sin{\left(\phi \right)} \sin{\left(\theta \right)} \dot{\theta} - I_{xx} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right) \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} - I_{xx} \left(\sin{\left(\phi \right)} \sin{\left(\theta \right)} \dot{\psi} \dot{\theta} - \sin{\left(\phi \right)} \cos{\left(\theta \right)} \ddot{\psi} - \sin{\left(\phi \right)} \dot{\phi} \dot{\theta} - \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} + \cos{\left(\phi \right)} \ddot{\theta}\right) \sin{\left(\phi \right)} \cos{\left(\theta \right)} + I_{yy} \left(\sin{\left(\theta \right)} \dot{\psi} + \dot{\phi}\right) \cos{\left(\theta \right)} \dot{\theta} + I_{yy} \left(\sin{\left(\theta \right)} \ddot{\psi} + \cos{\left(\theta \right)} \dot{\psi} \dot{\theta} + \ddot{\phi}\right) \sin{\left(\theta \right)} - I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} - I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \sin{\left(\theta \right)} \cos{\left(\phi \right)} \dot{\theta} + I_{zz} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} + \sin{\left(\phi \right)} \ddot{\theta} - \sin{\left(\theta \right)} \cos{\left(\phi \right)} \dot{\psi} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \ddot{\psi} + \cos{\left(\phi \right)} \dot{\phi} \dot{\theta}\right) \cos{\left(\phi \right)} \cos{\left(\theta \right)}\]</div>
+</div>
+</div>
+<p>A similar derivation should be made for all generalized coordinates. We could
+write a loop, but there there is a method to derive all the equations in one
+go.  The vector of partial derivatives of a function, that is the gradient, can
+be created using the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/matrices.html#sympy.matrices.matrixbase.MatrixBase.jacobian" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">jacobian()</span></code></a> method.
+The generalized inertial forces can then be found like this:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">K_as_matrix</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">K</span><span class="p">])</span>
+<span class="n">Fs</span> <span class="o">=</span> <span class="p">(</span><span class="n">K_as_matrix</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qd</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">K_as_matrix</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">q</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">Fs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}I_{xx} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right) \sin{\left(\phi \right)} \sin{\left(\theta \right)} \dot{\theta} - I_{xx} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right) \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} - I_{xx} \left(\sin{\left(\phi \right)} \sin{\left(\theta \right)} \dot{\psi} \dot{\theta} - \sin{\left(\phi \right)} \cos{\left(\theta \right)} \ddot{\psi} - \sin{\left(\phi \right)} \dot{\phi} \dot{\theta} - \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} + \cos{\left(\phi \right)} \ddot{\theta}\right) \sin{\left(\phi \right)} \cos{\left(\theta \right)} + I_{yy} \left(\sin{\left(\theta \right)} \dot{\psi} + \dot{\phi}\right) \cos{\left(\theta \right)} \dot{\theta} + I_{yy} \left(\sin{\left(\theta \right)} \ddot{\psi} + \cos{\left(\theta \right)} \dot{\psi} \dot{\theta} + \ddot{\phi}\right) \sin{\left(\theta \right)} - I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} - I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \sin{\left(\theta \right)} \cos{\left(\phi \right)} \dot{\theta} + I_{zz} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} + \sin{\left(\phi \right)} \ddot{\theta} - \sin{\left(\theta \right)} \cos{\left(\phi \right)} \dot{\psi} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \ddot{\psi} + \cos{\left(\phi \right)} \dot{\phi} \dot{\theta}\right) \cos{\left(\phi \right)} \cos{\left(\theta \right)}\\- I_{xx} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right) \sin{\left(\phi \right)} \sin{\left(\theta \right)} \dot{\psi} - I_{xx} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right) \sin{\left(\phi \right)} \dot{\phi} + I_{xx} \left(\sin{\left(\phi \right)} \sin{\left(\theta \right)} \dot{\psi} \dot{\theta} - \sin{\left(\phi \right)} \cos{\left(\theta \right)} \ddot{\psi} - \sin{\left(\phi \right)} \dot{\phi} \dot{\theta} - \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} + \cos{\left(\phi \right)} \ddot{\theta}\right) \cos{\left(\phi \right)} - I_{yy} \left(\sin{\left(\theta \right)} \dot{\psi} + \dot{\phi}\right) \cos{\left(\theta \right)} \dot{\psi} + I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \sin{\left(\theta \right)} \cos{\left(\phi \right)} \dot{\psi} + I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \cos{\left(\phi \right)} \dot{\phi} + I_{zz} \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} + \sin{\left(\phi \right)} \ddot{\theta} - \sin{\left(\theta \right)} \cos{\left(\phi \right)} \dot{\psi} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \ddot{\psi} + \cos{\left(\phi \right)} \dot{\phi} \dot{\theta}\right) \sin{\left(\phi \right)}\\- \frac{I_{xx} \left(- 2 \sin{\left(\phi \right)} \dot{\theta} - 2 \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right)}{2} + \frac{I_{yy} \left(2 \sin{\left(\theta \right)} \ddot{\psi} + 2 \cos{\left(\theta \right)} \dot{\psi} \dot{\theta} + 2 \ddot{\phi}\right)}{2} - \frac{I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \left(- 2 \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + 2 \cos{\left(\phi \right)} \dot{\theta}\right)}{2}\\m \ddot{x}\\m \ddot{y}\\m \ddot{z}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>While these are correct generalized inertia forces, the terms, particularly the
+terms involving <span class="math notranslate nohighlight">\(\ddot{q}_r\)</span> are mangled. It is common to extract the
+system mass matrix <span class="math notranslate nohighlight">\(\mathbf{M}_d\)</span> and velocity related force vector
+<span class="math notranslate nohighlight">\(\bar{g}_d\)</span> like before:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Md</span> <span class="o">=</span> <span class="n">Fs</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qdd</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">Md</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}I_{xx} \sin^{2}{\left(\phi \right)} \cos^{2}{\left(\theta \right)} + I_{yy} \sin^{2}{\left(\theta \right)} + I_{zz} \cos^{2}{\left(\phi \right)} \cos^{2}{\left(\theta \right)} &amp; \left(- I_{xx} + I_{zz}\right) \sin{\left(\phi \right)} \cos{\left(\phi \right)} \cos{\left(\theta \right)} &amp; I_{yy} \sin{\left(\theta \right)} &amp; 0 &amp; 0 &amp; 0\\\left(- I_{xx} + I_{zz}\right) \sin{\left(\phi \right)} \cos{\left(\phi \right)} \cos{\left(\theta \right)} &amp; I_{xx} \cos^{2}{\left(\phi \right)} + I_{zz} \sin^{2}{\left(\phi \right)} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\I_{yy} \sin{\left(\theta \right)} &amp; 0 &amp; I_{yy} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; m &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; m &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; m\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qdd_zerod</span> <span class="o">=</span> <span class="p">{</span><span class="n">qddr</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">qddr</span> <span class="ow">in</span> <span class="n">qdd</span><span class="p">}</span>
+<span class="n">gd</span> <span class="o">=</span> <span class="n">Fs</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">qdd_zerod</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">gd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\frac{I_{xx} \sin{\left(2 \left(\phi - \theta\right) \right)} \dot{\phi} \dot{\psi}}{4} - \frac{I_{xx} \sin{\left(2 \left(\phi - \theta\right) \right)} \dot{\psi} \dot{\theta}}{4} + \frac{I_{xx} \sin{\left(2 \left(\phi + \theta\right) \right)} \dot{\phi} \dot{\psi}}{4} + \frac{I_{xx} \sin{\left(2 \left(\phi + \theta\right) \right)} \dot{\psi} \dot{\theta}}{4} + \frac{I_{xx} \sin{\left(2 \phi \right)} \dot{\phi} \dot{\psi}}{2} - \frac{I_{xx} \sin{\left(2 \theta \right)} \dot{\psi} \dot{\theta}}{2} - \frac{I_{xx} \cos{\left(2 \phi - \theta \right)} \dot{\phi} \dot{\theta}}{2} + \frac{I_{xx} \cos{\left(2 \phi - \theta \right)} \dot{\theta}^{2}}{4} - \frac{I_{xx} \cos{\left(2 \phi + \theta \right)} \dot{\phi} \dot{\theta}}{2} - \frac{I_{xx} \cos{\left(2 \phi + \theta \right)} \dot{\theta}^{2}}{4} + I_{yy} \sin{\left(2 \theta \right)} \dot{\psi} \dot{\theta} + I_{yy} \cos{\left(\theta \right)} \dot{\phi} \dot{\theta} - \frac{I_{zz} \sin{\left(2 \left(\phi - \theta\right) \right)} \dot{\phi} \dot{\psi}}{4} + \frac{I_{zz} \sin{\left(2 \left(\phi - \theta\right) \right)} \dot{\psi} \dot{\theta}}{4} - \frac{I_{zz} \sin{\left(2 \left(\phi + \theta\right) \right)} \dot{\phi} \dot{\psi}}{4} - \frac{I_{zz} \sin{\left(2 \left(\phi + \theta\right) \right)} \dot{\psi} \dot{\theta}}{4} - \frac{I_{zz} \sin{\left(2 \phi \right)} \dot{\phi} \dot{\psi}}{2} - \frac{I_{zz} \sin{\left(2 \theta \right)} \dot{\psi} \dot{\theta}}{2} + \frac{I_{zz} \cos{\left(2 \phi - \theta \right)} \dot{\phi} \dot{\theta}}{2} - \frac{I_{zz} \cos{\left(2 \phi - \theta \right)} \dot{\theta}^{2}}{4} + \frac{I_{zz} \cos{\left(2 \phi + \theta \right)} \dot{\phi} \dot{\theta}}{2} + \frac{I_{zz} \cos{\left(2 \phi + \theta \right)} \dot{\theta}^{2}}{4}\\\frac{I_{xx} \sin{\left(2 \left(\phi - \theta\right) \right)} \dot{\psi}^{2}}{8} - \frac{I_{xx} \sin{\left(2 \left(\phi + \theta\right) \right)} \dot{\psi}^{2}}{8} - I_{xx} \sin{\left(2 \phi \right)} \dot{\phi} \dot{\theta} + \frac{I_{xx} \sin{\left(2 \theta \right)} \dot{\psi}^{2}}{4} - \frac{I_{xx} \cos{\left(2 \phi - \theta \right)} \dot{\phi} \dot{\psi}}{2} - \frac{I_{xx} \cos{\left(2 \phi + \theta \right)} \dot{\phi} \dot{\psi}}{2} - \frac{I_{yy} \sin{\left(2 \theta \right)} \dot{\psi}^{2}}{2} - I_{yy} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} - \frac{I_{zz} \sin{\left(2 \left(\phi - \theta\right) \right)} \dot{\psi}^{2}}{8} + \frac{I_{zz} \sin{\left(2 \left(\phi + \theta\right) \right)} \dot{\psi}^{2}}{8} + I_{zz} \sin{\left(2 \phi \right)} \dot{\phi} \dot{\theta} + \frac{I_{zz} \sin{\left(2 \theta \right)} \dot{\psi}^{2}}{4} + \frac{I_{zz} \cos{\left(2 \phi - \theta \right)} \dot{\phi} \dot{\psi}}{2} + \frac{I_{zz} \cos{\left(2 \phi + \theta \right)} \dot{\phi} \dot{\psi}}{2}\\I_{xx} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right) + I_{yy} \cos{\left(\theta \right)} \dot{\psi} \dot{\theta} - I_{zz} \left(\sin{\left(\phi \right)} \dot{\theta} + \cos{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi}\right) \left(- \sin{\left(\phi \right)} \cos{\left(\theta \right)} \dot{\psi} + \cos{\left(\phi \right)} \dot{\theta}\right)\\0\\0\\0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conservative-forces">
+<h2 id="conservative-forces">Conservative Forces<a class="headerlink" href="#conservative-forces" title="Link to this heading">¶</a></h2>
+<p>Recall from <a class="reference internal" href="notation.html#energy-and-power"><span class="std std-ref">Energy and Power</span></a> that <a class="reference external" href="https://en.wikipedia.org/wiki/Conservative_force">conservative forces</a>, can be
+expressed using the gradient of a scalar function of the generalized
+coordinates, known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Potential_energy">potential energy</a> <span class="math notranslate nohighlight">\(V(\bar{q})\)</span>, thus the
+conservative generalized active forces can be written as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-potential-energy">
+<span class="eqno">(226)<a class="headerlink" href="#equation-eq-potential-energy" title="Link to this equation">¶</a></span>\[\bar{F}_r^\textrm{c} = -\frac{\partial V}{\partial q_r}\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note the minus sign in the above equation.</p>
+</div>
+<p>Some examples of conservative forces are:</p>
+<ul class="simple">
+<li><p>a uniform gravitational field, for example on the surface of the earth, with
+potential <span class="math notranslate nohighlight">\(V = m g h(\bar{q})\)</span>,</p></li>
+<li><p>gravity from Newton’s universal gravitation, with potential <span class="math notranslate nohighlight">\(V = -G
+\frac{m_1m_2}{r(\bar{q})}\)</span>,</p></li>
+<li><p>a linear spring, with potential <span class="math notranslate nohighlight">\(V = \frac{1}{2}k(l(\bar{q}) - l_0)^2\)</span>.</p></li>
+</ul>
+<p>For conservative forces, it is often convenient to derive the applied forces
+via the potential energy.</p>
+</section>
+<section id="the-lagrange-method">
+<h2 id="the-lagrange-method">The Lagrange Method<a class="headerlink" href="#the-lagrange-method" title="Link to this heading">¶</a></h2>
+<p>Both the equation for computing the inertial forces from the kinetic energy and
+the equation for computing the applied conservative forces from a potential
+energy have a term in them with the partial derivative with respect to the
+generalized coordinate.  Furthermore, the potential energy does not depend on
+the generalized speeds.  Therefore, the resulting (inertial and conservative
+applied) forces can be derived in one go, by combining the two equations.</p>
+<p>Step 1. Compute the so called <a class="reference external" href="https://en.wikipedia.org/wiki/Lagrangian">Lagrangian</a> <span class="math notranslate nohighlight">\(L\)</span>, the difference between
+the kinetic energy and potential energy:</p>
+<div class="math notranslate nohighlight" id="equation-eq-lagrangian">
+<span class="eqno">(227)<a class="headerlink" href="#equation-eq-lagrangian" title="Link to this equation">¶</a></span>\[L = K - V\]</div>
+<p>Step 2. Use the Euler-Lagrange equations (the name for the equation
+<a class="reference internal" href="#equation-eq-lagrange-inertial">(225)</a>) to find the equations of motion:</p>
+<div class="math notranslate nohighlight" id="equation-eq-euler-lagrange">
+<span class="eqno">(228)<a class="headerlink" href="#equation-eq-euler-lagrange" title="Link to this equation">¶</a></span>\[\frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial L}{\partial \dot{q}_r}
+\right) - \frac{\partial L}{\partial q_r} = F_r^\textrm{nc}
+\textrm{ for } r = 1,\ldots,n\]</div>
+<p>while being careful to include conservative applied forces in the potential
+energy <span class="math notranslate nohighlight">\(V\)</span> term, but not in the non-conservative generalized active force
+<span class="math notranslate nohighlight">\(F_r^\textrm{nc}\)</span>.</p>
+<section id="example-unconstrained-system">
+<h3 id="example-unconstrained-system">Example: Unconstrained System<a class="headerlink" href="#example-unconstrained-system" title="Link to this heading">¶</a></h3>
+<p>This example will use the Lagrange method to derive the equations of motion for
+the system introduced in <a class="reference internal" href="eom.html#example-of-kane-s-equations"><span class="std std-ref">Example of Kane’s Equations</span></a>. The description of
+the system is shown again in <a class="reference internal" href="#fig-eom-double-rod-pendulum-repeat"><span class="std std-numref">Fig. 53</span></a>.</p>
+<figure class="align-center" id="id6">
+<span id="fig-eom-double-rod-pendulum-repeat"></span><a class="reference internal image-reference" href="_images/eom-double-rod-pendulum.svg"><img alt="_images/eom-double-rod-pendulum.svg" src="_images/eom-double-rod-pendulum.svg" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 53 </span><span class="caption-text">Three dimensional pendulum made up of two pinned rods and a sliding mass on
+rod <span class="math notranslate nohighlight">\(B\)</span>. Each degree of freedom is resisted by a linear spring. When
+the generalized coordinates are all zero, the two rods are perpendicular to
+each other.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The first step is to define the relevant variables, constants and frames. This step
+is the same as for Kane’s method.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Frames and Bodies Setup</p>
+<blockquote>
+<div><div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">kt</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, g, k_t, k_l, l'</span><span class="p">)</span>
+<span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'q1, q2, q3'</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span><span class="p">])</span>
+<span class="n">qd</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">qdd</span> <span class="o">=</span> <span class="n">qd</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">A</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">O</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'O'</span><span class="p">)</span>
+<span class="n">Ao</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'A_O'</span><span class="p">)</span>
+<span class="n">Bo</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'B_O'</span><span class="p">)</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">)</span>
+
+<span class="n">Ao</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Bo</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">l</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Q</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">Bo</span><span class="p">,</span> <span class="n">q3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">O</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">I</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">12</span>
+<span class="n">I_A_Ao</span> <span class="o">=</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">I_B_Bo</span> <span class="o">=</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div></blockquote>
+</div>
+<p>Start by defining the kinetic energy for each rigid body and particle:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">KA</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">Ao</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ao</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I_A_Ao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">KA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{l^{2} m \dot{q}_{1}^{2}}{6}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">KB</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">Bo</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Bo</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I_B_Bo</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">KB</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{l^{2} m \cos^{2}{\left(q_{2} \right)} \dot{q}_{1}^{2}}{24} + \frac{l^{2} m \dot{q}_{1}^{2}}{2} + \frac{l^{2} m \dot{q}_{2}^{2}}{24}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">KQ</span> <span class="o">=</span> <span class="n">m</span><span class="o">/</span><span class="mi">4</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">KQ</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{m \left(l^{2} \dot{q}_{1}^{2} + l \left(- q_{3} \sin{\left(q_{2} \right)} \dot{q}_{2} + \cos{\left(q_{2} \right)} \dot{q}_{3}\right) \dot{q}_{1} - l q_{3} \sin{\left(q_{2} \right)} \dot{q}_{1} \dot{q}_{2} + l \cos{\left(q_{2} \right)} \dot{q}_{1} \dot{q}_{3} + q_{3}^{2} \cos^{2}{\left(q_{2} \right)} \dot{q}_{1}^{2} + q_{3}^{2} \dot{q}_{2}^{2} + \dot{q}_{3}^{2}\right)}{8}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">K</span> <span class="o">=</span> <span class="n">KA</span> <span class="o">+</span> <span class="n">KB</span> <span class="o">+</span> <span class="n">KQ</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Form the potential energy from the conservative gravitational and spring forces:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V_grav</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="p">(</span><span class="n">Ao</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">O</span><span class="p">)</span> <span class="o">+</span> <span class="n">Bo</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">O</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">/</span><span class="mi">4</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">O</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">V_grav</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \frac{3 g l m \cos{\left(q_{1} \right)}}{2} + \frac{g m \left(- l \cos{\left(q_{1} \right)} + q_{3} \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)}\right)}{4}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V_springs</span> <span class="o">=</span> <span class="n">kt</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">q1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">kt</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">q2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">kl</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">q3</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">V_springs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{k_{l} q_{3}^{2}}{2} + \frac{k_{t} q_{1}^{2}}{2} + \frac{k_{t} q_{2}^{2}}{2}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span> <span class="o">=</span> <span class="n">V_grav</span> <span class="o">+</span> <span class="n">V_springs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The Lagrangian is then:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">K</span> <span class="o">-</span> <span class="n">V</span><span class="p">])</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left[\begin{matrix}\frac{7 g l m \cos{\left(q_{1} \right)}}{4} - \frac{g m q_{3} \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)}}{4} - \frac{k_{l} q_{3}^{2}}{2} - \frac{k_{t} q_{1}^{2}}{2} - \frac{k_{t} q_{2}^{2}}{2} + \frac{l^{2} m \cos^{2}{\left(q_{2} \right)} \dot{q}_{1}^{2}}{24} + \frac{19 l^{2} m \dot{q}_{1}^{2}}{24} + \frac{l^{2} m \dot{q}_{2}^{2}}{24} - \frac{l m q_{3} \sin{\left(q_{2} \right)} \dot{q}_{1} \dot{q}_{2}}{4} + \frac{l m \cos{\left(q_{2} \right)} \dot{q}_{1} \dot{q}_{3}}{4} + \frac{m q_{3}^{2} \cos^{2}{\left(q_{2} \right)} \dot{q}_{1}^{2}}{8} + \frac{m q_{3}^{2} \dot{q}_{2}^{2}}{8} + \frac{m \dot{q}_{3}^{2}}{8}\end{matrix}\right]\]</div>
+</div>
+</div>
+<p>Finally, derive the equations of motion:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fd</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qd</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">L</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">q</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">qdd_zerod</span> <span class="o">=</span> <span class="p">{</span><span class="n">qddr</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">qddr</span> <span class="ow">in</span> <span class="n">qdd</span><span class="p">}</span>
+<span class="n">Md</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qdd</span><span class="p">)</span>
+<span class="n">gd</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">qdd_zerod</span><span class="p">))</span>
+<span class="n">me</span><span class="o">.</span><span class="n">find_dynamicsymbols</span><span class="p">(</span><span class="n">Md</span><span class="p">),</span> <span class="n">me</span><span class="o">.</span><span class="n">find_dynamicsymbols</span><span class="p">(</span><span class="n">gd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( \left\{q_{2}, q_{3}\right\}, \  \left\{q_{1}, q_{2}, q_{3}, \dot{q}_{1}, \dot{q}_{2}, \dot{q}_{3}\right\}\right)\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Md</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{l^{2} m \cos^{2}{\left(q_{2} \right)}}{12} - \frac{4 l^{2} m}{3} - \frac{m \left(2 l^{2} + 2 q_{3}^{2} \cos^{2}{\left(q_{2} \right)}\right)}{8} &amp; \frac{l m q_{3} \sin{\left(q_{2} \right)}}{4} &amp; - \frac{l m \cos{\left(q_{2} \right)}}{4}\\\frac{l m q_{3} \sin{\left(q_{2} \right)}}{4} &amp; - \frac{l^{2} m}{12} - \frac{m q_{3}^{2}}{4} &amp; 0\\- \frac{l m \cos{\left(q_{2} \right)}}{4} &amp; 0 &amp; - \frac{m}{4}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- \frac{7 g l m \sin{\left(q_{1} \right)}}{4} - \frac{g m q_{3} \cos{\left(q_{1} - q_{2} \right)}}{8} - \frac{g m q_{3} \cos{\left(q_{1} + q_{2} \right)}}{8} - k_{t} q_{1} + \frac{l^{2} m \sin{\left(2 q_{2} \right)} \dot{q}_{1} \dot{q}_{2}}{12} + \frac{l m q_{3} \cos{\left(q_{2} \right)} \dot{q}_{2}^{2}}{4} + \frac{l m \sin{\left(q_{2} \right)} \dot{q}_{2} \dot{q}_{3}}{2} + \frac{m q_{3}^{2} \sin{\left(2 q_{2} \right)} \dot{q}_{1} \dot{q}_{2}}{4} - \frac{m q_{3} \cos{\left(2 q_{2} \right)} \dot{q}_{1} \dot{q}_{3}}{4} - \frac{m q_{3} \dot{q}_{1} \dot{q}_{3}}{4}\\\frac{g m q_{3} \cos{\left(q_{1} - q_{2} \right)}}{8} - \frac{g m q_{3} \cos{\left(q_{1} + q_{2} \right)}}{8} - k_{t} q_{2} - \frac{l^{2} m \sin{\left(2 q_{2} \right)} \dot{q}_{1}^{2}}{24} - \frac{m q_{3}^{2} \sin{\left(2 q_{2} \right)} \dot{q}_{1}^{2}}{8} - \frac{m q_{3} \dot{q}_{2} \dot{q}_{3}}{2}\\- \frac{g m \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)}}{4} - k_{l} q_{3} + \frac{m q_{3} \cos^{2}{\left(q_{2} \right)} \dot{q}_{1}^{2}}{4} + \frac{m q_{3} \dot{q}_{2}^{2}}{4}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The mass matrix <span class="math notranslate nohighlight">\(\mathbf{M}_d\)</span> only depends on <span class="math notranslate nohighlight">\(\bar{q}\)</span>, and
+<span class="math notranslate nohighlight">\(\bar{g}_d\)</span> depends on <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span> and <span class="math notranslate nohighlight">\(\bar{q}\)</span>, just as
+in Kane’s method. Note that <span class="math notranslate nohighlight">\(\bar{g}_d\)</span> now combines the effects of the
+velocity related force vector and the conservative forces. In this setting,
+<span class="math notranslate nohighlight">\(\bar{g}_d\)</span> is often called the dynamic bias.</p>
+</section>
+</section>
+<section id="generalized-momenta">
+<h2 id="generalized-momenta">Generalized Momenta<a class="headerlink" href="#generalized-momenta" title="Link to this heading">¶</a></h2>
+<p>It is often useful to use a vector of intermediate variables when finding the
+Euler-Lagrange equations. The variables are defined as:</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-0">
+<span class="eqno">(229)<a class="headerlink" href="#equation-lagrange-0" title="Link to this equation">¶</a></span>\[p_r = \frac{\partial L}{\partial \dot{q_r}}\]</div>
+<p>The variables are collected in a vector <span class="math notranslate nohighlight">\(\bar{p}\)</span>. They are called the
+generalized momenta, as they coincide with linear momentum in the case of a
+Lagrangian describing a particle. Similar to the situation in the dynamics of
+particles, there can be conservation of generalized momentum. This is the case
+for the generalized momentum associated with ignorable coordinates, as defined
+in <a class="reference internal" href="notation.html#equations-of-motion-with-nonholonomic-constraints"><span class="std std-ref">Equations of Motion with Nonholonomic Constraints</span></a>.</p>
+<p>For the example pendulum, the generalized momenta are calculated as:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qd</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\frac{m \left(l^{2} \cos^{2}{\left(q_{2} \right)} \dot{q}_{1} + 19 l^{2} \dot{q}_{1} - 3 l q_{3} \sin{\left(q_{2} \right)} \dot{q}_{2} + 3 l \cos{\left(q_{2} \right)} \dot{q}_{3} + 3 q_{3}^{2} \cos^{2}{\left(q_{2} \right)} \dot{q}_{1}\right)}{12}\\\frac{l^{2} m \dot{q}_{2}}{12} + \frac{m \left(- l \sin{\left(q_{2} \right)} \dot{q}_{1} + q_{3} \dot{q}_{2}\right) q_{3}}{4}\\\frac{m \left(l \cos{\left(q_{2} \right)} \dot{q}_{1} + \dot{q}_{3}\right)}{4}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+</section>
+<section id="constrained-equations-of-motion">
+<h2 id="constrained-equations-of-motion">Constrained Equations of Motion<a class="headerlink" href="#constrained-equations-of-motion" title="Link to this heading">¶</a></h2>
+<p>When using Kane’s method, constraints are handled by dividing the generalized
+speeds into two sets: the dependent and independent generalized speeds.
+Depending on the type of constraints, the dependent generalized speeds are
+eliminated by solving the constraint equation (for nonholonomic constraints)
+or the time derivative of the constraint equation (holonomic constraints).
+Kane’s method only gives rise to <span class="math notranslate nohighlight">\(p = n - m\)</span> dynamical equations, one for
+each independent generalized speed. The Lagrange method gives rise to <span class="math notranslate nohighlight">\(N\)</span>
+dynamical equations, one for each coordinate plus <cite>M + m</cite> additional equations
+to manage the constraints.</p>
+<p>The constraints are handled using a generalized version of the approach in
+<a class="reference internal" href="noncontributing.html#exposing-noncontributing-forces"><span class="std std-ref">Exposing Noncontributing Forces</span></a>. First the constraints are omitted, then
+a constraint force is added, with a known direction, but unknown magnitude.
+Finally, the (second) time derivative of the constraint equation is then
+appended to the equations found with the Euler-Lagrange equation.</p>
+<p>For example, consider a particle of mass <span class="math notranslate nohighlight">\(m\)</span> with position
+<span class="math notranslate nohighlight">\(\bar{r}^{P/O} = q_1 \hat{n}_x + q_2 \hat{n}_y + q_3\hat{n}_z\)</span> on a slope
+<span class="math notranslate nohighlight">\(q_1 = q_2\)</span> with gravity pulling the mass down the slope. The
+unconstrained Lagrangian is <span class="math notranslate nohighlight">\(L = \frac{1}{2}m(\dot{q}_1^2 + \dot{q}_2^2 +
+\dot{q}_3^2) - mgq_3\)</span>.  The constraint force is perpendicular to the slope, so
+is described as <span class="math notranslate nohighlight">\(\bar{F} = F\hat{n}_x - F\hat{n}_y\)</span>. The appended
+equation is the second time derivative of the constraint equation
+<span class="math notranslate nohighlight">\(\ddot{q_1} - \ddot{q_2} = 0\)</span>.  Combining all, gives:</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-1">
+<span class="eqno">(230)<a class="headerlink" href="#equation-lagrange-1" title="Link to this equation">¶</a></span>\[\begin{split}\begin{array}{r}
+  m\ddot{q}_1= \phantom{-}F\\
+  m\ddot{q}_2= -F\\
+  m\ddot{q}_3 + mg = \phantom{-}0\\
+  \ddot{q}_1 - \ddot{q}_2\!\! = \phantom{-}0
+\end{array}\end{split}\]</div>
+<p>This can be put in matrix-form, by extracting the unknown acceleration and
+force magnitude:</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-2">
+<span class="eqno">(231)<a class="headerlink" href="#equation-lagrange-2" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  m &amp; 0 &amp; 0 &amp;-1 \\
+  0 &amp; m &amp; 0 &amp; 1 \\
+  0 &amp; 0 &amp; m &amp; 0 \\
+  1 &amp; -1 &amp; 0 &amp; 0
+\end{bmatrix}
+\begin{bmatrix}
+  \ddot{q}_1 \\
+  \ddot{q}_2 \\
+  \ddot{q}_3 \\
+  F
+\end{bmatrix} =
+\begin{bmatrix}
+  0 \\
+  0 \\ -mg \\ 0
+\end{bmatrix}\end{split}\]</div>
+<p>It can be challenging to find the direction of the constraint force from the
+geometry of the system directly.  There is a trick, called the method of the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>, to quickly find the correct generalized forces
+associated with the constraint forces.</p>
+<p>Given a motion constraint (time derivatives of configuration constraint or a
+nonholonomic constraint) in the general form</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-3">
+<span class="eqno">(232)<a class="headerlink" href="#equation-lagrange-3" title="Link to this equation">¶</a></span>\[\sum_r a_r(\bar{q}) \dot{q}_r = 0\]</div>
+<p>The generalized constraint force is found as:</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-4">
+<span class="eqno">(233)<a class="headerlink" href="#equation-lagrange-4" title="Link to this equation">¶</a></span>\[F_r = \lambda a_r(\bar{q})\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\lambda\)</span> is a variable encoding the magnitude of the constraint
+force. It is called  the Lagrange multiplier. The same <span class="math notranslate nohighlight">\(\lambda\)</span> is used
+for each <span class="math notranslate nohighlight">\(r\)</span>, that is, each constraint has a single associated Lagrange
+multiplier.</p>
+<p>Due to how it is constructed, the power produced by the constraint force is
+always zero, as expected.</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-5">
+<span class="eqno">(234)<a class="headerlink" href="#equation-lagrange-5" title="Link to this equation">¶</a></span>\[P = \sum_r F_r\dot{q}_r = \sum \lambda a_r(\bar{q})\dot{q}_r =
+\lambda \sum a_r(\bar{q})\dot{q}_r = \lambda \cdot 0\]</div>
+<p>For example, consider the point mass to be constrained to move in a bowl
+<span class="math notranslate nohighlight">\(q_1^2 + q_2^2 + q_3^2 -1 = 0\)</span>, <a class="reference internal" href="#fig-lagrange-bowl"><span class="std std-numref">Fig. 54</span></a>.  Taking the
+time derivative gives: <span class="math notranslate nohighlight">\(a_1 = 2q_1\)</span>, <span class="math notranslate nohighlight">\(a_2 = 2q_2\)</span>, and <span class="math notranslate nohighlight">\(a_3 =
+2q_3\)</span>.  This results in generalized reaction forces <span class="math notranslate nohighlight">\(F_1 = 2\lambda q_1\)</span>,
+<span class="math notranslate nohighlight">\(F_2 = 2\lambda q_2\)</span> and <span class="math notranslate nohighlight">\(F_3 = 2\lambda q_3\)</span>.</p>
+<figure class="align-center" id="id7">
+<span id="fig-lagrange-bowl"></span><img alt="_images/lagrange-bowl.svg" src="_images/lagrange-bowl.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 54 </span><span class="caption-text">Point mass <span class="math notranslate nohighlight">\(P\)</span> constrained to the surface of a spherical bowl with
+radius <span class="math notranslate nohighlight">\(1\)</span> and constraint force measure numbers <span class="math notranslate nohighlight">\(F_1,F_2,F_3\)</span>.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Often, there are multiple constraints on the same system. For convenience, the
+handling of these constraints can be combined.  Consider the <span class="math notranslate nohighlight">\(m+M\)</span>
+dimensional general constraint equations consisting of the time derivatives of
+the holonomic constraints and/or the nonholonomic constraints:</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-6">
+<span class="eqno">(235)<a class="headerlink" href="#equation-lagrange-6" title="Link to this equation">¶</a></span>\[\bar{f}_{hn}(\dot{\bar{q}}, \bar{q}) =
+\mathbf{M}_{hn}\dot{\bar{q}} + \bar{g}_{hn} = 0 \in \mathbb{R}^{M+m}\]</div>
+<p>the combined constraint forces are given as:</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-7">
+<span class="eqno">(236)<a class="headerlink" href="#equation-lagrange-7" title="Link to this equation">¶</a></span>\[\bar{F}_r = \mathbf{M}_{hn}^\text{T}\bar{\lambda},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{\lambda}\)</span> is a vector of <span class="math notranslate nohighlight">\(m + M\)</span> Lagrange multipliers,
+one for each constraint (row in <span class="math notranslate nohighlight">\(\mathbf{M}_{hn}\)</span>).</p>
+<section id="example-turn-the-torque-free-rigid-body-into-a-rolling-sphere">
+<h3 id="example-turn-the-torque-free-rigid-body-into-a-rolling-sphere">Example: Turn the Torque Free Rigid Body into a Rolling Sphere<a class="headerlink" href="#example-turn-the-torque-free-rigid-body-into-a-rolling-sphere" title="Link to this heading">¶</a></h3>
+<p>The non-slip condition of the rolling sphere is split into three constraints:
+the velocity of the contact point (<span class="math notranslate nohighlight">\(G\)</span>) is zero in the <span class="math notranslate nohighlight">\(\hat{n}_x\)</span>,
+the <span class="math notranslate nohighlight">\(\hat{n}_y\)</span>, and  the <span class="math notranslate nohighlight">\(\hat{n}_z\)</span> directions. The first two
+constraints are nonholonomic, the last constraint is the time derivative of a
+holonomic constraint. All three constraints are enforced by contact forces in
+their respective directions.</p>
+<p>The contact point can be found according by <span class="math notranslate nohighlight">\(\bar{r}^{G/B_o} = -r
+\hat{n}_z\)</span>. By using the <a class="reference internal" href="translational.html#velocity-two-point-theorem"><span class="std std-ref">Velocity Two Point Theorem</span></a>, the following
+constraints are found.</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-8">
+<span class="eqno">(237)<a class="headerlink" href="#equation-lagrange-8" title="Link to this equation">¶</a></span>\[\begin{split}\begin{array}{l}
+  \bar{n}_x\cdot ({}^N\bar{v}^{B_o} + {}^N\bar{\omega}^B \times (-r\hat{n}_z)) = 0 \\
+  \bar{n}_y\cdot ({}^N\bar{v}^{B_o} + {}^N\bar{\omega}^B \times (-r\hat{n}_z)) = 0 \\
+  \bar{n}_z\cdot ({}^N\bar{v}^{B_o} + {}^N\bar{\omega}^B \times (-r\hat{n}_z)) = 0 \\
+\end{array}\end{split}\]</div>
+<p>These can be used to derive the constraint force and the additional equations
+using the Lagrange-multiplier method as shown below. Note that here only the
+first time derivative of the constraint equation is used, again because the
+second time derivatives of the generalized coordinates appear.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Frames and Body Setup</p>
+<p>Setting up reference frames</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'psi theta phi x y z'</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">orient_body_fixed</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">),</span> <span class="s1">'zxy'</span><span class="p">)</span>
+
+<span class="c1"># Mass and inertia</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'M, I_</span><span class="si">{xx}</span><span class="s1">, I_</span><span class="si">{yy}</span><span class="s1">, I_</span><span class="si">{zz}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">I_B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">inertia</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Finding the kinetic energy:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">omega_B</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">r_com</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">v_com</span> <span class="o">=</span> <span class="n">r_com</span><span class="o">.</span><span class="n">dt</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">omega_B</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I_B</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">omega_B</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">*</span><span class="n">v_com</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_com</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Deriving equations of motion:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">psi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span>
+<span class="n">qd</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">qdd</span> <span class="o">=</span> <span class="n">qd</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">K</span><span class="p">])</span>
+<span class="n">fd</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qd</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">L</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+<span class="n">qdd_zerod</span> <span class="o">=</span> <span class="p">{</span><span class="n">qddr</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">qddr</span> <span class="ow">in</span> <span class="n">qdd</span><span class="p">}</span>
+<span class="n">Md</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qdd</span><span class="p">)</span>
+<span class="n">gd</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">qdd_zerod</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<p>To make this free floating body a rolling wheel, three constraints are needed: the
+velocity of the contact point should be zero in <span class="math notranslate nohighlight">\(\hat{n}_x\)</span>, <span class="math notranslate nohighlight">\(\hat{n}_y\)</span>
+and <span class="math notranslate nohighlight">\(\hat{n}_x\)</span> direction.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'r'</span><span class="p">)</span>
+<span class="n">lambda1</span><span class="p">,</span> <span class="n">lambda2</span><span class="p">,</span> <span class="n">lambda3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'lambda1, lambda2, lambda3'</span><span class="p">)</span>
+
+<span class="n">constraint</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_com</span> <span class="o">+</span> <span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="o">-</span><span class="n">r</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">))</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- r \left(\sin{\left(\psi \right)} \dot{\theta} + \cos{\left(\psi \right)} \cos{\left(\theta \right)} \dot{\phi}\right) + \dot{x}\\r \left(- \sin{\left(\psi \right)} \cos{\left(\theta \right)} \dot{\phi} + \cos{\left(\psi \right)} \dot{\theta}\right) + \dot{y}\\\dot{z}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The Jacobian of the constraints with respect to <span class="math notranslate nohighlight">\(\dot{\bar{q}}\)</span> is then:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Mhn</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qd</span><span class="p">)</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">Mhn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0 &amp; - r \sin{\left(\psi \right)} &amp; - r \cos{\left(\psi \right)} \cos{\left(\theta \right)} &amp; 1 &amp; 0 &amp; 0\\0 &amp; r \cos{\left(\psi \right)} &amp; - r \sin{\left(\psi \right)} \cos{\left(\theta \right)} &amp; 0 &amp; 1 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>This constraint information must then be added to the original equations. To do
+so, we make use of a useful fact:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_constraint</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">diff_constraint</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qdd</span><span class="p">)</span> <span class="o">-</span> <span class="n">Mhn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>This equality is true for all constraints, as can easily be shown by taking the
+time derivative of the constraint equation, using the product rule.</p>
+<p>The combined equations can now be written in a block matrix form:</p>
+<div class="math notranslate nohighlight" id="equation-lagrange-9">
+<span class="eqno">(238)<a class="headerlink" href="#equation-lagrange-9" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \mathbf{M}_d &amp; \mathbf{M}_{hn}^T \\
+  \mathbf{ M}_{hn} &amp; 0
+\end{bmatrix}
+\begin{bmatrix}
+  \ddot{\bar{q}} \\
+  \bar{\lambda}
+\end{bmatrix} +
+\begin{bmatrix}
+  \bar{g}_d \\
+  \bar{g}_{hnd}
+\end{bmatrix}
+=
+\begin{bmatrix}
+  0 \\
+  0
+\end{bmatrix}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{g}_d\)</span> is the dynamic bias, and the last term on the right
+hand side, called the constraint bias, can be quickly computed as:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ghnd</span> <span class="o">=</span> <span class="n">diff_constraint</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">qddr</span> <span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">qddr</span> <span class="ow">in</span> <span class="n">qdd</span><span class="p">})</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">trigsimp</span><span class="p">(</span><span class="n">ghnd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}- r \left(- \sin{\left(\psi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi} - \sin{\left(\theta \right)} \cos{\left(\psi \right)} \dot{\phi} \dot{\theta} + \cos{\left(\psi \right)} \dot{\psi} \dot{\theta}\right)\\r \left(\sin{\left(\psi \right)} \sin{\left(\theta \right)} \dot{\phi} \dot{\theta} - \sin{\left(\psi \right)} \dot{\psi} \dot{\theta} - \cos{\left(\psi \right)} \cos{\left(\theta \right)} \dot{\phi} \dot{\psi}\right)\\0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>We call the block matrix called the extended mass matrix and the vector on the
+right hand side the extended dynamic bias.</p>
+<p>With these <cite>N + m + M</cite> equations, it is possible to solve for
+<span class="math notranslate nohighlight">\(\ddot{\bar{q}}\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span>. It is therefore possible to
+integrate/simulate the system directly. However, because only the second
+derivative of the constraint is satisfied, numerical errors can build up due to
+not satisfying the actual constraint the constraint is not satisfied. It is
+better to use a differential algebraic solver, as discussed in <a class="reference internal" href="notation.html#equations-of-motion-with-holonomic-constraints"><span class="std std-ref">Equations of Motion with Holonomic Constraints</span></a>. See <a class="reference external" href="https://github.com/bmcage/odes/blob/master/ipython_examples/Planar%20Pendulum%20as%20DAE.ipynb">the scikits.ode documentation</a> for
+a worked example.</p>
+<p>The method of the Lagrange multipliers can of course also be used within Kane’s
+method. However, it increases the number of equations, which is why the
+elimination approach is often preferred there. An exception being scenarios
+where the constraint force itself is a useful output, for instance to check
+no-slip conditions in case of limited friction.</p>
+</section>
+</section>
+<section id="lagrange-s-vs-kane-s">
+<h2 id="lagrange-s-vs-kane-s">Lagrange’s vs Kane’s<a class="headerlink" href="#lagrange-s-vs-kane-s" title="Link to this heading">¶</a></h2>
+<p>The is book has now presented two alternatives to the Newton-Euler method:
+Kane’s method and Lagrange’s method.  This raises the questions: when should
+each alternative method be used?</p>
+<p>For constrained systems, Kane’s method has the advantage that the equations of
+motion are given for a set of independent generalized speeds only. In other
+words, Kane’s method gives a minimal set of equations. This can give rise to
+simplified equations, additional insight, and numerically more efficient
+simulation. This also gives the benefit that Lagrange multipliers are not
+needed when solving constrained systems with Kane’s method.</p>
+<p>Furthermore, the connection from Kane’s method to vector mechanics, that is,
+Newton’s Laws, is clearer, which can provide additional insight, and make it
+easier to incorporate non-conservative forces such as friction.</p>
+<p>On the other hand, the Lagrange method only requires energies as input, for
+which only the velocities of the bodies are needed. Therefore, it can be
+simpler to derive than the accelerations which are needed for Kane’s method.</p>
+<p>Furthermore, the Lagrange method results in a set of equations with well
+understood structures and properties.  These structures and properties are not
+studied further in these materials. A starting point for further study is
+<a class="reference external" href="https://en.wikipedia.org/wiki/Noether%27s_theorem_">Noether’s theorem</a>, which extends the idea of ignorable coordinates to find
+conserved quantities like momentum and energy.</p>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="energy.html" title="Energy and Power"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Energy and Power </span>
+              </div>
+            </a>
+          
+          
+            <a href="tmt.html" title="Unconstrained Equations of Motion with the TMT Method"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Unconstrained Equations of Motion with the TMT Method </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

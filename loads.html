@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Force, Moment, and Torque &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Generalized Forces" href="generalized-forces.html" />
+    <link rel="prev" title="Mass Distribution" href="mass.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#loads" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Force, Moment, and Torque </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Force, Moment, and Torque </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Force, Moment, and Torque</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#loads--page-root" class="md-nav__link">Force, Moment, and Torque</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#force" class="md-nav__link">Force</a>
+        </li>
+        <li class="md-nav__item"><a href="#bound-and-free-vectors" class="md-nav__link">Bound and Free Vectors</a>
+        </li>
+        <li class="md-nav__item"><a href="#moment" class="md-nav__link">Moment</a>
+        </li>
+        <li class="md-nav__item"><a href="#couple" class="md-nav__link">Couple</a>
+        </li>
+        <li class="md-nav__item"><a href="#equivalence-replacement" class="md-nav__link">Equivalence & Replacement</a>
+        </li>
+        <li class="md-nav__item"><a href="#specifying-forces-and-torques" class="md-nav__link">Specifying Forces and Torques</a>
+        </li>
+        <li class="md-nav__item"><a href="#equal-opposite" class="md-nav__link">Equal & Opposite</a>
+        </li>
+        <li class="md-nav__item"><a href="#contributing-and-noncontributing-forces" class="md-nav__link">Contributing and Noncontributing Forces</a>
+        </li>
+        <li class="md-nav__item"><a href="#gravity" class="md-nav__link">Gravity</a>
+        </li>
+        <li class="md-nav__item"><a href="#springs-dampers" class="md-nav__link">Springs & Dampers</a>
+        </li>
+        <li class="md-nav__item"><a href="#friction" class="md-nav__link">Friction</a>
+        </li>
+        <li class="md-nav__item"><a href="#aerodynamic-drag" class="md-nav__link">Aerodynamic Drag</a>
+        </li>
+        <li class="md-nav__item"><a href="#collision" class="md-nav__link">Collision</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/loads.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#loads--page-root" class="md-nav__link">Force, Moment, and Torque</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#force" class="md-nav__link">Force</a>
+        </li>
+        <li class="md-nav__item"><a href="#bound-and-free-vectors" class="md-nav__link">Bound and Free Vectors</a>
+        </li>
+        <li class="md-nav__item"><a href="#moment" class="md-nav__link">Moment</a>
+        </li>
+        <li class="md-nav__item"><a href="#couple" class="md-nav__link">Couple</a>
+        </li>
+        <li class="md-nav__item"><a href="#equivalence-replacement" class="md-nav__link">Equivalence & Replacement</a>
+        </li>
+        <li class="md-nav__item"><a href="#specifying-forces-and-torques" class="md-nav__link">Specifying Forces and Torques</a>
+        </li>
+        <li class="md-nav__item"><a href="#equal-opposite" class="md-nav__link">Equal & Opposite</a>
+        </li>
+        <li class="md-nav__item"><a href="#contributing-and-noncontributing-forces" class="md-nav__link">Contributing and Noncontributing Forces</a>
+        </li>
+        <li class="md-nav__item"><a href="#gravity" class="md-nav__link">Gravity</a>
+        </li>
+        <li class="md-nav__item"><a href="#springs-dampers" class="md-nav__link">Springs & Dampers</a>
+        </li>
+        <li class="md-nav__item"><a href="#friction" class="md-nav__link">Friction</a>
+        </li>
+        <li class="md-nav__item"><a href="#aerodynamic-drag" class="md-nav__link">Aerodynamic Drag</a>
+        </li>
+        <li class="md-nav__item"><a href="#collision" class="md-nav__link">Collision</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/loads.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="force-moment-and-torque">
+<h1 id="loads--page-root">Force, Moment, and Torque<a class="headerlink" href="#loads--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/9d95a24e9f62162c79843bc272215508/loads.py"><code class="xref download docutils literal notranslate"><span class="pre">loads.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/2b87f280041135158e2b9a48179a6387/loads.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">loads.ipynb</span></code></a>.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy.physics.mechanics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">me</span>
+<span class="n">me</span><span class="o">.</span><span class="n">init_vprinting</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="invisible docutils container">
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceFrame</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'latexs'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\hat{{</span><span class="si">{}</span><span class="s1">}}_</span><span class="si">{}</span><span class="s1">'</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReferenceFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                             <span class="n">latexs</span><span class="o">=</span><span class="p">(</span><span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)),</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n">ReferenceFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>Calculate the resultant force acting on a set of particles or bodies.</p></li>
+<li><p>Calculate the moment of a resultant about a point.</p></li>
+<li><p>Find the equivalent couple of a torque and resultant to simplify forces
+applied to bodies.</p></li>
+<li><p>Determine if a force is noncontributing or not.</p></li>
+<li><p>Define sign conventions for forces.</p></li>
+<li><p>Define forces for gravity, springs, friction, air drag, and collisions.</p></li>
+</ul>
+</section>
+<section id="force">
+<h2 id="force">Force<a class="headerlink" href="#force" title="Link to this heading">¶</a></h2>
+<p>A <em>force</em> is an abstraction we use to describe something that causes mass to
+move (e.g. accelerate from a stationary state). There are four <a class="reference external" href="https://en.wikipedia.org/wiki/Force#Fundamental_interactions">fundamental
+forces of nature</a> of which all other forces can be derived. We describe the
+resulting effect of these fundamental forces in this text. Moments and torques
+arise from forces and are useful in describing what causes distributed mass
+rotation. Forces, moments, and torques have magnitude and direction and thus we
+use vectors to describe them mathematically.</p>
+</section>
+<section id="bound-and-free-vectors">
+<h2 id="bound-and-free-vectors">Bound and Free Vectors<a class="headerlink" href="#bound-and-free-vectors" title="Link to this heading">¶</a></h2>
+<p>Vectors may have a <em>line of action</em>. A line of action is parallel to the vector
+and passes through a particular point. If a vector has a line of action, it is
+said to be <em>bound</em> to its line of action. If a vector is not bound to a line of
+action it is said to be <em>free</em>.</p>
+<p>Angular velocity is an example of a free vector. It has a direction, sense, and
+magnitude, but is not associated with any line of action. For example, if a
+disc can rotate around a fixed point, you can place a body anywhere on this
+disc and the body will always have the same angular velocity. A force vector,
+on the other hand, is bound. If a force is applied to a rigid body, we must
+know where on the body it is applied to resolve the force’s effect. A force
+vector acting on rigid body <span class="math notranslate nohighlight">\(B\)</span> at point <span class="math notranslate nohighlight">\(P\)</span> has a line of action
+through <span class="math notranslate nohighlight">\(P\)</span> and parallel to the force vector.</p>
+<figure class="align-center" id="id14">
+<img alt="_images/force-bound-free.svg" src="_images/force-bound-free.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 34 </span><span class="caption-text">Depicition of bound a) and free b) vectors.</span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="moment">
+<h2 id="moment">Moment<a class="headerlink" href="#moment" title="Link to this heading">¶</a></h2>
+<p>If a vector is a bound vector, then we can define its <em>moment</em> about a point.
+The moment <span class="math notranslate nohighlight">\(\bar{M}\)</span> of bound vector <span class="math notranslate nohighlight">\(\bar{v}\)</span> about point
+<span class="math notranslate nohighlight">\(P\)</span> is a vector itself and is defined as (<a class="reference internal" href="references.html#kane1985" id="id1"><span>[Kane1985]</span></a>, pg. 90):</p>
+<div class="math notranslate nohighlight" id="equation-eq-moment-definition">
+<span class="eqno">(158)<a class="headerlink" href="#equation-eq-moment-definition" title="Link to this equation">¶</a></span>\[\bar{M} := \bar{r}^{L/P} \times \bar{v}\]</div>
+<p><span class="math notranslate nohighlight">\(\bar{r}^{L/P}\)</span> is a position vector from <span class="math notranslate nohighlight">\(P\)</span> to any point
+<span class="math notranslate nohighlight">\(L_i\)</span> on the line of action <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(\bar{v}\)</span>. The cross
+product definition ensures that the the moment does not depend on the choice of
+the point on the line.</p>
+<figure class="align-center" id="id15">
+<span id="fig-force-moment"></span><img alt="_images/force-moment.svg" src="_images/force-moment.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 35 </span><span class="caption-text"><span class="math notranslate nohighlight">\(\bar{v}\)</span> is bound to a line <span class="math notranslate nohighlight">\(L\)</span>. The moment can be calculated
+based on a position vector from <span class="math notranslate nohighlight">\(P\)</span> to any point on the line, for
+example <span class="math notranslate nohighlight">\(L_1,L_2\)</span> or <span class="math notranslate nohighlight">\(L_3\)</span> as shown.</span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>A moment can be the result of a set of vectors. The <em>resultant</em> of a set
+<span class="math notranslate nohighlight">\(S\)</span> of vectors <span class="math notranslate nohighlight">\(\bar{v}_1,\ldots,\bar{v}_\nu\)</span> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-resultant-definition">
+<span class="eqno">(159)<a class="headerlink" href="#equation-eq-resultant-definition" title="Link to this equation">¶</a></span>\[\bar{R}^{S} := \sum_{i=1}^{\nu} \bar{v}_i\]</div>
+<p>If each vector in the resultant is bound, the sum of the moments due to each
+vector about <span class="math notranslate nohighlight">\(P\)</span> is called the moment of <span class="math notranslate nohighlight">\(\bar{R}^{S}\)</span> about
+<span class="math notranslate nohighlight">\(P\)</span>. This summation can be written as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-sum-moments">
+<span class="eqno">(160)<a class="headerlink" href="#equation-eq-sum-moments" title="Link to this equation">¶</a></span>\[\bar{M}^{S/P} = \sum_{i=1}^{\nu} \bar{r}^{L_i/P} \times \bar{v}_i\]</div>
+<p>where <span class="math notranslate nohighlight">\(L_i\)</span> is a point on the line of action of the associated
+<span class="math notranslate nohighlight">\(\bar{v}_i\)</span>.</p>
+<p>The moment of the set of bound vectors <span class="math notranslate nohighlight">\(S\)</span> about one point <span class="math notranslate nohighlight">\(P\)</span> is
+related to the moment of the set about another point <span class="math notranslate nohighlight">\(Q\)</span> by (<a class="reference internal" href="references.html#kane1985" id="id2"><span>[Kane1985]</span></a>,
+pg. 91):</p>
+<div class="math notranslate nohighlight" id="equation-eq-moment-another-point">
+<span class="eqno">(161)<a class="headerlink" href="#equation-eq-moment-another-point" title="Link to this equation">¶</a></span>\[\bar{M}^{S/P} = \bar{M}^{S/Q} + \bar{r}^{P/Q} \times \bar{R}^{S/Q}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{R}^{S/Q}\)</span> is the resultant of the set <span class="math notranslate nohighlight">\(S\)</span> bound to a
+line of action through point <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+<p>For example, take the set <span class="math notranslate nohighlight">\(S\)</span> of two bound vectors <span class="math notranslate nohighlight">\(\bar{F}_1\)</span> and
+<span class="math notranslate nohighlight">\(\bar{F}_2\)</span> bound to lines of action through points <span class="math notranslate nohighlight">\(P_1\)</span> and
+<span class="math notranslate nohighlight">\(P_2\)</span>, respectively. Below I’ve given the vectors some arbitrary
+direction and magnitude.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+
+<span class="n">F1</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">F2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+
+<span class="n">r_O_P1</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">r_O_P2</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\bar{M}^{S/P}\)</span> can be calculated directly using Eq.
+<a class="reference internal" href="#equation-eq-sum-moments">(160)</a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_O_P</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+
+<span class="n">M_S_P</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_O_P1</span> <span class="o">-</span> <span class="n">r_O_P</span><span class="p">,</span> <span class="n">F1</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_O_P2</span> <span class="o">-</span> <span class="n">r_O_P</span><span class="p">,</span> <span class="n">F2</span><span class="p">)</span>
+<span class="n">M_S_P</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 61\hat{n}_z\]</div>
+</div>
+</div>
+<p>Or if <span class="math notranslate nohighlight">\(\bar{M}^{S/Q}\)</span> is known, as well as <span class="math notranslate nohighlight">\(\bar{r}^{P/Q}\)</span>, then
+the Eq. <a class="reference internal" href="#equation-eq-moment-another-point">(161)</a> could be used:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_O_Q</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">M_S_Q</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_O_P1</span> <span class="o">-</span> <span class="n">r_O_Q</span><span class="p">,</span> <span class="n">F1</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_O_P2</span> <span class="o">-</span> <span class="n">r_O_Q</span><span class="p">,</span> <span class="n">F2</span><span class="p">)</span>
+
+<span class="n">M_S_P</span> <span class="o">=</span> <span class="n">M_S_Q</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_O_Q</span> <span class="o">-</span> <span class="n">r_O_P</span><span class="p">,</span> <span class="n">F1</span> <span class="o">+</span> <span class="n">F2</span><span class="p">)</span>
+<span class="n">M_S_P</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 61\hat{n}_z\]</div>
+</div>
+</div>
+</section>
+<section id="couple">
+<h2 id="couple">Couple<a class="headerlink" href="#couple" title="Link to this heading">¶</a></h2>
+<p>A set <span class="math notranslate nohighlight">\(S\)</span> of bound vectors with a resultant equal to zero is called a
+<em>couple</em>. A couple can have as many vectors as desired or needed with a minimum
+number being two, such that <span class="math notranslate nohighlight">\(\bar{R}^{S}=0\)</span>. A couple composed of two
+vectors is called a <em>simple couple</em>. <a class="reference internal" href="#fig-force-couples"><span class="std std-numref">Fig. 36</span></a> shows a few
+examples of couples.</p>
+<figure class="align-center" id="id16">
+<span id="fig-force-couples"></span><img alt="_images/force-couples.svg" src="_images/force-couples.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 36 </span><span class="caption-text">Three couples: a) simple couple, b) &amp; c) couples made up of multiple forces</span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The <em>torque</em> of a couple, <span class="math notranslate nohighlight">\(\bar{T}\)</span>, is the moment of the couple about a
+point. Because the resultant of a couple is zero it follows from
+<a class="reference internal" href="#equation-eq-moment-another-point">(161)</a>, the torque of a couple is the same
+about all points. The torque, being a moment, is also a vector.</p>
+</section>
+<section id="equivalence-replacement">
+<h2 id="equivalence-replacement">Equivalence &amp; Replacement<a class="headerlink" href="#equivalence-replacement" title="Link to this heading">¶</a></h2>
+<p>Two sets of bound vectors are <em>equivalent</em> when they have these two properties:</p>
+<ol class="arabic simple">
+<li><p>equal resultants</p></li>
+<li><p>equal moments about <em>any</em> point</p></li>
+</ol>
+<p>If 1. and 2. are true, the sets are said to be <em>replacements</em> of each other.
+Couples that have equal torques are equivalent, because the resultants are zero
+and moments about any point are equal to the torque.</p>
+<p>Given a set of bound vectors <span class="math notranslate nohighlight">\(S\)</span> and a set of bound vectors that consist
+of a torque of a couple <span class="math notranslate nohighlight">\(\bar{T}\)</span> and vector <span class="math notranslate nohighlight">\(\bar{v}\)</span> bound to an
+arbitrary point <span class="math notranslate nohighlight">\(P\)</span> it is a necessary and sufficient condition that the
+second set is a replacement of the first if (<a class="reference internal" href="references.html#kane1985" id="id4"><span>[Kane1985]</span></a>, pg. 95):</p>
+<div class="math notranslate nohighlight" id="equation-eq-couple-torque-repl">
+<span class="eqno">(162)<a class="headerlink" href="#equation-eq-couple-torque-repl" title="Link to this equation">¶</a></span>\[\begin{split}\bar{T} = \bar{M}^{S/P} \\
+\bar{v} = \bar{R}^{S/P}\end{split}\]</div>
+<p>This means that every set of bound vectors can be replaced by an equivalent
+torque of a couple and a single bound vector that is the resultant of the
+replaced set. This replacement simplifies the description of forces acting on
+bodies.</p>
+<p>Take for example the birds eye view of a four wheeled car which has front
+steering and motors at each wheel allowing for precise control of the
+propulsion forces at each wheel. A diagram of the forces acting at each wheel
+is shown in <a class="reference internal" href="#fig-force-car-replacement"><span class="std std-numref">Fig. 37</span></a>.</p>
+<figure class="align-center" id="id17">
+<span id="fig-force-car-replacement"></span><img alt="_images/force-car-replacement.svg" src="_images/force-car-replacement.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 37 </span><span class="caption-text">Set <span class="math notranslate nohighlight">\(S\)</span> of forces acting at each tire can be replaced with a resultant
+and a torque at a specified point, in this case <span class="math notranslate nohighlight">\(B_o\)</span>.</span><a class="headerlink" href="#id17" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In SymPy Mechanics, first define the symbols:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'l, w'</span><span class="p">)</span>
+<span class="n">Ffl</span><span class="p">,</span> <span class="n">Ffr</span><span class="p">,</span> <span class="n">Frl</span><span class="p">,</span> <span class="n">Frr</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'F_</span><span class="si">{fl}</span><span class="s1">, F_</span><span class="si">{fr}</span><span class="s1">, F_</span><span class="si">{rl}</span><span class="s1">, F_</span><span class="si">{rr}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">alphafl</span><span class="p">,</span> <span class="n">alphafr</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\alpha_</span><span class="si">{fl}</span><span class="s1">, \alpha_</span><span class="si">{fr}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">alpharl</span><span class="p">,</span> <span class="n">alpharr</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\alpha_</span><span class="si">{rl}</span><span class="s1">, \alpha_</span><span class="si">{rr}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'delta'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>With the symbols defined, I use some auxiliary reference frames to establish
+the orientations with <span class="math notranslate nohighlight">\(B\)</span> being the car body, <span class="math notranslate nohighlight">\(W\)</span> being the steered
+front wheels, and the others to establish the direction of the force at each
+wheel.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'W'</span><span class="p">)</span>
+<span class="n">FR</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'F_R'</span><span class="p">)</span>
+<span class="n">FL</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'F_L'</span><span class="p">)</span>
+<span class="n">RR</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'R_R'</span><span class="p">)</span>
+<span class="n">RL</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'R_L'</span><span class="p">)</span>
+
+<span class="n">W</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">FR</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">alphafr</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">FL</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">alphafl</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">RR</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">alpharr</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">RL</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">alpharl</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The resultant of the forces expressed in the <span class="math notranslate nohighlight">\(B\)</span> frame is then:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="n">Ffl</span><span class="o">*</span><span class="n">FL</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">Ffr</span><span class="o">*</span><span class="n">FR</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">Frl</span><span class="o">*</span><span class="n">RL</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">Frr</span><span class="o">*</span><span class="n">RR</span><span class="o">.</span><span class="n">x</span>
+<span class="n">R</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (F_{fl} \cos{\left(\alpha_{fl} + \delta \right)} + F_{fr} \cos{\left(\alpha_{fr} + \delta \right)} + F_{rl} \cos{\left(\alpha_{rl} \right)} + F_{rr} \cos{\left(\alpha_{rr} \right)})\hat{b}_x + (F_{fl} \sin{\left(\alpha_{fl} + \delta \right)} + F_{fr} \sin{\left(\alpha_{fr} + \delta \right)} + F_{rl} \sin{\left(\alpha_{rl} \right)} + F_{rr} \sin{\left(\alpha_{rr} \right)})\hat{b}_y\]</div>
+</div>
+</div>
+<p>This resultant is bound to a line of action through <span class="math notranslate nohighlight">\(B_o\)</span>. The associated
+couple is then calculated as the total moment about <span class="math notranslate nohighlight">\(B_o\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">Ffl</span><span class="o">*</span><span class="n">FL</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span>
+     <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">Ffr</span><span class="o">*</span><span class="n">FR</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span>
+     <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">Frl</span><span class="o">*</span><span class="n">RL</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span>
+     <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">Frr</span><span class="o">*</span><span class="n">RR</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (\frac{\left(l \sin{\left(\alpha_{fl} + \delta \right)} + w \cos{\left(\alpha_{fl} + \delta \right)}\right) F_{fl}}{2} + \frac{\left(l \sin{\left(\alpha_{fr} + \delta \right)} - w \cos{\left(\alpha_{fr} + \delta \right)}\right) F_{fr}}{2} - \frac{\left(l \sin{\left(\alpha_{rl} \right)} - w \cos{\left(\alpha_{rl} \right)}\right) F_{rl}}{2} - \frac{\left(l \sin{\left(\alpha_{rr} \right)} + w \cos{\left(\alpha_{rr} \right)}\right) F_{rr}}{2})\hat{b}_z\]</div>
+</div>
+</div>
+<p>Since we can always describe the forces acting on a rigid body as a resultant
+force and an associate torque of a couple, we will often take advantage of this
+simpler form for constructing models.</p>
+</section>
+<section id="specifying-forces-and-torques">
+<h2 id="specifying-forces-and-torques">Specifying Forces and Torques<a class="headerlink" href="#specifying-forces-and-torques" title="Link to this heading">¶</a></h2>
+<p>Forces are bound vectors, so we have to define their lines of action. This is
+best done by specifying the points on which each force acts, thus we will
+always use a vector and a point to fully describe the force. Methods and
+functions in SymPy Mechanics that make use of forces will typically require a
+tuple containing a point and a vector, for example the resultant force
+<span class="math notranslate nohighlight">\(R^{S/B_o}\)</span> acting on the mass center of the car would be specified like
+so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Bo</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'Bo'</span><span class="p">)</span>
+<span class="n">force</span> <span class="o">=</span> <span class="p">(</span><span class="n">Bo</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+<span class="n">force</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(Bo, F_{fr}(t)*F_R.x + F_{fl}(t)*F_L.x + F_{rr}(t)*R_R.x + F_{rl}(t)*R_L.x)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Torques of a couple are free vectors (not bound to a line of action) but
+represent a couple acting on a rigid body, thus a reference frame associated
+with a rigid body and the vector representing the torque will be used to
+describe the torque in SymPy Mechanics. For example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torque</span> <span class="o">=</span> <span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">torque</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(B,
+ ((l*sin(\alpha_{fl}(t) + delta(t)) + w*cos(\alpha_{fl}(t) + delta(t)))*F_{fl}(t)/2 + (l*sin(\alpha_{fr}(t) + delta(t)) - w*cos(\alpha_{fr}(t) + delta(t)))*F_{fr}(t)/2 - (l*sin(\alpha_{rl}(t)) - w*cos(\alpha_{rl}(t)))*F_{rl}(t)/2 - (l*sin(\alpha_{rr}(t)) + w*cos(\alpha_{rr}(t)))*F_{rr}(t)/2)*B.z)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will often refer to forces and torques collectively as <em>loads</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The two cells above do not render the math nicely due to this SymPy
+bug: <a class="reference external" href="https://github.com/sympy/sympy/issues/24967">https://github.com/sympy/sympy/issues/24967</a>.</p>
+</div>
+</section>
+<section id="equal-opposite">
+<h2 id="equal-opposite">Equal &amp; Opposite<a class="headerlink" href="#equal-opposite" title="Link to this heading">¶</a></h2>
+<p>Both forces and torques applied to a multibody system must obey <a class="reference external" href="https://en.wikipedia.org/wiki/Newton's_laws_of_motion#Third_law">Newton’s Third
+Law</a>, i.e. that forces and torques act equal and opposite. Take for example a
+torque from a motor that causes a pinned lever <span class="math notranslate nohighlight">\(B\)</span> to rotate relative to
+the ground <span class="math notranslate nohighlight">\(N\)</span> shown in <a class="reference internal" href="#fig-force-equal-opposite"><span class="std std-numref">Fig. 38</span></a>. The motor
+torque can be modeled to occur between the stator and the rotor. We’ve
+arbitrarily selected the sign convention shown, i.e. a positive value of torque
+applies a positive torque to <span class="math notranslate nohighlight">\(B\)</span> and a negative torque to <span class="math notranslate nohighlight">\(N\)</span> if
+the torque is parallel to <span class="math notranslate nohighlight">\(\hat{n}_z=\hat{b}_z\)</span>.</p>
+<figure class="align-center" id="id18">
+<span id="fig-force-equal-opposite"></span><a class="reference internal image-reference" href="_images/force-equal-opposite.svg"><img alt="_images/force-equal-opposite.svg" src="_images/force-equal-opposite.svg" style="width: 400px;"/>
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 38 </span><span class="caption-text">A motor stator <span class="math notranslate nohighlight">\(N\)</span> fixed to ground with an arm fixed to the motor
+rotor <span class="math notranslate nohighlight">\(B\)</span> shown as one unit in a) and as separate bodies in b) with
+equal and opposite torque vectors applied to the pair of bodies representing
+the torque of a couple generated by the motor.</span><a class="headerlink" href="#id18" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The motor torque can be specified as a time varying vector:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'T, q'</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">Tm</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Then the equal and opposite torques are captured by these two tuples:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">Tm</span><span class="p">),</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="o">-</span><span class="n">Tm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>((B, T(t)*N.z), (N, - T(t)*N.z))
+</pre></div>
+</div>
+</div>
+</div>
+<p>with equal and opposite torques applied to each body.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The sign conventions are really just a convention. It is also valid to
+choose <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">-Tm),</span> <span class="pre">(N,</span> <span class="pre">Tm)</span></code> or even <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">Tm),</span> <span class="pre">(N,</span> <span class="pre">Tm)</span></code> and <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">-Tm),</span>
+<span class="pre">(B,</span> <span class="pre">-Tm)</span></code>. But it is useful to choose a sign convention such that when the
+signs of angular velocity and torque are the same it corresponds to power
+into the system. So, for example, <code class="docutils literal notranslate"><span class="pre">B.orient_axis(N,</span> <span class="pre">q,</span> <span class="pre">N.z)</span></code> corresponds
+to <code class="docutils literal notranslate"><span class="pre">(T*N.z,</span> <span class="pre">B)</span></code> and power in. The key thing is that you know what your
+convention is so that you can interpret numerical results and signs
+correctly.</p>
+</div>
+</section>
+<section id="contributing-and-noncontributing-forces">
+<h2 id="contributing-and-noncontributing-forces">Contributing and Noncontributing Forces<a class="headerlink" href="#contributing-and-noncontributing-forces" title="Link to this heading">¶</a></h2>
+<p><em>Contributing forces</em> are those that can do work on the multibody system. <a class="reference external" href="https://en.wikipedia.org/wiki/Work_(physics)">Work</a>
+of a force <span class="math notranslate nohighlight">\(\bar{F}\)</span> acting over path <span class="math notranslate nohighlight">\(S\)</span> is defined as the
+following <a class="reference external" href="https://en.wikipedia.org/wiki/Line_integral">line integral</a>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-work-definition">
+<span class="eqno">(163)<a class="headerlink" href="#equation-eq-work-definition" title="Link to this equation">¶</a></span>\[W = \int_S \bar{F} \cdot d\bar{s}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d\bar{s}\)</span> is the differential vector tangent to the path at the
+point the force is applied.</p>
+<p>For example, the gravitational force acting on a particle moving through a
+unidirectional constant gravitational field (i.e. where the gravitational force
+is equal in magnitude, doesn’t change, and always the same direction) does work
+on the system unless the particle moves perpendicular to the field.</p>
+<p><em>Noncontributing forces</em> never do work on the system. For example, when a force
+acts between two points that have no relative motion, no work is done. Examples
+of noncontributing forces:</p>
+<ol class="arabic simple">
+<li><p>contact forces on particles across smooth (frictionless) surfaces of rigid
+bodies</p></li>
+<li><p>any internal contact and body (distance) forces between any two points in a
+rigid body</p></li>
+<li><p>contact forces between bodies rolling without slipping on each other</p></li>
+</ol>
+<p>In the next chapter, we will see how the use of generalized coordinates relieve
+us from having to specify any noncontributing forces.</p>
+</section>
+<section id="gravity">
+<h2 id="gravity">Gravity<a class="headerlink" href="#gravity" title="Link to this heading">¶</a></h2>
+<p>We will often be interested in a multibody system’s motion when it is subject
+to gravitational forces. The simplest case is a constant unidirectional
+gravitational field, which is an appropriate model for objects moving on and
+near the Earth’s surface. The gravitational forces can be applied solely to the
+mass centers of each rigid body as a resultant force. The gravitational torque
+on the bodies is zero because the force is equal in magnitude for each particle
+in the body. See <a class="reference internal" href="references.html#kane1985" id="id6"><span>[Kane1985]</span></a> pg. 110 for the more general model of <a class="reference external" href="https://en.wikipedia.org/wiki/Newton's_law_of_universal_gravitation">Newton’s
+Law of Universal Gravitation</a> where this is not the case. Studies of
+spacecraft dynamics often require considering both gravitational forces and
+moments.</p>
+<p>In SymPy Mechanics, a gravitational force acting on a particle of mass
+<span class="math notranslate nohighlight">\(m\)</span> with acceleration due to gravity being <span class="math notranslate nohighlight">\(g\)</span> in the
+<span class="math notranslate nohighlight">\(-\hat{n}_y\)</span> direction would take this form:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, g'</span><span class="p">)</span>
+<span class="n">Fg</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">Fg</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  g m\hat{n}_y\]</div>
+</div>
+</div>
+</section>
+<section id="springs-dampers">
+<h2 id="springs-dampers">Springs &amp; Dampers<a class="headerlink" href="#springs-dampers" title="Link to this heading">¶</a></h2>
+<p>Idealized springs and dampers are useful models of elements that have distance
+and velocity dependent forces and torques. A spring with free length
+<span class="math notranslate nohighlight">\(q_0\)</span> and where <span class="math notranslate nohighlight">\(q_1,q_2\)</span> locate the ends of the spring along a
+line parallel to <span class="math notranslate nohighlight">\(\hat{n}_x\)</span> is shown in <a class="reference internal" href="#fig-force-spring"><span class="std std-numref">Fig. 39</span></a>.</p>
+<p>If we displace <span class="math notranslate nohighlight">\(P\)</span> in the positive <span class="math notranslate nohighlight">\(\hat{n}_x\)</span> direction the spring
+will apply a force in the negative <span class="math notranslate nohighlight">\(\hat{n}_x\)</span> direction on point
+<span class="math notranslate nohighlight">\(P\)</span>. So we chose a sign convention that the force on <span class="math notranslate nohighlight">\(P\)</span> from the
+spring is opposite the direction of the displacement.</p>
+<figure class="align-center" id="id19">
+<span id="fig-force-spring"></span><img alt="_images/force-spring.svg" src="_images/force-spring.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 39 </span><span class="caption-text">Diagram of a spring with a sign convention that tension is positive.
+<span class="math notranslate nohighlight">\(P\)</span> is shown separated from the end of the spring to show the equal
+and opposite forces.</span><a class="headerlink" href="#id19" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>If the spring is linear with stiffness <span class="math notranslate nohighlight">\(k\)</span> the spring force vector is
+then:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q0</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'q0, k'</span><span class="p">)</span>
+<span class="n">q1</span><span class="p">,</span> <span class="n">q2</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'q1, q2'</span><span class="p">)</span>
+
+<span class="n">displacement</span> <span class="o">=</span> <span class="n">q2</span> <span class="o">-</span> <span class="n">q1</span> <span class="o">-</span> <span class="n">q0</span>
+<span class="n">displacement</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - q_{0} - q_{1} + q_{2}\]</div>
+</div>
+</div>
+<p>Here a positive displacement represents the spring in tension and a negative
+displacement is compression.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fs</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span><span class="o">*</span><span class="n">displacement</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">Fs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  k \left(- q_{0} - q_{1} + q_{2}\right)\hat{n}_x\]</div>
+</div>
+</div>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Dashpot">Dampers</a> are often used in parallel or series with springs to provide an energy
+dissipation via viscous-like friction. Springs combined with dampers allow for
+classical second order <a class="reference external" href="https://en.wikipedia.org/wiki/Damping">under-, over-, and critically-damped motion</a>. A linear viscous damper with damping
+coefficient <span class="math notranslate nohighlight">\(c\)</span> that resists motion can be defined like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'c'</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+
+<span class="n">Fc</span> <span class="o">=</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">displacement</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">Fc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  c \left(- \dot{q}_{1} + \dot{q}_{2}\right)\hat{n}_x\]</div>
+</div>
+</div>
+</section>
+<section id="friction">
+<h2 id="friction">Friction<a class="headerlink" href="#friction" title="Link to this heading">¶</a></h2>
+<p>Coulomb’s Law of Friction provides simple model of dry <a class="reference external" href="https://en.wikipedia.org/wiki/Friction">friction</a> between two
+objects. When the two objects are in motion with respect to each other, there
+is a constant magnitude force that resists the motion. The force is independent
+of contact area and is proportional to the normal force between the objects.
+Coulomb’s kinetic friction model takes the scalar form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-coulomb-kinetic-friction">
+<span class="eqno">(164)<a class="headerlink" href="#equation-eq-coulomb-kinetic-friction" title="Link to this equation">¶</a></span>\[\begin{split}F_f =
+\begin{cases}
+\mu_k F_n &amp; v &lt; 0 \\
+0 &amp; v = 0 \\
+-\mu_k F_n &amp; v &gt; 0
+\end{cases}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(F_N\)</span> is the normal force between the two objects, <span class="math notranslate nohighlight">\(v\)</span> is the
+relative speed between the two objects, and <span class="math notranslate nohighlight">\(\mu_k\)</span> is the coefficient of
+kinetic friction. At <span class="math notranslate nohighlight">\(v=0\)</span> kinetic friction is zero, but two objects in
+contact with a normal force can resist moving through static friction. When
+<span class="math notranslate nohighlight">\(v=0\)</span> any force perpendicular to the normal force can be generated up to
+a magnitude of <span class="math notranslate nohighlight">\(F_f=\mu_s F_n\)</span> where <span class="math notranslate nohighlight">\(\mu_s\)</span> is the coefficient of
+static friction and <span class="math notranslate nohighlight">\(\mu_s &gt; \mu_k\)</span>.  Eq.
+<a class="reference internal" href="#equation-eq-coulomb-kinetic-friction">(164)</a> leaves this static case ambiguous,
+but it can be extended to:</p>
+<div class="math notranslate nohighlight" id="equation-eq-coulomb-friction">
+<span class="eqno">(165)<a class="headerlink" href="#equation-eq-coulomb-friction" title="Link to this equation">¶</a></span>\[\begin{split}F_f =
+\begin{cases}
+\mu_k F_n &amp; v &lt; 0 \\
+\left[-\mu_s F_n, \mu_s F_n\right] &amp; v = 0 \\
+-\mu_k F_n &amp; v &gt; 0
+\end{cases}\end{split}\]</div>
+<p>SymPy’s <a class="reference external" href="https://docs.sympy.org/latest/modules/functions/elementary.html#sympy.functions.elementary.piecewise.Piecewise" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Piecewise</span></code></a> is
+one way to create a symbolic representation of kinetic friction:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'mu, m, g'</span><span class="p">)</span>
+
+<span class="n">Fn</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">g</span>
+
+<span class="n">displacement</span> <span class="o">=</span> <span class="n">q2</span> <span class="o">-</span> <span class="n">q1</span>
+
+<span class="n">Ff</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Piecewise</span><span class="p">((</span><span class="n">mu</span><span class="o">*</span><span class="n">Fn</span><span class="p">,</span> <span class="n">displacement</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">),</span>
+                  <span class="p">(</span><span class="o">-</span><span class="n">mu</span><span class="o">*</span><span class="n">Fn</span><span class="p">,</span> <span class="n">displacement</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span>
+                  <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">Ff</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \begin{cases} g m \mu &amp; \text{for}\: \dot{q}_{1} - \dot{q}_{2} &gt; 0 \\- g m \mu &amp; \text{for}\: \dot{q}_{1} - \dot{q}_{2} &lt; 0 \\0 &amp; \text{otherwise} \end{cases}\hat{n}_x\end{split}\]</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Sign_function">signum function</a>
+(<a class="reference external" href="https://docs.sympy.org/latest/modules/functions/elementary.html#sympy.functions.elementary.complexes.sign" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sign</span></code></a>) can also be
+used in a similar and simpler form:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ff</span> <span class="o">=</span> <span class="o">-</span><span class="n">mu</span><span class="o">*</span><span class="n">Fn</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">displacement</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">Ff</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  g m \mu \operatorname{sign}{\left(- \dot{q}_{1} + \dot{q}_{2} \right)}\hat{n}_x\]</div>
+</div>
+</div>
+<p>Eq. <a class="reference internal" href="#equation-eq-coulomb-friction">(165)</a> is a sufficient model for many use
+cases, but it does not necessarily capture all observed effects.
+<a class="reference internal" href="#fig-friction-models"><span class="std std-numref">Fig. 40</span></a> shows a modification of Coulomb model that
+includes the <a class="reference external" href="https://en.wikipedia.org/wiki/Stribeck_curve">Stribeck effect</a> and viscous friction. Flores et. al have a nice
+summary of several other friction models that could be used <a class="reference internal" href="references.html#flores2023" id="id9"><span>[Flores2023]</span></a>.</p>
+<figure class="align-default" id="id20">
+<span id="fig-friction-models"></span><img alt="https://ars.els-cdn.com/content/image/1-s2.0-S0094114X23000782-gr18_lrg.jpg" src="https://ars.els-cdn.com/content/image/1-s2.0-S0094114X23000782-gr18_lrg.jpg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 40 </span><span class="caption-text">Extensions to the (a) Coulomb Dry Friction model: (b) Stribeck effect and
+(c) Stribeck and viscous effects. Taken from <a class="reference internal" href="references.html#flores2023" id="id10"><span>[Flores2023]</span></a> (Creative Commons
+BY-NC-ND 4.0).</span><a class="headerlink" href="#id20" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="aerodynamic-drag">
+<h2 id="aerodynamic-drag">Aerodynamic Drag<a class="headerlink" href="#aerodynamic-drag" title="Link to this heading">¶</a></h2>
+<p>Aerodynamic <a class="reference external" href="https://en.wikipedia.org/wiki/Drag_(physics)">drag</a> of a blunt body at low Reynolds numbers is dominated by the
+frontal area drag and the magnitude of this drag force can be modeled with the
+following equation:</p>
+<div class="math notranslate nohighlight" id="equation-eq-aerodynamic-drag">
+<span class="eqno">(166)<a class="headerlink" href="#equation-eq-aerodynamic-drag" title="Link to this equation">¶</a></span>\[F_d = \frac{1}{2}\rho C_dAv^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho\)</span> is the density of the air, <span class="math notranslate nohighlight">\(C_d\)</span> is the drag
+coefficient, <span class="math notranslate nohighlight">\(A\)</span> is the frontal area, and <span class="math notranslate nohighlight">\(v\)</span> is the air speed
+relative to the body.</p>
+<p>If a body is moving in still air at an arbitrary velocity and point <span class="math notranslate nohighlight">\(P\)</span>
+is the aerodynamic center of the body then the aerodynamic drag force vector
+that opposes the motion can be found with such an equation:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'A, C_d, rho'</span><span class="p">)</span>
+<span class="n">ux</span><span class="p">,</span> <span class="n">uy</span><span class="p">,</span> <span class="n">uz</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'u_x, u_y, u_z'</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">N_v_P</span> <span class="o">=</span> <span class="n">ux</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">uy</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">uz</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">Fd</span> <span class="o">=</span> <span class="o">-</span><span class="n">N_v_P</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">*</span><span class="n">Cd</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">rho</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">N_v_P</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N_v_P</span><span class="p">)</span>
+<span class="n">Fd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  \frac{A C_{d} \rho \sqrt{u_{x}^{2} + u_{y}^{2} + u_{z}^{2}} u_{x}}{2}\hat{n}_x -  \frac{A C_{d} \rho \sqrt{u_{x}^{2} + u_{y}^{2} + u_{z}^{2}} u_{y}}{2}\hat{n}_y -  \frac{A C_{d} \rho \sqrt{u_{x}^{2} + u_{y}^{2} + u_{z}^{2}} u_{z}}{2}\hat{n}_z\]</div>
+</div>
+</div>
+<p>If the motion is only along the <span class="math notranslate nohighlight">\(\hat{n}_x\)</span> direction, for example, the
+equation for the drag force vector reduces to:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fd</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">uy</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span><span class="mi">0</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  \frac{A C_{d} \rho u_{x} \left|{u_{x}}\right|}{2}\hat{n}_x\]</div>
+</div>
+</div>
+<p>Managing the correct direction of the force, so that it opposes motion and is
+applied at the aerodynamic center, is important. The drag coefficient and
+frontal area can also change dynamically depending on the shape of the object
+and the direction the air is flowing over it.</p>
+</section>
+<section id="collision">
+<h2 id="collision">Collision<a class="headerlink" href="#collision" title="Link to this heading">¶</a></h2>
+<p>If two points, a point and a surface, or two surfaces collide the impact
+behavior depends on the material properties, mass, and kinematics of the
+colliding bodies. There are two general approaches to modeling collision. The
+first is the Newtonian method in which you consider the momentum change,
+impulse, before and after collision. For a particle impacting a surface, this
+takes the basic form:</p>
+<div class="math notranslate nohighlight" id="equation-loads-0">
+<span class="eqno">(167)<a class="headerlink" href="#equation-loads-0" title="Link to this equation">¶</a></span>\[m v^{+} = -e m v^{-}\]</div>
+<p>where <span class="math notranslate nohighlight">\(m\)</span> is the particle’s mass, <span class="math notranslate nohighlight">\(v^{-}\)</span> is the speed before
+impact, <span class="math notranslate nohighlight">\(v^{+}\)</span> is the speed after impact, and <span class="math notranslate nohighlight">\(e\)</span> is the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_restitution">coefficient of restitution</a>. The momentum after impact will be opposite and
+equal to the momentum before impact for a purely elastic collision <span class="math notranslate nohighlight">\(e=1\)</span>
+and the magnitude of the momentum will be less if the collision is inelastic
+<span class="math notranslate nohighlight">\(0&lt;e&lt;1\)</span>. This approach can be extended to a multibody system; see
+<a class="reference internal" href="references.html#flores2023" id="id11"><span>[Flores2023]</span></a> for an introduction to this approach.</p>
+<p>The Newtonian model does not consider the explicit behavior of the force that
+generates the impulse at collision. Here we will take an alternative approach
+by modeling the force explicitly. Such contact force models can provide more
+accurate results, at the cost of longer computation times. Most impact force
+models build upon Hunt and Crossley’s seminal model <a class="reference internal" href="references.html#hunt1975" id="id12"><span>[Hunt1975]</span></a> which is based
+on <a class="reference external" href="https://en.wikipedia.org/wiki/Contact_mechanics">Hertzian contact theory</a>. Hunt and Crossley model the impact as a
+nonlinear function of penetration depth and its rate. The force is made up of a
+nonlinear stiffness and a damping term that take this form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-hunt-crossley">
+<span class="eqno">(168)<a class="headerlink" href="#equation-eq-hunt-crossley" title="Link to this equation">¶</a></span>\[f_c = k z^n + cz^n \dot{z}\]</div>
+<p><span class="math notranslate nohighlight">\(k\)</span> is the nonlinear contact stiffness, <span class="math notranslate nohighlight">\(n\)</span> is the stiffness
+exponent, <span class="math notranslate nohighlight">\(z\)</span> the contact penetration, <span class="math notranslate nohighlight">\(\dot{z}\)</span> is the penetration
+velocity, and <span class="math notranslate nohighlight">\(c\)</span> is the hysteresis damping factor. The damping scales
+with the penetration depth. <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(c\)</span> can be determined from the
+material properties and the shape of the colliding objects and can be related
+to the coefficient of restitution. <span class="math notranslate nohighlight">\(n\)</span> is <span class="math notranslate nohighlight">\(3/2\)</span> based on the
+Hertzian contact theory.</p>
+<figure class="align-center" id="id21">
+<span id="fig-force-collision"></span><img alt="_images/force-collision.svg" src="_images/force-collision.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 41 </span><span class="caption-text">Particle <span class="math notranslate nohighlight">\(P\)</span> colliding with a surface.</span><a class="headerlink" href="#id21" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For example, if modeling a particle <span class="math notranslate nohighlight">\(P\)</span> that impacts a surface normal to
+<span class="math notranslate nohighlight">\(\hat{n}_z\)</span> that contains point <span class="math notranslate nohighlight">\(O\)</span> the penetration <span class="math notranslate nohighlight">\(z_p\)</span> of
+the particle into the surface (if positive <span class="math notranslate nohighlight">\(z\)</span> is out and negative
+<span class="math notranslate nohighlight">\(z\)</span> is inside the surface) can be described with:</p>
+<div class="math notranslate nohighlight" id="equation-eq-penetration">
+<span class="eqno">(169)<a class="headerlink" href="#equation-eq-penetration" title="Link to this equation">¶</a></span>\[z_p = \frac{| \bar{r}^{P/O} \cdot \hat{n}_z | - \bar{r}^{P/O} \cdot \hat{n}_z}{2}\]</div>
+<p>This difference between the absolute value and the value itself is equivalent
+to this piecewise function:</p>
+<div class="math notranslate nohighlight" id="equation-eq-penetration-piecewise">
+<span class="eqno">(170)<a class="headerlink" href="#equation-eq-penetration-piecewise" title="Link to this equation">¶</a></span>\[\begin{split}z_p =
+\begin{cases}
+0 &amp; \bar{r}^{P/O} \cdot \hat{n}_z &gt; 0 \\
+\bar{r}^{P/O} \cdot \hat{n}_z &amp; \bar{r}^{P/O} \cdot \hat{n}_z \leq 0
+\end{cases}\end{split}\]</div>
+<p>In SymPy, this can be defined like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">zd</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="sa">r</span><span class="s1">'x, y, z, \dot</span><span class="si">{z}</span><span class="s1">'</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">r_O_P</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">zh</span> <span class="o">=</span> <span class="n">r_O_P</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+<span class="n">zp</span> <span class="o">=</span> <span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">zh</span><span class="p">)</span> <span class="o">-</span> <span class="n">zh</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">zp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \frac{z}{2} + \frac{\left|{z}\right|}{2}\]</div>
+</div>
+</div>
+<p>The force can now be formulated according to <a class="reference internal" href="#equation-eq-hunt-crossley">(168)</a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'k, c'</span><span class="p">)</span>
+
+<span class="n">Fz</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">zp</span><span class="o">**</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">zp</span><span class="o">**</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">S</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">zd</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">Fz</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (c \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}} \dot{z} + k \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}})\hat{n}_z\]</div>
+</div>
+</div>
+<p>We can check whether the force is correct for positive and negative <span class="math notranslate nohighlight">\(z\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fz</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">z</span><span class="p">:</span> <span class="n">sm</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fz</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">z</span><span class="p">:</span> <span class="n">sm</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="kc">True</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (c \left(- z\right)^{\frac{3}{2}} \dot{z} + k \left(- z\right)^{\frac{3}{2}})\hat{n}_z\]</div>
+</div>
+</div>
+<p>More on the Hunt-Crossley model and alterations on the model are summarized in
+<a class="reference internal" href="references.html#flores2023" id="id13"><span>[Flores2023]</span></a>.</p>
+<p>The impact force model is often combined with a friction model to generate a
+friction force for impacts that are not perfectly normal to the contacting
+surfaces. For example, Coulomb friction force can slow the particle’s sliding
+on the surface if we know the tangential velocity components <span class="math notranslate nohighlight">\(v_x\)</span> and
+<span class="math notranslate nohighlight">\(v_y\)</span> at the contact location. This lets us write to tangential friction
+force components:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'mu'</span><span class="p">)</span>
+
+<span class="n">vx</span> <span class="o">=</span> <span class="n">r_O_P</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">vy</span> <span class="o">=</span> <span class="n">r_O_P</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">Fx</span> <span class="o">=</span> <span class="o">-</span><span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">vx</span><span class="p">)</span><span class="o">/</span><span class="n">vx</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">Fz</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span>
+<span class="n">Fx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  \frac{\mu \left(c \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}} \dot{z} + k \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}}\right) \left|{\dot{x}}\right|}{\dot{x}}\hat{n}_x\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fy</span> <span class="o">=</span> <span class="o">-</span><span class="n">sm</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">vy</span><span class="p">)</span><span class="o">/</span><span class="n">vy</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">Fz</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span>
+<span class="n">Fy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  \frac{\mu \left(c \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}} \dot{z} + k \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}}\right) \left|{\dot{y}}\right|}{\dot{y}}\hat{n}_y\]</div>
+</div>
+</div>
+<p>These measure numbers for the force vector then evaluate to zero when there is
+no penetration <span class="math notranslate nohighlight">\(z_p\)</span> and evaluates to a spring and damper and Coulomb
+friction when there is. For example, using so numerical values to set the
+penetration:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vz</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'v_z'</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">repl</span> <span class="o">=</span> <span class="p">{</span><span class="n">zd</span><span class="p">:</span> <span class="n">vz</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">sm</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+
+<span class="n">Fx</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">repl</span><span class="p">),</span> <span class="n">Fy</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">repl</span><span class="p">),</span> <span class="n">Fz</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">repl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( 0, \  0, \  0\right)\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vz</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'v_z'</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">repl</span> <span class="o">=</span> <span class="p">{</span><span class="n">zd</span><span class="p">:</span> <span class="n">vz</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">sm</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+
+<span class="n">Fx</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">repl</span><span class="p">),</span> <span class="n">Fy</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">repl</span><span class="p">),</span> <span class="n">Fz</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">repl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( -  \frac{\mu \left(c \left(- z\right)^{\frac{3}{2}} v_{z} + k \left(- z\right)^{\frac{3}{2}}\right) \left|{\dot{x}}\right|}{\dot{x}}\hat{n}_x, \  -  \frac{\mu \left(c \left(- z\right)^{\frac{3}{2}} v_{z} + k \left(- z\right)^{\frac{3}{2}}\right) \left|{\dot{y}}\right|}{\dot{y}}\hat{n}_y, \  (c \left(- z\right)^{\frac{3}{2}} v_{z} + k \left(- z\right)^{\frac{3}{2}})\hat{n}_z\right)\]</div>
+</div>
+</div>
+<p>Finally, the total force on the particle contacting the surface can be fully
+described:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fx</span> <span class="o">+</span> <span class="n">Fy</span> <span class="o">+</span> <span class="n">Fz</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  \frac{\mu \left(c \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}} \dot{z} + k \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}}\right) \left|{\dot{x}}\right|}{\dot{x}}\hat{n}_x -  \frac{\mu \left(c \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}} \dot{z} + k \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}}\right) \left|{\dot{y}}\right|}{\dot{y}}\hat{n}_y + (c \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}} \dot{z} + k \left(- \frac{z}{2} + \frac{\left|{z}\right|}{2}\right)^{\frac{3}{2}})\hat{n}_z\]</div>
+</div>
+</div>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="mass.html" title="Mass Distribution"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Mass Distribution </span>
+              </div>
+            </a>
+          
+          
+            <a href="generalized-forces.html" title="Generalized Forces"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Generalized Forces </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
