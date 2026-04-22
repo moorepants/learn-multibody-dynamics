@@ -101,7 +101,7 @@ which we will name matrix :math:`\mathbf{T}`.
 
 .. math::
 
-   \mathbf{T} = \mathbf{J}_{\bar{v},\bar{u}} \in \mathbb{R}^{6\nu \times n}
+   \mathbf{T} := \mathbf{J}_{\bar{v},\bar{u}} \in \mathbb{R}^{6\nu \times n}
    \quad
    \textrm{where}
    \quad
