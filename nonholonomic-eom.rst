@@ -55,25 +55,29 @@ Introduction
 In chapters, :ref:`Holonomic Constraints` and :ref:`Nonholonomic Constraints`,
 I introduced two types of constraints: holonomic (configuration) constraints
 and nonholonomic (motion) constraints. Holonomic constraints are nonlinear
-constraints in the coordinates [#]_. Nonholonomic constraints are linear in the
-generalized speeds, by definition. We will address the nonholonomic equations
-of motion first, as they are slightly easier to deal with.
+constraints in the coordinates [#]_. Nonholonomic constraints are linear
+constraints in the generalized speeds, by definition. We will address the
+nonholonomic equations of motion first, as they are slightly easier to deal
+with due to their linearity.
 
 .. [#] They can be linear in the coordinates, but then there is little reason
-   not to solve for the depedendent coordinates and eliminate them.
+   not to solve for the depedendent coordinates explicitly and eliminate them.
 
 Nonholonomic constraint equations are linear in both the independent and
 dependent generalized speeds (see Sec. :ref:`Snakeboard`). We have shown that
 you can explicitly solve for the dependent generalized speeds :math:`\bar{u}_r`
-as a function of the independent generalized speeds :math:`\bar{u}_s`. This
-means that number of dynamical differential equations can be reduced to
-:math:`p` from :math:`n` with :math:`m` nonholonomic constraints. Recall that
-the nonholonomic constraints take this form:
+as a function of the independent generalized speeds :math:`\bar{u}_s` as long
+as :math:`\mathbf{A}_r` is invertible. This implies that number of dynamical
+differential equations can be reduced to :math:`p` from :math:`n` with
+:math:`m` nonholonomic constraints. Recall that the nonholonomic constraints
+take this form:
 
 .. math::
    :label: eq-nonholonomic-constraints
 
-   \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = \mathbf{M}_n\bar{u}_r + \bar{g}_n = 0 \in \mathbb{R}^m
+   \bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t)
+   = \mathbf{M}_n(\bar{q}, t)\bar{u}_r + \bar{g}_n(\bar{u}_s, \bar{q}, t)
+   = 0 \in \mathbb{R}^m
 
 and :math:`u_r` can be solved for as so:
 
@@ -83,14 +87,53 @@ and :math:`u_r` can be solved for as so:
    \bar{u}_r = -\mathbf{M}_n(\bar{q}, t)^{-1}\bar{g}_n(\bar{u}_s, \bar{q}, t)
 
 which is the same as Eq. :math:numref:`eq-constraint-linear-form-solve` we
-originally developed:
+originally developed in Sec. :ref:`Snakeboard`:
 
 .. math::
    :label: eq-dep-speeds-repeat
 
    \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n\\
 
-Using Eq. :math:numref:`eq-dep-speeds-solve` equation we can now write our
+If you partition the unconstrained dynamical differential equations into:
+
+.. math::
+
+   \bar{F}_r + \bar{F}_r^* =
+   \bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)
+   =
+   \begin{bmatrix}
+     \bar{f}_{ds}(\dot{\bar{u}}, \bar{u}, \bar{q}, t) \\
+     \bar{f}_{dr}(\dot{\bar{u}}, \bar{u}, \bar{q}, t) \\
+   \end{bmatrix}
+   = 0 \in \mathbb{R}^n
+
+where :math:`\bar{f}_{ds}` and :math:`\bar{f}_{dr}` are the equations
+associated with the :math:`p` independent and :math:`m` dependent generalized
+speeds, respectively. Then using :math:numref:`eq-non-hol-fr` and
+:math:numref:`eq-non-hol-frstar` the :math:`p` constrained dynamical
+differential equations are:
+
+.. math::
+
+   \tilde{F}_r + \tilde{F}_r^* =
+   \bar{f}_{ds}(\dot{\bar{u}}, \bar{u}, \bar{q})
+   + \mathbf{A}_n^T \bar{f}_{dr}(\dot{\bar{u}}, \bar{u}, \bar{q})
+   = 0 \in \mathbb{R}^p
+
+and combined with Eq. :math:numref:`eq-dep-speeds-repeat` give a set of
+:math:`n` differential algebraic equations of differentiation index 1.
+
+You can time differentiate Eq. :math:numref:`eq-dep-speeds-repeat` to get:
+
+.. math::
+
+   \dot{\bar{u}}_r = \dot{\mathbf{A}}_n \bar{u}_s + \mathbf{A}_n \dot{\bar{u}}_s + \dot{\bar{b}}_n \\
+
+and these differential algebraic equations can be reduced fully to :math:`p`
+unique ordinary differential equations by substituting all
+:math:`\dot{\bar{u}}_r` :math:`\bar{u}_r`.
+
+Using Eq. :math:numref:`eq-dep-speeds-solve` equation we can now write the full
 equations of motion as :math:`n` kinematical differential equations and
 :math:`p` dynamical differential equations.
 
