@@ -231,14 +231,18 @@ Equations of Motion with Nonholonomic Constraints
    equations.
 :math:`\dot{\bar{f}}_n(\dot{\bar{u}}_s, \dot{\bar{u}}_r, \bar{u}_s, \bar{u}_r, \bar{q}, t) = 0`
    Time derivative of the nonholonomic constraint equations.
-:math:`\mathbf{M}_{nd}`
+:math:`\mathbf{M}_{nd}=\mathbf{M}_n`
    Linear coefficient matrix for :math:`\dot{\bar{u}}_r` in the time
    differentiated nonholonomic constraint equations.
 :math:`\bar{g}_{nd}`
    Terms not linear in :math:`\dot{\bar{u}}_r` in the time differentiated
    nonholonomic constraint equations.
-
-.. todo:: Mnd = Mn = Ar, right?
+:math:`\bar{f}_{ds}`
+   :math:`p` holonomic dynamical differential equations associated with the
+   independent generalized speeds :math:`\bar{u}_s`.
+:math:`\bar{f}_{dr}`
+   :math:`m` holonomic dynamical differential equations associated with the
+   dependent generalized speeds :math:`\bar{u}_r`.
 
 Equations of Motion with Holonomic Constraints
 ==============================================
