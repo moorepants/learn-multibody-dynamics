@@ -625,8 +625,8 @@ time derivatives.
 
 .. jupyter-execute::
 
-   fds = Frs[:3, 0]
-   fdr = Frs[3:, 0]
+   fdr = Frs[:2, 0]
+   fds = Frs[2:, 0]
 
    Frs_tilde = fds + An.transpose()*fdr
 
