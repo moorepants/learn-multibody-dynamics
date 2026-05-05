@@ -117,8 +117,8 @@ dynamical differential equations are:
 .. math::
 
    \tilde{F}_r + \tilde{F}_r^* =
-   \bar{f}_{ds}(\dot{\bar{u}}, \bar{u}, \bar{q})
-   + \mathbf{A}_n^T \bar{f}_{dr}(\dot{\bar{u}}, \bar{u}, \bar{q})
+   \bar{f}_{ds}(\dot{\bar{u}}, \bar{u}, \bar{q}, t)
+   + \mathbf{A}_n^T \bar{f}_{dr}(\dot{\bar{u}}, \bar{u}, \bar{q}, t)
    = 0 \in \mathbb{R}^p
 
 and combined with Eq. :math:numref:`eq-dep-speeds-repeat` give a set of
@@ -632,16 +632,16 @@ time derivatives.
 
    Frs_tilde.shape, me.find_dynamicsymbols(Frs_tilde)
 
-Combined with :math:`\dot{\bar{f}}_n`, the dynamical differential algebraic
+Combined with :math:`\bar{f}_n`, the dynamical differential algebraic
 equations of index 1, :math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)`,
 are formed:
 
 .. jupyter-execute::
 
-   fd = Frs_tilde.col_join(fnd)
+   fd = Frs_tilde.col_join(fn)
    sm.trigsimp(fd)
 
-These are a function of all the generalized speeds:
+These are a function of all the generalized speeds.
 
 .. jupyter-execute::
 
@@ -660,20 +660,16 @@ found in Approach 1.
 
 .. jupyter-execute::
 
-   Md2 = fd.jacobian(usd)
-   gd2 = fd.xreplace(usd_zero)
+   Md = fd.jacobian(usd)
+   gd = fd.xreplace(usd_zero)
 
 .. jupyter-execute::
 
-   me.find_dynamicsymbols(Md2)
+   me.find_dynamicsymbols(Md)
 
 .. jupyter-execute::
 
-   me.find_dynamicsymbols(gd2)
-
-.. jupyter-execute::
-
-   Md - Md2, gd - gd2
+   me.find_dynamicsymbols(gd)
 
 Simulate the Snakeboard
 =======================
