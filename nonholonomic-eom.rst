@@ -92,9 +92,10 @@ originally developed in Sec. :ref:`Snakeboard`:
 .. math::
    :label: eq-dep-speeds-repeat
 
-   \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n\\
+   \bar{u}_r = \mathbf{A}_n \bar{u}_s + \bar{b}_n \in \mathbb{R}^m
 
-If you partition the unconstrained dynamical differential equations into:
+If you partition the holonomic (unconstrained) dynamical differential equations
+into:
 
 .. math::
 
@@ -110,8 +111,8 @@ If you partition the unconstrained dynamical differential equations into:
 where :math:`\bar{f}_{ds}` and :math:`\bar{f}_{dr}` are the equations
 associated with the :math:`p` independent and :math:`m` dependent generalized
 speeds, respectively. Then using :math:numref:`eq-non-hol-fr` and
-:math:numref:`eq-non-hol-frstar` the :math:`p` constrained dynamical
-differential equations are:
+:math:numref:`eq-non-hol-frstar` the :math:`p` nonholonomic (constrained)
+dynamical differential equations are:
 
 .. math::
 
@@ -129,18 +130,17 @@ You can time differentiate Eq. :math:numref:`eq-dep-speeds-repeat` to get:
 
    \dot{\bar{u}}_r = \dot{\mathbf{A}}_n \bar{u}_s + \mathbf{A}_n \dot{\bar{u}}_s + \dot{\bar{b}}_n \\
 
-and these differential algebraic equations can be reduced fully to :math:`p`
-unique ordinary differential equations by substituting all
-:math:`\dot{\bar{u}}_r` :math:`\bar{u}_r`.
-
-Using Eq. :math:numref:`eq-dep-speeds-solve` equation we can now write the full
+and the :math:`n` differential algebraic equations can be reduced fully to
+:math:`p` unique ordinary differential equations by substituting all
+:math:`\dot{\bar{u}}_r` and :math:`\bar{u}_r`. This lets you write the full
 equations of motion as :math:`n` kinematical differential equations and
-:math:`p` dynamical differential equations.
+:math:`p` dynamical differential equations, which are all ordinary differential
+equations.
 
 .. math::
    :label: eq-nonholonomic-eom
 
-   \bar{f}_k(\bar{u}_s, \dot{\bar{q}}, \bar{q}, t) = \mathbf{M}_k\dot{\bar{q}} + \bar{g}_k  = 0 \in \mathbb{R}^n \\
+   \bar{f}_k(\dot{\bar{q}}, \bar{u}_s, \bar{q}, t) = \mathbf{M}_k\dot{\bar{q}} + \bar{g}_k  = 0 \in \mathbb{R}^n \\
    \bar{f}_d(\dot{\bar{u}}_s, \bar{u}_s, \bar{q}, t) = \mathbf{M}_d\dot{\bar{u}}_s + \bar{g}_d = 0 \in \mathbb{R}^p
 
 and these can be written in explicit form:
@@ -171,8 +171,8 @@ inertia of the three bodies are the same.
 
    Configuration diagram of a planar Snakeboard model.
 
-1. Declare all the variables
-----------------------------
+Declare all the variables
+-------------------------
 
 First introduce the necessary variables; adding :math:`I` for the central
 moment of inertia of each body and :math:`m` as the mass of each body. Then
@@ -220,8 +220,8 @@ expressions we create.
 
    urd_zero, usd_zero
 
-2. Establish the kinematics
----------------------------
+Establish the kinematics
+------------------------
 
 The following code sets up the orientations, positions, and velocities exactly
 as done in the original example. All of the velocities are in terms of
@@ -255,8 +255,8 @@ as done in the original example. All of the velocities are in terms of
    Bo.v2pt_theory(Ao, N, A)
    Co.v2pt_theory(Ao, N, A);
 
-3. Specify the kinematical differential equations
--------------------------------------------------
+Specify the kinematical differential equations
+----------------------------------------------
 
 Now create the :math:`n=5` kinematical differential equations
 :math:`\bar{f}_k`:
@@ -291,8 +291,8 @@ dictionary we can use for substitutions:
    qd_repl = dict(zip(qd, qd_sol))
    qd_repl
 
-4. Establish the nonholonomic constraints
------------------------------------------
+Establish the nonholonomic constraints
+--------------------------------------
 
 Create the :math:`m=2` nonholonomic constraints:
 
@@ -313,7 +313,7 @@ and rewrite them in terms of the generalized speeds:
    me.find_dynamicsymbols(fn)
 
 With the nonholonomic constraint equations we choose :math:`\bar{u}_r=[u_1 \
-u_2]^T` and symbolically for these dependent speeds.
+u_2]^T` and symbolically solve for these dependent speeds.
 
 .. jupyter-execute::
 
@@ -321,6 +321,7 @@ u_2]^T` and symbolically for these dependent speeds.
    gn = fn.xreplace(ur_zero)
    ur_sol = Mn.LUsolve(-gn)
    ur_repl = dict(zip(ur, ur_sol))
+   ur_repl
 
 In our case, the dependent generalized speeds are only a function of one
 independent generalized speed, :math:`u_3`.
@@ -344,8 +345,11 @@ later use in our numerical functions.
 
    me.find_dynamicsymbols(gk)
 
-5. Rewrite velocities in terms of independent speeds
-----------------------------------------------------
+Approach 1: Substitute dependent generalized speeds first
+=========================================================
+
+Rewrite velocities in terms of independent speeds
+-------------------------------------------------
 
 The snakeboard model, as described, has no generalized active forces because
 there are no contributing external forces acting on the system, so we only need
@@ -368,8 +372,8 @@ speeds.
    for vel in vels:
        print(me.find_dynamicsymbols(vel, reference_frame=N))
 
-6. Compute the partial velocities
----------------------------------
+Compute the partial velocities
+------------------------------
 
 With the velocities only in terms of the independent generalized speeds, we can
 calculate the :math:`p` nonholonomic partial velocities:
@@ -378,8 +382,8 @@ calculate the :math:`p` nonholonomic partial velocities:
 
    w_A, w_B, w_C, v_Ao, v_Bo, v_Co = me.partial_velocity(vels, us, N)
 
-7. Rewrite the accelerations in terms of the independent generalized speeds
----------------------------------------------------------------------------
+Rewrite the accelerations in terms of the independent generalized speeds
+------------------------------------------------------------------------
 
 We can also write the accelerations in terms of only the independent
 generalized speeds, their time derivatives, and the generalized coordinates. To
@@ -419,8 +423,8 @@ dependent generalized speeds in :math:`\bar{g}_{nd}` instead of
 
    me.find_dynamicsymbols(urd_sol)
 
-8. Create the generalized forces
---------------------------------
+Create the generalized forces
+-----------------------------
 
 Now we can form the inertia forces and inertia torques. First check what
 derivatives appear in the accelerations.
@@ -497,8 +501,8 @@ and eliminate the dependent generalized accelerations:
     me.find_dynamicsymbols(Ts_B, reference_frame=N) |
     me.find_dynamicsymbols(Ts_C, reference_frame=N))
 
-9. Formulate the dynamical differential equations
--------------------------------------------------
+Formulate the dynamical differential equations
+----------------------------------------------
 
 All of the components are present to formulate the nonholonomic generalized
 inertia forces. After we form them, make sure they are only a function of the
@@ -545,7 +549,131 @@ coordinates.
 We now have :math:`\mathbf{M}_k, \bar{g}_k, \mathbf{M}_d` and :math:`\bar{g}_d`
 and can proceed to numerical evaluation.
 
-.. todo:: Also show how Fr and Frs can be formed using An.
+Approach 2: Use :math:`\mathbf{A}_n` and substitute dependent generalized speeds last
+=====================================================================================
+
+Write all important velocity vectors in terms of all of the generalized speeds
+(as opposed to only the independent generalized speeds shown in Approach 1).
+
+.. jupyter-execute::
+
+   N_w_A = A.ang_vel_in(N).xreplace(qd_repl)
+   N_w_B = B.ang_vel_in(N).xreplace(qd_repl)
+   N_w_C = C.ang_vel_in(N).xreplace(qd_repl)
+   N_v_Ao = Ao.vel(N).xreplace(qd_repl)
+   N_v_Bo = Bo.vel(N).xreplace(qd_repl)
+   N_v_Co = Co.vel(N).xreplace(qd_repl)
+
+   vels = (N_w_A, N_w_B, N_w_C, N_v_Ao, N_v_Bo, N_v_Co)
+
+   for vel in vels:
+       print(me.find_dynamicsymbols(vel, reference_frame=N))
+
+Treat the system as an unconstrained system (holonomic) and calculate all
+:math:`n` partial velocities for each important velocity:
+
+.. jupyter-execute::
+
+   w_A, w_B, w_C, v_Ao, v_Bo, v_Co = me.partial_velocity(vels, u, N)
+
+Formulate the holonomic dynamical differential equations
+--------------------------------------------------------
+
+Write all accelerations in terms of all of the generalized speeds and their
+derivatives.
+
+.. jupyter-execute::
+
+   qdd_repl = {k.diff(t): v.diff(t).xreplace(qd_repl) for k, v in qd_repl.items()}
+   qdd_repl
+
+.. jupyter-execute::
+
+   Rs_Ao = -m*Ao.acc(N).xreplace(qdd_repl)
+   Rs_Bo = -m*Bo.acc(N).xreplace(qdd_repl)
+   Rs_Co = -m*Co.acc(N).xreplace(qdd_repl)
+   Ts_A = -A.ang_acc_in(N).dot(I_A_Ao).xreplace(qdd_repl)
+   Ts_B = -B.ang_acc_in(N).dot(I_B_Bo).xreplace(qdd_repl)
+   Ts_C = -C.ang_acc_in(N).dot(I_C_Co).xreplace(qdd_repl)
+
+Write the holonomic :math:`\bar{F}_r^*` with :math:`n=5` elements that are a
+function of all generalized speeds and their time derivatives.
+
+.. jupyter-execute::
+
+   Frs = []
+   for i in range(len(u)):
+       Frs.append(v_Ao[i].dot(Rs_Ao) + v_Bo[i].dot(Rs_Bo) + v_Co[i].dot(Rs_Co) +
+                  w_A[i].dot(Ts_A) + w_B[i].dot(Ts_B) + w_C[i].dot(Ts_C))
+   Frs = sm.Matrix(Frs)
+
+   Frs.shape, me.find_dynamicsymbols(Frs)
+
+Formulate the nonholonomic dynamical differential equations
+-----------------------------------------------------------
+
+Calculate :math:`\mathbf{A}_n` from the nonholonomic constraints.
+
+.. jupyter-execute::
+
+   An = sm.trigsimp(fn.jacobian(ur).LUsolve(-fn.jacobian(us)))
+   An
+
+Now partition :math:`\bar{F}_r^*` and form :math:`\tilde{F}_r^*` noting it has
+:math:`p=3` elements that are still functions of all generalized speeds and their
+time derivatives.
+
+.. jupyter-execute::
+
+   fds = Frs[:3, 0]
+   fdr = Frs[3:, 0]
+
+   Frs_tilde = fds + An.transpose()*fdr
+
+   Frs_tilde.shape, me.find_dynamicsymbols(Frs_tilde)
+
+Combined with :math:`\dot{\bar{f}}_n`, the dynamical differential algebraic
+equations of index 1, :math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)`,
+are formed:
+
+.. jupyter-execute::
+
+   fd = Frs_tilde.col_join(fnd)
+   sm.trigsimp(fd)
+
+These are a function of all the generalized speeds:
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(fd)
+
+To reduce to a set of :math:`p` ordinary differential equations, substitute to
+remove the dependent speeds and their derivatives.
+
+.. jupyter-execute::
+
+   fd = Frs_tilde.xreplace(urd_repl).xreplace(ur_repl)
+   me.find_dynamicsymbols(fd)
+
+Now :math:`\mathbf{M}_d` and :math:`\mathbf{g}_d` are identical to the those
+found in Approach 1.
+
+.. jupyter-execute::
+
+   Md2 = fd.jacobian(usd)
+   gd2 = fd.xreplace(usd_zero)
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(Md2)
+
+.. jupyter-execute::
+
+   me.find_dynamicsymbols(gd2)
+
+.. jupyter-execute::
+
+   Md - Md2, gd - gd2
 
 Simulate the Snakeboard
 =======================
