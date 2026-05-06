@@ -631,7 +631,7 @@ classic video from 1993 shows how to propel the board:
 :numref:`fig-snakeboard-configuration` shows a configuration diagram.
 
 .. _fig-snakeboard:
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Snakeboard_down.jpg/640px-Snakeboard_down.jpg
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Snakeboard_down.jpg/960px-Snakeboard_down.jpg
    :align: center
 
    Example of a snakeboard that shows the two footpads each with attached truck
