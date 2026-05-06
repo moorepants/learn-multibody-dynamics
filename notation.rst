@@ -103,19 +103,22 @@ Constraints
 :math:`\bar{f}_n(u_1, \ldots, u_n, q_1, \ldots, q_n, t) = 0 \textrm{ where } \bar{f}_n \in \mathbb{R}^m`, ``fn``
    Vector function of :math:`m` nonholonomic constraint equations among the
    :math:`n` generalized speeds and generalized coordinates.
-:math:`\mathbf{A}_r`
+:math:`\mathbf{A}_r`, ``Ar``
    Linear coefficient matrix for :math:`\bar{u}_r` in the nonholonomic
-   constraint equations.
-:math:`\mathbf{A}_s`
+   constraint equations: :math:`\bar{f}_n=\mathbf{A}_r\bar{u}_r +
+   \mathbf{A}_s\bar{u}_s + \bar{b}_{rs}`.
+:math:`\mathbf{A}_s`, ``As``
    Linear coefficient matrix for :math:`\bar{u}_s` in the nonholonomic
-   constraint equations.
-:math:`\bar{b}_{rs}`
+   constraint equations: :math:`\bar{f}_n=\mathbf{A}_r\bar{u}_r +
+   \mathbf{A}_s\bar{u}_s + \bar{b}_{rs}`.
+:math:`\bar{b}_{rs}`, ``brs``
    Terms not linear in :math:`\bar{u}_s` or :math:`\bar{u}_r` in the
-   nonholonomic constraint equations.
-:math:`\mathbf{A}_n`
+   nonholonomic constraint equations: :math:`\bar{f}_n=\mathbf{A}_r\bar{u}_r +
+   \mathbf{A}_s\bar{u}_s + \bar{b}_{rs}`.
+:math:`\mathbf{A}_n = -\mathbf{A}_r^{-1} \mathbf{A}_s`, ``An``
    Linear coefficient matrix for :math:`\bar{u}_s` in the equation for
-   :math:`\bar{u}_r=\mathbf{A}_n\bar{u}_s + \bar{b}_n`.
-:math:`\bar{b}_n`
+   :math:`\bar{u}_r = \mathbf{A}_n\bar{u}_s + \bar{b}_n`.
+:math:`\bar{b}_n = -\mathbf{A}_r^{-1} \bar{b}_{rs}`, ``bn``
    Terms not linear in :math:`\bar{u}_s` in the equation for
    :math:`\bar{u}_r=\mathbf{A}_n\bar{u}_s + \bar{b}_n`.
 
@@ -189,31 +192,31 @@ Generalized Forces
 Unconstrained Equations of Motion
 =================================
 
-:math:`\bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t) = 0`
+:math:`\bar{f}_k(\dot{\bar{q}}, \bar{u}, \bar{q}, t) = 0`, ``fk``
    Kinematical differential equations that take the form: :math:`\bar{f}_k =
    \mathbf{Y}_k \dot{\bar{q}} + \bar{z}_k - \bar{u} = \mathbf{M}_k
    \dot{\bar{q}} + \bar{g}_k = 0`.
-:math:`\mathbf{M}_k`
+:math:`\mathbf{M}_k`, ``Mk``
    Linear coefficient matrix for :math:`\dot{\bar{q}}` in the kinematical
    differential equations.
-:math:`\bar{g}_k`
+:math:`\bar{g}_k`, ``gk``
    Terms not linear in :math:`\dot{\bar{q}}` in the kinematical differential
    equations.
-:math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t) = 0`
+:math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t) = 0`, ``fd``
    Dynamical differential equations that take the form: :math:`\bar{f}_d =
    \mathbf{M}_d \dot{\bar{u}} + \bar{g}_d = 0`.
-:math:`\mathbf{M}_d`
+:math:`\mathbf{M}_d`, ``Md``
    Linear coefficient matrix for :math:`\dot{\bar{u}}` in the dynamical
    differential equations, often called the "mass matrix".
-:math:`\bar{g}_d`
+:math:`\bar{g}_d`, ``gd``
    Terms not linear in :math:`\dot{\bar{u}}` in the dynamical differential
    equations.
 :math:`\bar{x}=[\bar{q} \quad \bar{u}]^T`
    State of a multibody system.
-:math:`\mathbf{M}_m`
+:math:`\mathbf{M}_m`, ``Mm``
    Linear coefficient matrix for :math:`\dot{\bar{x}}` in the equations of
    motion.
-:math:`\bar{g}_m`
+:math:`\bar{g}_m`, ``gm``
    Terms not linear in :math:`\dot{\bar{x}}` in the equations of motion.
 :math:`\dot{\bar{x}} = \bar{f}_m(\bar{x}, t) = -\mathbf{M}_m^{-1} \bar{g}_m`
    Equations of motion in first order explicit form.
@@ -221,38 +224,38 @@ Unconstrained Equations of Motion
 Equations of Motion with Nonholonomic Constraints
 =================================================
 
-:math:`\bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = 0`
+:math:`\bar{f}_n(\bar{u}_s, \bar{u}_r, \bar{q}, t) = 0`, ``fn``
    Nonholonomic constraint equations.
-:math:`\mathbf{M}_n=\mathbf{A}_r`
+:math:`\mathbf{M}_n=\mathbf{A}_r`, ``Mn``
    Linear coefficient matrix for :math:`\bar{u}_r` in the nonholonomic
    constraint equations.
-:math:`\bar{g}_n=\mathbf{A}_s\bar{u}_s+\bar{b}_{rs}`
+:math:`\bar{g}_n=\mathbf{A}_s\bar{u}_s+\bar{b}_{rs}`, ``gn``
    Terms not linear in :math:`\bar{u}_r` in the nonholonomic constraint
    equations.
-:math:`\dot{\bar{f}}_n(\dot{\bar{u}}_s, \dot{\bar{u}}_r, \bar{u}_s, \bar{u}_r, \bar{q}, t) = 0`
+:math:`\dot{\bar{f}}_n(\dot{\bar{u}}_s, \dot{\bar{u}}_r, \bar{u}_s, \bar{u}_r, \bar{q}, t) = 0`, ``fnd``
    Time derivative of the nonholonomic constraint equations.
-:math:`\mathbf{M}_{nd}=\mathbf{M}_n`
+:math:`\mathbf{M}_{nd}=\mathbf{M}_n`, ``Mnd``
    Linear coefficient matrix for :math:`\dot{\bar{u}}_r` in the time
    differentiated nonholonomic constraint equations.
-:math:`\bar{g}_{nd}`
+:math:`\bar{g}_{nd}`, ``gnd``
    Terms not linear in :math:`\dot{\bar{u}}_r` in the time differentiated
    nonholonomic constraint equations.
-:math:`\bar{f}_{ds}`
+:math:`\bar{f}_{ds}`, ``fds``
    :math:`p` holonomic dynamical differential equations associated with the
    independent generalized speeds :math:`\bar{u}_s`.
-:math:`\bar{f}_{dr}`
+:math:`\bar{f}_{dr}`, ``fdr``
    :math:`m` holonomic dynamical differential equations associated with the
    dependent generalized speeds :math:`\bar{u}_r`.
 
 Equations of Motion with Holonomic Constraints
 ==============================================
 
-:math:`\dot{\bar{f}}_h(\bar{u}, \bar{u}_r, \bar{q}, \bar{q}_r, t) = 0`
+:math:`\dot{\bar{f}}_h(\bar{u}, \bar{u}_r, \bar{q}, \bar{q}_r, t) = 0`, ``fhd``
    Time derivative of the holonomic constraints.
-:math:`\mathbf{M}_{hd}`
+:math:`\mathbf{M}_{hd}`, ``Mhd``
    Linear coefficient matrix for :math:`\bar{u}_r` in the time differentiated
    holonomic constraints.
-:math:`\bar{g}_{hd}`
+:math:`\bar{g}_{hd}`, ``ghd``
    Terms not linear in :math:`\bar{u}_r` in the time differentiated holonomic
    constraints.
 
