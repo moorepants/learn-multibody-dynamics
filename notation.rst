@@ -17,7 +17,7 @@ General
 :math:`\mathbf{J}_{\bar{v},\bar{u}}`
    The Jacobian of the vector function :math:`\bar{v}` with respect to the
    entries in vector :math:`\bar{u}` where the :math:`(i,j)` entries of the
-   Jacobian are :math:`\mathbf{J}_{ij} = \frac{\partial v_i}{\partial u_j}`.
+   Jacobian are :math:`J_{ij} = \frac{\partial v_i}{\partial u_j}`.
 
 Orientation of Reference Frames
 ===============================
