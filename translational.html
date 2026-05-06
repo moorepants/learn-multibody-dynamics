@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Translational Kinematics &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Holonomic Constraints" href="configuration.html" />
+    <link rel="prev" title="Angular Kinematics" href="angular.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#translational" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Translational Kinematics </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Translational Kinematics </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Translational Kinematics</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#translational--page-root" class="md-nav__link">Translational Kinematics</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#translational-velocity" class="md-nav__link">Translational Velocity</a>
+        </li>
+        <li class="md-nav__item"><a href="#velocity-two-point-theorem" class="md-nav__link">Velocity Two Point Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#velocity-one-point-theorem" class="md-nav__link">Velocity One Point Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#translational-acceleration" class="md-nav__link">Translational Acceleration</a>
+        </li>
+        <li class="md-nav__item"><a href="#acceleration-two-point-theorem" class="md-nav__link">Acceleration Two Point Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#acceleration-one-point-theorem" class="md-nav__link">Acceleration One Point Theorem</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/translational.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#translational--page-root" class="md-nav__link">Translational Kinematics</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#translational-velocity" class="md-nav__link">Translational Velocity</a>
+        </li>
+        <li class="md-nav__item"><a href="#velocity-two-point-theorem" class="md-nav__link">Velocity Two Point Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#velocity-one-point-theorem" class="md-nav__link">Velocity One Point Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#translational-acceleration" class="md-nav__link">Translational Acceleration</a>
+        </li>
+        <li class="md-nav__item"><a href="#acceleration-two-point-theorem" class="md-nav__link">Acceleration Two Point Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#acceleration-one-point-theorem" class="md-nav__link">Acceleration One Point Theorem</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/translational.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="translational-kinematics">
+<h1 id="translational--page-root">Translational Kinematics<a class="headerlink" href="#translational--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/49bb5a8b911c2fca6ce0310ded2f421b/translational.py"><code class="xref download docutils literal notranslate"><span class="pre">translational.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/ef223ee2af794e5bc5ca64ab0c2262b1/translational.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">translational.ipynb</span></code></a>.</p>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>calculate the velocity and acceleration of a point in a multibody system</p></li>
+<li><p>apply the one and two point theorems to calculate velocity and acceleration
+of points</p></li>
+<li><p>identify the tangential, centripetal, and Coriolis acceleration components</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>In multibody dynamics, we are going to need to calculate the translation
+velocities and accelerations of points. We will learn that the acceleration of
+the mass centers of the bodies in a multibody system will be a primary
+ingredient in forming Newton’s Second Law of motion <span class="math notranslate nohighlight">\(\bar{F} = m\bar{a}\)</span>.
+This chapter will equip you to calculate the relative translational velocities
+and accelerations of points in a system.</p>
+</section>
+<section id="translational-velocity">
+<h2 id="translational-velocity">Translational Velocity<a class="headerlink" href="#translational-velocity" title="Link to this heading">¶</a></h2>
+<p>If a point <span class="math notranslate nohighlight">\(P\)</span> is moving with respect to a point <span class="math notranslate nohighlight">\(O\)</span> that is fixed
+in reference frame <span class="math notranslate nohighlight">\(A\)</span> the translational velocity vector of point
+<span class="math notranslate nohighlight">\(P\)</span> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-translational-velocity-definition">
+<span class="eqno">(69)<a class="headerlink" href="#equation-translational-velocity-definition" title="Link to this equation">¶</a></span>\[{}^A\bar{v}^P := \frac{{}^Ad\bar{r}^{P/O}}{dt}\]</div>
+<p>We also know from Eq. <a class="reference internal" href="angular.html#equation-deriv-arb-vector">(63)</a> that the time derivative
+of any vector can be written in terms of the angular velocity of the associated
+reference frames, so:</p>
+<div class="math notranslate nohighlight" id="equation-point-velocity-two-frames">
+<span class="eqno">(70)<a class="headerlink" href="#equation-point-velocity-two-frames" title="Link to this equation">¶</a></span>\[\begin{split}{}^A\bar{v}^P
+&amp; =
+\frac{{}^Ad\bar{r}^{P/O}}{dt} \\
+&amp; =
+\frac{{}^Bd\bar{r}^{P/O}}{dt} +
+{}^A\bar{\omega}^B\times\bar{r}^{P/O} \\
+&amp; =
+{}^B\bar{v}^P + {}^A\bar{\omega}^B\times\bar{r}^{P/O}\end{split}\]</div>
+<p>This formulation will allow us to utilize different reference frames to
+simplify velocity calculations. Take for example this piece of kinetic art that
+now stands in Rotterdam:</p>
+<figure class="align-center" id="id4">
+<img alt="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Rickey_Rotterdam_04.JPG/360px-Rickey_Rotterdam_04.JPG" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Rickey_Rotterdam_04.JPG/360px-Rickey_Rotterdam_04.JPG"/>
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Kinetic sculpture “Two Turning Vertical Rectangles” (1971) in Rotterdam/The
+Netherlands (FOP) by George Rickey.
+<a class="reference external" href="https://nl.wikipedia.org/wiki/Two_Turning_Vertical_Rectangles">https://nl.wikipedia.org/wiki/Two_Turning_Vertical_Rectangles</a></span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+<div class="legend">
+<p>K.Siereveld, Public domain, via Wikimedia Commons</p>
+</div>
+</figcaption>
+</figure>
+<p>User <a class="reference external" href="https://www.reddit.com/user/stravalnak">https://www.reddit.com/user/stravalnak</a> posted this video of the sculpture
+to Reddit during the 2022 storm Eunice:</p>
+<center>
+<video controls="" width="320">
+<source src="https://v.redd.it/egrhlwlbrmi81/DASH_1080.mp4" type="video/mp4"/>
+</video>
+<p> From: https://www.reddit.com/r/Rotterdam/comments/svo3cs/hij_maakt_overuren/</p>
+</center><p>and it looks very dangerous. It would be interesting to know the velocity and
+acceleration of various points on this sculpture. First, we sketch a
+configuration diagram:</p>
+<figure class="align-center" id="id5">
+<img alt="_images/translational-kinetic-sculpture.svg" src="_images/translational-kinetic-sculpture.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Sketch of one of the two plates mounted on the rotating T-support. Reference
+frames <span class="math notranslate nohighlight">\(N\)</span>, <span class="math notranslate nohighlight">\(A\)</span>, and <span class="math notranslate nohighlight">\(B\)</span> are shown. Also note the pigeon
+trying to walk across one edge of the plate at point <span class="math notranslate nohighlight">\(R\)</span>.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+<div class="legend">
+<p>Pigeon SVG from <a class="reference external" href="https://freesvg.org/vector-clip-art-of-homing-pigeon">https://freesvg.org/vector-clip-art-of-homing-pigeon</a> Public Domain</p>
+</div>
+</figcaption>
+</figure>
+<p>Now let’s use SymPy Mechanics to calculate Eq.
+<a class="reference internal" href="#equation-point-velocity-two-frames">(70)</a> for this example.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy.physics.mechanics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">me</span>
+<span class="n">me</span><span class="o">.</span><span class="n">init_vprinting</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="invisible docutils container">
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceFrame</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'latexs'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\hat{{</span><span class="si">{}</span><span class="s1">}}_</span><span class="si">{}</span><span class="s1">'</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReferenceFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                             <span class="n">latexs</span><span class="o">=</span><span class="p">(</span><span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)),</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n">ReferenceFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<p>Set up the orientations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'alpha, beta'</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">A</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Write out the position vectors to <span class="math notranslate nohighlight">\(P\)</span>, <span class="math notranslate nohighlight">\(S\)</span>, and <span class="math notranslate nohighlight">\(Q\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'h, d, w, c, l'</span><span class="p">)</span>
+
+<span class="n">r_O_P</span> <span class="o">=</span> <span class="n">h</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+<span class="n">r_P_S</span> <span class="o">=</span> <span class="o">-</span><span class="n">d</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span>
+<span class="n">r_S_Q</span> <span class="o">=</span> <span class="o">-</span><span class="n">w</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">r_O_P</span><span class="p">,</span> <span class="n">r_P_S</span><span class="p">,</span> <span class="n">r_S_Q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left( h\hat{n}_z, \  -  d\hat{a}_x, \  -  w\hat{b}_x + (- c - \frac{l}{2})\hat{b}_z\right)\]</div>
+</div>
+</div>
+<p>Now calculate:</p>
+<div class="math notranslate nohighlight" id="equation-trans-vel-with-cross">
+<span class="eqno">(71)<a class="headerlink" href="#equation-trans-vel-with-cross" title="Link to this equation">¶</a></span>\[{}^N\bar{v}^S = {}^A\bar{v}^S + {}^N\bar{\omega}^A\times\bar{r}^{S/O}\]</div>
+<p><span class="math notranslate nohighlight">\(S\)</span> is not moving when observed from <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(O\)</span> is fixed in
+<span class="math notranslate nohighlight">\(A\)</span> so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">r_O_P</span> <span class="o">+</span> <span class="n">r_P_S</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<p>The second term does have a value and can be found with these two components:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \dot{\alpha}\hat{n}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">r_O_P</span> <span class="o">+</span> <span class="n">r_P_S</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>giving <span class="math notranslate nohighlight">\({}^N\bar{v}^S\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_v_S</span> <span class="o">=</span> <span class="p">(</span><span class="n">r_O_P</span> <span class="o">+</span> <span class="n">r_P_S</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">r_O_P</span> <span class="o">+</span> <span class="n">r_P_S</span><span class="p">)</span>
+<span class="n">N_v_S</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>Similarly for point <span class="math notranslate nohighlight">\(Q\)</span> where <span class="math notranslate nohighlight">\(P\)</span> is fixed in <span class="math notranslate nohighlight">\(B\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">r_P_S</span> <span class="o">+</span> <span class="n">r_S_Q</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">r_P_S</span> <span class="o">+</span> <span class="n">r_S_Q</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y + \left(- c - \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_x + (- w \cos{\left(\beta \right)} \dot{\alpha} - \left(- c - \frac{l}{2}\right) \dot{\beta})\hat{b}_y + w \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_v_Q</span> <span class="o">=</span> <span class="p">(</span><span class="n">r_P_S</span> <span class="o">+</span> <span class="n">r_S_Q</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">r_P_S</span> <span class="o">+</span> <span class="n">r_S_Q</span><span class="p">)</span>
+<span class="n">N_v_Q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y + \left(- c - \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_x + (- w \cos{\left(\beta \right)} \dot{\alpha} - \left(- c - \frac{l}{2}\right) \dot{\beta})\hat{b}_y + w \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z\]</div>
+</div>
+</div>
+<p>SymPy Mechanics provides the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> object that simplifies
+working with position vectors. Start by creating points and setting relative
+positions among points with
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.set_pos" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_pos()</span></code></a>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">O</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'O'</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'P'</span><span class="p">)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'S'</span><span class="p">)</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">)</span>
+
+<span class="n">P</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">h</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">S</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="o">-</span><span class="n">d</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Q</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="o">-</span><span class="n">w</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Once relative positions among points are established you can request the
+position vector between any pair of points that are connected by the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.set_pos" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_pos()</span></code></a> statements, for
+example <span class="math notranslate nohighlight">\(\bar{r}^{Q/O}\)</span> is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">O</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  w\hat{b}_x + (- c - \frac{l}{2})\hat{b}_z -  d\hat{a}_x + h\hat{n}_z\]</div>
+</div>
+</div>
+<p>Also, once the position vectors are established, velocities can be calculated.
+You will always explicitly need to set the velocity of at least one point in a
+collection of points before the velocities of the other points can be
+calculated. In our case, we can set <span class="math notranslate nohighlight">\({}^N\bar{v}^O=0\)</span> with
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.set_vel" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_vel()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">O</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>SymPy Mechanics has no way of knowing whether the sculpture is fixed on the
+road or floating around with some constant speed. All the relative
+velocities of the various points would not be changed in those two
+scenarios. Hence, at least the speed of one point must be specified.</p>
+</div>
+<p>Now the velocity in <span class="math notranslate nohighlight">\(N\)</span> for any point that is connected to <span class="math notranslate nohighlight">\(O\)</span> by
+the prior <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.set_pos" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_pos()</span></code></a>
+statements can be found with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.vel" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">vel()</span></code></a> method:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \left(- c - \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_x + (- w \cos{\left(\beta \right)} \dot{\alpha} - \left(- c - \frac{l}{2}\right) \dot{\beta})\hat{b}_y + w \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>This gives the same result as manually calculated above.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.vel" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">vel()</span></code></a> method will
+calculate velocities naively, i.e. not necessarily give the simplest form.</p>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Calculate the velocity of point <span class="math notranslate nohighlight">\(B_c\)</span> when observed from reference
+frame <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p><span class="math notranslate nohighlight">\(B_c\)</span> is fixed in <span class="math notranslate nohighlight">\(B\)</span> and thus its velocity is zero in
+<span class="math notranslate nohighlight">\(B\)</span>. <span class="math notranslate nohighlight">\(S\)</span> is fixed in <span class="math notranslate nohighlight">\(A\)</span>. Using
+<a class="reference internal" href="#equation-point-velocity-two-frames">(70)</a> we can then write:</p>
+<div class="math notranslate nohighlight" id="equation-translational-0">
+<span class="eqno">(72)<a class="headerlink" href="#equation-translational-0" title="Link to this equation">¶</a></span>\[{}^A\bar{v}^{B_c} = {}^B\bar{v}^{B_c} + {}^A\bar{\omega}^B\times\bar{r}^{B_c/S}\]</div>
+<p>This results in:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Bc</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'B_c'</span><span class="p">)</span>
+<span class="n">Bc</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">Bc</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">S</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle c \dot{\beta}\hat{b}_y\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="velocity-two-point-theorem">
+<h2 id="velocity-two-point-theorem">Velocity Two Point Theorem<a class="headerlink" href="#velocity-two-point-theorem" title="Link to this heading">¶</a></h2>
+<p>If there are two points <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(S\)</span> fixed in a reference frame
+<span class="math notranslate nohighlight">\(A\)</span> and you know the angular velocity <span class="math notranslate nohighlight">\({}^N\bar{\omega}^A\)</span> and the
+velocity <span class="math notranslate nohighlight">\({}^N\bar{v}^P\)</span> then <span class="math notranslate nohighlight">\({}^N\bar{v}^S\)</span> can be calculated if
+the vector <span class="math notranslate nohighlight">\(\bar{r}^{S/P}\)</span>, which is fixed in <span class="math notranslate nohighlight">\(A\)</span>, is known. The
+following theorem provides a convenient formulation:</p>
+<div class="math notranslate nohighlight" id="equation-vel-two-point">
+<span class="eqno">(73)<a class="headerlink" href="#equation-vel-two-point" title="Link to this equation">¶</a></span>\[\begin{split}{}^N\bar{v}^S &amp;=  \frac{{}^N d\bar{r}^{S/O} }{dt} \\
+&amp;= \frac{{}^N d\left(\bar{r}^{P/O} + \bar{r}^{S/P}\right)}{dt} \\
+&amp;= {}^N\bar{v}^P + \frac{{}^N d\bar{r}^{S/P} }{dt} \\
+&amp;= {}^N\bar{v}^P + {}^N\bar{\omega}^A \times \bar{r}^{S/P}\end{split}\]</div>
+<p>For our example kinetic sculpture, both <span class="math notranslate nohighlight">\(O\)</span> and <span class="math notranslate nohighlight">\(P\)</span> are fixed in
+<span class="math notranslate nohighlight">\(N\)</span>, so <span class="math notranslate nohighlight">\({}^N\bar{v}^P=0\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_v_P</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Only the cross product then needs to be formed:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_v_S</span> <span class="o">=</span> <span class="n">N_v_P</span> <span class="o">+</span>  <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">P</span><span class="p">))</span>
+<span class="n">N_v_S</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>Using pairs of points both fixed in the same reference frame and Eq.
+<a class="reference internal" href="#equation-vel-two-point">(73)</a> gives a compact result.</p>
+<p>Point objects have the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.v2pt_theory" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">v2pt_theory()</span></code></a> method for
+applying  the above equation given the other point fixed in the same frame, the
+frame you want the velocity in, and the frame both points are fixed in. The
+velocity of <span class="math notranslate nohighlight">\(P\)</span> is set to zero using
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.set_vel" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_vel()</span></code></a> first to ensure
+we start with a known velocity.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">S</span><span class="o">.</span><span class="n">v2pt_theory</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>Note that when you call
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.v2pt_theory" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">v2pt_theory()</span></code></a> it also sets
+the velocity of point <span class="math notranslate nohighlight">\(S\)</span> to this version of the velocity vector:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>Both points <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> are fixed in reference frame <span class="math notranslate nohighlight">\(B\)</span> and
+we just calculated <span class="math notranslate nohighlight">\({}^N\bar{v}^S\)</span>, so we can use the two point theorem
+to find the velocity of <span class="math notranslate nohighlight">\(Q\)</span> in a similar fashion by applying:</p>
+<div class="math notranslate nohighlight" id="equation-trans-vel-cross-for-q">
+<span class="eqno">(74)<a class="headerlink" href="#equation-trans-vel-cross-for-q" title="Link to this equation">¶</a></span>\[{}^N\bar{v}^Q = {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{Q/S}\]</div>
+<p>First, using the manual calculation:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_v_Q</span> <span class="o">=</span> <span class="n">N_v_S</span> <span class="o">+</span>  <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">Q</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">S</span><span class="p">))</span>
+<span class="n">N_v_Q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y + \left(- c - \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_x + (- w \cos{\left(\beta \right)} \dot{\alpha} - \left(- c - \frac{l}{2}\right) \dot{\beta})\hat{b}_y + w \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z\]</div>
+</div>
+</div>
+<p>and then with the
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.v2pt_theory" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">v2pt_theory()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="o">.</span><span class="n">v2pt_theory</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y + \left(- c - \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_x + (- w \cos{\left(\beta \right)} \dot{\alpha} - \left(- c - \frac{l}{2}\right) \dot{\beta})\hat{b}_y + w \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Calculate the velocity of the center of mass of the plate <span class="math notranslate nohighlight">\(B_c\)</span> using
+the two point theorem.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Bc</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'B_c'</span><span class="p">)</span>
+<span class="n">Bc</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Bc</span><span class="o">.</span><span class="n">v2pt_theory</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (- d \dot{\alpha} - \frac{w \dot{\alpha}}{2})\hat{a}_y -  c \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_x + c \dot{\beta}\hat{b}_y\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="velocity-one-point-theorem">
+<h2 id="velocity-one-point-theorem">Velocity One Point Theorem<a class="headerlink" href="#velocity-one-point-theorem" title="Link to this heading">¶</a></h2>
+<p>If you are interested in the velocity of a point <span class="math notranslate nohighlight">\(R\)</span> that is moving in a
+reference frame <span class="math notranslate nohighlight">\(B\)</span> and you know the velocity of a point <span class="math notranslate nohighlight">\(S\)</span> fixed
+in <span class="math notranslate nohighlight">\(B\)</span> then the velocity of <span class="math notranslate nohighlight">\(R\)</span> is the sum of it’s velocity when
+observed from <span class="math notranslate nohighlight">\(B\)</span> and the velocity of a point fixed in <span class="math notranslate nohighlight">\(B\)</span> at
+<span class="math notranslate nohighlight">\(R\)</span> at that instant of time. Put into mathematical terms we get:</p>
+<div class="math notranslate nohighlight" id="equation-velocity-one-point">
+<span class="eqno">(75)<a class="headerlink" href="#equation-velocity-one-point" title="Link to this equation">¶</a></span>\[{}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^T\]</div>
+<p>where point <span class="math notranslate nohighlight">\(T\)</span> is a point that coincides with <span class="math notranslate nohighlight">\(R\)</span> at that instant.</p>
+<p>Combined with the two point theorem for <span class="math notranslate nohighlight">\(T\)</span>, you can write:</p>
+<div class="math notranslate nohighlight" id="equation-velocity-one-point-expanded">
+<span class="eqno">(76)<a class="headerlink" href="#equation-velocity-one-point-expanded" title="Link to this equation">¶</a></span>\[{}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{R/S}\]</div>
+<p>In our kinetic sculpture example, if the pigeon <span class="math notranslate nohighlight">\(R\)</span> is walking at a
+distance <span class="math notranslate nohighlight">\(s\)</span> in the <span class="math notranslate nohighlight">\(\hat{b}_x\)</span> direction from the upper right
+corner, then we can calculate the velocity of the pigeon when observed from the
+<span class="math notranslate nohighlight">\(N\)</span> reference frame. First establish the position of <span class="math notranslate nohighlight">\(R\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'s'</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="o">.</span><span class="n">_t</span>
+
+<span class="n">R</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="s1">'R'</span><span class="p">)</span>
+<span class="n">R</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">l</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">s</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The velocity of the pigeon when observed from <span class="math notranslate nohighlight">\(B\)</span> is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_v_R</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span>
+<span class="n">B_v_R</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \dot{s}\hat{b}_x\]</div>
+</div>
+</div>
+<p>Now the other terms:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_S_R</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="n">r_S_R</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (- w + s)\hat{b}_x + (- c + \frac{l}{2})\hat{b}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_v_T</span> <span class="o">=</span> <span class="n">N_v_S</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">r_S_R</span><span class="p">)</span>
+<span class="n">N_v_T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \dot{\alpha}\hat{a}_y + \left(- c + \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_x + (- \left(- c + \frac{l}{2}\right) \dot{\beta} + \left(- w + s\right) \cos{\left(\beta \right)} \dot{\alpha})\hat{b}_y -  \left(- w + s\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z\]</div>
+</div>
+</div>
+<p>And finally the velocity of the pigeon when observed from <span class="math notranslate nohighlight">\(N\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_v_R</span> <span class="o">=</span> <span class="n">B_v_R</span> <span class="o">+</span> <span class="n">N_v_T</span>
+<span class="n">N_v_R</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (\left(- c + \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha} + \dot{s})\hat{b}_x + (- \left(- c + \frac{l}{2}\right) \dot{\beta} + \left(- w + s\right) \cos{\left(\beta \right)} \dot{\alpha})\hat{b}_y -  \left(- w + s\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>There is a method
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.v1pt_theory" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">v1pt_theory()</span></code></a> that does
+this calculation. It does require that the point <span class="math notranslate nohighlight">\(S\)</span>’s, in our case,
+velocity is fixed in <span class="math notranslate nohighlight">\(B\)</span> before making the computation:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">R</span><span class="o">.</span><span class="n">v1pt_theory</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (\left(- c + \frac{l}{2}\right) \sin{\left(\beta \right)} \dot{\alpha} + \dot{s})\hat{b}_x + (- \left(- c + \frac{l}{2}\right) \dot{\beta} + \left(- w + s\right) \cos{\left(\beta \right)} \dot{\alpha})\hat{b}_y -  \left(- w + s\right) \sin{\left(\beta \right)} \dot{\alpha}\hat{b}_z -  d \dot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+</section>
+<section id="translational-acceleration">
+<h2 id="translational-acceleration">Translational Acceleration<a class="headerlink" href="#translational-acceleration" title="Link to this heading">¶</a></h2>
+<p>The acceleration of point <span class="math notranslate nohighlight">\(P\)</span> in reference frame <span class="math notranslate nohighlight">\(A\)</span> is defined as</p>
+<div class="math notranslate nohighlight" id="equation-translational-acceleration-definition">
+<span class="eqno">(77)<a class="headerlink" href="#equation-translational-acceleration-definition" title="Link to this equation">¶</a></span>\[{}^A\bar{a}^P := \frac{{}^A d {}^A\bar{v}^P}{dt}\]</div>
+<p>Using SymPy Mechanics, the acceleration of a point in a reference frame can be
+calculated with <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.acc" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">acc()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d \dot{\alpha}^{2}\hat{a}_x -  d \ddot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+</section>
+<section id="acceleration-two-point-theorem">
+<h2 id="acceleration-two-point-theorem">Acceleration Two Point Theorem<a class="headerlink" href="#acceleration-two-point-theorem" title="Link to this heading">¶</a></h2>
+<p>The two point theorem above has a corollary for acceleration. Starting with the
+velocity theorem:</p>
+<div class="math notranslate nohighlight" id="equation-velocity-two-point-repeat">
+<span class="eqno">(78)<a class="headerlink" href="#equation-velocity-two-point-repeat" title="Link to this equation">¶</a></span>\[{}^N\bar{v}^S = {}^N\bar{v}^P + {}^N\bar{\omega}^A \times \bar{r}^{S/P}\]</div>
+<p>the acceleration can be found by applying the definition of acceleration:</p>
+<div class="math notranslate nohighlight" id="equation-acceleration-two-point">
+<span class="eqno">(79)<a class="headerlink" href="#equation-acceleration-two-point" title="Link to this equation">¶</a></span>\[\begin{split}{}^N\bar{a}^S
+&amp; = \frac{{}^N d\left({}^N\bar{v}^P\right)}{dt} +
+    \frac{{}^N d \left( {}^N\bar{\omega}^A \times \bar{r}^{S/P}\right)}{dt} \\
+&amp; = {}^N\bar{a}^P +
+\frac{{}^N d \left( {}^N\bar{\omega}^A \right)}{dt} \times \bar{r}^{S/P} +
+{}^N\bar{\omega}^A \times \frac{{}^N d  \left(\bar{r}^{S/P}\right)}{dt} \\
+&amp; =
+{}^N\bar{a}^P +
+{}^N\bar{\alpha}^A \times\bar{r}^{S/P} +
+{}^N\bar{\omega}^A\times\left({}^N\bar{\omega}^A \times\bar{r}^{S/P}\right)\end{split}\]</div>
+<p>This presentation of the acceleration shows the tangential component of
+acceleration:</p>
+<div class="math notranslate nohighlight" id="equation-tangential">
+<span class="eqno">(80)<a class="headerlink" href="#equation-tangential" title="Link to this equation">¶</a></span>\[{}^N\bar{\alpha}^A \times\bar{r}^{S/P}\]</div>
+<p><span class="math notranslate nohighlight">\({}^N\bar{\alpha}^A\)</span> can be calculated with
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame.ang_acc_in" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ang_acc_in()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_acc_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">P</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -  d \ddot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>The tangential component is always tangent to the motion path of <span class="math notranslate nohighlight">\(P\)</span>. The
+last term is the radial component of acceleration, also called
+<span class="xref std std-term">centripetal acceleration</span>:</p>
+<div class="math notranslate nohighlight" id="equation-radial">
+<span class="eqno">(81)<a class="headerlink" href="#equation-radial" title="Link to this equation">¶</a></span>\[{}^N\bar{\omega}^A\times\left({}^N\bar{\omega}^A \times\bar{r}^{S/P}\right)\]</div>
+<p>which can also be calculated using the methods of with
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> and
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.frame.ReferenceFrame" title="(in SymPy v1.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceFrame</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">pos_from</span><span class="p">(</span><span class="n">P</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d \dot{\alpha}^{2}\hat{a}_x\]</div>
+</div>
+</div>
+<p>This acceleration component is always normal to the motion path of <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>Lastly, <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.a2pt_theory" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">a2pt_theory()</span></code></a>
+calculates the acceleration using this theorem with:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">a2pt_theory</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d \dot{\alpha}^{2}\hat{a}_x -  d \ddot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(P\)</span> are fixed in <span class="math notranslate nohighlight">\(A\)</span> and the velocity is
+desired in <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Calculate the acceleration of point <span class="math notranslate nohighlight">\(Q\)</span> with the two point theorem.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="o">.</span><span class="n">a2pt_theory</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d \dot{\alpha}^{2}\hat{a}_x -  d \ddot{\alpha}\hat{a}_y + (w \sin^{2}{\left(\beta \right)} \dot{\alpha}^{2} + \left(- c - \frac{l}{2}\right) \left(\sin{\left(\beta \right)} \ddot{\alpha} + \cos{\left(\beta \right)} \dot{\alpha} \dot{\beta}\right) - \left(- w \cos{\left(\beta \right)} \dot{\alpha} - \left(- c - \frac{l}{2}\right) \dot{\beta}\right) \cos{\left(\beta \right)} \dot{\alpha})\hat{b}_x + (- w \left(- \sin{\left(\beta \right)} \dot{\alpha} \dot{\beta} + \cos{\left(\beta \right)} \ddot{\alpha}\right) - w \sin{\left(\beta \right)} \dot{\alpha} \dot{\beta} + \left(- c - \frac{l}{2}\right) \sin{\left(\beta \right)} \cos{\left(\beta \right)} \dot{\alpha}^{2} - \left(- c - \frac{l}{2}\right) \ddot{\beta})\hat{b}_y + (w \left(\sin{\left(\beta \right)} \ddot{\alpha} + \cos{\left(\beta \right)} \dot{\alpha} \dot{\beta}\right) - \left(- c - \frac{l}{2}\right) \sin^{2}{\left(\beta \right)} \dot{\alpha}^{2} + \left(- w \cos{\left(\beta \right)} \dot{\alpha} - \left(- c - \frac{l}{2}\right) \dot{\beta}\right) \dot{\beta})\hat{b}_z\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="acceleration-one-point-theorem">
+<h2 id="acceleration-one-point-theorem">Acceleration One Point Theorem<a class="headerlink" href="#acceleration-one-point-theorem" title="Link to this heading">¶</a></h2>
+<p>The velocity one point theorem also can be time differentiated to see its
+acceleration form. Starting with the expanded one point theorem for velocity:</p>
+<div class="math notranslate nohighlight" id="equation-vel-one-point-repeat">
+<span class="eqno">(82)<a class="headerlink" href="#equation-vel-one-point-repeat" title="Link to this equation">¶</a></span>\[{}^N\bar{v}^R = {}^B\bar{v}^R + {}^N\bar{v}^S + {}^N\bar{\omega}^B \times \bar{r}^{R/S}\]</div>
+<p>and taking the time derivative in the frame <span class="math notranslate nohighlight">\(N\)</span> the corollary formula for
+acceleration can be derived:</p>
+<div class="math notranslate nohighlight" id="equation-acceleration-one-point">
+<span class="eqno">(83)<a class="headerlink" href="#equation-acceleration-one-point" title="Link to this equation">¶</a></span>\[\begin{split}{}^N\bar{a}^R
+&amp; =
+\frac{{}^Nd {}^B\bar{v}^R}{dt} +
+\frac{{}^Nd {}^N\bar{v}^S}{dt} +
+\frac{{}^Nd {}^N\bar{\omega}^B \times \bar{r}^{R/S}}{dt} \\
+&amp; =
+\frac{{}^Nd {}^N\bar{v}^R }{dt} +
+{}^N\bar{\omega}^B \times {}^N\bar{v}^R +
+{}^N\bar{a}^S +
+\frac{{}^Nd {}^N\bar{\omega}^B}{dt} \times \bar{r}^{R/S} +
+{}^N\bar{\omega}^B \times \frac{{}^Nd \bar{r}^{R/S}}{dt} \\
+&amp; =
+{}^B\bar{a}^R +
+{}^N\bar{\omega}^B \times {}^B\bar{v}^R +
+{}^N\bar{a}^S +
+{}^N\bar{\alpha}^B \times \bar{r}^{R/S} +
+{}^N\bar{\omega}^B \times \left( {}^B\bar{v}^T +
+{}^N\bar{\omega}^B \times \bar{r}^{R/S} \right) \\
+&amp; =
+{}^B\bar{a}^R +
+2{}^N\bar{\omega}^B \times {}^B\bar{v}^R +
+{}^N\bar{a}^S +
+{}^N\bar{\alpha}^B \times \bar{r}^{R/S} +
+{}^N\bar{\omega}^B \times \left(
+{}^N\bar{\omega}^B \times \bar{r}^{R/S} \right)\end{split}\]</div>
+<p>One of my dynamics professors, Dean Karnopp, liked to call this equation the
+“five term beast”, as it is about the nastiest equation that shows up in
+dynamics. Looking carefully at this form, the result of the two point theorem
+is embedded, so this is equivalent to:</p>
+<div class="math notranslate nohighlight" id="equation-acc-one-point">
+<span class="eqno">(84)<a class="headerlink" href="#equation-acc-one-point" title="Link to this equation">¶</a></span>\[{}^N\bar{a}^R
+=
+{}^B\bar{a}^R +
+{}^N\bar{a}^T +
+2{}^N\bar{\omega}^B \times {}^B\bar{v}^R\]</div>
+<p>where <span class="math notranslate nohighlight">\(T\)</span> is again the point fixed at <span class="math notranslate nohighlight">\(R\)</span> in this instant of time.
+The tangential and centripetal acceleration terms are present in
+<span class="math notranslate nohighlight">\({}^N\bar{a}^T\)</span>. The term <span class="math notranslate nohighlight">\(2{}^N\bar{\omega}^B \times
+{}^B\bar{v}^R\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Coriolis_force">Coriolis acceleration</a> that arises from <span class="math notranslate nohighlight">\(R\)</span>
+moving in the rotating frame <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>The three terms in Eq. <a class="reference internal" href="#equation-acc-one-point">(84)</a> can be calculated for our
+pigeon like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_a_R</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">acc</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="n">B_a_R</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \ddot{s}\hat{b}_x\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_a_T</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">a2pt_theory</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="n">N_a_T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle d \dot{\alpha}^{2}\hat{a}_x -  d \ddot{\alpha}\hat{a}_y + (\left(- c + \frac{l}{2}\right) \left(\sin{\left(\beta \right)} \ddot{\alpha} + \cos{\left(\beta \right)} \dot{\alpha} \dot{\beta}\right) - \left(- w + s\right) \sin^{2}{\left(\beta \right)} \dot{\alpha}^{2} - \left(- \left(- c + \frac{l}{2}\right) \dot{\beta} + \left(- w + s\right) \cos{\left(\beta \right)} \dot{\alpha}\right) \cos{\left(\beta \right)} \dot{\alpha})\hat{b}_x + (\left(- c + \frac{l}{2}\right) \sin{\left(\beta \right)} \cos{\left(\beta \right)} \dot{\alpha}^{2} - \left(- c + \frac{l}{2}\right) \ddot{\beta} + \left(- w + s\right) \left(- \sin{\left(\beta \right)} \dot{\alpha} \dot{\beta} + \cos{\left(\beta \right)} \ddot{\alpha}\right) + \left(- w + s\right) \sin{\left(\beta \right)} \dot{\alpha} \dot{\beta})\hat{b}_y + (- \left(- c + \frac{l}{2}\right) \sin^{2}{\left(\beta \right)} \dot{\alpha}^{2} - \left(- w + s\right) \left(\sin{\left(\beta \right)} \ddot{\alpha} + \cos{\left(\beta \right)} \dot{\alpha} \dot{\beta}\right) + \left(- \left(- c + \frac{l}{2}\right) \dot{\beta} + \left(- w + s\right) \cos{\left(\beta \right)} \dot{\alpha}\right) \dot{\beta})\hat{b}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ang_vel_in</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">R</span><span class="o">.</span><span class="n">vel</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 \cos{\left(\beta \right)} \dot{\alpha} \dot{s}\hat{b}_y -  2 \sin{\left(\beta \right)} \dot{\alpha} \dot{s}\hat{b}_z\]</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/kinematics.html#sympy.physics.vector.point.Point.a1pt_theory" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">a1pt_theory()</span></code></a> method
+can also be used to make this calculation:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R</span><span class="o">.</span><span class="n">a1pt_theory</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (\left(- c + \frac{l}{2}\right) \left(\sin{\left(\beta \right)} \ddot{\alpha} + \cos{\left(\beta \right)} \dot{\alpha} \dot{\beta}\right) - \left(- w + s\right) \sin^{2}{\left(\beta \right)} \dot{\alpha}^{2} - \left(- \left(- c + \frac{l}{2}\right) \dot{\beta} + \left(- w + s\right) \cos{\left(\beta \right)} \dot{\alpha}\right) \cos{\left(\beta \right)} \dot{\alpha} + \ddot{s})\hat{b}_x + (\left(- c + \frac{l}{2}\right) \sin{\left(\beta \right)} \cos{\left(\beta \right)} \dot{\alpha}^{2} - \left(- c + \frac{l}{2}\right) \ddot{\beta} + \left(- w + s\right) \left(- \sin{\left(\beta \right)} \dot{\alpha} \dot{\beta} + \cos{\left(\beta \right)} \ddot{\alpha}\right) + \left(- w + s\right) \sin{\left(\beta \right)} \dot{\alpha} \dot{\beta} + 2 \cos{\left(\beta \right)} \dot{\alpha} \dot{s})\hat{b}_y + (- \left(- c + \frac{l}{2}\right) \sin^{2}{\left(\beta \right)} \dot{\alpha}^{2} - \left(- w + s\right) \left(\sin{\left(\beta \right)} \ddot{\alpha} + \cos{\left(\beta \right)} \dot{\alpha} \dot{\beta}\right) + \left(- \left(- c + \frac{l}{2}\right) \dot{\beta} + \left(- w + s\right) \cos{\left(\beta \right)} \dot{\alpha}\right) \dot{\beta} - 2 \sin{\left(\beta \right)} \dot{\alpha} \dot{s})\hat{b}_z + d \dot{\alpha}^{2}\hat{a}_x -  d \ddot{\alpha}\hat{a}_y\]</div>
+</div>
+</div>
+<p>The acceleration of the pigeon when viewed from <span class="math notranslate nohighlight">\(N\)</span> is no flapping
+matter.</p>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="angular.html" title="Angular Kinematics"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Angular Kinematics </span>
+              </div>
+            </a>
+          
+          
+            <a href="configuration.html" title="Holonomic Constraints"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Holonomic Constraints </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
