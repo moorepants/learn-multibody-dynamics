@@ -45,7 +45,8 @@ Learning Objectives
 
 After completing this chapter readers will be able to:
 
-- formulate the :math:`p` dynamical differential equations for a nonholonomic system
+- formulate the :math:`p` dynamical differential equations for a nonholonomic
+  system using two equivalent approaches
 - simulate a nonholonomic multibody system
 - calculate trajectories of dependent speeds
 
@@ -439,8 +440,8 @@ derivatives appear in the accelerations.
     me.find_dynamicsymbols(Rs_Bo, reference_frame=N) |
     me.find_dynamicsymbols(Rs_Co, reference_frame=N))
 
-.. todo:: Open and issue about find_dynamicsymbols not supporting an iterable
-   of inputs.
+.. todo:: Open an issue about find_dynamicsymbols not supporting an iterable of
+   inputs.
 
 We'll need to replace the :math:`\ddot{\bar{q}}` first and then the
 :math:`\dot{\bar{q}}`. Create the first replacement by differentiating the
