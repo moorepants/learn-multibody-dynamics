@@ -122,7 +122,7 @@ dynamical differential equations are:
    = 0 \in \mathbb{R}^p
 
 and combined with Eq. :math:numref:`eq-dep-speeds-repeat` give a set of
-:math:`n` differential algebraic equations of differentiation index 1.
+:math:`n` differential algebraic equations.
 
 You can time differentiate Eq. :math:numref:`eq-dep-speeds-repeat` to get:
 
@@ -633,8 +633,7 @@ time derivatives.
    Frs_tilde.shape, me.find_dynamicsymbols(Frs_tilde)
 
 Combined with :math:`\bar{f}_n`, the dynamical differential algebraic
-equations of index 1, :math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)`,
-are formed:
+equations, :math:`\bar{f}_d(\dot{\bar{u}}, \bar{u}, \bar{q}, t)`, are formed:
 
 .. jupyter-execute::
 
