@@ -74,7 +74,7 @@ mechanisms. One you may be familiar with is this rear suspension on a mountain
 bicycle:
 
 .. _mountain-bike-suspension:
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/MtbFrameGeometry_FSR.png/320px-MtbFrameGeometry_FSR.png
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/MtbFrameGeometry_FSR.png/330px-MtbFrameGeometry_FSR.png
    :align: center
 
    Four bar linkage shown in blue, red, orange, and green used in the rear
