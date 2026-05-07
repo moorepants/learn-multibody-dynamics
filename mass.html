@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Mass Distribution &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Force, Moment, and Torque" href="loads.html" />
+    <link rel="prev" title="Nonholonomic Constraints" href="motion.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#mass" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Mass Distribution </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="jupyter-python.html" class="md-nav__link">Jupyter and Python</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Mass Distribution </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Mass Distribution</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#mass--page-root" class="md-nav__link">Mass Distribution</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#particles-and-rigid-bodies" class="md-nav__link">Particles and Rigid Bodies</a>
+        </li>
+        <li class="md-nav__item"><a href="#mass" class="md-nav__link">Mass</a>
+        </li>
+        <li class="md-nav__item"><a href="#mass-center" class="md-nav__link">Mass Center</a>
+        </li>
+        <li class="md-nav__item"><a href="#distribution-of-mass" class="md-nav__link">Distribution of Mass</a>
+        </li>
+        <li class="md-nav__item"><a href="#inertia-matrix" class="md-nav__link">Inertia Matrix</a>
+        </li>
+        <li class="md-nav__item"><a href="#dyadics" class="md-nav__link">Dyadics</a>
+        </li>
+        <li class="md-nav__item"><a href="#properties-of-dyadics" class="md-nav__link">Properties of Dyadics</a>
+        </li>
+        <li class="md-nav__item"><a href="#inertia-dyadic" class="md-nav__link">Inertia Dyadic</a>
+        </li>
+        <li class="md-nav__item"><a href="#parallel-axis-theorem" class="md-nav__link">Parallel Axis Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#principal-axes-and-moments-of-inertia" class="md-nav__link">Principal Axes and Moments of Inertia</a>
+        </li>
+        <li class="md-nav__item"><a href="#angular-momentum" class="md-nav__link">Angular Momentum</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/mass.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#mass--page-root" class="md-nav__link">Mass Distribution</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#particles-and-rigid-bodies" class="md-nav__link">Particles and Rigid Bodies</a>
+        </li>
+        <li class="md-nav__item"><a href="#mass" class="md-nav__link">Mass</a>
+        </li>
+        <li class="md-nav__item"><a href="#mass-center" class="md-nav__link">Mass Center</a>
+        </li>
+        <li class="md-nav__item"><a href="#distribution-of-mass" class="md-nav__link">Distribution of Mass</a>
+        </li>
+        <li class="md-nav__item"><a href="#inertia-matrix" class="md-nav__link">Inertia Matrix</a>
+        </li>
+        <li class="md-nav__item"><a href="#dyadics" class="md-nav__link">Dyadics</a>
+        </li>
+        <li class="md-nav__item"><a href="#properties-of-dyadics" class="md-nav__link">Properties of Dyadics</a>
+        </li>
+        <li class="md-nav__item"><a href="#inertia-dyadic" class="md-nav__link">Inertia Dyadic</a>
+        </li>
+        <li class="md-nav__item"><a href="#parallel-axis-theorem" class="md-nav__link">Parallel Axis Theorem</a>
+        </li>
+        <li class="md-nav__item"><a href="#principal-axes-and-moments-of-inertia" class="md-nav__link">Principal Axes and Moments of Inertia</a>
+        </li>
+        <li class="md-nav__item"><a href="#angular-momentum" class="md-nav__link">Angular Momentum</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/mass.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="mass-distribution">
+<h1 id="mass--page-root">Mass Distribution<a class="headerlink" href="#mass--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/e65daf64f8b72368f326d05647b765c4/mass.py"><code class="xref download docutils literal notranslate"><span class="pre">mass.py</span></code></a> or Jupyter Notebook:
+<a class="reference download internal" download="" href="_downloads/1105c4f0513c54d4bb8626b5308a1daa/mass.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">mass.ipynb</span></code></a>.</p>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>calculate the mass, mass center, and inertia of a set of particles</p></li>
+<li><p>use inertia vectors to find inertia scalars of a set of particles</p></li>
+<li><p>formulate an inertia matrix for a set of particles</p></li>
+<li><p>use a dyadic to manipulate 2nd order tensors in multiple reference frames</p></li>
+<li><p>calculate the inertia dyadic of a set of particles</p></li>
+<li><p>apply the parallel axis theorem</p></li>
+<li><p>calculate the principal moments of inertia and the principal axes</p></li>
+<li><p>calculate angular momentum of a rigid body</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy.physics.mechanics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">me</span>
+<span class="n">me</span><span class="o">.</span><span class="n">init_vprinting</span><span class="p">(</span><span class="n">use_latex</span><span class="o">=</span><span class="s1">'mathjax'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="invisible docutils container">
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceFrame</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'latexs'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\hat{{</span><span class="si">{}</span><span class="s1">}}_</span><span class="si">{}</span><span class="s1">'</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReferenceFrame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                             <span class="n">latexs</span><span class="o">=</span><span class="p">(</span><span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">),</span>
+                                                     <span class="n">tex</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)),</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n">ReferenceFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<p>In the prior chapters, we have developed the tools to formulate the kinematics
+of points and reference frames. The kinematics are the first of three essential
+parts needed to form the equations of motion of a multibody system; the other
+two being the mass distribution of and the forces acting on the system.</p>
+<p>When a point is associated with a particle of mass <span class="math notranslate nohighlight">\(m\)</span> or a reference
+frame is associated with a rigid body that has some mass distribution,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion">Newton’s</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Euler%27s_laws_of_motion">Euler’s</a> second laws of motion show that the time rate of
+change of the linear and angular momenta must be equal to the forces and
+torques acting on the particle or rigid body, respectively. The momentum of a
+particle is determined by its mass and velocity and the angular momentum of a
+rigid body is determined by the distribution of mass and its angular velocity.
+In this chapter, we will introduce mass and its distribution.</p>
+</section>
+<section id="particles-and-rigid-bodies">
+<h2 id="particles-and-rigid-bodies">Particles and Rigid Bodies<a class="headerlink" href="#particles-and-rigid-bodies" title="Link to this heading">¶</a></h2>
+<p>We will introduce and use the concepts of particles and rigid bodies in this
+chapter. Both are abstractions of real translating and rotating objects.
+Particles are points that have a location in Euclidean space which have a
+volumetrically infinitesimal mass. Rigid bodies are reference frames that have
+orientation which have an associated continuous distribution of mass. The
+distribution of mass can be thought of as an infinite collection of points
+distributed in a finite volumetric boundary. All of the points distributed in
+the volume are fixed to one another and translate together.</p>
+<p>For example, an airplane can be modeled as a rigid body when one is concerned
+with both its translation and orientation. This could be useful when
+investigating its minimum turn radii and banking angle. But it could also be
+modeled as a particle when one is only concerned with its translation; for
+example when you observing the motion of the airplane from a location outside
+the Earth’s atmosphere.</p>
+</section>
+<section id="mass">
+<h2 id="mass">Mass<a class="headerlink" href="#mass" title="Link to this heading">¶</a></h2>
+<p>Given a set of <span class="math notranslate nohighlight">\(\nu\)</span> particles with masses <span class="math notranslate nohighlight">\(m_1,\ldots,m_\nu\)</span> the
+total mass, or <em>zeroth moment of mass</em>, of the set is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-zeroth-moment">
+<span class="eqno">(124)<a class="headerlink" href="#equation-eq-zeroth-moment" title="Link to this equation">¶</a></span>\[m := \sum_{i=1}^\nu m_i\]</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>What is the mass of an object made up of two particles of mass <span class="math notranslate nohighlight">\(m\)</span> and
+a rigid body with mass <span class="math notranslate nohighlight">\(m/2\)</span>?</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m'</span><span class="p">)</span>
+
+<span class="n">m_total</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="n">m</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">m_total</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{5 m}{2}\]</div>
+</div>
+</div>
+</div>
+<p>For a rigid body consisting of a solid with a density <span class="math notranslate nohighlight">\(\rho\)</span> defined at
+each point within its volumetric <span class="math notranslate nohighlight">\(V\)</span> boundary, the total mass becomes an
+integral of the general form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-zeroth-moment-rigid-body">
+<span class="eqno">(125)<a class="headerlink" href="#equation-eq-zeroth-moment-rigid-body" title="Link to this equation">¶</a></span>\[m := \int_{\textrm{solid}} \rho dV\]</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>What is the mass of a cone with uniform density <span class="math notranslate nohighlight">\(\rho\)</span>, radius
+<span class="math notranslate nohighlight">\(R\)</span>, and height <span class="math notranslate nohighlight">\(h\)</span>?</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p>Using cylindrical coordinates to write <span class="math notranslate nohighlight">\(dV=r \mathrm{d}z
+\mathrm{d}\theta \mathrm{d}r\)</span>,
+<a class="reference external" href="https://docs.sympy.org/latest/modules/integrals/integrals.html#sympy.integrals.integrals.integrate" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">integrate()</span></code></a> function can solve
+the triple integral:</p>
+<div class="math notranslate nohighlight" id="equation-mass-0">
+<span class="eqno">(126)<a class="headerlink" href="#equation-mass-0" title="Link to this equation">¶</a></span>\[\int_0^h  \int_0^{2\pi} \int_0^{\frac{R}{h}z} \rho r \mathrm{d}{z} \mathrm{d}{\theta} \mathrm{d}r\]</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'rho, R, h'</span><span class="p">)</span>  <span class="c1"># constants</span>
+<span class="n">r</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'r, z, theta'</span><span class="p">)</span>  <span class="c1"># integration variables</span>
+
+<span class="n">sm</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">R</span><span class="o">/</span><span class="n">h</span><span class="o">*</span><span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{\pi R^{2} h \rho}{3}\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mass-center">
+<h2 id="mass-center">Mass Center<a class="headerlink" href="#mass-center" title="Link to this heading">¶</a></h2>
+<p>If each particle in a set of <span class="math notranslate nohighlight">\(S\)</span> particles is located at positions
+<span class="math notranslate nohighlight">\(\bar{r}^{P_i/O},\ldots,\bar{r}^{P_\nu/O}\)</span> the <em>first moment of mass</em> is
+defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-first-moment">
+<span class="eqno">(127)<a class="headerlink" href="#equation-eq-first-moment" title="Link to this equation">¶</a></span>\[\sum_{i=1}^\nu m_i \bar{r}^{P_i/O}\textrm{.}\]</div>
+<p>There is then a point <span class="math notranslate nohighlight">\(S_o\)</span> in which the first mass moment is equal to
+zero; fulfilling the following equation:</p>
+<div class="math notranslate nohighlight" id="equation-eq-first-moment-zero">
+<span class="eqno">(128)<a class="headerlink" href="#equation-eq-first-moment-zero" title="Link to this equation">¶</a></span>\[\sum_{i=1}^\nu m_i \bar{r}^{P_i/S_o} = 0\textrm{.}\]</div>
+<p>This point <span class="math notranslate nohighlight">\(S_o\)</span> is referred to as the <em>mass center</em> (or <em>center of
+mass</em>) of the set of particles. The mass center’s position can be found by
+dividing the first moment of mass by the zeroth moment of mass:</p>
+<div class="math notranslate nohighlight" id="equation-mass-center-particles">
+<span class="eqno">(129)<a class="headerlink" href="#equation-mass-center-particles" title="Link to this equation">¶</a></span>\[\bar{r}^{S_o/O} = \frac{ \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} }{\sum_{i=1}^\nu m_i}\textrm{.}\]</div>
+<p>For a solid body, this takes the integral form:</p>
+<div class="math notranslate nohighlight" id="equation-mass-center-rigid-body">
+<span class="eqno">(130)<a class="headerlink" href="#equation-mass-center-rigid-body" title="Link to this equation">¶</a></span>\[\bar{r}^{S_o/O} = \frac{ \int_{\textrm{solid}} \rho \bar{r} dV }{ \int_{\textrm{solid}} \rho dV }\]</div>
+<p>The particle form (Eq. <a class="reference internal" href="#equation-mass-center-particles">(129)</a>) can be calculated
+using vectors and scalars in SymPy Mechanics. Here is an example of three
+particles each at an arbitrary location relative to <span class="math notranslate nohighlight">\(O\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">m3</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m1, m2, m3'</span><span class="p">)</span>
+<span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'x1, x2, x3'</span><span class="p">)</span>
+<span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'y1, y2, y3'</span><span class="p">)</span>
+<span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">z3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'z1, z2, z3'</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+
+<span class="n">zeroth_moment</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span> <span class="o">+</span> <span class="n">m2</span> <span class="o">+</span> <span class="n">m3</span><span class="p">)</span>
+
+<span class="n">first_moment</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span><span class="o">*</span><span class="p">(</span><span class="n">x1</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">y1</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">z1</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span>
+                <span class="n">m2</span><span class="o">*</span><span class="p">(</span><span class="n">x2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">y2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">z2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span>
+                <span class="n">m3</span><span class="o">*</span><span class="p">(</span><span class="n">x3</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">y3</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">z3</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+<span class="n">first_moment</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (m_{1} x_{1} + m_{2} x_{2} + m_{3} x_{3})\hat{a}_x + (m_{1} y_{1} + m_{2} y_{2} + m_{3} y_{3})\hat{a}_y + (m_{1} z_{1} + m_{2} z_{2} + m_{3} z_{3})\hat{a}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_O_So</span> <span class="o">=</span>  <span class="n">first_moment</span><span class="o">/</span><span class="n">zeroth_moment</span>
+<span class="n">r_O_So</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \frac{m_{1} x_{1} + m_{2} x_{2} + m_{3} x_{3}}{m_{1} + m_{2} + m_{3}}\hat{a}_x + \frac{m_{1} y_{1} + m_{2} y_{2} + m_{3} y_{3}}{m_{1} + m_{2} + m_{3}}\hat{a}_y + \frac{m_{1} z_{1} + m_{2} z_{2} + m_{3} z_{3}}{m_{1} + m_{2} + m_{3}}\hat{a}_z\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>If <span class="math notranslate nohighlight">\(m_2=2m_1\)</span> and <span class="math notranslate nohighlight">\(m_3=3m_1\)</span> in the above example, find the mass
+center.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_O_So</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">m2</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">m1</span><span class="p">,</span> <span class="n">m3</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">m1</span><span class="p">})</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (\frac{x_{1}}{6} + \frac{x_{2}}{3} + \frac{x_{3}}{2})\hat{a}_x + (\frac{y_{1}}{6} + \frac{y_{2}}{3} + \frac{y_{3}}{2})\hat{a}_y + (\frac{z_{1}}{6} + \frac{z_{2}}{3} + \frac{z_{3}}{2})\hat{a}_z\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="distribution-of-mass">
+<h2 id="distribution-of-mass">Distribution of Mass<a class="headerlink" href="#distribution-of-mass" title="Link to this heading">¶</a></h2>
+<p>The inertia, or second moment of mass, describes the distribution of mass
+relative to a point about an axis. Inertia characterizes the resistance to
+angular acceleration in the same way that mass characterizes the resistance to
+linear acceleration. For a set of particles <span class="math notranslate nohighlight">\(P_1,\ldots,P_\nu\)</span> with
+positions <span class="math notranslate nohighlight">\(\bar{r}^{P_1/O},\ldots,\bar{r}^{P_\nu/O}\)</span> all relative to a
+point <span class="math notranslate nohighlight">\(O\)</span>, the <em>inertia vector</em> about the unit vector <span class="math notranslate nohighlight">\(\hat{n}_a\)</span>
+is defined as (<a class="reference internal" href="references.html#kane1985" id="id1"><span>[Kane1985]</span></a>, pg. 61):</p>
+<div class="math notranslate nohighlight" id="equation-inertia-vector-particles">
+<span class="eqno">(131)<a class="headerlink" href="#equation-inertia-vector-particles" title="Link to this equation">¶</a></span>\[\bar{I}_a := \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times
+\bar{r}^{P_i/O}  \right)\]</div>
+<p>Similarly, for an infinite number of points at locations parametrized by
+<span class="math notranslate nohighlight">\(\tau\)</span> that make up a rigid body with density <span class="math notranslate nohighlight">\(\rho(\tau)\)</span> the
+integral form is used (<a class="reference internal" href="references.html#kane1985" id="id2"><span>[Kane1985]</span></a>, pg. 62):</p>
+<div class="math notranslate nohighlight" id="equation-inertia-vector-body">
+<span class="eqno">(132)<a class="headerlink" href="#equation-inertia-vector-body" title="Link to this equation">¶</a></span>\[\bar{I}_a := \int_{\textrm{solid}} \rho(\tau) \left[ \bar{r}^{P(\tau)/O}
+\times \left( \hat{n}_a \times
+\bar{r}^{P(\tau)/O}  \right) \right] d\tau\]</div>
+<p>This vector describes the sum of each mass’s contribution to the mass
+distribution about a line that is parallel to <span class="math notranslate nohighlight">\(\hat{n}_a\)</span> and passes
+through <span class="math notranslate nohighlight">\(O\)</span>. Figure <a class="reference internal" href="#fig-mass-inertia-vector"><span class="std std-numref">Fig. 32</span></a> shows a visual
+representation of this vector for a single particle <span class="math notranslate nohighlight">\(P\)</span> with mass
+<span class="math notranslate nohighlight">\(m\)</span>.</p>
+<figure class="align-center" id="id12">
+<span id="fig-mass-inertia-vector"></span><img alt="_images/mass-inertia-vector.svg" src="_images/mass-inertia-vector.svg"/>
+<figcaption>
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text">Inertia vector for a single particle <span class="math notranslate nohighlight">\(P\)</span> of mass <span class="math notranslate nohighlight">\(m\)</span> and its
+relationship to <span class="math notranslate nohighlight">\(\hat{n}_a\)</span>.</span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For this single particle, the magnitude of <span class="math notranslate nohighlight">\(\bar{I}_a\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-inertia-vector-magnitude">
+<span class="eqno">(133)<a class="headerlink" href="#equation-inertia-vector-magnitude" title="Link to this equation">¶</a></span>\[\left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2 | \sin\theta |\]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta\)</span> is angle between <span class="math notranslate nohighlight">\(\bar{r}^{P/O}\)</span> and
+<span class="math notranslate nohighlight">\(\hat{n}_a\)</span>. We see that <span class="math notranslate nohighlight">\(\bar{I}_a\)</span> is always perpendicular to
+<span class="math notranslate nohighlight">\(\bar{r}^{P/O}\)</span> and scales with <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(| \bar{r}^{P/O} |^2\)</span>,
+and <span class="math notranslate nohighlight">\(\sin\theta\)</span>. If <span class="math notranslate nohighlight">\(\hat{n}_a\)</span> happens to be parallel to
+<span class="math notranslate nohighlight">\(\bar{r}^{P/O}\)</span> then the magnitude of <span class="math notranslate nohighlight">\(\bar{I}_a\)</span> is zero. If
+<span class="math notranslate nohighlight">\(\hat{n}_a\)</span> is perpendicular to <span class="math notranslate nohighlight">\(\bar{r}^{P/O}\)</span> then the magnitude
+is:</p>
+<div class="math notranslate nohighlight" id="equation-intertia-vector-magnitude-perp">
+<span class="eqno">(134)<a class="headerlink" href="#equation-intertia-vector-magnitude-perp" title="Link to this equation">¶</a></span>\[\left| \bar{I}_a \right| = m \left| \bar{r}^{P/O} \right| ^2\]</div>
+<p>The inertia vector fully describes the distribution of the particles with
+respect to <span class="math notranslate nohighlight">\(O\)</span> about <span class="math notranslate nohighlight">\(\hat{n}_a\)</span>.</p>
+<p>A component of <span class="math notranslate nohighlight">\(\bar{I}_a\)</span> in the <span class="math notranslate nohighlight">\(\hat{n}_b\)</span> direction is called
+an <em>inertia scalar</em> and is defined as (<a class="reference internal" href="references.html#kane1985" id="id3"><span>[Kane1985]</span></a>, pg. 62):</p>
+<div class="math notranslate nohighlight" id="equation-inertia-scalar">
+<span class="eqno">(135)<a class="headerlink" href="#equation-inertia-scalar" title="Link to this equation">¶</a></span>\[I_{ab} := \bar{I}_{a} \cdot \hat{n}_b\]</div>
+<p>The inertia scalar can be rewritten using Eq.
+<a class="reference internal" href="#equation-inertia-vector-particles">(131)</a> as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-product-of-inertia">
+<span class="eqno">(136)<a class="headerlink" href="#equation-eq-product-of-inertia" title="Link to this equation">¶</a></span>\[I_{ab} =
+\sum_{i=1}^\nu m_i
+\left( \bar{r}^{P_i/O} \times \hat{n}_a \right)
+\cdot
+\left( \bar{r}^{P_i/O} \times \hat{n}_b \right)\textrm{.}\]</div>
+<p>This form implies that:</p>
+<div class="math notranslate nohighlight" id="equation-eq-product-of-inertia-equivalence">
+<span class="eqno">(137)<a class="headerlink" href="#equation-eq-product-of-inertia-equivalence" title="Link to this equation">¶</a></span>\[I_{ab} = I_{ba}\]</div>
+<p>If <span class="math notranslate nohighlight">\(\hat{n}_a = \hat{n}_b\)</span> then this inertia scalar is called a <em>moment
+of inertia</em> and if <span class="math notranslate nohighlight">\(\hat{n}_a \neq \hat{n}_b\)</span> it is called a <em>product of
+inertia</em>. Moments of inertia describe the mass distribution about a single axis
+whereas products of inertia describe the mass distribution relative to two
+axes.</p>
+<p>When <span class="math notranslate nohighlight">\(\hat{n}_a = \hat{n}_b\)</span> Eq. <a class="reference internal" href="#equation-eq-product-of-inertia">(136)</a>
+reduces to the moment of inertia:</p>
+<div class="math notranslate nohighlight" id="equation-eq-moment-of-inertia">
+<span class="eqno">(138)<a class="headerlink" href="#equation-eq-moment-of-inertia" title="Link to this equation">¶</a></span>\[I_{aa} =
+\sum_{i=1}^\nu m_i
+\left( \bar{r}^{P_i/O} \times \hat{n}_a \right) \cdot
+\left( \bar{r}^{P_i/O} \times \hat{n}_a \right)\]</div>
+<p>It is common to define the <em>radius of gyration</em> <span class="math notranslate nohighlight">\(k_{aa}\)</span>, which is the
+radius of a ring that has the same moment of inertia as the set of particles or
+rigid body. The radius of gyration about a line through <span class="math notranslate nohighlight">\(O\)</span> parallel to
+<span class="math notranslate nohighlight">\(\hat{n}_a\)</span> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-mass-1">
+<span class="eqno">(139)<a class="headerlink" href="#equation-mass-1" title="Link to this equation">¶</a></span>\[k_{aa} := \sqrt{\frac{I_{aa}}{m}}\]</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Three masses of <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(2m\)</span>, and <span class="math notranslate nohighlight">\(3m\)</span> slide on a ring of
+radius <span class="math notranslate nohighlight">\(r\)</span>. Mass <span class="math notranslate nohighlight">\(3m\)</span> always lies <span class="math notranslate nohighlight">\(\pi/6\)</span> anitclockwise
+from <span class="math notranslate nohighlight">\(m\)</span> and mass <span class="math notranslate nohighlight">\(2m\)</span> always lies <span class="math notranslate nohighlight">\(\pi/7\)</span> clockwise from
+<span class="math notranslate nohighlight">\(m\)</span>. Find the acute angle from the line from the ring center to
+<span class="math notranslate nohighlight">\(m\)</span> to a line tangent to the ring at point <span class="math notranslate nohighlight">\(O\)</span> which minimizes
+the total radius of gyration of all three masses about the line tangent to
+the ring.</p>
+<figure class="align-center" id="fig-mass-ring">
+<a class="reference internal image-reference" href="_images/mass-ring.svg"><img alt="_images/mass-ring.svg" src="_images/mass-ring.svg" style="width: 50%;"/>
+</a>
+</figure>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p>Define the necessary variables, including <span class="math notranslate nohighlight">\(\theta\)</span> to locate mass
+<span class="math notranslate nohighlight">\(m\)</span>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'m, r, theta'</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Create position vectors to each of the masses:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_O_m</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span>
+<span class="n">r_O_2m</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span> <span class="o">+</span> <span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">7</span><span class="p">))</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span> <span class="o">+</span> <span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">7</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span>
+<span class="n">r_O_3m</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">))</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Create the inertia scalar for a moment of inertia about the point <span class="math notranslate nohighlight">\(O\)</span>
+and <span class="math notranslate nohighlight">\(\hat{a}_y\)</span>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Iyy</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r_O_m</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">r_O_m</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">))</span> <span class="o">+</span>
+       <span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r_O_2m</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">r_O_2m</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">))</span> <span class="o">+</span>
+       <span class="mi">3</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r_O_3m</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">r_O_3m</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">)))</span>
+<span class="n">Iyy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle m \left(r \sin{\left(\theta \right)} + r\right)^{2} + 2 m \left(r \sin{\left(\theta + \frac{\pi}{7} \right)} + r\right)^{2} + 3 m \left(- r \cos{\left(\theta + \frac{\pi}{3} \right)} + r\right)^{2}\]</div>
+</div>
+</div>
+<p>Recognizing that the radius of gyration is minimized when the moment of
+inertia is minimized, we can take the derivative of the moment of inertia
+with respect to <span class="math notranslate nohighlight">\(\theta\)</span> and set that equal to zero.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dIyydtheta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">Iyy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+<span class="n">dIyydtheta</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 m r^{2} \left(\left(\sin{\left(\theta \right)} + 1\right) \cos{\left(\theta \right)} + 2 \left(\sin{\left(\theta + \frac{\pi}{7} \right)} + 1\right) \cos{\left(\theta + \frac{\pi}{7} \right)} - 3 \left(\cos{\left(\theta + \frac{\pi}{3} \right)} - 1\right) \sin{\left(\theta + \frac{\pi}{3} \right)}\right)\]</div>
+</div>
+</div>
+<p>We can divide through by <span class="math notranslate nohighlight">\(mr^2\)</span> and solve numerically for
+<span class="math notranslate nohighlight">\(\theta\)</span> since it is the only variable present in the expression.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta_sol</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">nsolve</span><span class="p">((</span><span class="n">dIyydtheta</span><span class="o">/</span><span class="n">m</span><span class="o">/</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">evalf</span><span class="p">(),</span> <span class="n">theta</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">theta_sol</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -1.49935061382135\]</div>
+</div>
+</div>
+<p>In degrees that is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">theta_sol</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle -85.9064621823125\]</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://docs.sympy.org/latest/modules/plotting.html#sympy.plotting.plot.plot" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot()</span></code></a> function can make quick
+plots of single variate functions. Here we see that rotating the set of
+masses around the ring will maximize and minimize the radius of gyration
+and that our solution is a minima. <span class="math notranslate nohighlight">\(m=r=1\)</span> was selected so we could
+plot only as a function of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kyy</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Iyy</span><span class="o">/</span><span class="n">m</span><span class="p">)</span>
+<span class="n">kyy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \sqrt{\frac{m \left(r \sin{\left(\theta \right)} + r\right)^{2} + 2 m \left(r \sin{\left(\theta + \frac{\pi}{7} \right)} + r\right)^{2} + 3 m \left(- r \cos{\left(\theta + \frac{\pi}{3} \right)} + r\right)^{2}}{m}}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kyy</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">m</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="mi">1</span><span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mass_14_0.png" src="_images/mass_14_0.png"/>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kyy</span><span class="o">.</span><span class="n">xreplace</span><span class="p">({</span><span class="n">m</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="n">theta_sol</span><span class="p">})</span><span class="o">.</span><span class="n">evalf</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0.255558185585985\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="inertia-matrix">
+<h2 id="inertia-matrix">Inertia Matrix<a class="headerlink" href="#inertia-matrix" title="Link to this heading">¶</a></h2>
+<p>For mutually perpendicular unit vectors fixed in reference frame <span class="math notranslate nohighlight">\(A\)</span>, the
+moments of inertia with respect to <span class="math notranslate nohighlight">\(O\)</span> about each unit vector and the
+products of inertia among the pairs of perpendicular unit vectors can be
+computed using the inertia vector expressions in the prior section. This, in
+general, results in nine inertia scalars (6 unique scalars because of
+<a class="reference internal" href="#equation-eq-product-of-inertia-equivalence">(137)</a>) that describe the mass
+distribution of a set of particles or a rigid body in 3D space. These scalars
+are typically presented as a symmetric <em>inertia matrix</em> (also called an
+<em>inertia tensor</em>) that takes this form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-inertia-matrix">
+<span class="eqno">(140)<a class="headerlink" href="#equation-eq-inertia-matrix" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+ I_{xx} &amp; I_{xy} &amp; I_{xz} \\
+ I_{yx} &amp; I_{yy} &amp; I_{yz} \\
+ I_{zx} &amp; I_{zy} &amp; I_{zz}
+\end{bmatrix}_A\end{split}\]</div>
+<p>where the moments of inertia are on the diagonal and the products of inertia
+are the off diagonal entries. Eq.
+<a class="reference internal" href="#equation-eq-product-of-inertia-equivalence">(137)</a> holds for the products of
+inertia, i.e. <span class="math notranslate nohighlight">\(I_{xy}=I_{yx}\)</span>, <span class="math notranslate nohighlight">\(I_{xz}=I_{zx}\)</span>, and
+<span class="math notranslate nohighlight">\(I_{yz}=I_{zy}\)</span>, and the subscript <span class="math notranslate nohighlight">\(A\)</span> indicates that these scalars
+are relative to mutually perpendicular unit vectors
+<span class="math notranslate nohighlight">\(\hat{a}_x,\hat{a}_y,\hat{a}_z\)</span> fixed in <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>This matrix (or second order tensor) is similar to the vectors (or first order
+tensors) we’ve already worked with:</p>
+<div class="math notranslate nohighlight" id="equation-eq-column-vector">
+<span class="eqno">(141)<a class="headerlink" href="#equation-eq-column-vector" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+v_1 \\
+v_2 \\
+v_3
+\end{bmatrix}_A\end{split}\]</div>
+<p>Recall that we have a notation for writing such a vector that allows us to
+combine components expressed in different reference frames:</p>
+<div class="math notranslate nohighlight" id="equation-mass-2">
+<span class="eqno">(142)<a class="headerlink" href="#equation-mass-2" title="Link to this equation">¶</a></span>\[v_1\hat{a}_x + v_2\hat{a}_y + v_3\hat{a}_z\]</div>
+<p>There also exists an analogous form for second order tensors that are
+associated with different reference frames called a <a class="reference external" href="https://en.wikipedia.org/wiki/Dyadics">dyadic</a>.</p>
+</section>
+<section id="dyadics">
+<h2 id="dyadics">Dyadics<a class="headerlink" href="#dyadics" title="Link to this heading">¶</a></h2>
+<p>If we introduce the <a class="reference external" href="https://en.wikipedia.org/wiki/Outer_product">outer product</a> operator between two vectors we see that
+it generates a matrix akin to the inertia matrix above.</p>
+<div class="math notranslate nohighlight" id="equation-eq-vector-outer-product">
+<span class="eqno">(143)<a class="headerlink" href="#equation-eq-vector-outer-product" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+v_1 \\ v_2 \\ v_3
+\end{bmatrix}_A
+\otimes
+\begin{bmatrix}
+  w_1 \\ w_2 \\ w_3
+\end{bmatrix}_A
+=
+\begin{bmatrix}
+v_1w_1 &amp; v_1w_2 &amp; v_1w_3 \\
+v_2w_1 &amp; v_2w_2 &amp; v_2w_3 \\
+v_3w_1 &amp; v_3w_2 &amp; v_3w_3 \\
+\end{bmatrix}_A\end{split}\]</div>
+<p>In SymPy Mechanics, outer products can be taken between two vectors to create
+the dyadic <span class="math notranslate nohighlight">\(\breve{Q}\)</span> using
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/functions.html#sympy.physics.vector.functions.outer" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">outer()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">v3</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'v1, v2, v3'</span><span class="p">)</span>
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'w1, w2, w3'</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">v1</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">v2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">v3</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">w1</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">w2</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">w3</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">Q</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">Q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle v_{1} w_{1}\hat{a}_x\otimes \hat{a}_x + v_{1} w_{2}\hat{a}_x\otimes \hat{a}_y + v_{1} w_{3}\hat{a}_x\otimes \hat{a}_z + v_{2} w_{1}\hat{a}_y\otimes \hat{a}_x + v_{2} w_{2}\hat{a}_y\otimes \hat{a}_y + v_{2} w_{3}\hat{a}_y\otimes \hat{a}_z + v_{3} w_{1}\hat{a}_z\otimes \hat{a}_x + v_{3} w_{2}\hat{a}_z\otimes \hat{a}_y + v_{3} w_{3}\hat{a}_z\otimes \hat{a}_z\]</div>
+</div>
+</div>
+<p>The result is not the matrix form shown in Eq.
+<a class="reference internal" href="#equation-eq-vector-outer-product">(143)</a>, but instead the result is a dyadic. The
+dyadic is the analogous form for second order tensors to what we have been
+using for first order tensors, i.e. vectors. If the matrix form is needed, it
+can be found with
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/vector/api/classes.html#sympy.physics.vector.dyadic.Dyadic.to_matrix" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_matrix()</span></code></a> and naming a
+specific reference frame to express the dyadic in:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}v_{1} w_{1} &amp; v_{1} w_{2} &amp; v_{1} w_{3}\\v_{2} w_{1} &amp; v_{2} w_{2} &amp; v_{2} w_{3}\\v_{3} w_{1} &amp; v_{3} w_{2} &amp; v_{3} w_{3}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The dyadic is made up of scalars multiplied by unit dyads. Examples of unit
+dyads are:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \hat{a}_x\otimes \hat{a}_x\]</div>
+</div>
+</div>
+<p>Unit dyads correspond to unit entries in the 3x3 matrix:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Unit dyads are analogous to unit vectors. There are nine unit dyads in total
+associated with the three orthogonal unit vectors. Here is another example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \hat{a}_y\otimes \hat{a}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 1\\0 &amp; 0 &amp; 0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>These unit dyads can be formed from any unit vectors. This is convenient
+because we can create dyadics, just like vectors, which are made up of
+components in different reference frames. For example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">"theta"</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">B</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">P</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">P</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2\hat{b}_x\otimes \hat{b}_x + 3\hat{a}_x\otimes \hat{b}_y + 4\hat{b}_z\otimes \hat{a}_z\]</div>
+</div>
+</div>
+<p>The dyadic <span class="math notranslate nohighlight">\(\breve{P}\)</span> can be expressed in unit dyads of <span class="math notranslate nohighlight">\(A\)</span></p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2\hat{a}_x\otimes \hat{a}_x + 3 \cos{\left(\theta \right)}\hat{a}_x\otimes \hat{a}_y + 3 \sin{\left(\theta \right)}\hat{a}_x\otimes \hat{a}_z -  4 \sin{\left(\theta \right)}\hat{a}_y\otimes \hat{a}_z + 4 \cos{\left(\theta \right)}\hat{a}_z\otimes \hat{a}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}2 &amp; 3 \cos{\left(\theta \right)} &amp; 3 \sin{\left(\theta \right)}\\0 &amp; 0 &amp; - 4 \sin{\left(\theta \right)}\\0 &amp; 0 &amp; 4 \cos{\left(\theta \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>or <span class="math notranslate nohighlight">\(B\)</span>: :</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2\hat{b}_x\otimes \hat{b}_x + 3\hat{b}_x\otimes \hat{b}_y + 4 \sin{\left(\theta \right)}\hat{b}_z\otimes \hat{b}_y + 4 \cos{\left(\theta \right)}\hat{b}_z\otimes \hat{b}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}2 &amp; 3 &amp; 0\\0 &amp; 0 &amp; 0\\0 &amp; 4 \sin{\left(\theta \right)} &amp; 4 \cos{\left(\theta \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The <em>unit dyadic</em> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-unit-dyadic">
+<span class="eqno">(144)<a class="headerlink" href="#equation-eq-unit-dyadic" title="Link to this equation">¶</a></span>\[\breve{U} :=
+\hat{a}_x \otimes \hat{a}_x +
+\hat{a}_y \otimes \hat{a}_y +
+\hat{a}_z \otimes \hat{a}_z\]</div>
+<p>The unit dyadic can be created with SymPy:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">U</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \hat{a}_x\otimes \hat{a}_x + \hat{a}_y\otimes \hat{a}_y + \hat{a}_z\otimes \hat{a}_z\]</div>
+</div>
+</div>
+<p>and it represents the identity matrix in <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1 &amp; 0 &amp; 0\\0 &amp; 1 &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>Note that the unit dyadic is the same when expressed in any reference frame:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \hat{b}_x\otimes \hat{b}_x + \hat{b}_y\otimes \hat{b}_y + \hat{b}_z\otimes \hat{b}_z\]</div>
+</div>
+</div>
+</section>
+<section id="properties-of-dyadics">
+<h2 id="properties-of-dyadics">Properties of Dyadics<a class="headerlink" href="#properties-of-dyadics" title="Link to this heading">¶</a></h2>
+<p>Dyadics have similar properties as vectors but are not necessarily commutative.</p>
+<ul class="simple">
+<li><p>Scalar multiplication: <span class="math notranslate nohighlight">\(\alpha(\bar{u}\otimes\bar{v}) = \alpha\bar{u}\otimes\bar{v} = \bar{u}\otimes\alpha\bar{v}\)</span></p></li>
+<li><p>Distributive: <span class="math notranslate nohighlight">\(\bar{u}\otimes(\bar{v} + \bar{w}) = \bar{u}\otimes\bar{v} + \bar{u}\otimes\bar{w}\)</span></p></li>
+<li><p>Left and right dot product with a vector (results in a vector):</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\bar{u}\cdot(\bar{v}\otimes\bar{w}) = (\bar{u}\cdot\bar{v})\bar{w}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((\bar{u}\otimes\bar{v})\cdot\bar{w} = \bar{u}(\bar{v}\cdot\bar{w})\)</span></p></li>
+</ul>
+</li>
+<li><p>Left and right cross product with a vector (results in a dyadic):</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\bar{u}\times(\bar{v}\otimes\bar{w}) = (\bar{u}\times\bar{v})\otimes\bar{w}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((\bar{u}\otimes\bar{v})\times\bar{w} = \bar{u}\otimes(\bar{v}\times\bar{w})\)</span></p></li>
+</ul>
+</li>
+<li><p>Dot products between arbitrary vectors <span class="math notranslate nohighlight">\(\bar{u}\)</span> and arbitrary dyadics
+<span class="math notranslate nohighlight">\(\breve{V}\)</span> are not commutative: <span class="math notranslate nohighlight">\(\breve{V}\cdot\bar{u} \neq
+\bar{u}\cdot\breve{V}\)</span></p></li>
+<li><p>Dot products between arbitrary vectors and the unit dyadic are commutative
+and result in the vector itself: <span class="math notranslate nohighlight">\(\breve{U}\cdot\bar{v} =
+\bar{v}\cdot\breve{U} = \bar{v}\)</span></p></li>
+</ul>
+</section>
+<section id="inertia-dyadic">
+<h2 id="inertia-dyadic">Inertia Dyadic<a class="headerlink" href="#inertia-dyadic" title="Link to this heading">¶</a></h2>
+<p>Previously we defined the inertia vector for a set of <span class="math notranslate nohighlight">\(\nu\)</span> particles
+as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-inertia-vector-again">
+<span class="eqno">(145)<a class="headerlink" href="#equation-eq-inertia-vector-again" title="Link to this equation">¶</a></span>\[\bar{I}_a = \sum_{i=1}^\nu m_i \bar{r}^{P_i/O} \times \left( \hat{n}_a \times \bar{r}^{P_i/O}  \right)\]</div>
+<p>Using the <a class="reference external" href="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product">vector triple product</a> identity:
+<span class="math notranslate nohighlight">\(\bar{a}\times(\bar{b}\times\bar{c}) = \bar{b}(\bar{a}\cdot\bar{c}) -
+\bar{c}(\bar{a}\cdot\bar{b})\)</span>, the inertia vector can be written as
+(<a class="reference internal" href="references.html#kane1985" id="id7"><span>[Kane1985]</span></a>, pg. 68):</p>
+<div class="math notranslate nohighlight" id="equation-eq-apply-triple-vec-product">
+<span class="eqno">(146)<a class="headerlink" href="#equation-eq-apply-triple-vec-product" title="Link to this equation">¶</a></span>\[\bar{I}_a = \sum_{i=1}^\nu m_i
+\left[\hat{n}_a \left( \bar{r}^{P_i/O} \cdot \bar{r}^{P_i/O} \right) -
+\bar{r}^{P_i/O} \left( \bar{r}^{P_i/O} \cdot \hat{n}_a \right) \right]\]</div>
+<p>Now by introducing a unit dyadic, we can write:</p>
+<div class="math notranslate nohighlight" id="equation-mass-3">
+<span class="eqno">(147)<a class="headerlink" href="#equation-mass-3" title="Link to this equation">¶</a></span>\[\bar{I}_a =
+\sum_{i=1}^\nu m_i \left[
+\left|\bar{r}^{P_i/O}\right|^2 \hat{n}_a \cdot \breve{U}  -
+\hat{n}_a \cdot \left(\bar{r}^{P_i/O} \otimes \bar{r}^{P_i/O}\right)
+\right]\]</div>
+<p><span class="math notranslate nohighlight">\(\hat{n}_a\)</span> can be pulled out of the summation:</p>
+<div class="math notranslate nohighlight" id="equation-mass-4">
+<span class="eqno">(148)<a class="headerlink" href="#equation-mass-4" title="Link to this equation">¶</a></span>\[\bar{I}_a =
+\hat{n}_a \cdot
+\sum_{i=1}^\nu m_i \left(
+\left|\bar{r}^{P_i/O}\right|^2 \breve{U}  -
+\bar{r}^{P_i/O} \otimes \bar{r}^{P_i/O}
+\right)\]</div>
+<p>The <em>inertia dyadic</em> <span class="math notranslate nohighlight">\(\breve{I}\)</span> of a set of <span class="math notranslate nohighlight">\(S\)</span> particles relative
+to <span class="math notranslate nohighlight">\(O\)</span> is now defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-inertia-dyadic">
+<span class="eqno">(149)<a class="headerlink" href="#equation-eq-inertia-dyadic" title="Link to this equation">¶</a></span>\[\breve{I}^{S/O} :=
+\sum_{i=1}^\nu m_i \left(
+\left|\bar{r}^{P_i/O}\right|^2 \breve{U}  -
+\bar{r}^{P_i/O} \otimes \bar{r}^{P_i/O}
+\right)\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight" id="equation-mass-5">
+<span class="eqno">(150)<a class="headerlink" href="#equation-mass-5" title="Link to this equation">¶</a></span>\[\bar{I}_a = \hat{n}_a \cdot \breve{I}^{S/O}\]</div>
+<p>Note that we have now described the inertia of the set of particles without
+needing to specify a vector <span class="math notranslate nohighlight">\(\hat{n}_a\)</span>. This inertia dyadic contains the
+complete description of inertia with respect to point <span class="math notranslate nohighlight">\(O\)</span> about any axis.
+The vectors and dyadics in Eq. <a class="reference internal" href="#equation-eq-inertia-dyadic">(149)</a> can be written
+in terms of any reference frame unit vectors or unit dyads, respectively.</p>
+<p>If you have a solid body, an infinite set of points with a volumetric boundary,
+then you must solve the integral version of <a class="reference internal" href="#equation-eq-inertia-dyadic">(149)</a>
+where the position of any location in the particle is parameterize by
+<span class="math notranslate nohighlight">\(\tau\)</span> which can represent a volume, line, or surface parameterization.</p>
+<div class="math notranslate nohighlight" id="equation-eq-inertia-dyadic-solid">
+<span class="eqno">(151)<a class="headerlink" href="#equation-eq-inertia-dyadic-solid" title="Link to this equation">¶</a></span>\[\breve{I}^{S/O} := \int_\textrm{solid} \rho
+\left(
+\left|\bar{r}^{P(\tau)/O}\right|^2 \breve{U}  -
+\bar{r}^{P(\tau)/O} \otimes \bar{r}^{P(\tau)/O}
+\right) \textrm{d}\tau\]</div>
+<p>In SymPy Mechanics, simple inertia dyadics in terms of the unit vectors of a
+single reference frame can quickly be generated with
+<a class="reference external" href="https://docs.sympy.org/latest/modules/physics/mechanics/api/part_bod.html#sympy.physics.mechanics.inertia.inertia" title="(in SymPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">inertia()</span></code></a>. For example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'I_</span><span class="si">{xx}</span><span class="s1">, I_</span><span class="si">{yy}</span><span class="s1">, I_</span><span class="si">{zz}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">Ixy</span><span class="p">,</span> <span class="n">Iyz</span><span class="p">,</span> <span class="n">Ixz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'I_</span><span class="si">{xy}</span><span class="s1">, I_</span><span class="si">{yz}</span><span class="s1">, I_</span><span class="si">{xz}</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="n">I</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">inertia</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span><span class="p">,</span> <span class="n">ixy</span><span class="o">=</span><span class="n">Ixy</span><span class="p">,</span> <span class="n">iyz</span><span class="o">=</span><span class="n">Iyz</span><span class="p">,</span> <span class="n">izx</span><span class="o">=</span><span class="n">Ixz</span><span class="p">)</span>
+<span class="n">I</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle I_{xx}\hat{a}_x\otimes \hat{a}_x + I_{xy}\hat{a}_x\otimes \hat{a}_y + I_{xz}\hat{a}_x\otimes \hat{a}_z + I_{xy}\hat{a}_y\otimes \hat{a}_x + I_{yy}\hat{a}_y\otimes \hat{a}_y + I_{yz}\hat{a}_y\otimes \hat{a}_z + I_{xz}\hat{a}_z\otimes \hat{a}_x + I_{yz}\hat{a}_z\otimes \hat{a}_y + I_{zz}\hat{a}_z\otimes \hat{a}_z\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}I_{xx} &amp; I_{xy} &amp; I_{xz}\\I_{xy} &amp; I_{yy} &amp; I_{yz}\\I_{xz} &amp; I_{yz} &amp; I_{zz}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>This inertia dyadic can easily be expressed relative to another reference frame
+if the orientation is defined (demonstrated above in <a class="reference internal" href="#dyadics"><span class="std std-ref">Dyadics</span></a>):</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle I_{xx}\hat{b}_x\otimes \hat{b}_x + (I_{xy} \cos{\left(\theta \right)} + I_{xz} \sin{\left(\theta \right)})\hat{b}_x\otimes \hat{b}_y + (- I_{xy} \sin{\left(\theta \right)} + I_{xz} \cos{\left(\theta \right)})\hat{b}_x\otimes \hat{b}_z + (I_{xy} \cos{\left(\theta \right)} + I_{xz} \sin{\left(\theta \right)})\hat{b}_y\otimes \hat{b}_x + (- I_{xy} \sin{\left(\theta \right)} + I_{xz} \cos{\left(\theta \right)})\hat{b}_z\otimes \hat{b}_x + (I_{yy} \cos^{2}{\left(\theta \right)} + I_{yz} \sin{\left(2 \theta \right)} + I_{zz} \sin^{2}{\left(\theta \right)})\hat{b}_y\otimes \hat{b}_y + (- \frac{I_{yy} \sin{\left(2 \theta \right)}}{2} + I_{yz} \cos{\left(2 \theta \right)} + \frac{I_{zz} \sin{\left(2 \theta \right)}}{2})\hat{b}_y\otimes \hat{b}_z + (- \frac{I_{yy} \sin{\left(2 \theta \right)}}{2} + I_{yz} \cos{\left(2 \theta \right)} + \frac{I_{zz} \sin{\left(2 \theta \right)}}{2})\hat{b}_z\otimes \hat{b}_y + (I_{yy} \sin^{2}{\left(\theta \right)} - I_{yz} \sin{\left(2 \theta \right)} + I_{zz} \cos^{2}{\left(\theta \right)})\hat{b}_z\otimes \hat{b}_z\]</div>
+</div>
+</div>
+<p>or as a matrix in <span class="math notranslate nohighlight">\(B\)</span>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="o">.</span><span class="n">express</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}I_{xx} &amp; I_{xy} \cos{\left(\theta \right)} + I_{xz} \sin{\left(\theta \right)} &amp; - I_{xy} \sin{\left(\theta \right)} + I_{xz} \cos{\left(\theta \right)}\\I_{xy} \cos{\left(\theta \right)} + I_{xz} \sin{\left(\theta \right)} &amp; I_{yy} \cos^{2}{\left(\theta \right)} + I_{yz} \sin{\left(2 \theta \right)} + I_{zz} \sin^{2}{\left(\theta \right)} &amp; - \frac{I_{yy} \sin{\left(2 \theta \right)}}{2} + I_{yz} \cos{\left(2 \theta \right)} + \frac{I_{zz} \sin{\left(2 \theta \right)}}{2}\\- I_{xy} \sin{\left(\theta \right)} + I_{xz} \cos{\left(\theta \right)} &amp; - \frac{I_{yy} \sin{\left(2 \theta \right)}}{2} + I_{yz} \cos{\left(2 \theta \right)} + \frac{I_{zz} \sin{\left(2 \theta \right)}}{2} &amp; I_{yy} \sin^{2}{\left(\theta \right)} - I_{yz} \sin{\left(2 \theta \right)} + I_{zz} \cos^{2}{\left(\theta \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>This is equivalent to the matrix transform to express an inertia matrix in
+other reference frame (see some explanations <a class="reference external" href="https://en.wikipedia.org/wiki/Moment_of_inertia#Inertia_tensor_of_rotation">on Wikipedia</a>
+about this transform):</p>
+<div class="math notranslate nohighlight" id="equation-eq-inertia-transform">
+<span class="eqno">(152)<a class="headerlink" href="#equation-eq-inertia-transform" title="Link to this equation">¶</a></span>\[{}^B\mathbf{C}^A \ \mathbf{I} \ {}^A\mathbf{C}^B\]</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="n">I</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}I_{xx} &amp; I_{xy} \cos{\left(\theta \right)} + I_{xz} \sin{\left(\theta \right)} &amp; - I_{xy} \sin{\left(\theta \right)} + I_{xz} \cos{\left(\theta \right)}\\I_{xy} \cos{\left(\theta \right)} + I_{xz} \sin{\left(\theta \right)} &amp; I_{yy} \cos^{2}{\left(\theta \right)} + I_{yz} \sin{\left(2 \theta \right)} + I_{zz} \sin^{2}{\left(\theta \right)} &amp; - \frac{I_{yy} \sin{\left(2 \theta \right)}}{2} + I_{yz} \cos{\left(2 \theta \right)} + \frac{I_{zz} \sin{\left(2 \theta \right)}}{2}\\- I_{xy} \sin{\left(\theta \right)} + I_{xz} \cos{\left(\theta \right)} &amp; - \frac{I_{yy} \sin{\left(2 \theta \right)}}{2} + I_{yz} \cos{\left(2 \theta \right)} + \frac{I_{zz} \sin{\left(2 \theta \right)}}{2} &amp; I_{yy} \sin^{2}{\left(\theta \right)} - I_{yz} \sin{\left(2 \theta \right)} + I_{zz} \cos^{2}{\left(\theta \right)}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<figure class="align-center" id="id13">
+<img alt="https://mechmotum.s3.us-east-005.dream.io/typical-bicycle-geometry.png" src="https://mechmotum.s3.us-east-005.dream.io/typical-bicycle-geometry.png"/>
+<figcaption>
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text">Head tube angle of a bicycle.</span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Given the inertia dyadic of a bicycle’s handlebar and fork assembly about
+its mass center where <span class="math notranslate nohighlight">\(\hat{n}_x\)</span> points from the center of the rear
+wheel to the center of the front wheel and <span class="math notranslate nohighlight">\(\hat{n}_z\)</span> points
+downward, normal to the ground, and the head tube angle is 68 degrees from
+the ground plane, find the moment of inertia about the tilted steer axis
+given the inertia dyadic:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+
+<span class="n">I</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.25</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span>
+     <span class="mf">0.25</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span>
+     <span class="mf">0.10</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span>
+     <span class="mf">0.07</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span>
+     <span class="mf">0.07</span><span class="o">*</span><span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+<span class="n">I</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0.25\hat{n}_x\otimes \hat{n}_x + 0.25\hat{n}_y\otimes \hat{n}_y + 0.1\hat{n}_z\otimes \hat{n}_z - 0.07\hat{n}_x\otimes \hat{n}_z - 0.07\hat{n}_z\otimes \hat{n}_x\]</div>
+</div>
+</div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Solution</p>
+<p>Create a new reference frame that has <span class="math notranslate nohighlight">\(\hat{h}_z\)</span> aligned with the
+steer axis.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'H'</span><span class="p">)</span>
+<span class="n">H</span><span class="o">.</span><span class="n">orient_axis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">68.0</span><span class="o">*</span><span class="n">sm</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Dot the inertia dyadic twice with <span class="math notranslate nohighlight">\(\hat{h}_z\)</span> to get the moment of
+inertia about the steer axis:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">evalf</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0.0724234290424714\]</div>
+</div>
+</div>
+<p>Alternatively, you can use the matrix transformation.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0.25 &amp; 0 &amp; -0.07\\0 &amp; 0.25 &amp; 0\\-0.07 &amp; 0 &amp; 0.1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I_H</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">I</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">N</span><span class="o">.</span><span class="n">dcm</span><span class="p">(</span><span class="n">H</span><span class="p">))</span><span class="o">.</span><span class="n">evalf</span><span class="p">()</span>
+<span class="n">I_H</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0.277576570957529 &amp; 0 &amp; 0.00174559176071922\\0 &amp; 0.25 &amp; 0\\0.00174559176071922 &amp; 0 &amp; 0.0724234290424714\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I_H</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0.0724234290424714\]</div>
+</div>
+</div>
+</div>
+</section>
+<section id="parallel-axis-theorem">
+<h2 id="parallel-axis-theorem">Parallel Axis Theorem<a class="headerlink" href="#parallel-axis-theorem" title="Link to this heading">¶</a></h2>
+<p>If you know the central inertia dyadic of a rigid body <span class="math notranslate nohighlight">\(B\)</span> (or
+equivalently a set of particles) about its mass center <span class="math notranslate nohighlight">\(B_o\)</span> then it is
+possible to calculate the inertia dyadic about any other point <span class="math notranslate nohighlight">\(O\)</span>. To do
+so, you must account for the inertial contribution due to the distance between
+the points <span class="math notranslate nohighlight">\(O\)</span> and <span class="math notranslate nohighlight">\(B_o\)</span>. This is done with the <a class="reference external" href="https://en.wikipedia.org/wiki/Parallel_axis_theorem">parallel axis
+theorem</a> (<a class="reference internal" href="references.html#kane1985" id="id9"><span>[Kane1985]</span></a>, pg. 70):</p>
+<div class="math notranslate nohighlight" id="equation-eq-parallel-axis-theorem">
+<span class="eqno">(153)<a class="headerlink" href="#equation-eq-parallel-axis-theorem" title="Link to this equation">¶</a></span>\[\breve{I}^{B/O} = \breve{I}^{B/B_o} + \breve{I}^{B_o/O}\]</div>
+<p>The last term is the inertia of a particle with mass <span class="math notranslate nohighlight">\(m\)</span> (total mass of
+the body or set of particles) located at the mass center about point <span class="math notranslate nohighlight">\(O\)</span>.</p>
+<div class="math notranslate nohighlight" id="equation-eq-parallel-axis-theorem-expanded">
+<span class="eqno">(154)<a class="headerlink" href="#equation-eq-parallel-axis-theorem-expanded" title="Link to this equation">¶</a></span>\[\breve{I}^{B_o/O} = m \left(
+\left|\bar{r}^{B_o/O}\right|^2 \breve{U}  -
+\bar{r}^{B_o/O} \otimes \bar{r}^{B_o/O}
+\right)\]</div>
+<p>When <span class="math notranslate nohighlight">\(B_o\)</span> is displaced from point <span class="math notranslate nohighlight">\(O\)</span> by three Cartesian distances
+<span class="math notranslate nohighlight">\(d_x,d_y,d_z\)</span> the general form of the last term in Eq.
+<a class="reference internal" href="#equation-eq-parallel-axis-theorem">(153)</a> can be found:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'d_x, d_y, d_z, m'</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'N'</span><span class="p">)</span>
+
+<span class="n">r_O_Bo</span> <span class="o">=</span> <span class="n">dx</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dy</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dz</span><span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">U</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+<span class="n">I_Bo_O</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r_O_Bo</span><span class="p">,</span> <span class="n">r_O_Bo</span><span class="p">)</span><span class="o">*</span><span class="n">U</span> <span class="o">-</span> <span class="n">me</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">r_O_Bo</span><span class="p">,</span> <span class="n">r_O_Bo</span><span class="p">))</span>
+<span class="n">I_Bo_O</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle m \left(d_{y}^{2} + d_{z}^{2}\right)\hat{n}_x\otimes \hat{n}_x + m \left(d_{x}^{2} + d_{z}^{2}\right)\hat{n}_y\otimes \hat{n}_y + m \left(d_{x}^{2} + d_{y}^{2}\right)\hat{n}_z\otimes \hat{n}_z -  d_{x} d_{y} m\hat{n}_x\otimes \hat{n}_y -  d_{x} d_{z} m\hat{n}_x\otimes \hat{n}_z -  d_{x} d_{y} m\hat{n}_y\otimes \hat{n}_x -  d_{y} d_{z} m\hat{n}_y\otimes \hat{n}_z -  d_{x} d_{z} m\hat{n}_z\otimes \hat{n}_x -  d_{y} d_{z} m\hat{n}_z\otimes \hat{n}_y\]</div>
+</div>
+</div>
+<p>The matrix form of this dyadic shows the typical presentation of the parallel
+axis addition term:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I_Bo_O</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}m \left(d_{y}^{2} + d_{z}^{2}\right) &amp; - d_{x} d_{y} m &amp; - d_{x} d_{z} m\\- d_{x} d_{y} m &amp; m \left(d_{x}^{2} + d_{z}^{2}\right) &amp; - d_{y} d_{z} m\\- d_{x} d_{z} m &amp; - d_{y} d_{z} m &amp; m \left(d_{x}^{2} + d_{y}^{2}\right)\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+</section>
+<section id="principal-axes-and-moments-of-inertia">
+<h2 id="principal-axes-and-moments-of-inertia">Principal Axes and Moments of Inertia<a class="headerlink" href="#principal-axes-and-moments-of-inertia" title="Link to this heading">¶</a></h2>
+<p>If the inertia vector <span class="math notranslate nohighlight">\(\bar{I}_a\)</span> with respect to point <span class="math notranslate nohighlight">\(O\)</span> is
+parallel to its unit vector <span class="math notranslate nohighlight">\(\hat{n}_a\)</span> then the line through <span class="math notranslate nohighlight">\(O\)</span>
+and parallel to <span class="math notranslate nohighlight">\(\hat{n}_a\)</span> is called a <em>principal axis</em> of the set of
+particles or rigid body. The plane that is normal to <span class="math notranslate nohighlight">\(\hat{n}_a\)</span> is
+called a <em>principal plane</em>. The moment of inertia about this principal axis is
+called a <em>principal moment of inertia</em>. The consequence of <span class="math notranslate nohighlight">\(\bar{I}_a\)</span>
+being parallel to <span class="math notranslate nohighlight">\(\hat{n}_a\)</span> is that the products of inertia are all
+zero. The <em>principal inertia dyadic</em> can then be written as so:</p>
+<div class="math notranslate nohighlight" id="equation-eq-principal-inertia-dyadic">
+<span class="eqno">(155)<a class="headerlink" href="#equation-eq-principal-inertia-dyadic" title="Link to this equation">¶</a></span>\[\breve{I}^{B/O} =
+I_{11} \hat{b}_1 \otimes \hat{b}_1 +
+I_{22} \hat{b}_2 \otimes \hat{b}_2 +
+I_{33} \hat{b}_3 \otimes \hat{b}_3\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{b}_1,\hat{b}_2,\hat{b}_3\)</span> are mutually perpendicular unit
+vectors in <span class="math notranslate nohighlight">\(B\)</span> that are each parallel to a principal axis and
+<span class="math notranslate nohighlight">\(I_{11},I_{22},I_{33}\)</span> are all principal moments of inertia.</p>
+<p>Geometrically symmetric objects with uniform mass density have principal planes
+that are perpendicular with the planes of symmetry of the geometry. But it is
+important to note that there also exist unique principal axes for all
+non-symmetric and non-uniform density objects, i.e. having geometric symmetry
+is not necessary to have principal moments of inertia; all rigid bodies have
+principal moments of inertia and associated axes.</p>
+<p>The principal axes and their associated principal moments of inertia can be
+found by solving the <a class="reference external" href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalue problem</a>. The eigenvalues
+of an arbitrary inertia matrix are the principal moments of inertia and the
+eigenvectors are the unit vectors parallel to the mutually perpendicular
+principal axes. Recalling that the inertia matrix is a symmetric matrix of real
+numbers, we know then that it is <a class="reference external" href="https://en.wikipedia.org/wiki/Hermitian_matrix">Hermitian</a> and therefore all of its
+eigenvalues are real. Symmetric matrices are also diagonalizable and the
+eigenvectors will then be orthonormal.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Finding the eigenvalues of a 3x3 matrix require finding the roots of the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Cubic_equation">cubic equation</a>. It is possible to find the symbolic solution, but it is
+not a simple result. Unless you really need the symbolic result, it is best
+to solve for principal axes and moments of inertia numerically.</p>
+</div>
+<p>Here is an example of finding the principal axes and associated moments of
+inertia with SymPy:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mf">1.0451</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1123</span><span class="p">],</span>
+               <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.403</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+               <span class="p">[</span><span class="o">-</span><span class="mf">0.1123</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.8501</span><span class="p">]])</span>
+<span class="n">I</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0451 &amp; 0.0 &amp; -0.1123\\0.0 &amp; 2.403 &amp; 0.0\\-0.1123 &amp; 0.0 &amp; 1.8501\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://docs.sympy.org/latest/modules/matrices/matrices.html#sympy.matrices.matrixbase.MatrixBase.eigenvects" title="(in SymPy v1.14.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eigenvects()</span></code></a> method on a
+SymPy matrix returns a list of tuples that each contain <code class="docutils literal notranslate"><span class="pre">(eigenvalue,</span>
+<span class="pre">multiplicity,</span> <span class="pre">eigenvector)</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev1</span><span class="p">,</span> <span class="n">ev2</span><span class="p">,</span> <span class="n">ev3</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">eigenvects</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The results are a bit confusing to parse but you can extract the relevant
+information as follows.</p>
+<p>The first and largest eigenvalue (principal moment of inertia) and its
+associated eigenvector (principal axis direction) is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2.403\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0\\1.0\\0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>This shows that the <span class="math notranslate nohighlight">\(y\)</span> axes was already the major principal axis. The
+second eigenvalue and its associated eigenvector is:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 1.02972736390139\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev2</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}-0.990760351805416\\0\\-0.135624206137434\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p>This is the smallest eigenvalue and thus the minor moment of inertia about the
+minor principal axis. The third eigenvalue and its associated eigenvector give
+the intermediate principal axis and the intermediate moment of inertia:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 1.86547263609861\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev3</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0.135624206137434\\0\\-0.990760351805416\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+</section>
+<section id="angular-momentum">
+<h2 id="angular-momentum">Angular Momentum<a class="headerlink" href="#angular-momentum" title="Link to this heading">¶</a></h2>
+<p>The angular momentum vector of a rigid body <span class="math notranslate nohighlight">\(B\)</span> in reference frame
+<span class="math notranslate nohighlight">\(A\)</span> about point <span class="math notranslate nohighlight">\(O\)</span> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-angular-momentum">
+<span class="eqno">(156)<a class="headerlink" href="#equation-eq-angular-momentum" title="Link to this equation">¶</a></span>\[{}^A \bar{H}^{B/O} := \breve{I}^{B/O} \cdot {}^A\bar{\omega}^B\]</div>
+<p>The dyadic-vector dot product notation makes this definition succinct. If the
+point is instead the mass center of <span class="math notranslate nohighlight">\(B\)</span>, point <span class="math notranslate nohighlight">\(B_o\)</span>, then the
+inertia dyadic is the <em>central inertia dyadic</em> and the result is the <em>central
+angular momentum</em> in <span class="math notranslate nohighlight">\(A\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-eq-central-angular-momentum">
+<span class="eqno">(157)<a class="headerlink" href="#equation-eq-central-angular-momentum" title="Link to this equation">¶</a></span>\[{}^A \bar{H}^{B/B_o} = \breve{I}^{B/B_o} \cdot {}^A\bar{\omega}^B\]</div>
+<p>Here is an example of calculating the angular momentum expressed in the body
+fixed reference frame in SymPy Mechanics:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'I_</span><span class="si">{xx}</span><span class="s1">, I_</span><span class="si">{yy}</span><span class="s1">, I_</span><span class="si">{zz}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">Ixy</span><span class="p">,</span> <span class="n">Iyz</span><span class="p">,</span> <span class="n">Ixz</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'I_</span><span class="si">{xy}</span><span class="s1">, I_</span><span class="si">{yz}</span><span class="s1">, I_</span><span class="si">{xz}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'omega1, omega2, omega3'</span><span class="p">)</span>
+
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">I</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">inertia</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">Ixx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Izz</span><span class="p">,</span> <span class="n">Ixy</span><span class="p">,</span> <span class="n">Iyz</span><span class="p">,</span> <span class="n">Ixz</span><span class="p">)</span>
+
+<span class="n">A_w_B</span> <span class="o">=</span> <span class="n">w1</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">w2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">w3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">I</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A_w_B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle (I_{xx} \omega_{1} + I_{xy} \omega_{2} + I_{xz} \omega_{3})\hat{b}_x + (I_{xy} \omega_{1} + I_{yy} \omega_{2} + I_{yz} \omega_{3})\hat{b}_y + (I_{xz} \omega_{1} + I_{yz} \omega_{2} + I_{zz} \omega_{3})\hat{b}_z\]</div>
+</div>
+</div>
+<p>If the body fixed unit vectors happen to be aligned with the principal axes of
+the rigid body, then the central angular momentum simplifies:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">,</span> <span class="n">I3</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">'I_1, I_2, I_3'</span><span class="p">)</span>
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">dynamicsymbols</span><span class="p">(</span><span class="s1">'omega1, omega2, omega3'</span><span class="p">)</span>
+
+<span class="n">B</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">ReferenceFrame</span><span class="p">(</span><span class="s1">'B'</span><span class="p">)</span>
+
+<span class="n">I</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">inertia</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">,</span> <span class="n">I3</span><span class="p">)</span>
+
+<span class="n">A_w_B</span> <span class="o">=</span> <span class="n">w1</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">w2</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">w3</span><span class="o">*</span><span class="n">B</span><span class="o">.</span><span class="n">z</span>
+
+<span class="n">I</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A_w_B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle I_{1} \omega_{1}\hat{b}_x + I_{2} \omega_{2}\hat{b}_y + I_{3} \omega_{3}\hat{b}_z\]</div>
+</div>
+</div>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="motion.html" title="Nonholonomic Constraints"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Nonholonomic Constraints </span>
+              </div>
+            </a>
+          
+          
+            <a href="loads.html" title="Force, Moment, and Torque"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> Force, Moment, and Torque </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>

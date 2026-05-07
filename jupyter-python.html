@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#3f51b5">
+  <script src="_static/javascripts/modernizr.js"></script>
+  
+  
+  
+    <title>Jupyter and Python &#8212; Learn Multibody Dynamics</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=61ad4bda" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"linebreaks": {"automatic": true}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SymPy" href="sympy.html" />
+    <link rel="prev" title="Install the Software" href="install.html" />
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=deep-orange>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#jupyter-python" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="index.html" title="Learn Multibody Dynamics"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">&#xe52f</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">Learn Multibody Dynamics</span>
+          <span class="md-header-nav__topic"> Jupyter and Python </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+  
+  <script src="_static/javascripts/version_dropdown.js"></script>
+  <script>
+    var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+  </script>
+  
+
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="index.html" title="Learn Multibody Dynamics" class="md-nav__button md-logo">
+      
+        <i class="md-icon">&#xe52f</i>
+      
+    </a>
+    <a href="index.html"
+       title="Learn Multibody Dynamics">Learn Multibody Dynamics</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/moorepants/learn-multibody-dynamics/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Learn Multibody Dynamics
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Table of Contents</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="introduction.html" class="md-nav__link">Introduction</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="install.html" class="md-nav__link">Install the Software</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> Jupyter and Python </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">Jupyter and Python</a>
+      
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#jupyter-python--page-root" class="md-nav__link">Jupyter and Python</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#the-jupyter-notebook" class="md-nav__link">The Jupyter Notebook</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#using-the-notebook" class="md-nav__link">Using the Notebook</a>
+        </li>
+        <li class="md-nav__item"><a href="#magic-commands" class="md-nav__link">Magic Commands</a>
+        </li>
+        <li class="md-nav__item"><a href="#need-help" class="md-nav__link">Need Help?</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#python" class="md-nav__link">Python</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#basic-data-types" class="md-nav__link">Basic Data Types</a>
+        </li>
+        <li class="md-nav__item"><a href="#data-structures" class="md-nav__link">Data Structures</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#id2" class="md-nav__link">Lists</a>
+        </li>
+        <li class="md-nav__item"><a href="#id3" class="md-nav__link">Tuples</a>
+        </li>
+        <li class="md-nav__item"><a href="#id4" class="md-nav__link">Dictionaries</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#functions" class="md-nav__link">Functions</a>
+        </li>
+        <li class="md-nav__item"><a href="#modules" class="md-nav__link">Modules</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#learn-more" class="md-nav__link">Learn More</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#more-jupyter" class="md-nav__link">More Jupyter</a>
+        </li>
+        <li class="md-nav__item"><a href="#more-python" class="md-nav__link">More Python</a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/jupyter-python.rst.txt">Show Source</a> </li>
+
+  </ul>
+</nav>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="sympy.html" class="md-nav__link">SymPy</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="orientation.html" class="md-nav__link">Orientation of Reference Frames</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="vectors.html" class="md-nav__link">Vectors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="differentiation.html" class="md-nav__link">Vector Differentiation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="angular.html" class="md-nav__link">Angular Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="translational.html" class="md-nav__link">Translational Kinematics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="configuration.html" class="md-nav__link">Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="motion.html" class="md-nav__link">Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="mass.html" class="md-nav__link">Mass Distribution</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="loads.html" class="md-nav__link">Force, Moment, and Torque</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="generalized-forces.html" class="md-nav__link">Generalized Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="eom.html" class="md-nav__link">Unconstrained Equations of Motion</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="simulation.html" class="md-nav__link">Simulation and Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="visualization.html" class="md-nav__link">Three Dimensional Visualization</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="nonholonomic-eom.html" class="md-nav__link">Equations of Motion with Nonholonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="holonomic-eom.html" class="md-nav__link">Equations of Motion with Holonomic Constraints</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="noncontributing.html" class="md-nav__link">Exposing Noncontributing Forces</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="energy.html" class="md-nav__link">Energy and Power</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="lagrange.html" class="md-nav__link">Equations of Motion with the Lagrange Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="tmt.html" class="md-nav__link">Unconstrained Equations of Motion with the TMT Method</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="notation.html" class="md-nav__link">Notation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="references.html" class="md-nav__link">References</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#jupyter-python--page-root" class="md-nav__link">Jupyter and Python</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#learning-objectives" class="md-nav__link">Learning Objectives</a>
+        </li>
+        <li class="md-nav__item"><a href="#introduction" class="md-nav__link">Introduction</a>
+        </li>
+        <li class="md-nav__item"><a href="#the-jupyter-notebook" class="md-nav__link">The Jupyter Notebook</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#using-the-notebook" class="md-nav__link">Using the Notebook</a>
+        </li>
+        <li class="md-nav__item"><a href="#magic-commands" class="md-nav__link">Magic Commands</a>
+        </li>
+        <li class="md-nav__item"><a href="#need-help" class="md-nav__link">Need Help?</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#python" class="md-nav__link">Python</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#basic-data-types" class="md-nav__link">Basic Data Types</a>
+        </li>
+        <li class="md-nav__item"><a href="#data-structures" class="md-nav__link">Data Structures</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#id2" class="md-nav__link">Lists</a>
+        </li>
+        <li class="md-nav__item"><a href="#id3" class="md-nav__link">Tuples</a>
+        </li>
+        <li class="md-nav__item"><a href="#id4" class="md-nav__link">Dictionaries</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#functions" class="md-nav__link">Functions</a>
+        </li>
+        <li class="md-nav__item"><a href="#modules" class="md-nav__link">Modules</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#learn-more" class="md-nav__link">Learn More</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#more-jupyter" class="md-nav__link">More Jupyter</a>
+        </li>
+        <li class="md-nav__item"><a href="#more-python" class="md-nav__link">More Python</a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/jupyter-python.rst.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="jupyter-and-python">
+<h1 id="jupyter-python--page-root">Jupyter and Python<a class="headerlink" href="#jupyter-python--page-root" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this example as a Python script:
+<a class="reference download internal" download="" href="_downloads/2737c8db82d8ad59728d3d0f31c378da/jupyter-python.py"><code class="xref download docutils literal notranslate"><span class="pre">jupyter-python.py</span></code></a> or Jupyter notebook:
+<a class="reference download internal" download="" href="_downloads/d745aa1f70e662438e2019fc169de73f/jupyter-python.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">jupyter-python.ipynb</span></code></a>.</p>
+</div>
+<section id="learning-objectives">
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>After completing this chapter readers will be able to:</p>
+<ul class="simple">
+<li><p>Run the Jupyter notebook software</p></li>
+<li><p>Use magic commands in the Jupyter notebook</p></li>
+<li><p>Create basic data types in Python</p></li>
+<li><p>Create and use Python functions</p></li>
+<li><p>Import Python modules</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>The following is a brief introduction to Python and how to use Python from a
+Jupyter Notebook. There is much more to learn than what is covered here. This
+is just enough to get you started for the purposes of this book. You will need
+to seek out the many excellent learning materials online to learn more; some
+are provided at the end of this chapter.</p>
+</section>
+<section id="the-jupyter-notebook">
+<h2 id="the-jupyter-notebook">The Jupyter Notebook<a class="headerlink" href="#the-jupyter-notebook" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://www.jupyter.org">Jupyter Notebook</a> is an application that lets you execute code to as well
+as display text, mathematics, digital media, and HTML-CSS-Javascript-based
+outputs. The displayed elements can be embedded directly or generated by the
+executed code. This makes the Jupyter Notebook well suited for communicating
+content that is linked and driven by code. It allows you to edit the code
+interactively. Each page of this book is a Jupyter Notebook and can be
+downloaded and executed on your computer. Jupyter can execute code from many
+programming languages. Different <span class="xref std std-term">kernels</span> are used for each
+language and a notebook can, in general, only have a single kernel. This book
+will use the Python 3 kernel.</p>
+<section id="using-the-notebook">
+<h3 id="using-the-notebook">Using the Notebook<a class="headerlink" href="#using-the-notebook" title="Link to this heading">¶</a></h3>
+<p>To start the Jupyter notebook application open a terminal (Linux/Mac) or
+command prompt (Windows), navigate to a desired working directory then type the
+following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter<span class="w"> </span>notebook
+</pre></div>
+</div>
+<p>A new window will open in your web browser where you can open an existing
+notebook or start a new one. Notebooks are organized with cells. You may have a
+code cell for inputting commands followed by its result cell which contains the
+output of the code. You may also have a text cell that contains static content
+written in <a class="reference external" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>. Markdown allows you to incorporate simple formatting and
+even things like mathematical equations using <a class="reference external" href="https://en.wikipedia.org/wiki/LaTeX">LaTeX</a> notation, e.g. <code class="docutils literal notranslate"><span class="pre">$a^2$</span></code>
+displays as <span class="math notranslate nohighlight">\(a^2\)</span>. The cell type can be changed using a Jupyter drop-down
+menu.</p>
+<p>There is the menu bar above for navigating a notebook but you will find the
+following keyboard shortcuts helpful:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Enter</span></code> : Create a new line with in cell</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">Enter</span></code> : Execute cell and advance to next cell</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">Enter</span></code> : Execute cell in place (do not advance to the next cell)</p></li>
+<li><p>Press <code class="docutils literal notranslate"><span class="pre">esc</span></code> (command mode) then <code class="docutils literal notranslate"><span class="pre">h</span></code> to display keyboard shortcuts</p></li>
+</ul>
+<p>At times you might run code that gets stuck in an infinite loop or you might
+simply want to clear all your workspace variables and start over. To solve each
+of these problems you can click on the menu:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">-&gt;</span> <span class="pre">Interrupt</span></code></p>
+<p>then</p>
+<p><code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">-&gt;</span> <span class="pre">Restart</span></code></p>
+</section>
+<section id="magic-commands">
+<h3 id="magic-commands">Magic Commands<a class="headerlink" href="#magic-commands" title="Link to this heading">¶</a></h3>
+<p>These are special commands that only work in a Juypter notebook or an IPython
+session, as opposed to the normal Python interpreter. Magic commands are
+preceded by a <code class="docutils literal notranslate"><span class="pre">%</span></code> or <code class="docutils literal notranslate"><span class="pre">%%</span></code>. You can list available magic commands but using
+the magic command <code class="docutils literal notranslate"><span class="pre">lsmagic</span></code>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">lsmagic</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>Available line magics:
+%alias  %alias_magic  %autoawait  %autocall  %automagic  %autosave  %bookmark  %cat  %cd  %clear  %code_wrap  %colors  %conda  %config  %connect_info  %cp  %debug  %dhist  %dirs  %doctest_mode  %ed  %edit  %env  %gui  %hist  %history  %killbgscripts  %ldir  %less  %lf  %lk  %ll  %load  %load_ext  %loadpy  %logoff  %logon  %logstart  %logstate  %logstop  %ls  %lsmagic  %lx  %macro  %magic  %mamba  %man  %matplotlib  %micromamba  %mkdir  %more  %mv  %notebook  %page  %pastebin  %pdb  %pdef  %pdoc  %pfile  %pinfo  %pinfo2  %pip  %popd  %pprint  %precision  %prun  %psearch  %psource  %pushd  %pwd  %pycat  %pylab  %qtconsole  %quickref  %recall  %rehashx  %reload_ext  %rep  %rerun  %reset  %reset_selective  %rm  %rmdir  %run  %save  %sc  %set_env  %store  %subshell  %sx  %system  %tb  %time  %timeit  %unalias  %unload_ext  %uv  %who  %who_ls  %whos  %xdel  %xmode
+
+Available cell magics:
+%%!  %%HTML  %%SVG  %%bash  %%capture  %%code_wrap  %%debug  %%file  %%html  %%javascript  %%js  %%latex  %%markdown  %%perl  %%prun  %%pypy  %%python  %%python2  %%python3  %%ruby  %%script  %%sh  %%svg  %%sx  %%system  %%time  %%timeit  %%writefile
+
+Automagic is ON, % prefix IS NOT needed for line magics.
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example <code class="docutils literal notranslate"><span class="pre">%whos</span></code> will show the variables available in your namespace:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="o">%</span><span class="k">whos</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Variable   Type    Data/Info
+----------------------------
+a          int     5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="need-help">
+<h3 id="need-help">Need Help?<a class="headerlink" href="#need-help" title="Link to this heading">¶</a></h3>
+<p>In case you’re lost help isn’t far. The following commands should provide
+assistance.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?</span></code> displays an overview of the features available when typing in code cells
+in Jupyter notebooks (the cells are parsed by the IPython Python interpreter
+when using the Python kernel):</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>A quick reference for the special commands in Jupyter code cells can be viewed
+with:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">quickref</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>For details about any Python object in the namespace, append a <code class="docutils literal notranslate"><span class="pre">?</span></code> to the
+variable or function (without <code class="docutils literal notranslate"><span class="pre">()</span></code>). For example, help for the <code class="docutils literal notranslate"><span class="pre">round()</span></code>
+function can be found like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>round<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+</section>
+<section id="python">
+<h2 id="python">Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://www.python.org">Python</a> has become one of the world’s most popular programming languages. It is
+open source, free to use, and well suited for scientific and engineering
+programming needs. The following gives a brief introduction to the basics of
+Python.</p>
+<section id="basic-data-types">
+<h3 id="basic-data-types">Basic Data Types<a class="headerlink" href="#basic-data-types" title="Link to this heading">¶</a></h3>
+<p>Python has core builtin data types. The <code class="docutils literal notranslate"><span class="pre">type()</span></code> function shows you the type
+of any Python object. For example, here are the types of some integers,
+floating point numbers, and strings:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="n">c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="s1">'dee'</span>
+<span class="n">e</span> <span class="o">=</span> <span class="s1">'e'</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="n">j</span>
+<span class="n">g</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(int, float, float, str, str, complex, bool)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-structures">
+<h3 id="data-structures">Data Structures<a class="headerlink" href="#data-structures" title="Link to this heading">¶</a></h3>
+<p>Python offers several builtin data structures for grouping and organizing
+objects. <a class="reference external" href="https://docs.Python.org/3/library/stdtypes.html#list">Lists</a>, <a class="reference external" href="https://docs.Python.org/3/library/stdtypes.html#tuple">tuples</a>, and <a class="reference external" href="https://docs.Python.org/3/library/stdtypes.html#mapping-types-dict">dictionaries</a> are the most commonly used.</p>
+<section id="id2">
+<h4 id="id2">Lists<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<p>A list is a versatile container that holds objects in the order given. Lists
+are typically used to group similar items but may contain heterogeneous data
+types.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">empty_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">string_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'lions'</span><span class="p">,</span> <span class="s1">'tigers'</span><span class="p">,</span> <span class="s1">'bears'</span><span class="p">,</span> <span class="s1">'sharks'</span><span class="p">,</span> <span class="s1">'hamsters'</span><span class="p">]</span>
+
+<span class="n">int_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="n">int_list2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">list_from_variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+
+<span class="n">list_of_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">empty_list</span><span class="p">,</span>
+                 <span class="n">string_list</span><span class="p">,</span>
+                 <span class="n">list_from_variables</span><span class="p">,</span>
+                 <span class="n">int_list</span><span class="p">,</span>
+                 <span class="n">int_list2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Each of these can be displayed:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">empty_list</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">string_list</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>['lions', 'tigers', 'bears', 'sharks', 'hamsters']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">int_list</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[0, 1, 2, 3, 4]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">int_list2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[5, 6, 7, 8, 9]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_from_variables</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[5, 5.0, 5.0, 'dee', 'e']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_lists</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[[],
+ ['lions', 'tigers', 'bears', 'sharks', 'hamsters'],
+ [5, 5.0, 5.0, 'dee', 'e'],
+ [0, 1, 2, 3, 4],
+ [5, 6, 7, 8, 9]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Elements of a list are accessible by their index.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Beware that Python uses <a class="reference external" href="https://en.wikipedia.org/wiki/Zero-based_numbering">zero-based numbering</a>, i.e. the first index value
+is 0.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">string_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>'lions'
+</pre></div>
+</div>
+</div>
+</div>
+<p>Slices can be used to extract a contiguous subset:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">string_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>['tigers', 'bears', 'sharks']
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or subset patterns. This extracts every 2nd element:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">int_list</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[0, 2, 4]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To access an item in a nested list use successive square brackets:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_lists</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>'hamsters'
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lists are <span class="xref std std-term">mutable</span>, meaning after a list is created we can change, add,
+or remove elements. Here are several ways to modify a list:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">int_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">222</span>
+
+<span class="n">int_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">string_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">'lions'</span><span class="p">)</span>
+
+<span class="n">list_from_variables</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">int_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Note that the existing lists have been modified in-place:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">int_list</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[0, 1, 222, 3, 4, 5]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">string_list</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>['tigers', 'bears', 'sharks', 'hamsters']
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_from_variables</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[5, 5.0, 5.0, 'dee', 'e', 0, 1, 222, 3, 4, 5]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h4 id="id3">Tuples<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<p>Tuples share similarities with lists. The primary difference between a list and
+tuple is that tuples are <strong>not mutable</strong>. A tuple is good for organizing
+related data that may be of different types. Note that tuples are defined with
+parentheses, <code class="docutils literal notranslate"><span class="pre">()</span></code>, rather than square brackets.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">joe_blow</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">'tall'</span><span class="p">,</span> <span class="s1">'likes hats'</span><span class="p">)</span>
+<span class="n">joe_blow</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(32, 'tall', 'likes hats')
+</pre></div>
+</div>
+</div>
+</div>
+<p>Indexing works the same as lists:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">joe_blow</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>'tall'
+</pre></div>
+</div>
+</div>
+</div>
+<p>Unlike lists, tuples are immutable. They cannot be changed once defined. Trying
+some of the mutating methods of lists results in errors on tuples:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">joe_blow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'married'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">joe_blow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'married'</span><span class="p">)</span>
+
+<span class="ne">AttributeError</span>: 'tuple' object has no attribute 'append'
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">joe_blow</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'not really a fan of hats'</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">25</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">joe_blow</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'not really a fan of hats'</span>
+
+<span class="ne">TypeError</span>: 'tuple' object does not support item assignment
+</pre></div>
+</div>
+</div>
+</div>
+<p>In Python, a function can return multiple values. These multiple outputs are
+packed into a tuple. Tuple unpacking assigns individual elements of a tuple to
+separate variables.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pets</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'elephant'</span><span class="p">,</span> <span class="s1">'cow'</span><span class="p">,</span> <span class="s1">'rock'</span><span class="p">)</span>
+
+<span class="n">pet1</span><span class="p">,</span> <span class="n">pet2</span><span class="p">,</span> <span class="n">pet3</span> <span class="o">=</span> <span class="n">pets</span>
+
+<span class="n">pet1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>'elephant'
+</pre></div>
+</div>
+</div>
+</div>
+<p>A peculiar thing about tuples in Python is defining a single element tuple.
+Note the trailing comma. This is necessary for Python to know you want a
+one-element tuple.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tuple_with_one_item</span> <span class="o">=</span> <span class="n">pet1</span><span class="p">,</span>
+
+<span class="n">tuple_with_one_item</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>('elephant',)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h4 id="id4">Dictionaries<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<p>A dictionary is an unordered set of <em>key: value</em> pairs. Much like a language
+dictionary where you look up a <em>word</em> and get its <em>definition</em>, in a Python
+dictionary you look up a <em>key</em> and get its <em>value</em>.</p>
+<p>Any immutable object can be used as a key, any object can be a value. For
+example, here are strings as both keys and values:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dictionary0</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'key1'</span><span class="p">:</span> <span class="s1">'value1'</span><span class="p">,</span> <span class="s1">'key2'</span><span class="p">:</span> <span class="s1">'value2'</span><span class="p">,</span> <span class="s1">'key3'</span><span class="p">:</span> <span class="s1">'value3'</span><span class="p">}</span>
+<span class="n">dictionary0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{'key1': 'value1', 'key2': 'value2', 'key3': 'value3'}
+</pre></div>
+</div>
+</div>
+</div>
+<p>or integers  can be used as keys:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dictionary1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">'value1'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">'value2'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">'value3'</span><span class="p">}</span>
+<span class="n">dictionary1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{1: 'value1', 2: 'value2', 3: 'value3'}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The keys and values can be extracted separately using <code class="docutils literal notranslate"><span class="pre">.keys()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">.values()</span></code> and converting to a list:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">dictionary1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[1, 2, 3]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">dictionary1</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>['value1', 'value2', 'value3']
+</pre></div>
+</div>
+</div>
+</div>
+<p>Individual items can be extracted with square brackets and the key:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cylinder</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'mass'</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'base'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'height'</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
+<span class="n">cylinder</span><span class="p">[</span><span class="s1">'mass'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>50
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">zip()</span></code> function is a convenient way to help generate a dictionary.  It
+takes sequence objects and combines them into a list of tuples. We can
+subsequently use the list of four-element tuples to create a dictionary.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'mass01'</span><span class="p">,</span> <span class="s1">'inertia01'</span><span class="p">,</span> <span class="s1">'mass02'</span><span class="p">,</span> <span class="s1">'inertia02'</span><span class="p">]</span>
+<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{'mass01': 10, 'inertia01': 1, 'mass02': 50, 'inertia02': 5}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="functions">
+<h3 id="functions">Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h3>
+<p>Python does not use braces, <code class="docutils literal notranslate"><span class="pre">{}</span></code>, or <code class="docutils literal notranslate"><span class="pre">end</span></code> statements to separate blocks of
+code. Rather, code blocks are initialized with colon, <code class="docutils literal notranslate"><span class="pre">:</span></code>, and defined by
+their indentation. It is convention to use four spaces (not tabs) for each
+level of indentation. Functions are defined and used like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">abs_value</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">A</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">A</span>
+    <span class="k">return</span> <span class="n">A</span>
+
+<span class="n">abs_value</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>100
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">abs_value</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>123
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function returns two results:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">long_div</span><span class="p">(</span><span class="n">dividend</span><span class="p">,</span> <span class="n">divisor</span><span class="p">):</span>
+    <span class="n">quotient</span> <span class="o">=</span> <span class="n">dividend</span> <span class="o">//</span> <span class="n">divisor</span>  <span class="c1"># // : floor division</span>
+    <span class="n">remainder</span> <span class="o">=</span> <span class="n">dividend</span> <span class="o">%</span> <span class="n">divisor</span>  <span class="c1"># % : modulo</span>
+    <span class="k">return</span> <span class="n">quotient</span><span class="p">,</span> <span class="n">remainder</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now you can use the function:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">430</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">25</span>
+
+<span class="n">quo</span><span class="p">,</span> <span class="n">rem</span> <span class="o">=</span> <span class="n">long_div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="n">quo</span><span class="p">,</span> <span class="n">rem</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(17, 5)
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">print()</span></code> and <code class="docutils literal notranslate"><span class="pre">.format()</span></code> can be used to make custom text to display:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1"> divided </span><span class="si">{}</span><span class="s1"> is </span><span class="si">{}</span><span class="s1"> remainder </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">quo</span><span class="p">,</span> <span class="n">rem</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>430 divided 25 is 17 remainder 5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modules">
+<h3 id="modules">Modules<a class="headerlink" href="#modules" title="Link to this heading">¶</a></h3>
+<p>Modules add additional functionality not present in the default
+<span class="xref std std-term">namespace</span> of Python. Some modules are included with Python (builtin
+modules) and some are provided by other software packages and libraries you
+download and install. For example, the builtin <code class="docutils literal notranslate"><span class="pre">sys</span></code> module provides access
+to system-specific parameters and functions. You can check what Python version
+you are currently using by first importing the <code class="docutils literal notranslate"><span class="pre">sys</span></code> module and then
+accessing the <code class="docutils literal notranslate"><span class="pre">.version</span></code> variable:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>3.12.11 | packaged by conda-forge | (main, Jun  4 2025, 14:45:31) [GCC 13.3.0]
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also import the <code class="docutils literal notranslate"><span class="pre">version</span></code> variable to have it included in
+the current namespace:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sys</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>3.12.11 | packaged by conda-forge | (main, Jun  4 2025, 14:45:31) [GCC 13.3.0]
+</pre></div>
+</div>
+</div>
+</div>
+<p>You will be using SymPy, NumPy, SciPy, and matplotlib further along in this
+book. These packages will consistently be imported like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>This will allow you to keep the namespaces separate so that there are no
+variable name clashes. For example, SymPy, NumPy, and SciPy all have
+trigonometric functions:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0.843853958732492\]</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>np.float64(0.8438539587324921)
+</pre></div>
+</div>
+</div>
+</div>
+<p>and there may be times when you want to use more than one version of <code class="docutils literal notranslate"><span class="pre">cos()</span></code>
+in a single namespace.</p>
+</section>
+</section>
+<section id="learn-more">
+<h2 id="learn-more">Learn More<a class="headerlink" href="#learn-more" title="Link to this heading">¶</a></h2>
+<section id="more-jupyter">
+<h3 id="more-jupyter">More Jupyter<a class="headerlink" href="#more-jupyter" title="Link to this heading">¶</a></h3>
+<p>There are many introductory resources for learning to use Jupyter which can be
+found with search engines. As examples, this RealPython introduction is a good
+start (ignore the installation part, as you have it installed already from the
+instructions in this book):</p>
+<p><a class="reference external" href="https://realPython.com/jupyter-notebook-introduction/">https://realPython.com/jupyter-notebook-introduction/</a></p>
+<p>This 7 minute video also gives the basics:</p>
+<iframe allow="accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/jZ952vChhuI" title="YouTube video player" width="560"></iframe></section>
+<section id="more-python">
+<h3 id="more-python">More Python<a class="headerlink" href="#more-python" title="Link to this heading">¶</a></h3>
+<p>There are literally thousands of Python learning materials freely available on
+the web that fit many different needs. Here are a few recommendations for core
+Python for beginners:</p>
+<ul class="simple">
+<li><p>Allen Downey’s book “ThinkPython”: <a class="reference external" href="https://greenteapress.com/wp/think-python-2e">https://greenteapress.com/wp/think-python-2e</a></p></li>
+<li><p>Google’s Python Class: <a class="reference external" href="https://developers.google.com/edu/python/">https://developers.google.com/edu/python/</a></p></li>
+<li><p>The official Python tutorial: <a class="reference external" href="https://docs.Python.org/3/tutorial">https://docs.Python.org/3/tutorial</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="install.html" title="Install the Software"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> Install the Software </span>
+              </div>
+            </a>
+          
+          
+            <a href="sympy.html" title="SymPy"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> SymPy </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2022-2026, Jason K. Moore.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
