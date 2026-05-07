@@ -613,7 +613,8 @@ function of all generalized speeds and their time derivatives.
 Formulate the nonholonomic dynamical differential equations
 -----------------------------------------------------------
 
-Calculate :math:`\mathbf{A}_n` from the nonholonomic constraints.
+Calculate :math:`\mathbf{A}_n` from the nonholonomic constraints as shown
+previously in :math:numref:`eq-constraint-linear-form-solve`.
 
 .. jupyter-execute::
 
