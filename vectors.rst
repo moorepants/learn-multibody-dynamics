@@ -75,7 +75,7 @@ sense. Vectors are equal when all three characteristics are the same.
 
       Various ways vectors will be drawn in figures.
 
-   .. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Right-hand_grip_rule.svg/240px-Right-hand_grip_rule.svg.png
+   .. figure:: https://mechmotum.s3.us-east-005.dream.io/Right-hand_grip_rule.svg.png
       :align: center
 
       See `right-hand rule <https://en.wikipedia.org/wiki/Right-hand_rule>`_
@@ -576,7 +576,7 @@ Take for example the `balanced-arm lamp`_, which has multiple articulated
 joints configured in a way to balance the weight of the lamp in any
 configuration. Here are two examples:
 
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Anglepoise_1227.jpg/353px-Anglepoise_1227.jpg
+.. figure:: https://mechmotum.s3.us-east-005.dream.io/Anglepoise_1227.jpg
    :align: center
 
    Balanced-arm desk lamp.
@@ -584,7 +584,7 @@ configuration. Here are two examples:
    Flickr user "renaissance chambara", cropped by uploader, CC BY 2.0
    https://creativecommons.org/licenses/by/2.0, via Wikimedia Commons
 
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/GraphyArchy_-_Wikipedia_00323.jpg/320px-GraphyArchy_-_Wikipedia_00323.jpg
+.. figure:: https://mechmotum.s3.us-east-005.dream.io/GraphyArchy_-_Wikipedia_00323.jpg
    :align: center
 
    Example of a huge balance-arm lamp in Rotterdam at the Schouwburgplein.
