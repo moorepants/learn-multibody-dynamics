@@ -60,7 +60,7 @@ This formulation will allow us to utilize different reference frames to
 simplify velocity calculations. Take for example this piece of kinetic art that
 now stands in Rotterdam:
 
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Rickey_Rotterdam_04.JPG/360px-Rickey_Rotterdam_04.JPG
+.. figure:: https://mechmotum.s3.us-east-005.dream.io/Rickey_Rotterdam_04.jpg
    :align: center
 
    Kinetic sculpture "Two Turning Vertical Rectangles" (1971) in Rotterdam/The
