@@ -485,8 +485,8 @@ We'll import ``fsolve`` directly like so:
 
 ``fsolve()`` requires a function that evaluates expressions that equal to zero
 and a guess for the roots of that function, at a minimum. Nonlinear functions
-will most certianly have multiple solutions for its roots and ``fsolve()`` will
-converge to one of the solutions. The better the provided the guess the more
+will most certainly have multiple solutions for its roots and ``fsolve()`` will
+converge to one of the solutions. The better the provided guess the more
 likely it will converge on the desired solution. Our function should evaluate
 the holonomic constraints given the dependent coordinates. We can use
 ``lambdify()`` to create this function. I make the first argument
@@ -908,7 +908,7 @@ the results.
 
    HTML(animate_linkage(ts_fsolve, xs_fsolve, p_vals).to_jshtml(fps=fps))
 
-This result is much improved. The motion is more consistency periodic and the
+This result is much improved. The motion is more consistently periodic and the
 constraint residuals do not grow over time. The constraint violations do reach
 large values at some times but tighter integration tolerances can bring those
 down in magnitude. Looking closely at the trajectory of :math:`q_2`, you see
@@ -923,7 +923,7 @@ initial value problem.
 Simulate Using a DAE Solver
 ===========================
 
-In the prior simulation, we we numerically solved for :math:`q_2` and
+In the prior simulation, we numerically solved for :math:`q_2` and
 :math:`q_3` at each time step to provide a correction to those two variables.
 This can be effective with tight integration tolerances, but is still a
 computationally naive approach. There are more robust and efficient numerical
@@ -956,7 +956,7 @@ implementations, i.e. we will not find :math:`\bar{q}_r` from integration
 alone. This gives :math:`2n+M` equations in :math:`2n+M` state variables
 :math:`\bar{u},\bar{q},\bar{q}_r`.
 
-The sckits.odes ``dae()`` function is similar to ``solve_ivp()`` but has
+The scikits.odes ``dae()`` function is similar to ``solve_ivp()`` but has
 various other options and a different solution output. ``dae()`` works with the
 explicit form of the equations, exactly as shown in Eq.
 :math:numref:`eq-dae-system`. We need to build a function that returns the left
