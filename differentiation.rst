@@ -55,7 +55,7 @@ If a vector :math:`\bar{v}` is a function of :math:`n` scalar variables
 :math:`q_1,q_2,\ldots,q_n` in reference frame :math:`A` then the first partial
 derivatives of :math:`\bar{v}` in :math:`A` with respect to :math:`q_r` where
 :math:`r=1\ldots n` can be formed by applying the product rule of
-differentation and taking into account that the mutually perpendicular unit
+differentiation and taking into account that the mutually perpendicular unit
 vectors fixed in :math:`A` do not change when observed from :math:`A`. The
 partial derivatives are then:
 
