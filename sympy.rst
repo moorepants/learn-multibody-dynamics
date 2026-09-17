@@ -832,10 +832,10 @@ invertible):
    \bar{x} = \mathbf{A}^{-1}\bar{b}
 
 Taking the inverse is not computationally efficient and potentially numerically
-inaccurate, so some form of `Gaussian elmination`_ should be used to solve the
+inaccurate, so some form of `Gaussian elimination`_ should be used to solve the
 system.
 
-.. _Gaussian elmination: https://en.wikipedia.org/wiki/Gaussian_elimination
+.. _Gaussian elimination: https://en.wikipedia.org/wiki/Gaussian_elimination
 
 To solve with SymPy, start with a column matrix of linear expressions:
 
@@ -890,7 +890,7 @@ especially as the dimension of :math:`\mathbf{A}` grows:
    This method of solving symbolic linear systems is fast, but it can give
    incorrect answers for:
 
-   1. expressions that are not acutally linear in the variables the Jacobian is
+   1. expressions that are not actually linear in the variables the Jacobian is
       taken with respect to
    2. :math:`\mathbf{A}` matrix entries that would evaluate to zero if
       simplified or specific numerical values are provided
