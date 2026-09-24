@@ -11,14 +11,14 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Install Conda environment with Micromamba
-      uses: conda-incubator/setup-miniconda@v3
+    - uses: actions/checkout@v7
+    - name: Install Conda environment with Miniforge
+      uses: conda-incubator/setup-miniconda@v4
       with:
         auto-update-conda: true
         channels: conda-forge
