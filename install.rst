@@ -113,8 +113,8 @@ This website was built with the following software versions:
 
 .. jupyter-execute::
 
-   import pkg_resources
-   pkg_resources.get_distribution("scikits.odes").version
+   import importlib
+   importlib.metadata.version("scikits.odes")
 
 .. jupyter-execute::
 
