@@ -74,7 +74,7 @@ mechanisms. One you may be familiar with is this rear suspension on a mountain
 bicycle:
 
 .. _mountain-bike-suspension:
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/MtbFrameGeometry_FSR.png/330px-MtbFrameGeometry_FSR.png
+.. figure:: https://mechmotum.s3.us-east-005.dream.io/MtbFrameGeometry_FSR.png
    :align: center
 
    Four bar linkage shown in blue, red, orange, and green used in the rear
@@ -88,7 +88,7 @@ Depending on the length of the links, different motion types are possible.
 :numref:`grashof-animation` shows some of the possible motions.
 
 .. _grashof-animation:
-.. figure:: https://upload.wikimedia.org/wikipedia/commons/c/ca/Grashof_Type_I_Four-Bar_Kinematic_Inversions.gif
+.. figure:: https://mechmotum.s3.us-east-005.dream.io/Grashof_Type_I_Four-Bar_Kinematic_Inversions.gif
    :align: center
    :width: 100%
 
@@ -241,7 +241,7 @@ In SymPy, we'll typically form this column matrix as so:
    :math:`2a` and the horizontal distance :math:`(2-1/20)b`. Use the same
    reference frame and angle definitions as the four-bar linkage above.
 
-   .. figure:: https://upload.wikimedia.org/wikipedia/commons/9/9e/Watts_Linkage.gif
+   .. figure:: https://mechmotum.s3.us-east-005.dream.io/Watts_Linkage.gif
       :width: 60%
       :align: center
 

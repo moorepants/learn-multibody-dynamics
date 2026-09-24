@@ -74,9 +74,6 @@ of time.
    <center>
    <video width="640" height="360" controls>
      <source
-       src="https://upload.wikimedia.org/wikipedia/commons/b/be/Dzhanibekov_effect.ogv"
-       type="video/ogg">
-     <source
        src="https://mechmotum.s3.us-east-005.dream.io/dzhanibekow-effect.mp4"
        type="video/mp4">
      Your browser does not support the video tag.
